@@ -1,0 +1,338 @@
+﻿Build1=Default,com.sithaso.daisyuikit
+File1=1.jpg
+File10=arrow-right-solid.svg
+File100=peter-thomas-iuPW8oMTz3I-unsplash.jpg
+File101=photo-1559703248-dcaaec9fab78.webp
+File102=photo-1565098772267-60af42b81ef2.webp
+File103=photo-1572635148818-ef6fd45eb394.webp
+File104=picture.svg
+File105=plus-solid.svg
+File106=plyr.svg
+File107=reply-solid.svg
+File108=rotate-solid.svg
+File109=save.svg
+File11=arrows-rotate-solid.svg
+File110=search-solid.svg
+File111=Splash.bal
+File112=trash-can-solid.svg
+File113=trash-solid.svg
+File114=upload-solid.svg
+File115=user-solid.svg
+File116=video.svg
+File117=video-solid.svg
+File118=windows-brands.svg
+File119=xls.svg
+File12=arrow-up-from-bracket-solid.svg
+File120=xmark-solid.svg
+File13=arrow-up-solid.svg
+File14=blank.svg
+File15=book-open-solid.svg
+File16=camera-solid.svg
+File17=casino_hand-webfont.svg
+File18=chat.svg
+File19=checkblack.svg
+File2=2.jpg
+File20=check-solid.svg
+File21=chevron-down-solid.svg
+File22=chevron-down-solid-full.svg
+File23=chevron-left-solid.svg
+File24=chevron-left-solid-full.svg
+File25=chevron-right-solid.svg
+File26=chevron-right-solid-full.svg
+File27=chevron-up-solid.svg
+File28=chevron-up-solid-full.svg
+File29=circle-notch-solid.svg
+File3=3.jpg
+File30=circle-question-regular.svg
+File31=clone-solid.svg
+File32=closemenu.svg
+File33=copy-solid.svg
+File34=csv.svg
+File35=daisyman1.png
+File36=daisywoman1.jpg
+File37=daisywoman2.png
+File38=daisywoman3.png
+File39=daisywoman4.png
+File4=4.jpg
+File40=dashboard.png
+File41=daysun.svg
+File42=door-open-solid.svg
+File43=download-solid.svg
+File44=ellipsis-vertical-solid.svg
+File45=eye-slash-solid.svg
+File46=eye-solid.svg
+File47=eye-solid-full.svg
+File48=face1.jpg
+File49=face10.jpg
+File5=Angela.jpg
+File50=face11.jpg
+File51=face12.jpg
+File52=face13.jpg
+File53=face14.jpg
+File54=face15.jpg
+File55=face16.jpg
+File56=face17.jpg
+File57=face18.jpg
+File58=face19.jpg
+File59=face20.jpg
+File6=Anna.jpg
+File60=face21.jpg
+File61=face22.jpg
+File62=face23.jpg
+File63=face24.jpg
+File64=face25.jpg
+File65=face26.jpg
+File66=face27.jpg
+File67=face3.jpg
+File68=face4.jpg
+File69=face5.jpg
+File7=arrow-down-solid.svg
+File70=face6.jpg
+File71=face7.jpg
+File72=face8.jpg
+File73=face9.jpg
+File74=face-smile-regular.svg
+File75=face-smile-solid.svg
+File76=female.svg
+File77=file.svg
+File78=filter-solid.svg
+File79=floppy-disk-solid.svg
+File8=arrow-left-solid.svg
+File80=grid.svg
+File81=janis-kloter-GipF6xThS6g-unsplash.jpg
+File82=jendigitalart-cat-133_256.gif
+File83=jsoneditor-icons.svg
+File84=link-solid.svg
+File85=magnifying-glass-solid.svg
+File86=male.svg
+File87=mask.webp
+File88=menu.svg
+File89=microphone.svg
+File9=arrow-right-from-bracket-solid.svg
+File90=microphone-solid.svg
+File91=minus-solid.svg
+File92=more.svg
+File93=nightmoon.svg
+File94=palette-solid.svg
+File95=paperclip-solid.svg
+File96=paper-plane-solid.svg
+File97=paste-solid.svg
+File98=pdf.svg
+File99=pencil-solid.svg
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup100=Default Group
+FileGroup101=Default Group
+FileGroup102=Default Group
+FileGroup103=Default Group
+FileGroup104=Default Group
+FileGroup105=Default Group
+FileGroup106=Default Group
+FileGroup107=Default Group
+FileGroup108=Default Group
+FileGroup109=Default Group
+FileGroup11=Default Group
+FileGroup110=Default Group
+FileGroup111=Default Group
+FileGroup112=Default Group
+FileGroup113=Default Group
+FileGroup114=Default Group
+FileGroup115=Default Group
+FileGroup116=Default Group
+FileGroup117=Default Group
+FileGroup118=Default Group
+FileGroup119=Default Group
+FileGroup12=Default Group
+FileGroup120=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup16=Default Group
+FileGroup17=Default Group
+FileGroup18=Default Group
+FileGroup19=Default Group
+FileGroup2=Default Group
+FileGroup20=Default Group
+FileGroup21=Default Group
+FileGroup22=Default Group
+FileGroup23=Default Group
+FileGroup24=Default Group
+FileGroup25=Default Group
+FileGroup26=Default Group
+FileGroup27=Default Group
+FileGroup28=Default Group
+FileGroup29=Default Group
+FileGroup3=Default Group
+FileGroup30=Default Group
+FileGroup31=Default Group
+FileGroup32=Default Group
+FileGroup33=Default Group
+FileGroup34=Default Group
+FileGroup35=Default Group
+FileGroup36=Default Group
+FileGroup37=Default Group
+FileGroup38=Default Group
+FileGroup39=Default Group
+FileGroup4=Default Group
+FileGroup40=Default Group
+FileGroup41=Default Group
+FileGroup42=Default Group
+FileGroup43=Default Group
+FileGroup44=Default Group
+FileGroup45=Default Group
+FileGroup46=Default Group
+FileGroup47=Default Group
+FileGroup48=Default Group
+FileGroup49=Default Group
+FileGroup5=Default Group
+FileGroup50=Default Group
+FileGroup51=Default Group
+FileGroup52=Default Group
+FileGroup53=Default Group
+FileGroup54=Default Group
+FileGroup55=Default Group
+FileGroup56=Default Group
+FileGroup57=Default Group
+FileGroup58=Default Group
+FileGroup59=Default Group
+FileGroup6=Default Group
+FileGroup60=Default Group
+FileGroup61=Default Group
+FileGroup62=Default Group
+FileGroup63=Default Group
+FileGroup64=Default Group
+FileGroup65=Default Group
+FileGroup66=Default Group
+FileGroup67=Default Group
+FileGroup68=Default Group
+FileGroup69=Default Group
+FileGroup7=Default Group
+FileGroup70=Default Group
+FileGroup71=Default Group
+FileGroup72=Default Group
+FileGroup73=Default Group
+FileGroup74=Default Group
+FileGroup75=Default Group
+FileGroup76=Default Group
+FileGroup77=Default Group
+FileGroup78=Default Group
+FileGroup79=Default Group
+FileGroup8=Default Group
+FileGroup80=Default Group
+FileGroup81=Default Group
+FileGroup82=Default Group
+FileGroup83=Default Group
+FileGroup84=Default Group
+FileGroup85=Default Group
+FileGroup86=Default Group
+FileGroup87=Default Group
+FileGroup88=Default Group
+FileGroup89=Default Group
+FileGroup9=Default Group
+FileGroup90=Default Group
+FileGroup91=Default Group
+FileGroup92=Default Group
+FileGroup93=Default Group
+FileGroup94=Default Group
+FileGroup95=Default Group
+FileGroup96=Default Group
+FileGroup97=Default Group
+FileGroup98=Default Group
+FileGroup99=Default Group
+Group=Main
+Library1=b4xpages
+Library2=core
+Library3=stringutils
+Library4=xui views
+Library5=b4xgifview
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="35"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~'CreateResourceFromFile(Macro, Core.NetworkClearText) ' Comment this if using https protocol~\n~SetActivityAttribute(main, android:windowSoftInputMode, adjustResize|stateHidden)~\n~'SetActivityAttribute(Main, android:theme, "@style/MyAppTheme")~\n~'CreateResource(values, theme.xml,~\n~'<resources>~\n~'    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">~\n~'        <item name="colorPrimary">#213e45</item>~\n~'        <item name="colorPrimaryDark">#213e45</item>~\n~'        <item name="colorAccent">#a4c13c</item>~\n~'         <item name="android:windowBackground">@color/window</item>~\n~'    </style>~\n~'</resources>~\n~')~\n~'CreateResource(values, colors.xml,~\n~'<resources>~\n~'    <color name="window">#FF213E45</color>~\n~'</resources>~\n~')
+Module1=B4XDaisyAvatar
+Module10=B4xPageAvatar
+Module11=B4xPageChat
+Module12=B4XPageDashboard
+Module13=B4xPageMask
+Module14=B4XPageStack
+Module15=B4XPageStackPhotos
+Module16=B4xPageSvgIcon
+Module2=B4XDaisyChat
+Module3=B4XDaisyChatBubble
+Module4=B4XDaisyDiv
+Module5=B4XDaisyStack
+Module6=B4XDaisySvgIcon
+Module7=B4XDaisyVariants
+Module8=B4XDashboard
+Module9=|relative|..\B4XMainPage
+NumberOfFiles=120
+NumberOfLibraries=5
+NumberOfModules=16
+Version=13.4
+@EndOfDesignText@
+#Region  Project Attributes
+	#ApplicationLabel: SithasoDaisy UIKit
+	#VersionCode: 1
+	#VersionName: 1.00
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: True
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: True
+	#IncludeTitle: False
+#End Region
+
+#BridgeLogger: True
+
+#Macro: After Save, Sync Layouts, ide://run?File=%ADDITIONAL%\JsonLayouts.jar&Args=%PROJECT%&Args=%PROJECT_NAME%
+#Macro: Title, JsonLayouts folder, ide://run?File=%WINDIR%\explorer.exe&Args=%PROJECT%\JsonLayouts
+#Macro: Title, Code bundle, ide://run?File=%ADDITIONAL%\CodeBundle.jar&Args=%PROJECT_NAME%
+
+Sub Process_Globals
+	Public ActionBarHomeClicked As Boolean
+End Sub
+
+Sub Globals
+
+End Sub
+
+Sub Activity_Create (FirstTime As Boolean)
+	Dim pm As B4XPagesManager
+	pm.Initialize(Activity)
+End Sub
+
+'Template version: B4A-1.01
+#Region Delegates
+
+Sub Activity_ActionBarHomeClick
+	ActionBarHomeClicked = True
+	B4XPages.Delegate.Activity_ActionBarHomeClick
+	ActionBarHomeClicked = False
+End Sub
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	Return B4XPages.Delegate.Activity_KeyPress(KeyCode)
+End Sub
+
+Sub Activity_Resume
+	B4XPages.Delegate.Activity_Resume
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	B4XPages.Delegate.Activity_Pause
+End Sub
+
+Sub Activity_PermissionResult (Permission As String, Result As Boolean)
+	B4XPages.Delegate.Activity_PermissionResult(Permission, Result)
+End Sub
+
+Sub Create_Menu (Menu As Object)
+	'B4XPages.Delegate.Create_Menu(Menu)
+End Sub
+
+'#if Java
+'public boolean _onCreateOptionsMenu(android.view.Menu menu) {
+'	 processBA.raiseEvent(null, "create_menu", menu);
+'	 return true;
+'}
+'#End If
+#End Region
