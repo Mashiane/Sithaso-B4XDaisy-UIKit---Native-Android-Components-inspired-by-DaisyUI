@@ -7,12 +7,15 @@ Version=13.4
 
 #DesignerProperty: Key: Width, DisplayName: Width, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
+#DesignerProperty: Key: Padding, DisplayName: Padding, FieldType: String, DefaultValue:, Description: Tailwind/spacing padding utilities (eg p-2, px-3, 2)
+#DesignerProperty: Key: Margin, DisplayName: Margin, FieldType: String, DefaultValue:, Description: Tailwind/spacing margin utilities (eg m-2, mx-1.5, 1)
 #DesignerProperty: Key: Direction, DisplayName: Direction, FieldType: String, DefaultValue: bottom, List: bottom|top|start|end, Description: Daisy stack direction.
 #DesignerProperty: Key: StepPrimary, DisplayName: Primary Step, FieldType: Int, DefaultValue: 7, Description: Primary offset in dip used for the deepest layer.
 #DesignerProperty: Key: StepSecondary, DisplayName: Secondary Step, FieldType: Int, DefaultValue: 3, Description: Secondary offset in dip used for the middle layer.
 #DesignerProperty: Key: AutoFillLayers, DisplayName: Auto Fill Layers, FieldType: Boolean, DefaultValue: True, Description: Resize each child to fill its layer frame.
 #DesignerProperty: Key: LayoutAnimationMs, DisplayName: Layout Animation, FieldType: Int, DefaultValue: 0, Description: Animation duration in milliseconds when relayout runs.
 #DesignerProperty: Key: RoundedBox, DisplayName: Rounded Box, FieldType: Boolean, DefaultValue: False, Description: Apply 16px rounded corners to the base view.
+#DesignerProperty: Key: StrictDaisyParity, DisplayName: Strict Daisy Parity, FieldType: Boolean, DefaultValue: True, Description: Use DaisyUI stack geometry and per-layer opacity (1.0, 0.9, 0.7).
 
 'B4XDaisyStack
 'Native B4X stack container inspired by DaisyUI stack component.
@@ -22,52 +25,54 @@ Sub Class_Globals
 	Public mBase As B4XView
 	Private mEventName As String 'ignore
 	Private mCallBack As Object 'ignore
-
-	Private Const PROP_DEFAULT_SIZE_TOKEN As String = "10"
-	Private Const PROP_DEFAULT_DIRECTION As String = "bottom"
-	Private Const PROP_DEFAULT_STEP_PRIMARY_DIP As Float = 7dip
-	Private Const PROP_DEFAULT_STEP_SECONDARY_DIP As Float = 3dip
-	Private Const PROP_DEFAULT_AUTO_FILL As Boolean = True
-	Private Const PROP_DEFAULT_LAYOUT_ANIMATION_MS As Int = 0
-	Private Const PROP_DEFAULT_ROUNDED_BOX As Boolean = False
+	Private mTag As Object
+	Private CustProps As Map
 
 	'Each item is a Map with keys: view, tag
 	Private Layers As List
 
 	Private mWidth As Float = 40dip
 	Private mHeight As Float = 40dip
-	Private mDirection As String = PROP_DEFAULT_DIRECTION
-	Private mStepPrimary As Float = PROP_DEFAULT_STEP_PRIMARY_DIP
-	Private mStepSecondary As Float = PROP_DEFAULT_STEP_SECONDARY_DIP
-	Private mAutoFillLayers As Boolean = PROP_DEFAULT_AUTO_FILL
-	Private mLayoutAnimationMs As Int = PROP_DEFAULT_LAYOUT_ANIMATION_MS
-	Private mRoundedBox As Boolean = PROP_DEFAULT_ROUNDED_BOX
+	Private mWidthExplicit As Boolean = False
+	Private mHeightExplicit As Boolean = False
+	Private mPadding As String = ""
+	Private mMargin As String = ""
+	Private mDirection As String = "bottom"
+	Private mStepPrimary As Float = 7dip
+	Private mStepSecondary As Float = 3dip
+	Private mAutoFillLayers As Boolean = True
+	Private mLayoutAnimationMs As Int = 0
+	Private mRoundedBox As Boolean = False
+	Private mStrictDaisyParity As Boolean = True
 End Sub
 
 Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	Layers.Initialize
+	SetDefaults
 End Sub
 
-Public Sub CreateView(Width As Int, Height As Int) As B4XView
-	Dim p As Panel
-	p.Initialize("")
-	Dim b As B4XView = p
-	b.Color = xui.Color_Transparent
-	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-	Dim dummy As Label
-	DesignerCreateView(b, dummy, CreateMap())
-	
-	' Initialize properties to match the created view size (pixels/dips)
-	mWidth = Width
-	mHeight = Height
-	
-	Return mBase
-End Sub
+'Public Sub CreateView(Width As Int, Height As Int) As B4XView
+'	Dim p As Panel
+'	p.Initialize("")
+'	Dim b As B4XView = p
+'	b.Color = xui.Color_Transparent
+'	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+'	Dim dummy As Label
+'	DesignerCreateView(b, dummy, CreateMap())
+'	
+'	' Initialize properties to match the created view size (pixels/dips)
+'	mWidth = Width
+'	mHeight = Height
+'	
+'	Return mBase
+'End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
+	If mTag = Null Then mTag = mBase.Tag
+	mBase.Tag = Me
 	mBase.Color = xui.Color_Transparent
 	If Layers.IsInitialized = False Then Layers.Initialize
 	AttachAllLayersToBase
@@ -80,16 +85,28 @@ Public Sub Base_Resize(Width As Double, Height As Double)
 	RelayoutLayersForBounds(Width, Height, mLayoutAnimationMs)
 End Sub
 
-Public Sub AddToParent(Parent As B4XView)
-	AddToParentAt(Parent, 0, 0, Parent.Width, Parent.Height)
-End Sub
-
-Public Sub AddToParentAt(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int)
-	If Parent.IsInitialized = False Then Return
+Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
+	Dim empty As B4XView
+	If Parent.IsInitialized = False Then Return empty
 	Dim w As Int = Max(1dip, Width)
 	Dim h As Int = Max(1dip, Height)
-	Dim v As B4XView = CreateView(w, h)
-	Parent.AddView(v, Left, Top, w, h)
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, w, h)
+	Dim snap As Map = GetProperties
+	Dim props As Map
+	props.Initialize
+	For Each k As String In snap.Keys
+		props.Put(k, snap.Get(k))
+	Next
+	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
+	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Parent.AddView(mBase, Left, Top, w, h)
+	Return mBase
 End Sub
 
 Public Sub View As B4XView
@@ -171,6 +188,7 @@ End Sub
 
 Public Sub setDirection(Value As String)
 	mDirection = NormalizeDirection(Value)
+	If mBase.IsInitialized = False Then Return
 	RelayoutLayers
 End Sub
 
@@ -179,12 +197,12 @@ Public Sub getDirection As String
 End Sub
 
 Public Sub setWidth(Value As Object)
-	mWidth = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, mWidth))
-	If mBase.IsInitialized Then 
-		Dim targetH As Float = Max(1dip, mBase.Height)
-		mBase.SetLayoutAnimated(mLayoutAnimationMs, mBase.Left, mBase.Top, mWidth, targetH)
-		RelayoutLayersForBounds(mWidth, targetH, mLayoutAnimationMs)
-	End If
+	mWidth = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, ResolveWidthBase(mWidth)))
+	mWidthExplicit = True
+	If mBase.IsInitialized = False Then Return
+	Dim targetH As Float = Max(1dip, mBase.Height)
+	mBase.SetLayoutAnimated(mLayoutAnimationMs, mBase.Left, mBase.Top, mWidth, targetH)
+	RelayoutLayersForBounds(mWidth, targetH, mLayoutAnimationMs)
 End Sub
 
 Public Sub getWidth As Float
@@ -192,12 +210,12 @@ Public Sub getWidth As Float
 End Sub
 
 Public Sub setHeight(Value As Object)
-	mHeight = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, mHeight))
-	If mBase.IsInitialized Then 
-		Dim targetW As Float = Max(1dip, mBase.Width)
-		mBase.SetLayoutAnimated(mLayoutAnimationMs, mBase.Left, mBase.Top, targetW, mHeight)
-		RelayoutLayersForBounds(targetW, mHeight, mLayoutAnimationMs)
-	End If
+	mHeight = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, ResolveHeightBase(mHeight)))
+	mHeightExplicit = True
+	If mBase.IsInitialized = False Then Return
+	Dim targetW As Float = Max(1dip, mBase.Width)
+	mBase.SetLayoutAnimated(mLayoutAnimationMs, mBase.Left, mBase.Top, targetW, mHeight)
+	RelayoutLayersForBounds(targetW, mHeight, mLayoutAnimationMs)
 End Sub
 
 Public Sub getHeight As Float
@@ -207,6 +225,8 @@ End Sub
 Public Sub setSize(Width As Int, Height As Int)
 	mWidth = Max(16dip, Width)
 	mHeight = Max(16dip, Height)
+	mWidthExplicit = True
+	mHeightExplicit = True
 	If mBase.IsInitialized Then
 		mBase.SetLayoutAnimated(mLayoutAnimationMs, mBase.Left, mBase.Top, mWidth, mHeight)
 		RelayoutLayersForBounds(mWidth, mHeight, mLayoutAnimationMs)
@@ -216,6 +236,7 @@ End Sub
 Public Sub setStepPrimary(Value As Object)
 	mStepPrimary = Max(0, ParseSizeSpec(Value, mStepPrimary))
 	If mStepSecondary > mStepPrimary Then mStepSecondary = mStepPrimary
+	If mBase.IsInitialized = False Then Return
 	RelayoutLayers
 End Sub
 
@@ -226,6 +247,7 @@ End Sub
 Public Sub setStepSecondary(Value As Object)
 	mStepSecondary = Max(0, ParseSizeSpec(Value, mStepSecondary))
 	If mStepSecondary > mStepPrimary Then mStepSecondary = mStepPrimary
+	If mBase.IsInitialized = False Then Return
 	RelayoutLayers
 End Sub
 
@@ -235,6 +257,7 @@ End Sub
 
 Public Sub setAutoFillLayers(Value As Boolean)
 	mAutoFillLayers = Value
+	If mBase.IsInitialized = False Then Return
 	RelayoutLayers
 End Sub
 
@@ -244,6 +267,7 @@ End Sub
 
 Public Sub setLayoutAnimationMs(Value As Int)
 	mLayoutAnimationMs = Max(0, Value)
+	If mBase.IsInitialized = False Then Return
 	RelayoutLayers
 End Sub
 
@@ -253,11 +277,42 @@ End Sub
 
 Public Sub setRoundedBox(Value As Boolean)
 	mRoundedBox = Value
+	If mBase.IsInitialized = False Then Return
 	ApplyRoundedBox
 End Sub
 
 Public Sub getRoundedBox As Boolean
 	Return mRoundedBox
+End Sub
+
+Public Sub setStrictDaisyParity(Value As Boolean)
+	mStrictDaisyParity = Value
+	If mBase.IsInitialized = False Then Return
+	RelayoutLayers
+End Sub
+
+Public Sub getStrictDaisyParity As Boolean
+	Return mStrictDaisyParity
+End Sub
+
+Public Sub setPadding(Value As String)
+	mPadding = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	RelayoutLayers
+End Sub
+
+Public Sub getPadding As String
+	Return mPadding
+End Sub
+
+Public Sub setMargin(Value As String)
+	mMargin = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	RelayoutLayers
+End Sub
+
+Public Sub getMargin As String
+	Return mMargin
 End Sub
 
 Private Sub ApplyRoundedBox
@@ -323,11 +378,21 @@ Private Sub RelayoutLayersForBounds(Width As Float, Height As Float, AnimationMs
 	Dim anim As Int = Max(0, AnimationMs)
 	Dim count As Int = Layers.Size
 	If count = 0 Then Return
+	Dim hostRect As B4XRect
+	hostRect.Initialize(0, 0, w, h)
+	Dim box As Map = BuildBoxModel
+	Dim outerRect As B4XRect = B4XDaisyBoxModel.ResolveOuterRect(hostRect, box)
+	Dim contentRect As B4XRect = B4XDaisyBoxModel.ResolveContentRect(outerRect, box)
+	w = Max(1dip, contentRect.Width)
+	h = Max(1dip, contentRect.Height)
+	Dim offX As Float = contentRect.Left
+	Dim offY As Float = contentRect.Top
 	
 	Dim dir As String = NormalizeDirection(mDirection)
 	Dim p1 As Float = Max(0, mStepPrimary)
 	Dim p2 As Float = Max(0, mStepSecondary)
 	If p2 > p1 Then p2 = p1
+	Dim fillChildren As Boolean = mAutoFillLayers Or mStrictDaisyParity
 
 	For i = 0 To count - 1
 		Dim item As Map = Layers.Get(i)
@@ -336,14 +401,15 @@ Private Sub RelayoutLayersForBounds(Width As Float, Height As Float, AnimationMs
 
 		Dim tier As Int = ResolveTier(i)
 		Dim r As B4XRect = ResolveLayerRect(dir, tier, p1, p2, w, h)
-		layer.SetLayoutAnimated(anim, r.Left, r.Top, r.Width, r.Height)
+		layer.SetLayoutAnimated(anim, offX + r.Left, offY + r.Top, r.Width, r.Height)
+		ApplyLayerOpacity(layer, i)
 		
 		' Explicitly resize custom views added as layers
 		If layer.Tag <> Null And xui.SubExists(layer.Tag, "Base_Resize", 2) Then
 			CallSub3(layer.Tag, "Base_Resize", r.Width, r.Height)
 		End If
 		
-		If mAutoFillLayers And layer.NumberOfViews > 0 Then
+		If fillChildren And layer.NumberOfViews > 0 Then
 			For vi = 0 To layer.NumberOfViews - 1
 				Dim child As B4XView = layer.GetView(vi)
 				child.SetLayoutAnimated(anim, 0, 0, r.Width, r.Height)
@@ -388,6 +454,54 @@ Private Sub ResolveTier(Index As Int) As Int
 End Sub
 
 Private Sub ResolveLayerRect(dir As String, Tier As Int, p1 As Float, p2 As Float, ParentW As Float, ParentH As Float) As B4XRect
+	If mStrictDaisyParity Then
+		Dim e As Float = 3dip
+		Dim i As Float = 4dip
+		Dim x0 As Float = 0
+		Dim y0 As Float = 0
+		Dim w0 As Float = ParentW
+		Dim h0 As Float = ParentH
+		Select Case dir
+			Case "top"
+				Select Case Tier
+					Case 1
+						x0 = 0 : y0 = e + i : w0 = ParentW : h0 = ParentH - (e + i)
+					Case 2
+						x0 = e : y0 = e : w0 = ParentW - (e * 2) : h0 = ParentH - (e * 2)
+					Case Else
+						x0 = e + i : y0 = 0 : w0 = ParentW - ((e + i) * 2) : h0 = ParentH - (e + i)
+				End Select
+			Case "start"
+				Select Case Tier
+					Case 1
+						x0 = e + i : y0 = 0 : w0 = ParentW - (e + i) : h0 = ParentH
+					Case 2
+						x0 = e : y0 = e : w0 = ParentW - (e * 2) : h0 = ParentH - (e * 2)
+					Case Else
+						x0 = 0 : y0 = e + i : w0 = ParentW - (e + i) : h0 = ParentH - ((e + i) * 2)
+				End Select
+			Case "end"
+				Select Case Tier
+					Case 1
+						x0 = 0 : y0 = 0 : w0 = ParentW - (e + i) : h0 = ParentH
+					Case 2
+						x0 = e : y0 = e : w0 = ParentW - (e * 2) : h0 = ParentH - (e * 2)
+					Case Else
+						x0 = e + i : y0 = e + i : w0 = ParentW - (e + i) : h0 = ParentH - ((e + i) * 2)
+				End Select
+			Case Else 'bottom
+				Select Case Tier
+					Case 1
+						x0 = 0 : y0 = 0 : w0 = ParentW : h0 = ParentH - (e + i)
+					Case 2
+						x0 = e : y0 = e : w0 = ParentW - (e * 2) : h0 = ParentH - (e * 2)
+					Case Else
+						x0 = e + i : y0 = e + i : w0 = ParentW - ((e + i) * 2) : h0 = ParentH - (e + i)
+				End Select
+		End Select
+		Return SafeRect(x0, y0, w0, h0, ParentW, ParentH)
+	End If
+
 	Dim x As Float
 	Dim y As Float
 	Dim w As Float
@@ -435,6 +549,26 @@ Private Sub ResolveLayerRect(dir As String, Tier As Int, p1 As Float, p2 As Floa
 	Return SafeRect(x, y, w, h, ParentW, ParentH)
 End Sub
 
+Private Sub ApplyLayerOpacity(Layer As B4XView, Index As Int)
+	Dim a As Float = 1
+	If mStrictDaisyParity Then
+		If Index = 0 Then
+			a = 1
+		Else If Index = 1 Then
+			a = 0.9
+		Else
+			a = 0.7
+		End If
+	End If
+	#If B4A
+	Try
+		Dim jo As JavaObject = Layer
+		jo.RunMethod("setAlpha", Array(a))
+	Catch
+	End Try
+	#End If
+End Sub
+
 Private Sub SafeRect(X As Float, Y As Float, W As Float, H As Float, MaxW As Float, MaxH As Float) As B4XRect
 	Dim left As Float = Max(0, X)
 	Dim top As Float = Max(0, Y)
@@ -452,26 +586,125 @@ Private Sub SafeRect(X As Float, Y As Float, W As Float, H As Float, MaxW As Flo
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mWidth = B4XDaisyVariants.TailwindSizeToDip(PROP_DEFAULT_SIZE_TOKEN, 40dip)
-	mHeight = B4XDaisyVariants.TailwindSizeToDip(PROP_DEFAULT_SIZE_TOKEN, 40dip)
-	mDirection = PROP_DEFAULT_DIRECTION
-	mStepPrimary = PROP_DEFAULT_STEP_PRIMARY_DIP
-	mStepSecondary = PROP_DEFAULT_STEP_SECONDARY_DIP
-	mAutoFillLayers = PROP_DEFAULT_AUTO_FILL
-	mLayoutAnimationMs = PROP_DEFAULT_LAYOUT_ANIMATION_MS
-	mRoundedBox = PROP_DEFAULT_ROUNDED_BOX
+	If CustProps.IsInitialized = False Then SetDefaults
+	SetProperties(Props)
+	Dim p As Map = CustProps
+	mWidth = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
+	mHeight = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
+	mWidthExplicit = p.ContainsKey("Width")
+	mHeightExplicit = p.ContainsKey("Height")
+	mPadding = ""
+	mMargin = ""
+	mDirection = "bottom"
+	mStepPrimary = 7dip
+	mStepSecondary = 3dip
+	mAutoFillLayers = True
+	mLayoutAnimationMs = 0
+	mRoundedBox = False
+	mStrictDaisyParity = True
 
-	If Props.IsInitialized = False Then Return
-	mWidth = Max(16dip, GetPropSizeDip(Props, "Width", mWidth))
-	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", mHeight))
-	mDirection = NormalizeDirection(GetPropString(Props, "Direction", mDirection))
-	mStepPrimary = Max(0, GetPropDip(Props, "StepPrimary", mStepPrimary))
-	mStepSecondary = Max(0, GetPropDip(Props, "StepSecondary", mStepSecondary))
+	If p.IsInitialized = False Then Return
+	mWidth = Max(16dip, GetPropSizeDip(p, "Width", ResolveWidthBase(mWidth)))
+	mHeight = Max(16dip, GetPropSizeDip(p, "Height", ResolveHeightBase(mHeight)))
+	mPadding = GetPropString(p, "Padding", mPadding)
+	mMargin = GetPropString(p, "Margin", mMargin)
+	mDirection = NormalizeDirection(GetPropString(p, "Direction", mDirection))
+	mStepPrimary = Max(0, GetPropDip(p, "StepPrimary", mStepPrimary))
+	mStepSecondary = Max(0, GetPropDip(p, "StepSecondary", mStepSecondary))
 	If mStepSecondary > mStepPrimary Then mStepSecondary = mStepPrimary
-	mAutoFillLayers = GetPropBool(Props, "AutoFillLayers", mAutoFillLayers)
-	mLayoutAnimationMs = Max(0, GetPropInt(Props, "LayoutAnimationMs", mLayoutAnimationMs))
-	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
+	mAutoFillLayers = GetPropBool(p, "AutoFillLayers", mAutoFillLayers)
+	mLayoutAnimationMs = Max(0, GetPropInt(p, "LayoutAnimationMs", mLayoutAnimationMs))
+	mRoundedBox = GetPropBool(p, "RoundedBox", mRoundedBox)
+	mStrictDaisyParity = GetPropBool(p, "StrictDaisyParity", mStrictDaisyParity)
 	ApplyRoundedBox
+End Sub
+
+Public Sub SetDefaults
+	CustProps.Initialize
+	CustProps.Put("Width", mWidth)
+	CustProps.Put("Height", mHeight)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("Direction", mDirection)
+	CustProps.Put("StepPrimary", mStepPrimary)
+	CustProps.Put("StepSecondary", mStepSecondary)
+	CustProps.Put("AutoFillLayers", mAutoFillLayers)
+	CustProps.Put("LayoutAnimationMs", mLayoutAnimationMs)
+	CustProps.Put("RoundedBox", mRoundedBox)
+	CustProps.Put("StrictDaisyParity", mStrictDaisyParity)
+End Sub
+
+Public Sub SetProperties(Props As Map)
+	If Props.IsInitialized = False Then Return
+	Dim src As Map
+	src.Initialize
+	For Each k As String In Props.Keys
+		src.Put(k, Props.Get(k))
+	Next
+	CustProps.Initialize
+	For Each k As String In src.Keys
+		CustProps.Put(k, src.Get(k))
+	Next
+End Sub
+
+Public Sub GetProperties As Map
+	CustProps.Initialize
+	CustProps.Put("Width", mWidth)
+	CustProps.Put("Height", mHeight)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("Direction", mDirection)
+	CustProps.Put("StepPrimary", mStepPrimary)
+	CustProps.Put("StepSecondary", mStepSecondary)
+	CustProps.Put("AutoFillLayers", mAutoFillLayers)
+	CustProps.Put("LayoutAnimationMs", mLayoutAnimationMs)
+	CustProps.Put("RoundedBox", mRoundedBox)
+	CustProps.Put("StrictDaisyParity", mStrictDaisyParity)
+	CustProps.Put("Tag", mTag)
+	Return CustProps
+End Sub
+
+Public Sub setTag(Value As Object)
+	mTag = Value
+	If mBase.IsInitialized = False Then Return
+End Sub
+
+Public Sub getTag As Object
+	Return mTag
+End Sub
+
+Private Sub BuildBoxModel As Map
+	Dim box As Map = B4XDaisyBoxModel.CreateDefaultModel
+	ApplySpacingSpecToBox(box, mPadding, mMargin)
+	Return box
+End Sub
+
+Private Sub ApplySpacingSpecToBox(Box As Map, PaddingSpec As String, MarginSpec As String)
+	Dim rtl As Boolean = False
+	Dim p As String = IIf(PaddingSpec = Null, "", PaddingSpec.Trim)
+	Dim m As String = IIf(MarginSpec = Null, "", MarginSpec.Trim)
+	If p.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(p, Array As String("p-", "px-", "py-", "pt-", "pr-", "pb-", "pl-", "ps-", "pe-")) Then
+			B4XDaisyBoxModel.ApplyPaddingUtilities(Box, p, rtl)
+		Else
+			Dim pv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(p, 0dip)
+			Box.Put("padding_left", pv)
+			Box.Put("padding_right", pv)
+			Box.Put("padding_top", pv)
+			Box.Put("padding_bottom", pv)
+		End If
+	End If
+	If m.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(m, Array As String("m-", "mx-", "my-", "mt-", "mr-", "mb-", "ml-", "ms-", "me-", "-m-", "-mx-", "-my-", "-mt-", "-mr-", "-mb-", "-ml-", "-ms-", "-me-")) Then
+			B4XDaisyBoxModel.ApplyMarginUtilities(Box, m, rtl)
+		Else
+			Dim mv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(m, 0dip)
+			Box.Put("margin_left", mv)
+			Box.Put("margin_right", mv)
+			Box.Put("margin_top", mv)
+			Box.Put("margin_bottom", mv)
+		End If
+	End If
 End Sub
 
 Private Sub NormalizeDirection(Value As String) As String
@@ -503,6 +736,24 @@ End Sub
 Private Sub IsValidLayerIndex(Index As Int) As Boolean
 	If Layers.IsInitialized = False Then Return False
 	Return Index >= 0 And Index < Layers.Size
+End Sub
+
+Private Sub ResolveWidthBase(DefaultValue As Float) As Float
+	If mBase.IsInitialized Then
+		Dim parent As B4XView = mBase.Parent
+		If parent.IsInitialized And parent.Width > 0 Then Return parent.Width
+		If mBase.Width > 0 Then Return mBase.Width
+	End If
+	Return DefaultValue
+End Sub
+
+Private Sub ResolveHeightBase(DefaultValue As Float) As Float
+	If mBase.IsInitialized Then
+		Dim parent As B4XView = mBase.Parent
+		If parent.IsInitialized And parent.Height > 0 Then Return parent.Height
+		If mBase.Height > 0 Then Return mBase.Height
+	End If
+	Return DefaultValue
 End Sub
 
 Private Sub GetPropDip(Props As Map, Key As String, DefaultDipValue As Float) As Float

@@ -47,11 +47,13 @@ Private Sub CreateLauncherButtons As List
 	apps.Initialize
 
 	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"face21.jpg", "svgPath":""))
+	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"face26.jpg", "svgPath":""))
 	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"face22.jpg", "svgPath":""))
 	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"face23.jpg", "svgPath":""))
 	apps.Add(CreateMap("id":"stack_photos", "label":"Stack Photos", "imagePath":"photo-1572635148818-ef6fd45eb394.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"face24.jpg", "svgPath":""))
 	apps.Add(CreateMap("id":"svg_icon", "label":"SVG Icon", "imagePath":"face25.jpg", "svgPath":""))
+	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"face27.jpg", "svgPath":""))
 
 	'apps.Add(CreateMap("id":"calendar", "label":"Calendar", "imagePath":"face25.jpg", "svgPath":""))
 	'apps.Add(CreateMap("id":"notes", "label":"Notes", "imagePath":"face26.jpg", "svgPath":""))
@@ -171,6 +173,9 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "chat"
 			NavigateFromMainPage("Chat")
 			Return
+		Case "alert"
+			NavigateFromMainPage("Alert")
+			Return
 		Case "avatar"
 			NavigateFromMainPage("Avatar")
 			Return
@@ -185,6 +190,9 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "svg_icon"
 			NavigateFromMainPage("SVG Icon")
+			Return
+		Case "swap"
+			NavigateFromMainPage("Swap")
 			Return
 	End Select
 	'#If B4A

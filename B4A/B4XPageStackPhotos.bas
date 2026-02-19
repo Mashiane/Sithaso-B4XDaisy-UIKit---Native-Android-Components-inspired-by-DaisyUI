@@ -28,14 +28,14 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	StackWidth = B4XDaisyVariants.TailwindSizeToDip("w-48", 192dip)
 	StackHeight = B4XDaisyVariants.TailwindSizeToDip("h-64", 256dip)
 	PhotoStack.Initialize(Me, "")
-	StackView = PhotoStack.CreateView(StackWidth, StackHeight)
-	Root.AddView(StackView, 0, 0, StackWidth, StackHeight)
+	StackView = PhotoStack.AddToParent(Root, 0, 0, StackWidth, StackHeight)
 
 	PhotoStack.Direction = "bottom"
 	PhotoStack.setLayoutAnimationMs(0)
 	'Balanced spacing for h-64 photos: visible layering without oversized gaps.
 	PhotoStack.setStepPrimary(18)
 	PhotoStack.setStepSecondary(8)
+'	StackView = PhotoStack.AddToParent(Root, 0, 0, StackWidth, StackHeight)
 
 	AddPhotoLayer("photo-1559703248-dcaaec9fab78")
 	AddPhotoLayer("photo-1565098772267-60af42b81ef2")
@@ -60,7 +60,7 @@ End Sub
 Private Sub AddPhotoLayer(BaseName As String)
 	Dim avatar As B4XDaisyAvatar
 	avatar.Initialize(Me, "")
-	Dim avatarView As B4XView = avatar.CreateView(StackWidth, StackHeight)
+	Dim avatarView As B4XView = avatar.AddToParent(StackView, 0, 0, StackWidth, StackHeight)
 	avatar.SetImage(ResolvePhotoAsset(BaseName))
 	avatar.SetRoundedBox(True)
 	avatar.SetShowOnline(False)
@@ -70,6 +70,7 @@ Private Sub AddPhotoLayer(BaseName As String)
 	avatar.SetWidth("48")
 	avatar.SetHeight("64")
 	avatar.SetCenterOnParent(True)
+'	Dim avatarView As B4XView = avatar.AddToParent(StackView, 0, 0, StackWidth, StackHeight)
 	PhotoStack.AddLayer(avatarView)
 	AvatarLayers.Add(CreateMap("avatar": avatar, "view": avatarView))
 End Sub

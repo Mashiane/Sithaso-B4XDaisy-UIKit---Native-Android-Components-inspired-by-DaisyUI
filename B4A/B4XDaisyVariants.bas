@@ -11,6 +11,231 @@ Sub Process_Globals
 	Private Const TW_SPACE_STEP_PX As Float = 4
 	Private Const CSS_BASE_FONT_PX As Float = 16
 	Public Const FLATPICKR_UNIX_PLACEHOLDER As String = "__fp_unix__"
+	Private Themes As Map
+	Private ActiveThemeName As String = "light"
+End Sub
+
+Public Sub SetActiveTheme(ThemeName As String)
+	EnsureThemeInitialized
+	Dim key As String = NormalizeThemeName(ThemeName)
+	If Themes.ContainsKey(key) = False Then key = "light"
+	ActiveThemeName = key
+End Sub
+
+Public Sub GetActiveTheme As String
+	EnsureThemeInitialized
+	Return ActiveThemeName
+End Sub
+
+Public Sub HasTheme(ThemeName As String) As Boolean
+	EnsureThemeInitialized
+	Return Themes.ContainsKey(NormalizeThemeName(ThemeName))
+End Sub
+
+Public Sub RegisterTheme(ThemeName As String, Tokens As Map)
+	EnsureThemeInitialized
+	If Tokens.IsInitialized = False Then Return
+	Dim key As String = NormalizeThemeName(ThemeName)
+	Dim t As Map
+	t.Initialize
+	For Each mk As Object In Tokens.Keys
+		Dim sk As String = mk
+		If sk.StartsWith("--") Then
+			t.Put(sk.ToLowerCase, Tokens.Get(mk))
+		Else
+			t.Put(sk, Tokens.Get(mk))
+		End If
+	Next
+	t.Put("--theme-name", key)
+	Themes.Put(key, t)
+End Sub
+
+Public Sub GetThemeTokens(ThemeName As String) As Map
+	EnsureThemeInitialized
+	Dim key As String = NormalizeThemeName(ThemeName)
+	If Themes.ContainsKey(key) Then Return Themes.Get(key)
+	Return Themes.Get("light")
+End Sub
+
+Public Sub GetActiveTokens As Map
+	Return GetThemeTokens(ActiveThemeName)
+End Sub
+
+Public Sub GetTokenColor(Token As String, DefaultColor As Int) As Int
+	Dim m As Map = GetActiveTokens
+	Dim k As String = NormalizeTokenKey(Token)
+	If m.ContainsKey(k) = False Then Return DefaultColor
+	Dim o As Object = m.Get(k)
+	If o Is Int Then Return o
+	If o Is Float Or o Is Double Then Return o
+	Return DefaultColor
+End Sub
+
+Public Sub ResolveThemeColorTokenName(Name As String) As String
+	If Name = Null Then Return ""
+	Dim key As String = Name.ToLowerCase.Trim
+	If key.Length = 0 Then Return ""
+	If key.StartsWith("--") Then Return key
+	If key.StartsWith("stroke-") Then key = key.SubString(7)
+	If key.StartsWith("text-") Then key = key.SubString(5)
+	If key.StartsWith("bg-") Then key = key.SubString(3)
+	If key.StartsWith("color-") Then key = key.SubString(6)
+	Select Case key
+		Case "primary", "secondary", "accent", "neutral", "info", "success", "warning", "error", _
+			"base-100", "base-200", "base-300", "base-content", _
+			"primary-content", "secondary-content", "accent-content", "neutral-content", _
+			"info-content", "success-content", "warning-content", "error-content"
+			Return "--color-" & key
+		Case Else
+			Return ""
+	End Select
+End Sub
+
+Public Sub GetTokenString(Token As String, DefaultValue As String) As String
+	Dim m As Map = GetActiveTokens
+	Dim k As String = NormalizeTokenKey(Token)
+	If m.ContainsKey(k) = False Then Return DefaultValue
+	Dim o As Object = m.Get(k)
+	If o = Null Then Return DefaultValue
+	Return o
+End Sub
+
+Public Sub GetTokenNumber(Token As String, DefaultValue As Float) As Float
+	Dim m As Map = GetActiveTokens
+	Dim k As String = NormalizeTokenKey(Token)
+	If m.ContainsKey(k) = False Then Return DefaultValue
+	Dim o As Object = m.Get(k)
+	If o = Null Then Return DefaultValue
+	If IsNumber(o) Then Return o
+	Dim s As String = o
+	If IsNumber(s) Then Return s
+	Return DefaultValue
+End Sub
+
+Public Sub GetTokenDip(Token As String, DefaultDipValue As Float) As Float
+	Dim raw As String = GetTokenString(Token, "")
+	If raw.Length = 0 Then Return DefaultDipValue
+	Return ParseThemeLengthToDip(raw, DefaultDipValue)
+End Sub
+
+Public Sub GetBorderDip(DefaultDip As Float) As Float
+	Return GetTokenDip("--border", DefaultDip)
+End Sub
+
+Public Sub GetRadiusBoxDip(DefaultDip As Float) As Float
+	Return GetTokenDip("--radius-box", DefaultDip)
+End Sub
+
+Public Sub GetRadiusFieldDip(DefaultDip As Float) As Float
+	Return GetTokenDip("--radius-field", DefaultDip)
+End Sub
+
+Public Sub GetRadiusSelectorDip(DefaultDip As Float) As Float
+	Return GetTokenDip("--radius-selector", DefaultDip)
+End Sub
+
+Public Sub GetVariantPalette As Map
+	Return BuildVariantPalette(ActiveThemeName)
+End Sub
+
+Public Sub BuildVariantPalette(ThemeName As String) As Map
+	Dim t As Map = GetThemeTokens(ThemeName)
+	Dim palette As Map
+	palette.Initialize
+	palette.Put("neutral", BuildVariantMap(t.GetDefault("--color-neutral", xui.Color_RGB(63, 64, 77)), t.GetDefault("--color-neutral-content", xui.Color_RGB(248, 248, 249))))
+	palette.Put("primary", BuildVariantMap(t.GetDefault("--color-primary", xui.Color_RGB(121, 77, 255)), t.GetDefault("--color-primary-content", xui.Color_RGB(243, 242, 255))))
+	palette.Put("secondary", BuildVariantMap(t.GetDefault("--color-secondary", xui.Color_RGB(118, 113, 127)), t.GetDefault("--color-secondary-content", xui.Color_RGB(247, 247, 248))))
+	palette.Put("accent", BuildVariantMap(t.GetDefault("--color-accent", xui.Color_RGB(59, 130, 246)), t.GetDefault("--color-accent-content", xui.Color_RGB(239, 246, 255))))
+	palette.Put("info", BuildVariantMap(t.GetDefault("--color-info", xui.Color_RGB(4, 182, 212)), t.GetDefault("--color-info-content", xui.Color_RGB(236, 254, 255))))
+	palette.Put("success", BuildVariantMap(t.GetDefault("--color-success", xui.Color_RGB(0, 202, 75)), t.GetDefault("--color-success-content", xui.Color_RGB(240, 252, 248))))
+	palette.Put("warning", BuildVariantMap(t.GetDefault("--color-warning", xui.Color_RGB(252, 170, 30)), t.GetDefault("--color-warning-content", xui.Color_RGB(255, 253, 245))))
+	palette.Put("error", BuildVariantMap(t.GetDefault("--color-error", xui.Color_RGB(251, 65, 65)), t.GetDefault("--color-error-content", xui.Color_RGB(255, 250, 245))))
+	Return palette
+End Sub
+
+Private Sub EnsureThemeInitialized
+	If Themes.IsInitialized Then Return
+	Themes.Initialize
+	RegisterLightTheme
+	If Themes.ContainsKey(ActiveThemeName) = False Then ActiveThemeName = "light"
+End Sub
+
+Private Sub RegisterLightTheme
+	Dim light As Map
+	light.Initialize
+	light.Put("--theme-name", "light")
+	light.Put("--color-base-100", 0xFFFFFFFF)
+	light.Put("--color-base-200", 0xFFF8F7FB)
+	light.Put("--color-base-300", 0xFF403F43)
+	light.Put("--color-base-content", 0xFF3F404D)
+	light.Put("--color-primary", 0xFF794DFF)
+	light.Put("--color-primary-content", 0xFFF3F2FF)
+	light.Put("--color-secondary", 0xFF76717F)
+	light.Put("--color-secondary-content", 0xFFF7F7F8)
+	light.Put("--color-accent", 0xFF3B82F6)
+	light.Put("--color-accent-content", 0xFFEFF6FF)
+	light.Put("--color-neutral", 0xFF3F404D)
+	light.Put("--color-neutral-content", 0xFFF8F8F9)
+	light.Put("--color-info", 0xFF04B6D4)
+	light.Put("--color-info-content", 0xFFECFEFF)
+	light.Put("--color-success", 0xFF00CA4B)
+	light.Put("--color-success-content", 0xFFF0FCF8)
+	light.Put("--color-warning", 0xFFFCAA1E)
+	light.Put("--color-warning-content", 0xFFFFFDF5)
+	light.Put("--color-error", 0xFFFB4141)
+	light.Put("--color-error-content", 0xFFFFFAF5)
+	light.Put("--radius-selector", "0.25rem")
+	light.Put("--radius-field", "0.375rem")
+	light.Put("--radius-box", "0.5rem")
+	light.Put("--size-selector", "0.25rem")
+	light.Put("--size-field", "0.25rem")
+	light.Put("--border", "1px")
+	light.Put("--depth", 0)
+	light.Put("--noise", 0)
+	' Glass utility defaults (daisyui-inspired).
+	light.Put("--glass-blur", "40px")
+	light.Put("--glass-opacity", "30%")
+	light.Put("--glass-reflect-degree", "100")
+	light.Put("--glass-reflect-opacity", "5%")
+	light.Put("--glass-border-opacity", "20%")
+	light.Put("--glass-text-shadow-opacity", "5%")
+	Themes.Put("light", light)
+End Sub
+
+Private Sub NormalizeThemeName(Value As String) As String
+	If Value = Null Then Return "light"
+	Dim s As String = Value.ToLowerCase.Trim
+	If s.Length = 0 Then Return "light"
+	Return s
+End Sub
+
+Private Sub NormalizeTokenKey(Token As String) As String
+	If Token = Null Then Return ""
+	Dim s As String = Token.Trim
+	If s.StartsWith("--") = False Then s = "--" & s
+	Return s.ToLowerCase
+End Sub
+
+Private Sub ParseThemeLengthToDip(Value As String, DefaultDipValue As Float) As Float
+	Dim s As String = Value.ToLowerCase.Trim
+	If s.Length = 0 Then Return DefaultDipValue
+	If s.EndsWith("px") Then
+		Dim npx As String = s.SubString2(0, s.Length - 2).Trim
+		If IsNumber(npx) Then Return npx * 1dip
+		Return DefaultDipValue
+	End If
+	If s.EndsWith("rem") Then
+		Dim nrem As String = s.SubString2(0, s.Length - 3).Trim
+		If IsNumber(nrem) Then Return nrem * 16 * 1dip
+		Return DefaultDipValue
+	End If
+	If s.EndsWith("em") Then
+		Dim nem As String = s.SubString2(0, s.Length - 2).Trim
+		If IsNumber(nem) Then Return nem * 16 * 1dip
+		Return DefaultDipValue
+	End If
+	If IsNumber(s) Then Return s * 1dip
+	Return DefaultDipValue
 End Sub
 
 Public Sub VariantList As String
@@ -40,18 +265,7 @@ Public Sub BuildVariantMap(BackColor As Int, TextColor As Int) As Map
 End Sub
 
 Public Sub DefaultPalette As Map
-	Dim m As Map
-	m.Initialize
-	'FlyonUI light theme defaults from flyonui-main/src/themes/light.css.
-	m.Put("neutral", BuildVariantMap(xui.Color_RGB(63,64,77), xui.Color_RGB(248,248,249)))
-	m.Put("primary", BuildVariantMap(xui.Color_RGB(121,77,255), xui.Color_RGB(243,242,255)))
-	m.Put("secondary", BuildVariantMap(xui.Color_RGB(118,113,127), xui.Color_RGB(247,247,248)))
-	m.Put("accent", BuildVariantMap(xui.Color_RGB(59,130,246), xui.Color_RGB(239,246,255)))
-	m.Put("info", BuildVariantMap(xui.Color_RGB(4,182,212), xui.Color_RGB(236,254,255)))
-	m.Put("success", BuildVariantMap(xui.Color_RGB(0,202,75), xui.Color_RGB(240,252,248)))
-	m.Put("warning", BuildVariantMap(xui.Color_RGB(252,170,30), xui.Color_RGB(255,253,245)))
-	m.Put("error", BuildVariantMap(xui.Color_RGB(251,65,65), xui.Color_RGB(255,250,245)))
-	Return m
+	Return GetVariantPalette
 End Sub
 
 Public Sub ResolveVariantMap(Palette As Map, VariantName As String) As Map
@@ -707,7 +921,15 @@ Public Sub TailwindSizeToPx(Value As Object, DefaultPx As Float) As Float
 		s = s.SubString2(1, s.Length - 1).Trim
 	End If
 
-	If s = "auto" Or s = "full" Or s = "screen" Then Return Max(0, DefaultPx)
+	If s = "full" Or s = "screen" Then s = "100%"
+	If s = "auto" Then Return Max(0, DefaultPx)
+
+	If s.EndsWith("%") Then
+		Dim pctText As String = s.SubString2(0, s.Length - 1).Trim
+		Dim npct As Double = ParseCssNumber(pctText, -1)
+		If npct >= 0 Then Return Max(0, DefaultPx * npct / 100)
+		Return Max(0, DefaultPx)
+	End If
 
 	If s.EndsWith("px") Then
 		Dim npx As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
@@ -737,6 +959,322 @@ Public Sub TailwindSizeToDip(Value As Object, DefaultDip As Float) As Float
 	Dim defaultPx As Float = Max(0, DefaultDip / 1dip)
 	Dim px As Float = TailwindSizeToPx(Value, defaultPx)
 	Return px * 1dip
+End Sub
+
+Public Sub TailwindTextMetrics(Value As Object, DefaultFontSize As Float, DefaultLineHeightPx As Float) As Map
+	Dim defaultFont As Float = Max(1, DefaultFontSize)
+	Dim defaultLine As Float = Max(defaultFont, DefaultLineHeightPx)
+	Dim textToken As String = ""
+	Dim leadingToken As String = ""
+
+	If Value <> Null Then
+		Dim raw As String = Value
+		Dim s As String = raw.Trim
+		If s.Length > 0 Then
+			Dim parts() As String = Regex.Split("\s+", s)
+			For Each p As String In parts
+				Dim t As String = NormalizeUtilityToken(p)
+				If t.Length = 0 Then Continue
+				If textToken.Length = 0 And t.StartsWith("text-") Then
+					textToken = t
+				Else If leadingToken.Length = 0 And t.StartsWith("leading-") Then
+					leadingToken = t
+				End If
+			Next
+			If textToken.Length = 0 Then textToken = NormalizeUtilityToken(s)
+		End If
+	End If
+
+	Dim sizeInfo As Map = ResolveTailwindTextToken(textToken, defaultFont, defaultLine)
+	Dim fontSize As Float = sizeInfo.GetDefault("font_size", defaultFont)
+	Dim linePx As Float = sizeInfo.GetDefault("line_height_px", defaultLine)
+	Dim slashLeading As String = sizeInfo.GetDefault("leading_spec", "")
+	If slashLeading.Length > 0 Then
+		linePx = ResolveLeadingSpecToPx(slashLeading, fontSize, linePx)
+	Else If leadingToken.Length > 0 Then
+		linePx = ResolveLeadingSpecToPx(leadingToken, fontSize, linePx)
+	End If
+
+	Dim result As Map
+	result.Initialize
+	result.Put("font_size", fontSize)
+	result.Put("font_size_dip", fontSize * 1dip)
+	result.Put("line_height_px", linePx)
+	result.Put("line_height_dip", linePx * 1dip)
+	Return result
+End Sub
+
+Public Sub GetGlassSpec As Map
+	' Returns active glass style values resolved from theme tokens.
+	Dim m As Map
+	m.Initialize
+	Dim blurDip As Float = GetTokenDip("--glass-blur", 40dip)
+	Dim glassOpacity As Float = ParsePercent01(GetTokenString("--glass-opacity", "30%"), 0.3)
+	Dim reflectDegree As Float = GetTokenNumber("--glass-reflect-degree", 100)
+	Dim reflectOpacity As Float = ParsePercent01(GetTokenString("--glass-reflect-opacity", "5%"), 0.05)
+	Dim borderOpacity As Float = ParsePercent01(GetTokenString("--glass-border-opacity", "20%"), 0.2)
+	Dim textShadowOpacity As Float = ParsePercent01(GetTokenString("--glass-text-shadow-opacity", "5%"), 0.05)
+	m.Put("blur_dip", blurDip)
+	m.Put("opacity", glassOpacity)
+	m.Put("reflect_degree", reflectDegree)
+	m.Put("reflect_opacity", reflectOpacity)
+	m.Put("border_opacity", borderOpacity)
+	m.Put("text_shadow_opacity", textShadowOpacity)
+	Return m
+End Sub
+
+Public Sub ApplyGlassStyle(Target As B4XView, RadiusDip As Float)
+	' Approximate daisy .glass style for B4X views.
+	If Target.IsInitialized = False Then Return
+	Dim spec As Map = GetGlassSpec
+	Dim bgAlpha As Float = Max(0, Min(1, spec.GetDefault("opacity", 0.3)))
+	Dim borderAlpha As Float = Max(0, Min(1, spec.GetDefault("border_opacity", 0.2)))
+	Dim back As Int = AlphaColor(xui.Color_White, bgAlpha)
+	Dim stroke As Int = AlphaColor(xui.Color_White, borderAlpha)
+	Dim rd As Float = Max(0, RadiusDip)
+
+	#If B4A
+	If TryApplyGlassNative(Target, rd, bgAlpha, borderAlpha) Then Return
+	#End If
+
+	' Fallback for non-B4A / native failure.
+	Target.SetColorAndBorder(back, Max(1dip, GetBorderDip(1dip)), stroke, rd)
+End Sub
+
+Public Sub ApplyGlassTextStyle(TextTarget As B4XView)
+	' Applies subtle text shadow style where available.
+	If TextTarget.IsInitialized = False Then Return
+	Dim spec As Map = GetGlassSpec
+	Dim a As Float = Max(0, Min(1, spec.GetDefault("text_shadow_opacity", 0.05)))
+	#If B4A
+	Try
+		Dim j As JavaObject = TextTarget
+		Dim shadowColor As Int = AlphaColor(xui.Color_Black, a)
+		j.RunMethod("setShadowLayer", Array As Object(1dip, 0, 1dip, shadowColor))
+	Catch
+	End Try
+	#End If
+End Sub
+
+Private Sub ParsePercent01(Value As String, DefaultValue As Float) As Float
+	If Value = Null Then Return Max(0, Min(1, DefaultValue))
+	Dim s As String = Value.ToLowerCase.Trim
+	If s.Length = 0 Then Return Max(0, Min(1, DefaultValue))
+	If s.EndsWith("%") Then
+		Dim n As String = s.SubString2(0, s.Length - 1).Trim
+		If IsNumber(n) Then Return Max(0, Min(1, n / 100))
+	End If
+	If IsNumber(s) Then
+		Dim v As Float = s
+		If v > 1 Then v = v / 100
+		Return Max(0, Min(1, v))
+	End If
+	Return Max(0, Min(1, DefaultValue))
+End Sub
+
+Private Sub AlphaColor(ColorValue As Int, Alpha01 As Float) As Int
+	Dim a As Int = Max(0, Min(255, Round(255 * Max(0, Min(1, Alpha01)))))
+	Dim r As Int = Bit.And(Bit.ShiftRight(ColorValue, 16), 0xFF)
+	Dim g As Int = Bit.And(Bit.ShiftRight(ColorValue, 8), 0xFF)
+	Dim b As Int = Bit.And(ColorValue, 0xFF)
+	Return Bit.Or(Bit.ShiftLeft(a, 24), Bit.Or(Bit.ShiftLeft(r, 16), Bit.Or(Bit.ShiftLeft(g, 8), b)))
+End Sub
+
+#If B4A
+Private Sub TryApplyGlassNative(Target As B4XView, RadiusDip As Float, BgOpacity As Float, BorderOpacity As Float) As Boolean
+	Try
+		Dim gd As JavaObject
+		gd.InitializeNewInstance("android.graphics.drawable.GradientDrawable", Null)
+		gd.RunMethod("setShape", Array(0)) 'RECTANGLE
+		gd.RunMethod("setCornerRadius", Array(Max(0, RadiusDip)))
+		gd.RunMethod("setColor", Array(0))
+		gd.RunMethod("setStroke", Array(Max(1dip, GetBorderDip(1dip)), AlphaColor(xui.Color_White, BorderOpacity)))
+		' 135deg highlight gradient: semi-white -> transparent.
+		Dim ori As JavaObject
+		ori.InitializeStatic("android.graphics.drawable.GradientDrawable$Orientation")
+		gd.RunMethod("setOrientation", Array(ori.GetField("TL_BR")))
+		Dim clr As Object = Array As Int(AlphaColor(xui.Color_White, BgOpacity), AlphaColor(xui.Color_White, 0))
+		gd.RunMethod("setColors", Array(clr))
+
+		Dim j As JavaObject = Target
+		j.RunMethod("setBackground", Array(gd))
+		' Small elevation approximation for glass depth.
+		j.RunMethod("setElevation", Array(2dip))
+		Return True
+	Catch
+		Return False
+	End Try
+End Sub
+#End If
+
+Public Sub TailwindTextFontSize(Value As Object, DefaultFontSize As Float) As Float
+	Dim m As Map = TailwindTextMetrics(Value, DefaultFontSize, DefaultFontSize * 1.5)
+	Return m.GetDefault("font_size", DefaultFontSize)
+End Sub
+
+Public Sub TailwindTextLineHeightDip(Value As Object, DefaultLineHeightDip As Float) As Float
+	Dim defaultLinePx As Float = Max(1, DefaultLineHeightDip / 1dip)
+	Dim m As Map = TailwindTextMetrics(Value, 14, defaultLinePx)
+	Return m.GetDefault("line_height_dip", DefaultLineHeightDip)
+End Sub
+
+Private Sub ResolveTailwindTextToken(Token As String, DefaultFontSize As Float, DefaultLineHeightPx As Float) As Map
+	Dim t As String = Token.ToLowerCase.Trim
+	Dim leadingSpec As String = ""
+	Dim pSlash As Int = t.IndexOf("/")
+	If pSlash >= 0 Then
+		leadingSpec = t.SubString(pSlash + 1).Trim
+		t = t.SubString2(0, pSlash).Trim
+	End If
+	If t.StartsWith("text-") Then t = t.SubString(5)
+
+	Dim m As Map
+	m.Initialize
+	Select Case t
+		Case "xs"
+			m.Put("font_size", 12)
+			m.Put("line_height_px", 16)
+		Case "sm"
+			m.Put("font_size", 14)
+			m.Put("line_height_px", 20)
+		Case "base"
+			m.Put("font_size", 16)
+			m.Put("line_height_px", 24)
+		Case "lg"
+			m.Put("font_size", 18)
+			m.Put("line_height_px", 28)
+		Case "xl"
+			m.Put("font_size", 20)
+			m.Put("line_height_px", 28)
+		Case "2xl"
+			m.Put("font_size", 24)
+			m.Put("line_height_px", 32)
+		Case "3xl"
+			m.Put("font_size", 30)
+			m.Put("line_height_px", 36)
+		Case "4xl"
+			m.Put("font_size", 36)
+			m.Put("line_height_px", 40)
+		Case "5xl"
+			m.Put("font_size", 48)
+			m.Put("line_height_px", 48)
+		Case "6xl"
+			m.Put("font_size", 60)
+			m.Put("line_height_px", 60)
+		Case "7xl"
+			m.Put("font_size", 72)
+			m.Put("line_height_px", 72)
+		Case "8xl"
+			m.Put("font_size", 96)
+			m.Put("line_height_px", 96)
+		Case "9xl"
+			m.Put("font_size", 128)
+			m.Put("line_height_px", 128)
+		Case Else
+			Dim customPx As Float = ParseCssLengthToPx(t, DefaultFontSize)
+			m.Put("font_size", customPx)
+			m.Put("line_height_px", Max(customPx, DefaultLineHeightPx))
+	End Select
+	m.Put("leading_spec", leadingSpec)
+	Return m
+End Sub
+
+Private Sub ResolveLeadingSpecToPx(Spec As String, FontSize As Float, DefaultLineHeightPx As Float) As Float
+	Dim s As String = Spec.ToLowerCase.Trim
+	If s.Length = 0 Then Return Max(FontSize, DefaultLineHeightPx)
+	If s.StartsWith("leading-") Then s = s.SubString(8).Trim
+
+	Select Case s
+		Case "none"
+			Return Max(1, FontSize * 1.0)
+		Case "tight"
+			Return Max(1, FontSize * 1.25)
+		Case "snug"
+			Return Max(1, FontSize * 1.375)
+		Case "normal"
+			Return Max(1, FontSize * 1.5)
+		Case "relaxed"
+			Return Max(1, FontSize * 1.625)
+		Case "loose"
+			Return Max(1, FontSize * 2.0)
+	End Select
+
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+	End If
+	If s.EndsWith("%") Then
+		Dim pct As Double = ParseCssNumber(s.SubString2(0, s.Length - 1), -1)
+		If pct >= 0 Then Return Max(1, FontSize * pct / 100)
+	End If
+
+	Dim n As Double = ParseCssNumber(s, -1)
+	If n >= 0 Then Return Max(1, n * TW_SPACE_STEP_PX)
+	Return Max(1, ParseCssLengthToPx(s, DefaultLineHeightPx))
+End Sub
+
+Private Sub NormalizeUtilityToken(Token As String) As String
+	If Token = Null Then Return ""
+	Dim t As String = Token.Trim
+	If t.Length = 0 Then Return ""
+	Dim p As Int = t.LastIndexOf(":")
+	If p >= 0 And p < t.Length - 1 Then t = t.SubString(p + 1)
+	Return t
+End Sub
+
+Public Sub ContainsAny(Text As String, Needles() As String) As Boolean
+	If Text = Null Then Return False
+	Dim s As String = Text.ToLowerCase
+	For Each n As String In Needles
+		If n = Null Then Continue
+		Dim k As String = n.ToLowerCase
+		If k.Length = 0 Then Continue
+		If s.Contains(k) Then Return True
+	Next
+	Return False
+End Sub
+
+Public Sub IsRtl As Boolean
+	#If B4A
+	Try
+		Dim joLocale As JavaObject
+		joLocale.InitializeStatic("java.util.Locale")
+		Dim localeObj As Object = joLocale.RunMethod("getDefault", Null)
+		Dim joTextUtils As JavaObject
+		joTextUtils.InitializeStatic("android.text.TextUtils")
+		Dim dir As Int = joTextUtils.RunMethod("getLayoutDirectionFromLocale", Array(localeObj))
+		Return dir = 1
+	Catch
+		Return False
+	End Try
+	#Else
+	Return False
+	#End If
+End Sub
+
+Private Sub ParseCssLengthToPx(Value As String, DefaultPx As Float) As Float
+	Dim s As String = Value.ToLowerCase.Trim
+	If s.Length = 0 Then Return DefaultPx
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+	End If
+	If s.EndsWith("px") Then
+		Dim npx As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
+		If npx >= 0 Then Return npx
+		Return DefaultPx
+	End If
+	If s.EndsWith("rem") Then
+		Dim nrem As Double = ParseCssNumber(s.SubString2(0, s.Length - 3), -1)
+		If nrem >= 0 Then Return nrem * CSS_BASE_FONT_PX
+		Return DefaultPx
+	End If
+	If s.EndsWith("em") Then
+		Dim nem As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
+		If nem >= 0 Then Return nem * CSS_BASE_FONT_PX
+		Return DefaultPx
+	End If
+	Dim n As Double = ParseCssNumber(s, -1)
+	If n >= 0 Then Return n
+	Return DefaultPx
 End Sub
 
 Private Sub ParseCssNumber(Text As String, DefaultValue As Double) As Double

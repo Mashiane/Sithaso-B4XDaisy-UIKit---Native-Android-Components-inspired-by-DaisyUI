@@ -399,6 +399,11 @@ Public Sub getActiveIndicatorColor As Int
 	Return mActiveIndicatorColor
 End Sub
 
+Public Sub setActiveIndicatorColorVariant(VariantName As String)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mActiveIndicatorColor)
+	setActiveIndicatorColor(c)
+End Sub
+
 Public Sub setInactiveIndicatorColor(Value As Int)
 	mInactiveIndicatorColor = Value
 	UpdateIndicators(mCurrentPage)
@@ -408,6 +413,11 @@ Public Sub getInactiveIndicatorColor As Int
 	Return mInactiveIndicatorColor
 End Sub
 
+Public Sub setInactiveIndicatorColorVariant(VariantName As String)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mInactiveIndicatorColor)
+	setInactiveIndicatorColor(c)
+End Sub
+
 Public Sub setTextColor(Value As Int)
 	mTextColor = Value
 	BuildPages
@@ -415,6 +425,11 @@ End Sub
 
 Public Sub getTextColor As Int
 	Return mTextColor
+End Sub
+
+Public Sub setTextColorVariant(VariantName As String)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mTextColor)
+	setTextColor(c)
 End Sub
 
 Public Sub setWidth(Value As Object)

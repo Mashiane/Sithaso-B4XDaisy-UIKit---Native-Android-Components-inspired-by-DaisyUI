@@ -49,55 +49,62 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	
 	Dim stack As B4XDaisyStack
 	stack.Initialize(Me, "")
-	Dim pStack As B4XView = stack.CreateView(w, h)
-	TargetSV.Panel.AddView(pStack, 50dip, TopOffset, w, h)
-	
+	Dim pStack As B4XView = stack.AddToParent(TargetSV.Panel, 50dip, TopOffset, w, h)
 	stack.Direction = Direction
 	stack.setLayoutAnimationMs(0)
 	stack.setStepPrimary(0)
 	stack.setStepSecondary(0)
-	
-	AddDivs(stack)
+'	Dim pStack As B4XView = stack.AddToParent(TargetSV.Panel, 50dip, TopOffset, w, h)
+
+	'Create 3 stack layers (divs) in-place so each demo is self-contained.
+
+	Dim div1 As B4XDaisyDiv
+	div1.Initialize(Me, "")
+	Dim divView1 As B4XView = div1.AddToParent(pStack, 0, 0, 10dip, 10dip)
+	div1.SetBackgroundColorVariant("primary")
+	div1.SetTextColorVariant("primary")
+	div1.Text = "1"
+	div1.setWidth("100%")
+	div1.setHeight("100%")
+	div1.RoundedBox = True
+	div1.PlaceContentCenter = True
+	div1.Shadow = "none"
+'	Dim divView1 As B4XView = div1.AddToParent(pStack, 0, 0, 10dip, 10dip)
+	stack.AddLayer(divView1)
+
+	Dim div2 As B4XDaisyDiv
+	div2.Initialize(Me, "")
+	Dim divView2 As B4XView = div2.AddToParent(pStack, 0, 0, 10dip, 10dip)
+	div2.SetBackgroundColorVariant("accent")
+	div2.SetTextColorVariant("accent")
+	div2.Text = "2"
+	div2.setWidth("100%")
+	div2.setHeight("100%")
+	div2.RoundedBox = True
+	div2.PlaceContentCenter = True
+	div2.Shadow = "none"
+'	Dim divView2 As B4XView = div2.AddToParent(pStack, 0, 0, 10dip, 10dip)
+	stack.AddLayer(divView2)
+
+	Dim div3 As B4XDaisyDiv
+	div3.Initialize(Me, "")
+	Dim divView3 As B4XView = div3.AddToParent(pStack, 0, 0, 10dip, 10dip)
+	div3.SetBackgroundColorVariant("secondary")
+	div3.SetTextColorVariant("secondary")
+	div3.Text = "3"
+	div3.setWidth("100%")
+	div3.setHeight("100%")
+	div3.RoundedBox = True
+	div3.PlaceContentCenter = True
+	div3.Shadow = "none"
+'	Dim divView3 As B4XView = div3.AddToParent(pStack, 0, 0, 10dip, 10dip)
+	stack.AddLayer(divView3)
+
 	StackEntries.Add(CreateMap("stack": stack, "stepPrimary": 7, "stepSecondary": 3, "animationMs": 220))
 	
 	Return TopOffset + h + 30dip
 End Sub
 
-Private Sub AddDivs(stack As B4XDaisyStack)
-	' Colors
-	Dim cPrimary As Int = B4XDaisyVariants.ResolveOnlineColor("primary", 0xFF570DF8)
-	Dim tPrimary As Int = B4XDaisyVariants.ResolveVariantColor(Null, "primary", "text", xui.Color_White)
-	
-	Dim cAccent As Int = B4XDaisyVariants.ResolveOnlineColor("accent", 0xFF37CDBE)
-	Dim tAccent As Int = B4XDaisyVariants.ResolveVariantColor(Null, "accent", "text", xui.Color_Black)
-	
-	Dim cSecondary As Int = B4XDaisyVariants.ResolveOnlineColor("secondary", 0xFFF000B8)
-	Dim tSecondary As Int = B4XDaisyVariants.ResolveVariantColor(Null, "secondary", "text", xui.Color_White)
-	
-	' Create 3 Divs using setters
-	AddDiv(stack, cPrimary, tPrimary, "1")
-	AddDiv(stack, cAccent, tAccent, "2")
-	AddDiv(stack, cSecondary, tSecondary, "3")
-End Sub
-
-Private Sub AddDiv(stack As B4XDaisyStack, Color As Int, TextColor As Int, Text As String)
-	Dim div As B4XDaisyDiv
-	div.Initialize(Me, "")
-	Dim p As B4XView = div.CreateView(10dip, 10dip)
-	
-	' Using Setters as requested
-	div.BackgroundColor = Color
-	div.TextColor = TextColor
-	div.Text = Text
-	div.setWidth("100%")
-	div.setHeight("100%")
-	div.RoundedBox = True
-	div.PlaceContentCenter = True
-	div.Shadow = "none"
-	
-	' Add to Stack
-	stack.AddLayer(p)
-End Sub
 
 Private Sub B4XPage_Appear
 	CallSubDelayed(Me, "AnimateStacksIn")

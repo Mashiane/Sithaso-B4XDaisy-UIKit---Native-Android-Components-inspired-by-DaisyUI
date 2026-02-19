@@ -9,6 +9,8 @@ Version=13.4
 'Versatile container component inspired by HTML div + Tailwind utility classes.
 #DesignerProperty: Key: Width, DisplayName: Width, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
+#DesignerProperty: Key: Padding, DisplayName: Padding, FieldType: String, DefaultValue:, Description: Tailwind/spacing padding utilities (eg p-2, px-3, 2)
+#DesignerProperty: Key: Margin, DisplayName: Margin, FieldType: String, DefaultValue:, Description: Tailwind/spacing margin utilities (eg m-2, mx-1.5, 1)
 #DesignerProperty: Key: BackgroundColor, DisplayName: Background Color, FieldType: Color, DefaultValue: 0x00FFFFFF, Description: Background color of the container.
 #DesignerProperty: Key: TextColor, DisplayName: Text Color, FieldType: Color, DefaultValue: 0xFF000000, Description: Color of the text content.
 #DesignerProperty: Key: Text, DisplayName: Text, FieldType: String, DefaultValue: , Description: Text to display in the container.
@@ -29,6 +31,10 @@ Sub Class_Globals
 	
 	Private mWidth As Float = 40dip
 	Private mHeight As Float = 40dip
+	Private mWidthExplicit As Boolean = False
+	Private mHeightExplicit As Boolean = False
+	Private mPadding As String = ""
+	Private mMargin As String = ""
 	Private mBackgroundColor As Int = xui.Color_Transparent
 	Private mTextColor As Int = xui.Color_Black
 	Private mText As String = ""
@@ -43,6 +49,7 @@ Sub Class_Globals
 	Private Const RELIEF_PRESET_INSET_OUTSET As Int = 46
 	Private Const RELIEF_PRESET_GROOVE_RIDGE As Int = 68
 	Private mTag As Object
+	Private CustProps As Map
 	
 	Private lblContent As B4XView
 End Sub
@@ -50,24 +57,25 @@ End Sub
 Public Sub Initialize (Callback As Object, EventName As String)
 	mEventName = EventName
 	mCallBack = Callback
+	SetDefaults
 End Sub
 
-Public Sub CreateView(Width As Int, Height As Int) As B4XView
-	Dim p As Panel
-	p.Initialize("")
-	Dim b As B4XView = p
-	b.Color = xui.Color_Transparent
-	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-	Dim dummy As Label
-	DesignerCreateView(b, dummy, CreateMap())
-	mWidth = Width
-	mHeight = Height
-	Return mBase
-End Sub
+'Public Sub CreateView(Width As Int, Height As Int) As B4XView
+'	Dim p As Panel
+'	p.Initialize("")
+'	Dim b As B4XView = p
+'	b.Color = xui.Color_Transparent
+'	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+'	Dim dummy As Label
+'	DesignerCreateView(b, dummy, CreateMap())
+'	mWidth = Width
+'	mHeight = Height
+'	Return mBase
+'End Sub
 
 Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
-	mTag = mBase.Tag
+	If mTag = Null Then mTag = mBase.Tag
 	mBase.Tag = Me
     
     ' Create internal label for text content
@@ -82,8 +90,13 @@ Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-    mWidth = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
+     If CustProps.IsInitialized = False Then SetDefaults
+     SetProperties(Props)
+     Dim p As Map = CustProps
+     mWidth = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
     mHeight = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
+	mPadding = ""
+	mMargin = ""
     mBackgroundColor = xui.Color_Transparent
     mTextColor = xui.Color_Black
     mText = ""
@@ -96,29 +109,91 @@ Private Sub ApplyDesignerProps(Props As Map)
      mBorderReliefStrength = 55
      mAutoReliefByStyle = True
      
-     If Props.IsInitialized = False Then Return
+     If p.IsInitialized = False Then Return
     
-    mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
-    mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
-    mBackgroundColor = GetPropColor(Props, "BackgroundColor", mBackgroundColor)
-    mTextColor = GetPropColor(Props, "TextColor", mTextColor)
-    mText = GetPropString(Props, "Text", mText)
-    mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
-    mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(Props, "Shadow", mShadow))
-     mPlaceContentCenter = GetPropBool(Props, "PlaceContentCenter", mPlaceContentCenter)
-     mBorderWidth = GetPropInt(Props, "BorderWidth", mBorderWidth)
-     mBorderColor = GetPropColor(Props, "BorderColor", mBorderColor)
-     mBorderStyle = NormalizeBorderStyle(GetPropString(Props, "BorderStyle", mBorderStyle))
-     mBorderReliefStrength = ClampReliefStrength(GetPropInt(Props, "BorderReliefStrength", mBorderReliefStrength))
-     mAutoReliefByStyle = GetPropBool(Props, "AutoReliefByStyle", mAutoReliefByStyle)
+    mWidthExplicit = p.ContainsKey("Width")
+    mHeightExplicit = p.ContainsKey("Height")
+    mWidth = Max(1dip, GetPropSizeDip(p, "Width", ResolveWidthBase(mWidth)))
+    mHeight = Max(1dip, GetPropSizeDip(p, "Height", ResolveHeightBase(mHeight)))
+	mPadding = GetPropString(p, "Padding", mPadding)
+	mMargin = GetPropString(p, "Margin", mMargin)
+    mBackgroundColor = GetPropColor(p, "BackgroundColor", mBackgroundColor)
+    mTextColor = GetPropColor(p, "TextColor", mTextColor)
+    mText = GetPropString(p, "Text", mText)
+    mRoundedBox = GetPropBool(p, "RoundedBox", mRoundedBox)
+    mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(p, "Shadow", mShadow))
+     mPlaceContentCenter = GetPropBool(p, "PlaceContentCenter", mPlaceContentCenter)
+     mBorderWidth = GetPropInt(p, "BorderWidth", mBorderWidth)
+     mBorderColor = GetPropColor(p, "BorderColor", mBorderColor)
+     mBorderStyle = NormalizeBorderStyle(GetPropString(p, "BorderStyle", mBorderStyle))
+     mBorderReliefStrength = ClampReliefStrength(GetPropInt(p, "BorderReliefStrength", mBorderReliefStrength))
+     mAutoReliefByStyle = GetPropBool(p, "AutoReliefByStyle", mAutoReliefByStyle)
      
      ApplyStyle
+End Sub
+
+Public Sub SetDefaults
+	CustProps.Initialize
+	CustProps.Put("Width", mWidth)
+	CustProps.Put("Height", mHeight)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("BackgroundColor", mBackgroundColor)
+	CustProps.Put("TextColor", mTextColor)
+	CustProps.Put("Text", mText)
+	CustProps.Put("RoundedBox", mRoundedBox)
+	CustProps.Put("Shadow", mShadow)
+	CustProps.Put("PlaceContentCenter", mPlaceContentCenter)
+	CustProps.Put("BorderWidth", mBorderWidth)
+	CustProps.Put("BorderColor", mBorderColor)
+	CustProps.Put("BorderStyle", mBorderStyle)
+	CustProps.Put("BorderReliefStrength", mBorderReliefStrength)
+	CustProps.Put("AutoReliefByStyle", mAutoReliefByStyle)
+End Sub
+
+Public Sub SetProperties(Props As Map)
+	If Props.IsInitialized = False Then Return
+	Dim src As Map
+	src.Initialize
+	For Each k As String In Props.Keys
+		src.Put(k, Props.Get(k))
+	Next
+	CustProps.Initialize
+	For Each k As String In src.Keys
+		CustProps.Put(k, src.Get(k))
+	Next
+End Sub
+
+Public Sub GetProperties As Map
+	CustProps.Initialize
+	CustProps.Put("Width", mWidth)
+	CustProps.Put("Height", mHeight)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("BackgroundColor", mBackgroundColor)
+	CustProps.Put("TextColor", mTextColor)
+	CustProps.Put("Text", mText)
+	CustProps.Put("RoundedBox", mRoundedBox)
+	CustProps.Put("Shadow", mShadow)
+	CustProps.Put("PlaceContentCenter", mPlaceContentCenter)
+	CustProps.Put("BorderWidth", mBorderWidth)
+	CustProps.Put("BorderColor", mBorderColor)
+	CustProps.Put("BorderStyle", mBorderStyle)
+	CustProps.Put("BorderReliefStrength", mBorderReliefStrength)
+	CustProps.Put("AutoReliefByStyle", mAutoReliefByStyle)
+	CustProps.Put("Tag", mTag)
+	Return CustProps
 End Sub
 
 Public Sub Base_Resize (Width As Double, Height As Double)
     If mBase.IsInitialized = False Then Return
     
     ApplyStyle
+	Dim host As B4XRect
+	host.Initialize(0, 0, Max(1dip, Width), Max(1dip, Height))
+	Dim box As Map = BuildBoxModel
+	Dim outerRect As B4XRect = B4XDaisyBoxModel.ResolveOuterRect(host, box)
+	Dim contentRect As B4XRect = B4XDaisyBoxModel.ResolveContentRect(outerRect, box)
     
     ' Layout children
     For i = 0 To mBase.NumberOfViews - 1
@@ -126,7 +201,7 @@ Public Sub Base_Resize (Width As Double, Height As Double)
         
         If v = lblContent Then
             v.Visible = True
-            v.SetLayoutAnimated(0, 0, 0, Width, Height)
+            v.SetLayoutAnimated(0, contentRect.Left, contentRect.Top, contentRect.Width, contentRect.Height)
             If mPlaceContentCenter Then
                 v.SetTextAlignment("CENTER", "CENTER")
             Else
@@ -135,22 +210,68 @@ Public Sub Base_Resize (Width As Double, Height As Double)
         Else
             'Other children
             If mPlaceContentCenter Then
-                 v.SetLayoutAnimated(0, (Width - v.Width) / 2, (Height - v.Height) / 2, v.Width, v.Height)
+                 v.SetLayoutAnimated(0, contentRect.Left + (contentRect.Width - v.Width) / 2, contentRect.Top + (contentRect.Height - v.Height) / 2, v.Width, v.Height)
             End If
         End If
     Next
 End Sub
 
-Public Sub AddToParent(Parent As B4XView)
-	AddToParentAt(Parent, 0, 0, Parent.Width, Parent.Height)
+Private Sub BuildBoxModel As Map
+	Dim box As Map = B4XDaisyBoxModel.CreateDefaultModel
+	ApplySpacingSpecToBox(box, mPadding, mMargin)
+	Return box
 End Sub
 
-Public Sub AddToParentAt(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int)
-	If Parent.IsInitialized = False Then Return
+Private Sub ApplySpacingSpecToBox(Box As Map, PaddingSpec As String, MarginSpec As String)
+	Dim rtl As Boolean = False
+	Dim p As String = IIf(PaddingSpec = Null, "", PaddingSpec.Trim)
+	Dim m As String = IIf(MarginSpec = Null, "", MarginSpec.Trim)
+	If p.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(p, Array As String("p-", "px-", "py-", "pt-", "pr-", "pb-", "pl-", "ps-", "pe-")) Then
+			B4XDaisyBoxModel.ApplyPaddingUtilities(Box, p, rtl)
+		Else
+			Dim pv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(p, 0dip)
+			Box.Put("padding_left", pv)
+			Box.Put("padding_right", pv)
+			Box.Put("padding_top", pv)
+			Box.Put("padding_bottom", pv)
+		End If
+	End If
+	If m.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(m, Array As String("m-", "mx-", "my-", "mt-", "mr-", "mb-", "ml-", "ms-", "me-", "-m-", "-mx-", "-my-", "-mt-", "-mr-", "-mb-", "-ml-", "-ms-", "-me-")) Then
+			B4XDaisyBoxModel.ApplyMarginUtilities(Box, m, rtl)
+		Else
+			Dim mv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(m, 0dip)
+			Box.Put("margin_left", mv)
+			Box.Put("margin_right", mv)
+			Box.Put("margin_top", mv)
+			Box.Put("margin_bottom", mv)
+		End If
+	End If
+End Sub
+
+Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
+	Dim empty As B4XView
+	If Parent.IsInitialized = False Then Return empty
 	Dim w As Int = Max(1dip, Width)
 	Dim h As Int = Max(1dip, Height)
-	Dim v As B4XView = CreateView(w, h)
-	Parent.AddView(v, Left, Top, w, h)
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, w, h)
+	Dim snap As Map = GetProperties
+	Dim props As Map
+	props.Initialize
+	For Each k As String In snap.Keys
+		props.Put(k, snap.Get(k))
+	Next
+	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
+	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Parent.AddView(mBase, Left, Top, w, h)
+	Return mBase
 End Sub
 
 Public Sub View As B4XView
@@ -384,8 +505,10 @@ End Sub
 'Getters and Setters
 
 Public Sub setWidth(Value As Object)
-    mWidth = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(Value, mWidth))
-    If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+    mWidth = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(Value, ResolveWidthBase(mWidth)))
+    mWidthExplicit = True
+    If mBase.IsInitialized = False Then Return
+    Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub getWidth As Float
@@ -393,16 +516,39 @@ Public Sub getWidth As Float
 End Sub
 
 Public Sub setHeight(Value As Object)
-    mHeight = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(Value, mHeight))
-    If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+    mHeight = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(Value, ResolveHeightBase(mHeight)))
+    mHeightExplicit = True
+    If mBase.IsInitialized = False Then Return
+    Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub getHeight As Float
-    Return mHeight
+	Return mHeight
+End Sub
+
+Public Sub setPadding(Value As String)
+	mPadding = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	ApplyStyle
+End Sub
+
+Public Sub getPadding As String
+	Return mPadding
+End Sub
+
+Public Sub setMargin(Value As String)
+	mMargin = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	ApplyStyle
+End Sub
+
+Public Sub getMargin As String
+	Return mMargin
 End Sub
 
 Public Sub setBackgroundColor(Color As Int)
-    mBackgroundColor = Color
+	mBackgroundColor = Color
+	If mBase.IsInitialized = False Then Return
     ApplyStyle
 End Sub
 
@@ -410,8 +556,14 @@ Public Sub getBackgroundColor As Int
     Return mBackgroundColor
 End Sub
 
+Public Sub setBackgroundColorVariant(VariantName As String)
+    Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mBackgroundColor)
+    setBackgroundColor(c)
+End Sub
+
 Public Sub setTextColor(Color As Int)
     mTextColor = Color
+    If mBase.IsInitialized = False Then Return
     ApplyStyle
 End Sub
 
@@ -419,10 +571,16 @@ Public Sub getTextColor As Int
     Return mTextColor
 End Sub
 
+Public Sub setTextColorVariant(VariantName As String)
+    Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mTextColor)
+    setTextColor(c)
+End Sub
+
 Public Sub setText(Text As String)
     mText = Text
+    If mBase.IsInitialized = False Then Return
     ApplyStyle
-    If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+    Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub getText As String
@@ -431,6 +589,7 @@ End Sub
 
 Public Sub setRoundedBox(Value As Boolean)
     mRoundedBox = Value
+    If mBase.IsInitialized = False Then Return
     ApplyStyle
 End Sub
 
@@ -440,6 +599,7 @@ End Sub
 
 Public Sub setShadow(Value As String)
     mShadow = B4XDaisyVariants.NormalizeShadow(Value)
+    If mBase.IsInitialized = False Then Return
     ApplyStyle
 End Sub
 
@@ -449,7 +609,8 @@ End Sub
 
 Public Sub setPlaceContentCenter(Value As Boolean)
     mPlaceContentCenter = Value
-    If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+    If mBase.IsInitialized = False Then Return
+    Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub getPlaceContentCenter As Boolean
@@ -458,6 +619,7 @@ End Sub
 
 Public Sub setBorderWidth(Value As Int)
     mBorderWidth = Value
+    If mBase.IsInitialized = False Then Return
     ApplyStyle
 End Sub
 
@@ -467,6 +629,7 @@ End Sub
 
 Public Sub setBorderColor(Value As Int)
     mBorderColor = Value
+    If mBase.IsInitialized = False Then Return
     ApplyStyle
 End Sub
 
@@ -474,8 +637,14 @@ Public Sub getBorderColor As Int
     Return mBorderColor
 End Sub
 
+Public Sub setBorderColorVariant(VariantName As String)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "border", mBorderColor)
+	setBorderColor(c)
+End Sub
+
 Public Sub setBorderStyle(Value As String)
 	mBorderStyle = NormalizeBorderStyle(Value)
+	If mBase.IsInitialized = False Then Return
 	ApplyStyle
 End Sub
 
@@ -485,6 +654,7 @@ End Sub
 
 Public Sub setBorderReliefStrength(Value As Int)
 	mBorderReliefStrength = ClampReliefStrength(Value)
+	If mBase.IsInitialized = False Then Return
 	ApplyStyle
 End Sub
 
@@ -494,6 +664,7 @@ End Sub
 
 Public Sub setAutoReliefByStyle(Value As Boolean)
 	mAutoReliefByStyle = Value
+	If mBase.IsInitialized = False Then Return
 	ApplyStyle
 End Sub
 
@@ -510,6 +681,24 @@ Public Sub getTag As Object
 End Sub
 
 ' Helpers
+
+Private Sub ResolveWidthBase(DefaultValue As Float) As Float
+	If mBase.IsInitialized Then
+		Dim parent As B4XView = mBase.Parent
+		If parent.IsInitialized And parent.Width > 0 Then Return parent.Width
+		If mBase.Width > 0 Then Return mBase.Width
+	End If
+	Return DefaultValue
+End Sub
+
+Private Sub ResolveHeightBase(DefaultValue As Float) As Float
+	If mBase.IsInitialized Then
+		Dim parent As B4XView = mBase.Parent
+		If parent.IsInitialized And parent.Height > 0 Then Return parent.Height
+		If mBase.Height > 0 Then Return mBase.Height
+	End If
+	Return DefaultValue
+End Sub
 
 Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
     If Props.ContainsKey(Key) = False Then Return DefaultDipValue

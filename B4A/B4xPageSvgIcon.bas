@@ -49,12 +49,12 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Root.AddView(lblState, 0, 0, 10dip, 10dip)
 
 	SvgIcon.Initialize(Me, "svg")
-	IconView = SvgIcon.CreateView(200dip, 200dip)
-	pnlCard.AddView(IconView, 0, 0, pnlCard.Width, pnlCard.Height)
+	IconView = SvgIcon.AddToParent(pnlCard, 0, 0, 200dip, 200dip)
 	SvgIcon.SetSvgAsset("book-open-solid.svg")
 	SvgIcon.SetPreserveOriginalColors(False)
-	SvgIcon.SetColor(B4XDaisyVariants.ResolveOnlineColor("primary", 0xFF3B82F6))
+	SvgIcon.SetColorVariant("primary")
 	SvgIcon.SetSize("24")
+'	IconView = SvgIcon.AddToParent(pnlCard, 0, 0, 200dip, 200dip)
 
 	LayoutPage(Root.Width, Root.Height)
 End Sub
@@ -104,8 +104,7 @@ Private Sub RunDemoLoop(Token As Int)
 	Do While Token = DemoToken
 		Dim variant As String = variants.Get(idx Mod variants.Size)
 		Dim sizeSpec As String = sizes(idx Mod sizes.Length)
-		Dim c As Int = B4XDaisyVariants.ResolveOnlineColor(variant, 0xFF3B82F6)
-		SvgIcon.SetColor(c)
+		SvgIcon.SetColorVariant(variant)
 		SvgIcon.SetSize(sizeSpec)
 		lblState.Text = "asset: book-open-solid.svg | color: " & variant & " | size: " & sizeSpec
 		idx = idx + 1

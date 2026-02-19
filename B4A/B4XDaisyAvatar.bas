@@ -14,6 +14,13 @@ Version=13.4
 #DesignerProperty: Key: Variant, DisplayName: Variant, FieldType: String, DefaultValue: none, List: none|neutral|primary|secondary|accent|info|success|warning|error, Description: Variant used for placeholder and status colors
 #DesignerProperty: Key: Width, DisplayName: Width, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
+#DesignerProperty: Key: AvatarType, DisplayName: Avatar Type, FieldType: String, DefaultValue: image, List: image|svg|text, Description: Content type rendered inside avatar
+#DesignerProperty: Key: PlaceHolder, DisplayName: Placeholder, FieldType: String, DefaultValue:, Description: Placeholder text for text type (and image/svg fallback)
+#DesignerProperty: Key: TextSize, DisplayName: Text Size, FieldType: String, DefaultValue:, Description: Placeholder text size token (eg text-sm, text-lg). Empty = auto-fit
+#DesignerProperty: Key: TextColor, DisplayName: Text Color, FieldType: Color, DefaultValue: 0x00000000, Description: Placeholder text color (0 = theme base-content)
+#DesignerProperty: Key: BackgroundColor, DisplayName: Background Color, FieldType: Color, DefaultValue: 0x00000000, Description: Placeholder background color (0 = variant/theme fallback)
+#DesignerProperty: Key: Padding, DisplayName: Padding, FieldType: String, DefaultValue:, Description: Padding utility/value for avatar drawing area (eg p-2, px-1, 2)
+#DesignerProperty: Key: Margin, DisplayName: Margin, FieldType: String, DefaultValue:, Description: Margin utility/value for avatar host insets (eg m-2, mx-1.5, 1)
 #DesignerProperty: Key: CenterOnParent, DisplayName: Center On Parent, FieldType: Boolean, DefaultValue: True, Description: Center avatar inside parent bounds
 #DesignerProperty: Key: ChatImage, DisplayName: Chat Image Mode, FieldType: Boolean, DefaultValue: False, Description: Apply chat-image rendering defaults (shared with chat bubble usage)
 #DesignerProperty: Key: Status, DisplayName: Status, FieldType: String, DefaultValue: none, List: none|online|offline, Description: Online indicator status
@@ -30,45 +37,42 @@ Sub Class_Globals
 	Public mBase As B4XView
 	Private mEventName As String
 	Private mCallBack As Object
+	Private mTag As Object
+	Private CustProps As Map
 
-	Private Const PROP_DEFAULT_VARIANT As String = "none"
-	Private Const PROP_DEFAULT_SIZE_TOKEN As String = "10"
-	Private Const PROP_DEFAULT_STATUS As String = "none"
-	Private Const PROP_DEFAULT_MASK As String = "circle"
-	Private Const PROP_DEFAULT_SHADOW As String = "none"
-	Private Const PROP_DEFAULT_CENTER_ON_PARENT As Boolean = True
-	Private Const PROP_DEFAULT_CHAT_IMAGE As Boolean = False
-	Private Const PROP_DEFAULT_RING_WIDTH_DIP As Float = 0dip
-	Private Const PROP_DEFAULT_RING_OFFSET_DIP As Float = 0dip
-	Private Const PROP_DEFAULT_SHOW_ONLINE As Boolean = False
-	Private Const PROP_DEFAULT_USE_VARIANT_STATUS As Boolean = False
-	Private Const PROP_DEFAULT_ONLINE_COLOR As Int = 0xFF2ECC71
-	Private Const PROP_DEFAULT_OFFLINE_COLOR As Int = 0xFFB4B4B4
-
-	Private Variant As String = PROP_DEFAULT_VARIANT
+	Private Variant As String = "none"
 
 	Private mWidth As Float = 40dip
 	Private mHeight As Float = 40dip
-	Private CenterOnParent As Boolean = PROP_DEFAULT_CENTER_ON_PARENT
-	Private ChatImage As Boolean = PROP_DEFAULT_CHAT_IMAGE
-	Private AvatarMask As String = PROP_DEFAULT_MASK
+	Private mWidthExplicit As Boolean = False
+	Private mHeightExplicit As Boolean = False
+	Private AvatarType As String = "image"
+	Private PlaceholderText As String = ""
+	Private PlaceholderTextSize As String = ""
+	Private PlaceholderTextColor As Int = 0
+	Private PlaceholderBackgroundColor As Int = 0
+	Private mPadding As String = ""
+	Private mMargin As String = ""
+	Private CenterOnParent As Boolean = True
+	Private ChatImage As Boolean = False
+	Private AvatarMask As String = "circle"
 	Private AvatarPath As String = ""
 	Private AvatarBmp As B4XBitmap
 	Private AvatarTag As Object
 
-	Private AvatarStatus As String = PROP_DEFAULT_STATUS 'none|online|offline
-	Private OnlineIndicatorVisible As Boolean = PROP_DEFAULT_SHOW_ONLINE
-	Private UseVariantStatusColors As Boolean = PROP_DEFAULT_USE_VARIANT_STATUS
-	Private AvatarOnlineColor As Int = PROP_DEFAULT_ONLINE_COLOR
-	Private AvatarOfflineColor As Int = PROP_DEFAULT_OFFLINE_COLOR
+	Private AvatarStatus As String = "none" 'none|online|offline
+	Private OnlineIndicatorVisible As Boolean = False
+	Private UseVariantStatusColors As Boolean = False
+	Private AvatarOnlineColor As Int = 0xFF2ECC71
+	Private AvatarOfflineColor As Int = 0xFFB4B4B4
 	Private CustomOnlineColor As Int = 0
 	Private CustomOfflineColor As Int = 0
 
-	Private AvatarBorderColor As Int = 0xFFF5F5F5
-	Private AvatarBorderWidth As Float = PROP_DEFAULT_RING_WIDTH_DIP
+	Private AvatarBorderColor As Int = 0
+	Private AvatarBorderWidth As Float = 0dip
 	Private RingColor As Int = 0
-	Private RingOffset As Float = PROP_DEFAULT_RING_OFFSET_DIP
-	Private Shadow As String = PROP_DEFAULT_SHADOW
+	Private RingOffset As Float = 0dip
+	Private Shadow As String = "none"
 
 	Private VariantPalette As Map
 	Private DefaultVariantPalette As Map
@@ -83,6 +87,7 @@ Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	InitializePalette
+	SetDefaults
 End Sub
 
 Public Sub CreateView(Width As Int, Height As Int) As B4XView
@@ -96,16 +101,28 @@ Public Sub CreateView(Width As Int, Height As Int) As B4XView
 	Return mBase
 End Sub
 
-Public Sub AddToParent(Parent As B4XView)
-	AddToParentAt(Parent, 0, 0, Parent.Width, Parent.Height)
-End Sub
-
-Public Sub AddToParentAt(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int)
-	If Parent.IsInitialized = False Then Return
+Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
+	Dim empty As B4XView
+	If Parent.IsInitialized = False Then Return empty
 	Dim w As Int = Max(1dip, Width)
 	Dim h As Int = Max(1dip, Height)
-	Dim v As B4XView = CreateView(w, h)
-	Parent.AddView(v, Left, Top, w, h)
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, w, h)
+	Dim snap As Map = GetProperties
+	Dim props As Map
+	props.Initialize
+	For Each k As String In snap.Keys
+		props.Put(k, snap.Get(k))
+	Next
+	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
+	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Parent.AddView(mBase, Left, Top, w, h)
+	Return mBase
 End Sub
 
 Public Sub View As B4XView
@@ -125,6 +142,8 @@ End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
+	If mTag = Null Then mTag = mBase.Tag
+	mBase.Tag = Me
 	mBase.Color = xui.Color_Transparent
 
 	Dim pAvatar As Panel
@@ -142,15 +161,22 @@ Public Sub Base_Resize(Width As Double, Height As Double)
 	If mBase.IsInitialized = False Or ivAvatar.IsInitialized = False Then Return
 	Dim w As Int = Max(1dip, Width)
 	Dim h As Int = Max(1dip, Height)
+	Dim box As Map = BuildBoxModel
+	Dim host As B4XRect
+	host.Initialize(0, 0, w, h)
+	Dim outerRect As B4XRect = B4XDaisyBoxModel.ResolveOuterRect(host, box)
+	Dim contentRect As B4XRect = B4XDaisyBoxModel.ResolveContentRect(outerRect, box)
+	Dim availW As Int = Max(1dip, contentRect.Width)
+	Dim availH As Int = Max(1dip, contentRect.Height)
 	Dim drawW As Int = Max(1dip, mWidth)
 	Dim drawH As Int = Max(1dip, mHeight)
-	If drawW > w Then drawW = w
-	If drawH > h Then drawH = h
-	Dim x As Int = 0
-	Dim y As Int = 0
+	If drawW > availW Then drawW = availW
+	If drawH > availH Then drawH = availH
+	Dim x As Int = contentRect.Left
+	Dim y As Int = contentRect.Top
 	If CenterOnParent Then
-		x = (w - drawW) / 2
-		y = (h - drawH) / 2
+		x = contentRect.Left + (availW - drawW) / 2
+		y = contentRect.Top + (availH - drawH) / 2
 	End If
 	ivAvatar.SetLayoutAnimated(0, x, y, drawW, drawH)
 	DrawAvatar
@@ -163,73 +189,195 @@ Public Sub ResizeToParent(b4xV As B4XView)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
+	If CustProps.IsInitialized = False Then SetDefaults
+	SetProperties(Props)
+	Dim p As Map = CustProps
 	'Reset mapped runtime values to designer defaults first (prevents drift).
-	Variant = PROP_DEFAULT_VARIANT
-	Shadow = PROP_DEFAULT_SHADOW
-	mWidth = B4XDaisyVariants.TailwindSizeToDip(PROP_DEFAULT_SIZE_TOKEN, 40dip)
-	mHeight = B4XDaisyVariants.TailwindSizeToDip(PROP_DEFAULT_SIZE_TOKEN, 40dip)
-	CenterOnParent = PROP_DEFAULT_CENTER_ON_PARENT
-	ChatImage = PROP_DEFAULT_CHAT_IMAGE
-	AvatarMask = PROP_DEFAULT_MASK
-	AvatarStatus = PROP_DEFAULT_STATUS
-	OnlineIndicatorVisible = PROP_DEFAULT_SHOW_ONLINE
-	UseVariantStatusColors = PROP_DEFAULT_USE_VARIANT_STATUS
-	AvatarOnlineColor = PROP_DEFAULT_ONLINE_COLOR
-	AvatarOfflineColor = PROP_DEFAULT_OFFLINE_COLOR
+	Variant = "none"
+	Shadow = "none"
+	mWidth = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
+	mHeight = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
+	mWidthExplicit = False
+	mHeightExplicit = False
+	AvatarType = "image"
+	PlaceholderText = ""
+	PlaceholderTextSize = ""
+	PlaceholderTextColor = 0
+	PlaceholderBackgroundColor = 0
+	mPadding = ""
+	mMargin = ""
+	CenterOnParent = True
+	ChatImage = False
+	AvatarMask = "circle"
+	AvatarStatus = "none"
+	OnlineIndicatorVisible = False
+	UseVariantStatusColors = False
+	AvatarOnlineColor = 0xFF2ECC71
+	AvatarOfflineColor = 0xFFB4B4B4
 	CustomOnlineColor = 0
 	CustomOfflineColor = 0
-	AvatarBorderWidth = PROP_DEFAULT_RING_WIDTH_DIP
+	AvatarBorderColor = 0
+	AvatarBorderWidth = 0dip
 	RingColor = 0
-	RingOffset = PROP_DEFAULT_RING_OFFSET_DIP
+	RingOffset = 0dip
 	AvatarPath = ""
 
-	If Props.IsInitialized = False Then
-		setVariant(Variant)
-		setShadow(Shadow)
-		setChatImage(ChatImage)
-		setAvatarMask(AvatarMask)
-		setAvatarStatus(AvatarStatus)
-		setShowOnline(OnlineIndicatorVisible)
-		setAvatar("")
-		Return
-	End If
+	setVariant(getPropString(p, "Variant", Variant))
+	SetShadow(GetPropString(p, "Shadow", Shadow))
 
-	setVariant(getPropString(Props, "Variant", PROP_DEFAULT_VARIANT))
-	SetShadow(GetPropString(Props, "Shadow", PROP_DEFAULT_SHADOW))
-
-	mWidth = Max(16dip, GetPropSizeDip(Props, "Width", mWidth))
-	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", mHeight))
-	CenterOnParent = GetPropBool(Props, "CenterOnParent", PROP_DEFAULT_CENTER_ON_PARENT)
-	ChatImage = GetPropBool(Props, "ChatImage", PROP_DEFAULT_CHAT_IMAGE)
+	mWidth = Max(16dip, GetPropSizeDip(p, "Width", ResolveWidthBase(mWidth)))
+	mHeight = Max(16dip, GetPropSizeDip(p, "Height", ResolveHeightBase(mHeight)))
+	AvatarType = NormalizeAvatarType(getPropString(p, "AvatarType", AvatarType))
+	PlaceholderText = getPropString(p, "PlaceHolder", PlaceholderText)
+	PlaceholderTextSize = getPropString(p, "TextSize", PlaceholderTextSize)
+	PlaceholderTextColor = GetPropInt(p, "TextColor", PlaceholderTextColor)
+	PlaceholderBackgroundColor = GetPropInt(p, "BackgroundColor", PlaceholderBackgroundColor)
+	mPadding = getPropString(p, "Padding", mPadding)
+	mMargin = getPropString(p, "Margin", mMargin)
+	CenterOnParent = GetPropBool(p, "CenterOnParent", CenterOnParent)
+	ChatImage = GetPropBool(p, "ChatImage", ChatImage)
 	'Compatibility aliases (older key names).
-	If Props.ContainsKey("AvatarWidth") Then mWidth = Max(16dip, GetPropSizeDip(Props, "AvatarWidth", mWidth))
-	If Props.ContainsKey("AvatarHeight") Then mHeight = Max(16dip, GetPropSizeDip(Props, "AvatarHeight", mHeight))
-	If Props.ContainsKey("AvatarSize") Then
-		Dim s As Float = Max(16dip, GetPropSizeDip(Props, "AvatarSize", Min(mWidth, mHeight)))
+	If p.ContainsKey("AvatarWidth") Then mWidth = Max(16dip, GetPropSizeDip(p, "AvatarWidth", ResolveWidthBase(mWidth)))
+	If p.ContainsKey("AvatarHeight") Then mHeight = Max(16dip, GetPropSizeDip(p, "AvatarHeight", ResolveHeightBase(mHeight)))
+	If p.ContainsKey("AvatarSize") Then
+		Dim s As Float = Max(16dip, GetPropSizeDip(p, "AvatarSize", Min(mWidth, mHeight)))
 		mWidth = s
 		mHeight = s
 	End If
+	If p.ContainsKey("Width") Then mWidthExplicit = True
+	If p.ContainsKey("Height") Then mHeightExplicit = True
+	If p.ContainsKey("AvatarWidth") Then mWidthExplicit = True
+	If p.ContainsKey("AvatarHeight") Then mHeightExplicit = True
+	If p.ContainsKey("AvatarSize") Then
+		mWidthExplicit = True
+		mHeightExplicit = True
+	End If
 
-	SetAvatarMask(GetPropString(Props, "Mask", GetPropString(Props, "AvatarMask", PROP_DEFAULT_MASK)))
-	If GetPropBool(Props, "RoundedBox", False) Then SetAvatarMask("rounded")
-	SetAvatarStatus(GetPropString(Props, "Status", PROP_DEFAULT_STATUS))
-	SetShowOnline(GetPropBool(Props, "ShowOnline", PROP_DEFAULT_SHOW_ONLINE))
-	UseVariantStatusColors = GetPropBool(Props, "UseVariantStatusColors", PROP_DEFAULT_USE_VARIANT_STATUS)
+	SetAvatarMask(GetPropString(p, "Mask", GetPropString(p, "AvatarMask", AvatarMask)))
+	If GetPropBool(p, "RoundedBox", False) Then SetAvatarMask("rounded")
+	SetAvatarStatus(GetPropString(p, "Status", AvatarStatus))
+	SetShowOnline(GetPropBool(p, "ShowOnline", OnlineIndicatorVisible))
+	UseVariantStatusColors = GetPropBool(p, "UseVariantStatusColors", UseVariantStatusColors)
 
-	CustomOnlineColor = GetPropInt(Props, "OnlineColor", 0)
-	CustomOfflineColor = GetPropInt(Props, "OfflineColor", 0)
-	AvatarOnlineColor = PROP_DEFAULT_ONLINE_COLOR
-	AvatarOfflineColor = PROP_DEFAULT_OFFLINE_COLOR
+	CustomOnlineColor = GetPropInt(p, "OnlineColor", 0)
+	CustomOfflineColor = GetPropInt(p, "OfflineColor", 0)
+	AvatarOnlineColor = 0xFF2ECC71
+	AvatarOfflineColor = 0xFFB4B4B4
 	If CustomOnlineColor <> 0 Then AvatarOnlineColor = CustomOnlineColor
 	If CustomOfflineColor <> 0 Then AvatarOfflineColor = CustomOfflineColor
-	RingColor = GetPropInt(Props, "RingColor", 0)
-	AvatarBorderWidth = Max(0, GetPropDip(Props, "RingWidth", PROP_DEFAULT_RING_WIDTH_DIP))
-	RingOffset = Max(0, GetPropDip(Props, "RingOffset", PROP_DEFAULT_RING_OFFSET_DIP))
+	RingColor = GetPropInt(p, "RingColor", 0)
+	AvatarBorderWidth = Max(0, GetPropDip(p, "RingWidth", AvatarBorderWidth))
+	RingOffset = Max(0, GetPropDip(p, "RingOffset", RingOffset))
 	'Compatibility with earlier internal naming.
-	If Props.ContainsKey("AvatarBorderWidth") Then AvatarBorderWidth = Max(0, GetPropDip(Props, "AvatarBorderWidth", AvatarBorderWidth))
-	If Props.ContainsKey("AvatarBorderInset") Then RingOffset = Max(0, GetPropDip(Props, "AvatarBorderInset", RingOffset))
+	If p.ContainsKey("AvatarBorderWidth") Then AvatarBorderWidth = Max(0, GetPropDip(p, "AvatarBorderWidth", AvatarBorderWidth))
+	If p.ContainsKey("AvatarBorderInset") Then RingOffset = Max(0, GetPropDip(p, "AvatarBorderInset", RingOffset))
 
-	SetAvatar(GetPropString(Props, "Image", GetPropString(Props, "Avatar", "")))
+	SetAvatar(GetPropString(p, "Image", GetPropString(p, "Avatar", "")))
+End Sub
+
+Public Sub SetDefaults
+	CustProps.Initialize
+	CustProps.Put("Variant", Variant)
+	CustProps.Put("Shadow", Shadow)
+	CustProps.Put("Width", mWidth)
+	CustProps.Put("Height", mHeight)
+	CustProps.Put("AvatarType", AvatarType)
+	CustProps.Put("PlaceHolder", PlaceholderText)
+	CustProps.Put("TextSize", PlaceholderTextSize)
+	CustProps.Put("TextColor", PlaceholderTextColor)
+	CustProps.Put("BackgroundColor", PlaceholderBackgroundColor)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("CenterOnParent", CenterOnParent)
+	CustProps.Put("ChatImage", ChatImage)
+	CustProps.Put("Image", AvatarPath)
+	CustProps.Put("Avatar", AvatarPath)
+	CustProps.Put("Mask", AvatarMask)
+	CustProps.Put("Status", AvatarStatus)
+	CustProps.Put("ShowOnline", OnlineIndicatorVisible)
+	CustProps.Put("UseVariantStatusColors", UseVariantStatusColors)
+	CustProps.Put("OnlineColor", CustomOnlineColor)
+	CustProps.Put("OfflineColor", CustomOfflineColor)
+	CustProps.Put("RingColor", RingColor)
+	CustProps.Put("RingWidth", AvatarBorderWidth)
+	CustProps.Put("RingOffset", RingOffset)
+End Sub
+
+Public Sub SetProperties(Props As Map)
+	If Props.IsInitialized = False Then Return
+	Dim src As Map
+	src.Initialize
+	For Each k As String In Props.Keys
+		src.Put(k, Props.Get(k))
+	Next
+	CustProps.Initialize
+	For Each k As String In src.Keys
+		CustProps.Put(k, src.Get(k))
+	Next
+End Sub
+
+Public Sub GetProperties As Map
+	CustProps.Initialize
+	CustProps.Put("Variant", Variant)
+	CustProps.Put("Shadow", Shadow)
+	CustProps.Put("Width", mWidth)
+	CustProps.Put("Height", mHeight)
+	CustProps.Put("AvatarType", AvatarType)
+	CustProps.Put("PlaceHolder", PlaceholderText)
+	CustProps.Put("TextSize", PlaceholderTextSize)
+	CustProps.Put("TextColor", PlaceholderTextColor)
+	CustProps.Put("BackgroundColor", PlaceholderBackgroundColor)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("CenterOnParent", CenterOnParent)
+	CustProps.Put("ChatImage", ChatImage)
+	CustProps.Put("Image", AvatarPath)
+	CustProps.Put("Avatar", AvatarPath)
+	CustProps.Put("Mask", AvatarMask)
+	CustProps.Put("Status", AvatarStatus)
+	CustProps.Put("ShowOnline", OnlineIndicatorVisible)
+	CustProps.Put("UseVariantStatusColors", UseVariantStatusColors)
+	CustProps.Put("OnlineColor", CustomOnlineColor)
+	CustProps.Put("OfflineColor", CustomOfflineColor)
+	CustProps.Put("RingColor", RingColor)
+	CustProps.Put("RingWidth", AvatarBorderWidth)
+	CustProps.Put("RingOffset", RingOffset)
+	CustProps.Put("Tag", mTag)
+	Return CustProps
+End Sub
+
+Private Sub BuildBoxModel As Map
+	Dim box As Map = B4XDaisyBoxModel.CreateDefaultModel
+	ApplySpacingSpecToBox(box, mPadding, mMargin)
+	Return box
+End Sub
+
+Private Sub ApplySpacingSpecToBox(Box As Map, PaddingSpec As String, MarginSpec As String)
+	Dim rtl As Boolean = False
+	Dim p As String = IIf(PaddingSpec = Null, "", PaddingSpec.Trim)
+	Dim m As String = IIf(MarginSpec = Null, "", MarginSpec.Trim)
+	If p.Length > 0 Then
+		If p.Contains("-") Then
+			B4XDaisyBoxModel.ApplyPaddingUtilities(Box, p, rtl)
+		Else
+			Dim pv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(p, 0dip)
+			Box.Put("padding_left", pv)
+			Box.Put("padding_top", pv)
+			Box.Put("padding_right", pv)
+			Box.Put("padding_bottom", pv)
+		End If
+	End If
+	If m.Length > 0 Then
+		If m.Contains("-") Then
+			B4XDaisyBoxModel.ApplyMarginUtilities(Box, m, rtl)
+		Else
+			Dim mv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(m, 0dip)
+			Box.Put("margin_left", mv)
+			Box.Put("margin_top", mv)
+			Box.Put("margin_right", mv)
+			Box.Put("margin_bottom", mv)
+		End If
+	End If
 End Sub
 
 Private Sub getPropDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
@@ -241,6 +389,24 @@ Private Sub getPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float
 	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
 	Dim o As Object = Props.Get(Key)
 	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+End Sub
+
+Private Sub ResolveWidthBase(DefaultValue As Float) As Float
+	If mBase.IsInitialized Then
+		Dim parent As B4XView = mBase.Parent
+		If parent.IsInitialized And parent.Width > 0 Then Return parent.Width
+		If mBase.Width > 0 Then Return mBase.Width
+	End If
+	Return DefaultValue
+End Sub
+
+Private Sub ResolveHeightBase(DefaultValue As Float) As Float
+	If mBase.IsInitialized Then
+		Dim parent As B4XView = mBase.Parent
+		If parent.IsInitialized And parent.Height > 0 Then Return parent.Height
+		If mBase.Height > 0 Then Return mBase.Height
+	End If
+	Return DefaultValue
 End Sub
 
 Private Sub getPropString(Props As Map, Key As String, DefaultValue As String) As String
@@ -261,6 +427,7 @@ End Sub
 
 Public Sub setVariant(Value As String)
 	Variant = B4XDaisyVariants.NormalizeVariant(Value)
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -270,6 +437,7 @@ End Sub
 
 Public Sub setShadow(Value As String)
 	Shadow = B4XDaisyVariants.NormalizeShadow(Value)
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -279,6 +447,7 @@ End Sub
 
 Public Sub setChatImage(Value As Boolean)
 	ChatImage = Value
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -301,8 +470,14 @@ Public Sub getVariantPalette As Map
 	Return VariantPalette
 End Sub
 
+Public Sub applyActiveTheme
+	InitializePalette
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
 Public Sub setUseVariantStatusColors(Enabled As Boolean)
 	UseVariantStatusColors = Enabled
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -355,11 +530,27 @@ Public Sub getAvatar As String
 End Sub
 
 Public Sub setImage(Path As String)
-	SetAvatar(Path)
+	If Path = Null Then
+		AvatarPath = ""
+	Else
+		AvatarPath = Path.Trim
+	End If
+	If mBase.IsInitialized = False Then Return
+	SetAvatar(AvatarPath)
 End Sub
 
 Public Sub getImage As String
 	Return AvatarPath
+End Sub
+
+Public Sub setMask(Value As String)
+	AvatarMask = B4XDaisyVariants.NormalizeMask(Value)
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getMask As String
+	Return getAvatarMask
 End Sub
 
 Public Sub setAvatarBitmap(bmp As B4XBitmap, Tag As Object)
@@ -374,18 +565,36 @@ Public Sub getAvatarTag As Object
 	Return AvatarTag
 End Sub
 
+Public Sub setTag(Value As Object)
+	mTag = Value
+	If mBase.IsInitialized = False Then Return
+End Sub
+
+Public Sub getTag As Object
+	Return mTag
+End Sub
+
 Public Sub setAvatarStatus(Mode As String)
 	Dim m As String = Mode.ToLowerCase
 	If m <> "online" And m <> "offline" Then m = "none"
 	AvatarStatus = m
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
 Public Sub setStatus(Mode As String)
-	SetAvatarStatus(Mode)
+	Dim m As String = Mode.ToLowerCase
+	If m <> "online" And m <> "offline" Then m = "none"
+	AvatarStatus = m
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
 Public Sub getAvatarStatus As String
+	Return AvatarStatus
+End Sub
+
+Public Sub getStatus As String
 	Return AvatarStatus
 End Sub
 
@@ -398,6 +607,7 @@ Public Sub setAvatarStatusColors(OnlineColor As Int, OfflineColor As Int)
 		CustomOfflineColor = OfflineColor
 		AvatarOfflineColor = OfflineColor
 	End If
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -406,12 +616,42 @@ Public Sub setAvatarOnlineColor(OnlineColor As Int)
 	If OnlineColor = 0 Then Return
 	CustomOnlineColor = OnlineColor
 	AvatarOnlineColor = OnlineColor
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getOnlineColor As Int
+	Return ResolveOnlineColor
+End Sub
+
+Public Sub setOfflineColor(OfflineColor As Int)
+	If OfflineColor = 0 Then Return
+	CustomOfflineColor = OfflineColor
+	AvatarOfflineColor = OfflineColor
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getOfflineColor As Int
+	Return ResolveOfflineColor
+End Sub
+
+Public Sub setAvatarOnlineColorVariant(VariantName As String)
+	Dim c As Int = B4XDaisyVariants.ResolveOnlineColor(VariantName, ResolveOnlineColor)
+	setAvatarOnlineColor(c)
 End Sub
 
 'Short alias for setAvatarOnlineColor.
 Public Sub setOnlineColor(OnlineColor As Int)
-	setAvatarOnlineColor(OnlineColor)
+	If OnlineColor = 0 Then Return
+	CustomOnlineColor = OnlineColor
+	AvatarOnlineColor = OnlineColor
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub setOnlineColorVariant(VariantName As String)
+	setAvatarOnlineColorVariant(VariantName)
 End Sub
 
 Public Sub getAvatarOnlineColor As Int
@@ -424,6 +664,7 @@ End Sub
 
 Public Sub setShowOnline(Show As Boolean)
 	OnlineIndicatorVisible = Show
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -431,8 +672,75 @@ Public Sub getShowOnline As Boolean
 	Return OnlineIndicatorVisible
 End Sub
 
+Public Sub setAvatarType(Value As String)
+	AvatarType = NormalizeAvatarType(Value)
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getAvatarType As String
+	Return AvatarType
+End Sub
+
+Public Sub setPlaceHolder(Value As String)
+	If Value = Null Then Value = ""
+	PlaceholderText = Value
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getPlaceHolder As String
+	Return PlaceholderText
+End Sub
+
+Public Sub setTextColor(Value As Int)
+	PlaceholderTextColor = Value
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getTextColor As Int
+	Return PlaceholderTextColor
+End Sub
+
+Public Sub setTextSize(Value As String)
+	If Value = Null Then Value = ""
+	PlaceholderTextSize = Value.Trim
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getTextSize As String
+	Return PlaceholderTextSize
+End Sub
+
+Public Sub setTextColorVariant(VariantName As String)
+	InitializePalette
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(ActivePalette, VariantName, "text", PlaceholderTextColor)
+	If c = 0 Then c = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", PlaceholderTextColor)
+	setTextColor(c)
+End Sub
+
+Public Sub setBackgroundColor(Value As Int)
+	PlaceholderBackgroundColor = Value
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
+End Sub
+
+Public Sub getBackgroundColor As Int
+	Return PlaceholderBackgroundColor
+End Sub
+
+Public Sub setBackgroundColorVariant(VariantName As String)
+	InitializePalette
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(ActivePalette, VariantName, "back", PlaceholderBackgroundColor)
+	If c = 0 Then c = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", PlaceholderBackgroundColor)
+	setBackgroundColor(c)
+End Sub
+
 Public Sub setAvatarMask(MaskName As String)
 	AvatarMask = B4XDaisyVariants.NormalizeMask(MaskName)
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -441,11 +749,9 @@ Public Sub getAvatarMask As String
 End Sub
 
 Public Sub setRoundedBox(Value As Boolean)
-	If Value Then
-		SetAvatarMask("rounded")
-	Else
-		SetAvatarMask("circle")
-	End If
+	AvatarMask = IIf(Value, "rounded", "circle")
+	If mBase.IsInitialized = False Then Return
+	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
 Public Sub getRoundedBox As Boolean
@@ -460,22 +766,50 @@ Public Sub setAvatarSize(Size As Object)
 	Dim v As Float = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Size, Min(mWidth, mHeight)))
 	mWidth = v
 	mHeight = v
-	If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+	mWidthExplicit = True
+	mHeightExplicit = True
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub setWidth(Value As Object)
-	mWidth = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, mWidth))
-	If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+	mWidth = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, ResolveWidthBase(mWidth)))
+	mWidthExplicit = True
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub setHeight(Value As Object)
-	mHeight = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, mHeight))
-	If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+	mHeight = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, ResolveHeightBase(mHeight)))
+	mHeightExplicit = True
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub setPadding(Value As String)
+	mPadding = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub getPadding As String
+	Return mPadding
+End Sub
+
+Public Sub setMargin(Value As String)
+	mMargin = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub getMargin As String
+	Return mMargin
 End Sub
 
 Public Sub setCenterOnParent(Value As Boolean)
 	CenterOnParent = Value
-	If mBase.IsInitialized Then Base_Resize(mBase.Width, mBase.Height)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
 End Sub
 
 Public Sub getCenterOnParent As Boolean
@@ -510,6 +844,7 @@ End Sub
 Public Sub setAvatarBorder(Color As Int, Width As Float)
 	AvatarBorderColor = Color
 	AvatarBorderWidth = Max(0, Width)
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -520,6 +855,7 @@ End Sub
 
 Public Sub setRingColor(Color As Int)
 	RingColor = Color
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -537,6 +873,7 @@ End Sub
 
 Public Sub setRingWidth(Width As Float)
 	AvatarBorderWidth = Max(0, Width)
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -546,6 +883,7 @@ End Sub
 
 Public Sub setRingOffset(Offset As Float)
 	RingOffset = Max(0, Offset)
+	If mBase.IsInitialized = False Then Return
 	If ivAvatar.IsInitialized Then DrawAvatar
 End Sub
 
@@ -585,8 +923,13 @@ Private Sub ResolveRingColor As Int
 	If RingColor <> 0 Then Return RingColor
 	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(ActivePalette, Variant, "back", 0)
 	If c = 0 Then c = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, Variant, "back", 0)
-	If c = 0 Then c = B4XDaisyVariants.ResolveVariantColor(ActivePalette, Variant, "muted", AvatarBorderColor)
+	If c = 0 Then c = B4XDaisyVariants.ResolveVariantColor(ActivePalette, Variant, "muted", ResolveAvatarOutlineColor)
 	Return c
+End Sub
+
+Private Sub ResolveAvatarOutlineColor As Int
+	If AvatarBorderColor <> 0 Then Return AvatarBorderColor
+	Return B4XDaisyVariants.GetTokenColor("--color-base-100", xui.Color_RGB(245, 245, 245))
 End Sub
 
 Private Sub ResolveAvatarContentRect(Width As Float, Height As Float) As B4XRect
@@ -700,15 +1043,16 @@ Private Sub DrawAvatar
 	End If
 
 	Dim ringColor As Int
+	Dim outlineColor As Int = ResolveAvatarOutlineColor
 	If ChatImage Then
-		ringColor = IIf(statusColor <> 0, statusColor, AvatarBorderColor)
+		ringColor = IIf(statusColor <> 0, statusColor, outlineColor)
 	Else
 		ringColor = ResolveRingColor
 	End If
 	Dim ringW As Float = Max(0, AvatarBorderWidth)
 	'Chat-image behavior: online status should always surface a visible ring.
 	If ChatImage And effectiveStatus = "online" And ringW <= 0 Then
-		ringW = Max(1dip, PROP_DEFAULT_RING_WIDTH_DIP)
+		ringW = Max(1dip, 1dip)
 	End If
 	Dim gapW As Float = Max(0, RingOffset)
 	Dim ringRadius As Float = -1
@@ -752,19 +1096,34 @@ Private Sub DrawAvatar
 	End If
 
 	AvatarCvs.ClipPath(imagePath)
-	If AvatarBmp.IsInitialized Then
+	Dim canDrawBitmap As Boolean = AvatarBmp.IsInitialized And AvatarType = "image"
+	If canDrawBitmap Then
 		If ChatImage Then
-			WarnIfUpscaled(AvatarSourceLabel, AvatarBmp, imageRect)
+			'WarnIfUpscaled(AvatarSourceLabel, AvatarBmp, imageRect)
 			AvatarCvs.DrawBitmap(AvatarBmp, imageRect)
 		Else
 			'Use object-fit: cover behavior by default (center crop, keep aspect ratio).
 			Dim bmpRect As B4XRect = ResolveBitmapCoverRect(AvatarBmp, imageRect)
-			WarnIfUpscaled(AvatarSourceLabel, AvatarBmp, bmpRect)
+			'WarnIfUpscaled(AvatarSourceLabel, AvatarBmp, bmpRect)
 			AvatarCvs.DrawBitmap(AvatarBmp, bmpRect)
 		End If
 	Else
-		Dim placeholder As Int = B4XDaisyVariants.ResolveVariantColor(ActivePalette, Variant, "back", xui.Color_RGB(220, 220, 220))
+		Dim placeholder As Int = ResolvePlaceholderBackColor
 		AvatarCvs.DrawRect(imageRect, placeholder, True, 0)
+		Dim phText As String = ResolvePlaceholderText
+		If phText.Length > 0 Then
+			Dim autoSize As Float = Max(10, Min(imageRect.Width, imageRect.Height) * 0.36)
+			Dim fontSize As Float = autoSize
+			If PlaceholderTextSize.Length > 0 Then
+				Dim tm As Map = B4XDaisyVariants.TailwindTextMetrics(PlaceholderTextSize, autoSize, autoSize * 1.2)
+				fontSize = tm.GetDefault("font_size", autoSize)
+			End If
+			Dim f As B4XFont = xui.CreateDefaultBoldFont(fontSize)
+			Dim textRect As B4XRect = AvatarCvs.MeasureText(phText, f)
+			Dim tx As Float = imageRect.CenterX
+			Dim ty As Float = imageRect.CenterY - (textRect.Height / 2) + textRect.Height
+			AvatarCvs.DrawText(phText, tx, ty, f, ResolvePlaceholderTextColor, "CENTER")
+		End If
 	End If
 	AvatarCvs.RemoveClip
 
@@ -789,11 +1148,42 @@ Private Sub DrawAvatar
 			cx = imageRect.Right - (dd * 0.07) - r
 			cy = imageRect.Top + (dd * 0.07) + r
 		End If
-		AvatarCvs.DrawCircle(cx, cy, r + 2dip, AvatarBorderColor, True, 0)
+		AvatarCvs.DrawCircle(cx, cy, r + 2dip, outlineColor, True, 0)
 		AvatarCvs.DrawCircle(cx, cy, r, statusColor, True, 0)
 	End If
 
 	AvatarCvs.Invalidate
+End Sub
+
+Private Sub NormalizeAvatarType(Value As String) As String
+	If Value = Null Then Return "image"
+	Dim v As String = Value.ToLowerCase.Trim
+	Select Case v
+		Case "image", "svg", "text"
+			Return v
+		Case Else
+			Return "image"
+	End Select
+End Sub
+
+Private Sub ResolvePlaceholderBackColor As Int
+	If PlaceholderBackgroundColor <> 0 Then Return PlaceholderBackgroundColor
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(ActivePalette, Variant, "back", 0)
+	If c <> 0 Then Return c
+	Return B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(220, 220, 220))
+End Sub
+
+Private Sub ResolvePlaceholderTextColor As Int
+	If PlaceholderTextColor <> 0 Then Return PlaceholderTextColor
+	Return B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_RGB(55, 65, 81))
+End Sub
+
+Private Sub ResolvePlaceholderText As String
+	Dim t As String = PlaceholderText
+	If t <> Null Then t = t.Trim Else t = ""
+	If t.Length > 0 Then Return t
+	If AvatarType = "svg" Then Return "SVG"
+	Return ""
 End Sub
 
 Private Sub AvatarSourceLabel As String
@@ -845,7 +1235,7 @@ End Sub
 
 Private Sub ivAvatar_Click
 	Dim payload As Object = AvatarTag
-	If payload = Null Then payload = mBase.Tag
+	If payload = Null Then payload = mTag
 	If payload = Null Then payload = ""
 	If xui.SubExists(mCallBack, mEventName & "_AvatarClick", 1) Then
 		CallSub2(mCallBack, mEventName & "_AvatarClick", payload)

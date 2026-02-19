@@ -16,20 +16,22 @@ Sub Class_Globals
 	Private xui As XUI
 	Private PendingDashboardOnReopen As Boolean
 	Public ChatPage As B4xPageChat
+	Public AlertPage As B4XPageAlert
 	Public AvatarPage As B4xPageAvatar
 	Public MaskPage As B4xPageMask
 	Public StackPage As B4XPageStack
 	Public StackPhotosPage As B4XPageStackPhotos
 	Public SvgIconPage As B4xPageSvgIcon
+	Public SwapPage As B4XPageSwap
 	Public DashboardPage As B4XPageDashboard
 	Private B4XGifView1 As B4XGifView
 End Sub
 
 Public Sub Initialize
-	B4XPages.GetManager.LogEvents = True
+'	B4XPages.GetManager.LogEvents = True
 	B4XPages.GetManager.TransitionAnimationDuration = 0
 '	DashboardPage.Initialize
-'	B4XPages.AddPage("Dashboard", DashboardPage)
+'	B4XPages.AddPageAndCreate("Dashboard", DashboardPage)
 '	B4XPages.ShowPage("Dashboard")
 End Sub
 
@@ -64,21 +66,33 @@ Sub ShowSplashScreen As ResumableSub
 	#End If	
 	'
 	ChatPage.Initialize
+	AlertPage.Initialize
 	AvatarPage.Initialize
 	MaskPage.Initialize
 	StackPage.Initialize
 	StackPhotosPage.Initialize
 	SvgIconPage.Initialize
+	SwapPage.Initialize
 	DashboardPage.Initialize
 	
 	B4XPages.AddPageAndCreate("Chat", ChatPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Alert", AlertPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("Avatar", AvatarPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("Mask", MaskPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("Stack", StackPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("Stack Photos", StackPhotosPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("SVG Icon", SvgIconPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Swap", SwapPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("Dashboard", DashboardPage)
-	'	
+	Sleep(0)
 	Return True
 End Sub
 

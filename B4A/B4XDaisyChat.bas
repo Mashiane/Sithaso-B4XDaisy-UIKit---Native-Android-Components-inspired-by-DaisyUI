@@ -7,7 +7,7 @@ Version=13.4
 
 #Event: AvatarClick (Tag As Object)
 
-#DesignerProperty: Key: AvatarMask, DisplayName: Avatar Mask, FieldType: String, DefaultValue: circle, List: circle|square|squircle|decagon|diamond|heart|hexagon|hexagon-2|pentagon|star|star-2|triangle|triangle-2|triangle-3|triangle-4|half-1|half-2, Description: Mask shape used for message avatars
+#DesignerProperty: Key: AvatarMask, DisplayName: Avatar Mask, FieldType: String, DefaultValue: squircle, List: circle|square|squircle|decagon|diamond|heart|hexagon|hexagon-2|pentagon|star|star-2|triangle|triangle-2|triangle-3|triangle-4|half-1|half-2, Description: Mask shape used for message avatars
 #DesignerProperty: Key: AvatarSize, DisplayName: Avatar Size, FieldType: Int, DefaultValue: 40, Description: Avatar size in dip for each message row
 #DesignerProperty: Key: FromBackgroundColor, DisplayName: From Background, FieldType: Color, DefaultValue: 0xFF4338CA, Description: Background color for outgoing (from) bubbles
 #DesignerProperty: Key: FromTextColor, DisplayName: From Text, FieldType: Color, DefaultValue: 0xFFFFFFFF, Description: Text color for outgoing (from) bubbles
@@ -21,6 +21,8 @@ Version=13.4
 #DesignerProperty: Key: VerticalGap, DisplayName: Vertical Gap, FieldType: Int, DefaultValue: 8, Description: Vertical spacing in dip between message rows
 #DesignerProperty: Key: Width, DisplayName: Width, FieldType: Int, DefaultValue: 0, Description: Explicit chat width in dip (0 uses base width)
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: Int, DefaultValue: 0, Description: Explicit chat height in dip (0 uses base height)
+#DesignerProperty: Key: Padding, DisplayName: Padding, FieldType: String, DefaultValue:, Description: Tailwind/spacing padding utilities (eg p-2, px-3, 2)
+#DesignerProperty: Key: Margin, DisplayName: Margin, FieldType: String, DefaultValue:, Description: Tailwind/spacing margin utilities (eg m-2, mx-1.5, 1)
 
 'B4XDaisyChat
 'Self-contained chat component that manages bubble list, rendering, and runtime updates.
@@ -30,6 +32,8 @@ Sub Class_Globals
 	Public mBase As B4XView
 	Private mEventName As String
 	Private mCallBack As Object
+	Private mTag As Object
+	Private CustProps As Map
 
 	Private sv As ScrollView
 	Private pnlContent As B4XView
@@ -43,7 +47,7 @@ Sub Class_Globals
 	Private AvatarFiles As List
 	Private AvatarCache As Map 'filename -> B4XBitmap
 
-	Private AvatarMask As String = "circle"
+	Private AvatarMask As String = "squircle"
 	Private AvatarSize As Float = 40dip
 	Private FromBackgroundColor As Int = 0xFF4338CA
 	Private FromTextColor As Int = 0xFFFFFFFF
@@ -59,6 +63,8 @@ Sub Class_Globals
 	Private VerticalGap As Int = 8dip
 	Private ChatWidth As Int = 0
 	Private ChatHeight As Int = 0
+	Private mPadding As String = ""
+	Private mMargin As String = ""
 	Private AvatarOnlineColor As Int = 0xFF2ECC71
 	Private AvatarOfflineColor As Int = 0xFFB4B4B4
 End Sub
@@ -67,6 +73,7 @@ Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	InitializeThemes
+	SetDefaults
 End Sub
 
 Public Sub CreateView(Width As Int, Height As Int) As B4XView
@@ -82,6 +89,8 @@ End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
+	If mTag = Null Then mTag = mBase.Tag
+	mBase.Tag = Me
 	mBase.Color = xui.Color_Transparent
 
 	sv.Initialize(0)
@@ -109,7 +118,8 @@ Public Sub Resize(Width As Double, Height As Double)
 	mBase.SetLayoutAnimated(0, 0, 0, Width, Height)
 	ChatWidth = Width
 	ChatHeight = Height
-	sv.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim contentRect As B4XRect = ResolveContentRectForBounds(Width, Height)
+	sv.SetLayoutAnimated(0, contentRect.Left, contentRect.Top, contentRect.Width, contentRect.Height)
 	RelayoutAll
 End Sub
 
@@ -118,7 +128,8 @@ Public Sub Base_Resize(Width As Double, Height As Double)
 	If sv.IsInitialized = False Then Return
 	ChatWidth = Width
 	ChatHeight = Height
-	sv.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim contentRect As B4XRect = ResolveContentRectForBounds(Width, Height)
+	sv.SetLayoutAnimated(0, contentRect.Left, contentRect.Top, contentRect.Width, contentRect.Height)
 	RelayoutAll
 End Sub
 
@@ -154,21 +165,110 @@ Sub IsReady As Boolean
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
+	If CustProps.IsInitialized = False Then SetDefaults
+	SetProperties(Props)
+	Dim p As Map = CustProps
+	If p.IsInitialized = False Then Return
+	AvatarMask = B4XDaisyVariants.NormalizeMask(GetPropString(p, "AvatarMask", AvatarMask))
+	AvatarSize = Max(16dip, GetPropDip(p, "AvatarSize", AvatarSize))
+	FromBackgroundColor = GetPropInt(p, "FromBackgroundColor", FromBackgroundColor)
+	FromTextColor = GetPropInt(p, "FromTextColor", FromTextColor)
+	ToBackgroundColor = GetPropInt(p, "ToBackgroundColor", ToBackgroundColor)
+	ToTextColor = GetPropInt(p, "ToTextColor", ToTextColor)
+	UseFromToColors = GetPropBool(p, "UseFromToColors", UseFromToColors)
+	SetTheme(GetPropString(p, "Theme", CurrentTheme))
+	DateTimeFormat = B4XDaisyVariants.NormalizeDateTimeFormat(GetPropString(p, "DateTimeFormat", DateTimeFormat), "D, j M Y H:i")
+	UseTimeAgo = GetPropBool(p, "UseTimeAgo", UseTimeAgo)
+	ShowTimeAgoForToday = GetPropBool(p, "ShowTimeAgoForToday", ShowTimeAgoForToday)
+	VerticalGap = Max(0, GetPropDip(p, "VerticalGap", VerticalGap))
+	ChatWidth = Max(0, GetPropDip(p, "Width", 0))
+	ChatHeight = Max(0, GetPropDip(p, "Height", 0))
+	mPadding = GetPropString(p, "Padding", mPadding)
+	mMargin = GetPropString(p, "Margin", mMargin)
+End Sub
+
+Public Sub SetDefaults
+	CustProps.Initialize
+	CustProps.Put("AvatarMask", AvatarMask)
+	CustProps.Put("AvatarSize", AvatarSize)
+	CustProps.Put("FromBackgroundColor", FromBackgroundColor)
+	CustProps.Put("FromTextColor", FromTextColor)
+	CustProps.Put("ToBackgroundColor", ToBackgroundColor)
+	CustProps.Put("ToTextColor", ToTextColor)
+	CustProps.Put("UseFromToColors", UseFromToColors)
+	CustProps.Put("Theme", CurrentTheme)
+	CustProps.Put("DateTimeFormat", DateTimeFormat)
+	CustProps.Put("UseTimeAgo", UseTimeAgo)
+	CustProps.Put("ShowTimeAgoForToday", ShowTimeAgoForToday)
+	CustProps.Put("VerticalGap", VerticalGap)
+	CustProps.Put("Width", ChatWidth)
+	CustProps.Put("Height", ChatHeight)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+End Sub
+
+Public Sub SetProperties(Props As Map)
 	If Props.IsInitialized = False Then Return
-	AvatarMask = B4XDaisyVariants.NormalizeMask(GetPropString(Props, "AvatarMask", AvatarMask))
-	AvatarSize = Max(16dip, GetPropDip(Props, "AvatarSize", AvatarSize))
-	FromBackgroundColor = GetPropInt(Props, "FromBackgroundColor", FromBackgroundColor)
-	FromTextColor = GetPropInt(Props, "FromTextColor", FromTextColor)
-	ToBackgroundColor = GetPropInt(Props, "ToBackgroundColor", ToBackgroundColor)
-	ToTextColor = GetPropInt(Props, "ToTextColor", ToTextColor)
-	UseFromToColors = GetPropBool(Props, "UseFromToColors", UseFromToColors)
-	SetTheme(GetPropString(Props, "Theme", CurrentTheme))
-	DateTimeFormat = B4XDaisyVariants.NormalizeDateTimeFormat(GetPropString(Props, "DateTimeFormat", DateTimeFormat), "D, j M Y H:i")
-	UseTimeAgo = GetPropBool(Props, "UseTimeAgo", UseTimeAgo)
-	ShowTimeAgoForToday = GetPropBool(Props, "ShowTimeAgoForToday", ShowTimeAgoForToday)
-	VerticalGap = Max(0, GetPropDip(Props, "VerticalGap", VerticalGap))
-	ChatWidth = Max(0, GetPropDip(Props, "Width", 0))
-	ChatHeight = Max(0, GetPropDip(Props, "Height", 0))
+	Dim src As Map
+	src.Initialize
+	For Each k As String In Props.Keys
+		src.Put(k, Props.Get(k))
+	Next
+	CustProps.Initialize
+	For Each k As String In src.Keys
+		CustProps.Put(k, src.Get(k))
+	Next
+End Sub
+
+Public Sub GetProperties As Map
+	CustProps.Initialize
+	CustProps.Put("AvatarMask", AvatarMask)
+	CustProps.Put("AvatarSize", AvatarSize)
+	CustProps.Put("FromBackgroundColor", FromBackgroundColor)
+	CustProps.Put("FromTextColor", FromTextColor)
+	CustProps.Put("ToBackgroundColor", ToBackgroundColor)
+	CustProps.Put("ToTextColor", ToTextColor)
+	CustProps.Put("UseFromToColors", UseFromToColors)
+	CustProps.Put("Theme", CurrentTheme)
+	CustProps.Put("DateTimeFormat", DateTimeFormat)
+	CustProps.Put("UseTimeAgo", UseTimeAgo)
+	CustProps.Put("ShowTimeAgoForToday", ShowTimeAgoForToday)
+	CustProps.Put("VerticalGap", VerticalGap)
+	CustProps.Put("Width", ChatWidth)
+	CustProps.Put("Height", ChatHeight)
+	CustProps.Put("Padding", mPadding)
+	CustProps.Put("Margin", mMargin)
+	CustProps.Put("Tag", mTag)
+	Return CustProps
+End Sub
+
+Public Sub setTag(Value As Object)
+	mTag = Value
+	If mBase.IsInitialized = False Then Return
+End Sub
+
+Public Sub getTag As Object
+	Return mTag
+End Sub
+
+Public Sub setPadding(Value As String)
+	mPadding = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub getPadding As String
+	Return mPadding
+End Sub
+
+Public Sub setMargin(Value As String)
+	mMargin = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub getMargin As String
+	Return mMargin
 End Sub
 
 Private Sub getPropDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
@@ -184,6 +284,48 @@ Private Sub ApplyComponentSize
 	If h <= 0 Then h = 1dip
 	mBase.SetLayoutAnimated(0, mBase.Left, mBase.Top, w, h)
 	Resize(w, h)
+End Sub
+
+Private Sub ResolveContentRectForBounds(Width As Float, Height As Float) As B4XRect
+	Dim host As B4XRect
+	host.Initialize(0, 0, Max(1dip, Width), Max(1dip, Height))
+	Dim box As Map = BuildBoxModel
+	Dim outerRect As B4XRect = B4XDaisyBoxModel.ResolveOuterRect(host, box)
+	Return B4XDaisyBoxModel.ResolveContentRect(outerRect, box)
+End Sub
+
+Private Sub BuildBoxModel As Map
+	Dim box As Map = B4XDaisyBoxModel.CreateDefaultModel
+	ApplySpacingSpecToBox(box, mPadding, mMargin)
+	Return box
+End Sub
+
+Private Sub ApplySpacingSpecToBox(Box As Map, PaddingSpec As String, MarginSpec As String)
+	Dim rtl As Boolean = False
+	Dim p As String = IIf(PaddingSpec = Null, "", PaddingSpec.Trim)
+	Dim m As String = IIf(MarginSpec = Null, "", MarginSpec.Trim)
+	If p.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(p, Array As String("p-", "px-", "py-", "pt-", "pr-", "pb-", "pl-", "ps-", "pe-")) Then
+			B4XDaisyBoxModel.ApplyPaddingUtilities(Box, p, rtl)
+		Else
+			Dim pv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(p, 0dip)
+			Box.Put("padding_left", pv)
+			Box.Put("padding_right", pv)
+			Box.Put("padding_top", pv)
+			Box.Put("padding_bottom", pv)
+		End If
+	End If
+	If m.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(m, Array As String("m-", "mx-", "my-", "mt-", "mr-", "mb-", "ml-", "ms-", "me-", "-m-", "-mx-", "-my-", "-mt-", "-mr-", "-mb-", "-ml-", "-ms-", "-me-")) Then
+			B4XDaisyBoxModel.ApplyMarginUtilities(Box, m, rtl)
+		Else
+			Dim mv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(m, 0dip)
+			Box.Put("margin_left", mv)
+			Box.Put("margin_right", mv)
+			Box.Put("margin_top", mv)
+			Box.Put("margin_bottom", mv)
+		End If
+	End If
 End Sub
 
 Private Sub getPropString(Props As Map, Key As String, DefaultValue As String) As String

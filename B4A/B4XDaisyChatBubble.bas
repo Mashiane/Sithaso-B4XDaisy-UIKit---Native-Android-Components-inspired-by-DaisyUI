@@ -10,7 +10,7 @@ Version=13.4
 #Event: AvatarClick (Payload As Object)
 #Event: BubbleClick (Tag As Object)
 
-#DesignerProperty: Key: AvatarMask, DisplayName: Avatar Mask, FieldType: String, DefaultValue: circle, List: circle|square|squircle|decagon|diamond|heart|hexagon|hexagon-2|pentagon|star|star-2|triangle|triangle-2|triangle-3|triangle-4|half-1|half-2, Description: Mask shape used for the bubble avatar
+#DesignerProperty: Key: AvatarMask, DisplayName: Avatar Mask, FieldType: String, DefaultValue: squircle, List: circle|square|squircle|decagon|diamond|heart|hexagon|hexagon-2|pentagon|star|star-2|triangle|triangle-2|triangle-3|triangle-4|half-1|half-2, Description: Mask shape used for the bubble avatar
 #DesignerProperty: Key: AvatarSize, DisplayName: Avatar Size, FieldType: Int, DefaultValue: 40, Description: Avatar size in dip
 #DesignerProperty: Key: Id, DisplayName: Id, FieldType: String, DefaultValue:, Description: Message author id
 #DesignerProperty: Key: FromId, DisplayName: From Id, FieldType: String, DefaultValue:, Description: Current user id used to resolve outgoing side
@@ -24,6 +24,8 @@ Version=13.4
 #DesignerProperty: Key: ToBackgroundColor, DisplayName: To Background, FieldType: Color, DefaultValue: 0xFFDBEAFE, Description: Background color for incoming (to) bubbles
 #DesignerProperty: Key: ToTextColor, DisplayName: To Text, FieldType: Color, DefaultValue: 0xFF1E3A8A, Description: Text color for incoming (to) bubbles
 #DesignerProperty: Key: ShowOnline, DisplayName: Show Online Indicator, FieldType: Boolean, DefaultValue: True, Description: Show avatar online/offline indicator
+#DesignerProperty: Key: Padding, DisplayName: Padding, FieldType: String, DefaultValue:, Description: Tailwind/spacing padding utilities (eg p-2, px-3, 2)
+#DesignerProperty: Key: Margin, DisplayName: Margin, FieldType: String, DefaultValue:, Description: Tailwind/spacing margin utilities (eg m-2, mx-1.5, 1)
 
 Sub Class_Globals
 	Private xui As XUI
@@ -32,15 +34,19 @@ Sub Class_Globals
 	Private mCallBack As Object
 
 	'Layout tokens
-	Private Gap As Float = 4dip
+	Private Gap As Float = 2dip
 	Private OuterMargin As Float = 10dip
-	Private PaddingH As Float = 14dip
-	Private PaddingV As Float = 10dip
+	Private PaddingH As Float = 16dip
+	Private PaddingV As Float = 8dip
+	Private RowPadY As Float = 4dip
+	Private RowMetaGapY As Float = 4dip
+	Private mPadding As String = ""
+	Private mMargin As String = ""
 	Private AvatarSize As Float = 40dip
 	Private TailSize As Float = 11dip
 	Private Corner As Float = 18dip
 	Private MaxWidthPct As Float = 0.90
-	Private MinBubbleWidth As Int = 40dip   '2.5rem-ish
+	Private MinBubbleWidth As Int = 44dip   'requested minimum width
 	Private MinBubbleHeight As Int = 32dip  '2rem-ish
 	Private BubbleStyle As String = "rounded" 'rounded|block
 
@@ -60,7 +66,7 @@ Sub Class_Globals
 	Private AvatarBorderWidth As Float = 1.2dip
 	Private AvatarBorderInset As Float = 1.5dip
 	Private AvatarBorderColor As Int = 0xFFF5F5F5
-	Private AvatarMask As String = "circle" 'circle|square|squircle|decagon|diamond|heart|hexagon|hexagon-2|pentagon|star|star-2|triangle|triangle-2|triangle-3|triangle-4|half-1|half-2
+	Private AvatarMask As String = "squircle" 'circle|square|squircle|decagon|diamond|heart|hexagon|hexagon-2|pentagon|star|star-2|triangle|triangle-2|triangle-3|triangle-4|half-1|half-2
 	Private OnlineIndicatorVisible As Boolean = True
 	Private AvatarOnlineColor As Int = 0xFF2ECC71
 	Private AvatarOfflineColor As Int = 0xFFB4B4B4
@@ -111,6 +117,7 @@ Sub Class_Globals
 	Private ContentMode As String = "text" 'text|image|custom
 	Private ContentImage As B4XBitmap
 	Private ContentImageMaxH As Int = 220dip
+	Private DebugBorders As Boolean = False
 
 	'Drawing cache
 	Private cvs As B4XCanvas
@@ -208,9 +215,9 @@ Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	pnlBubble.AddView(ivBubbleBg, 0, 0, pnlBubble.Width, pnlBubble.Height)
 
 	'Header / Footer
-	lblHeaderName = CreateLabel(10, False, True)
-	lblHeaderTime = CreateLabel(9, False, True)
-	lblFooter = CreateLabel(9, False, True)
+	lblHeaderName = CreateLabel(11, False, True)
+	lblHeaderTime = CreateLabel(11, False, True)
+	lblFooter = CreateLabel(11, False, True)
 
 	pnlRow.AddView(lblHeaderName, 0, 0, 10dip, 10dip)
 	pnlRow.AddView(lblHeaderTime, 0, 0, 10dip, 10dip)
@@ -276,6 +283,8 @@ Private Sub ApplyDesignerProps(Props As Map)
 	FromTextColor = GetPropInt(Props, "FromTextColor", FromTextColor)
 	ToBackgroundColor = GetPropInt(Props, "ToBackgroundColor", ToBackgroundColor)
 	ToTextColor = GetPropInt(Props, "ToTextColor", ToTextColor)
+	mPadding = GetPropString(Props, "Padding", mPadding)
+	mMargin = GetPropString(Props, "Margin", mMargin)
 	BubbleId = GetPropString(Props, "Id", BubbleId)
 	BubbleFromId = GetPropString(Props, "FromId", BubbleFromId)
 	SetVariant(GetPropString(Props, "Variant", Variant))
@@ -302,10 +311,53 @@ Private Sub GetPropBool(Props As Map, Key As String, DefaultValue As Boolean) As
 	Return B4XDaisyVariants.GetPropBool(Props, Key, DefaultValue)
 End Sub
 
+Private Sub ResolveContentRectForBounds(Width As Float, Height As Float) As B4XRect
+	Dim host As B4XRect
+	host.Initialize(0, 0, Max(1dip, Width), Max(1dip, Height))
+	Dim box As Map = BuildBoxModel
+	Dim outerRect As B4XRect = B4XDaisyBoxModel.ResolveOuterRect(host, box)
+	Return B4XDaisyBoxModel.ResolveContentRect(outerRect, box)
+End Sub
+
+Private Sub BuildBoxModel As Map
+	Dim box As Map = B4XDaisyBoxModel.CreateDefaultModel
+	ApplySpacingSpecToBox(box, mPadding, mMargin)
+	Return box
+End Sub
+
+Private Sub ApplySpacingSpecToBox(Box As Map, PaddingSpec As String, MarginSpec As String)
+	Dim rtl As Boolean = False
+	Dim p As String = IIf(PaddingSpec = Null, "", PaddingSpec.Trim)
+	Dim m As String = IIf(MarginSpec = Null, "", MarginSpec.Trim)
+	If p.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(p, Array As String("p-", "px-", "py-", "pt-", "pr-", "pb-", "pl-", "ps-", "pe-")) Then
+			B4XDaisyBoxModel.ApplyPaddingUtilities(Box, p, rtl)
+		Else
+			Dim pv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(p, 0dip)
+			Box.Put("padding_left", pv)
+			Box.Put("padding_right", pv)
+			Box.Put("padding_top", pv)
+			Box.Put("padding_bottom", pv)
+		End If
+	End If
+	If m.Length > 0 Then
+		If B4XDaisyVariants.ContainsAny(m, Array As String("m-", "mx-", "my-", "mt-", "mr-", "mb-", "ml-", "ms-", "me-", "-m-", "-mx-", "-my-", "-mt-", "-mr-", "-mb-", "-ml-", "-ms-", "-me-")) Then
+			B4XDaisyBoxModel.ApplyMarginUtilities(Box, m, rtl)
+		Else
+			Dim mv As Float = B4XDaisyBoxModel.TailwindSpacingToDip(m, 0dip)
+			Box.Put("margin_left", mv)
+			Box.Put("margin_right", mv)
+			Box.Put("margin_top", mv)
+			Box.Put("margin_bottom", mv)
+		End If
+	End If
+End Sub
+
 Public Sub Base_Resize(Width As Double, Height As Double)
 	If pnlRow.IsInitialized = False Then Return
-	pnlRow.SetLayoutAnimated(0, 0, 0, Width, Height)
-	LayoutNow(Width, Height)
+	Dim contentRect As B4XRect = ResolveContentRectForBounds(Width, Height)
+	pnlRow.SetLayoutAnimated(0, contentRect.Left, contentRect.Top, contentRect.Width, contentRect.Height)
+	LayoutNow(contentRect.Width, contentRect.Height)
 End Sub
 
 Public Sub SetId(Value As String)
@@ -372,6 +424,26 @@ Public Sub SetMaxWidthPercent(p As Float)
 	If p < 0.3 Then p = 0.3
 	If p > 0.95 Then p = 0.95
 	MaxWidthPct = p
+End Sub
+
+Public Sub SetPadding(Value As String)
+	mPadding = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub GetPadding As String
+	Return mPadding
+End Sub
+
+Public Sub SetMargin(Value As String)
+	mMargin = IIf(Value = Null, "", Value)
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub GetMargin As String
+	Return mMargin
 End Sub
 
 Public Sub SetAvatarVisible(b As Boolean)
@@ -576,6 +648,16 @@ Public Sub SetBubbleVisible(b As Boolean)
 	BubbleVisible = b
 End Sub
 
+Public Sub SetDebugBorders(Enabled As Boolean)
+	DebugBorders = Enabled
+	If mBase.IsInitialized = False Then Return
+	Base_Resize(mBase.Width, mBase.Height)
+End Sub
+
+Public Sub GetDebugBorders As Boolean
+	Return DebugBorders
+End Sub
+
 Public Sub SetStatus(Mode As String, ExtraText As String)
 	'Mode: none|sent|delivered|read
 	StatusMode = NormalizeStatusMode(Mode)
@@ -617,9 +699,10 @@ End Sub
 
 'CLV: measure row height given available row width
 Public Sub MeasureHeight(AvailableWidth As Int) As Int
+	Dim sideEff As String = EffectiveSide
 	Dim bubbleW As Int = ComputeBubbleWidth(AvailableWidth)
-	Dim tailLeft As Int = IIf(Side="start", TailSize, 0)
-	Dim tailRight As Int = IIf(Side="end", TailSize, 0)
+	Dim tailLeft As Int = IIf(sideEff="start", TailSize, 0)
+	Dim tailRight As Int = IIf(sideEff="end", TailSize, 0)
 	Dim contentW As Int = bubbleW - (PaddingH*2) - tailLeft - tailRight
 	If contentW < 80dip Then contentW = 80dip
 	Dim bubbleBodyW As Int = bubbleW - tailLeft - tailRight
@@ -632,8 +715,8 @@ Public Sub MeasureHeight(AvailableWidth As Int) As Int
 	Dim timeW As Int = headerLayout.Get("time_w")
 	Dim hh As Int = 0
 	If showHeaderName Or showHeaderTime Then
-		Dim hName As Int = IIf(showHeaderName, MeasureLabelHeight(lblHeaderName, HeaderText, nameW), 0)
-		Dim hTime As Int = IIf(showHeaderTime, MeasureLabelHeight(lblHeaderTime, HeaderTimeText, Max(20dip, timeW)), 0)
+		Dim hName As Int = IIf(showHeaderName, MeasureSingleLineHeight(lblHeaderName), 0)
+		Dim hTime As Int = IIf(showHeaderTime, MeasureSingleLineHeight(lblHeaderTime), 0)
 		hh = Max(hName, hTime)
 	End If
 
@@ -654,12 +737,13 @@ Public Sub MeasureHeight(AvailableWidth As Int) As Int
 	Dim footerCombined As String = FooterComposite
 	Dim fh As Int = 0
 	If FooterVisible And footerCombined.Length > 0 Then
-		fh = MeasureLabelHeight(lblFooter, footerCombined, bubbleBodyW)
+		fh = MeasureSingleLineHeight(lblFooter)
 	End If
 
-	Dim bubbleH As Int = IIf(BubbleVisible, Max(MinBubbleHeight, PaddingV + bodyH + PaddingV), 0)
-	Dim rowH As Int = 6dip + IIf(hh > 0, hh + 3dip, 0) + bubbleH + IIf(fh > 0, 3dip + fh, 0)
-	rowH = Max(rowH, 6dip + IIf(hh > 0, hh + 3dip, 0) + IIf(AvatarVisible, AvatarSize, 0))
+	Dim minVisualBubbleH As Int = Max(44dip, IIf(AvatarVisible, AvatarSize, 0))
+	Dim bubbleH As Int = IIf(BubbleVisible, Max(Max(MinBubbleHeight, minVisualBubbleH), PaddingV + bodyH + PaddingV), 0)
+	Dim rowH As Int = (RowPadY * 2) + IIf(hh > 0, hh + RowMetaGapY, 0) + bubbleH + IIf(fh > 0, RowMetaGapY + fh, 0)
+	rowH = Max(rowH, (RowPadY * 2) + IIf(hh > 0, hh + RowMetaGapY, 0) + IIf(AvatarVisible, AvatarSize, 0))
 	Return rowH
 End Sub
 
@@ -668,6 +752,7 @@ End Sub
 '========================
 
 Private Sub LayoutNow(RowW As Int, RowH As Int)
+	Dim sideEff As String = EffectiveSide
 	'Colors (theme + overrides)
 	Dim cmap As Map
 	cmap = ResolveColors
@@ -677,8 +762,8 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	Dim metaMuted As Int = xui.Color_RGB(120, 120, 120)
 
 	Dim bubbleW As Int = ComputeBubbleWidth(RowW)
-	Dim tailLeft As Int = IIf(Side="start", TailSize, 0)
-	Dim tailRight As Int = IIf(Side="end", TailSize, 0)
+	Dim tailLeft As Int = IIf(sideEff="start", TailSize, 0)
+	Dim tailRight As Int = IIf(sideEff="end", TailSize, 0)
 	Dim contentW As Int = bubbleW - (PaddingH*2) - tailLeft - tailRight
 	If contentW < 80dip Then contentW = 80dip
 	Dim bubbleBodyW As Int = bubbleW - tailLeft - tailRight
@@ -692,8 +777,8 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	Dim timeW As Int = headerLayout.Get("time_w")
 	Dim gapW As Int = headerLayout.Get("gap_w")
 	Dim hh As Int = 0
-	Dim hName As Int = IIf(showHeaderName And nameW > 0, MeasureLabelHeight(lblHeaderName, HeaderText, nameW), 0)
-	Dim hTime As Int = IIf(showHeaderTime And timeW > 0, MeasureLabelHeight(lblHeaderTime, HeaderTimeText, Max(20dip, timeW)), 0)
+	Dim hName As Int = IIf(showHeaderName And nameW > 0, MeasureSingleLineHeight(lblHeaderName), 0)
+	Dim hTime As Int = IIf(showHeaderTime And timeW > 0, MeasureSingleLineHeight(lblHeaderTime), 0)
 	If showHeaderName Or showHeaderTime Then hh = Max(hName, hTime)
 	
 	Dim footerCombined As String = FooterComposite
@@ -702,11 +787,11 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	lblFooter.TextColor = metaMuted
 	If lblFooter.Visible Then
 		lblFooter.Text = footerCombined
-		fh = MeasureLabelHeight(lblFooter, footerCombined, bubbleBodyW)
+		fh = MeasureSingleLineHeight(lblFooter)
 	End If
 	
-	Dim topY As Int = 3dip
-	Dim bubbleY As Int = topY + IIf(hh > 0, hh + 3dip, 0)
+	Dim topY As Int = RowPadY
+	Dim bubbleY As Int = topY + IIf(hh > 0, hh + RowMetaGapY, 0)
 
 	'Measure content body height
 	Dim bodyH As Int
@@ -726,11 +811,12 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	Else
 		bodyH = 0
 	End If
-	Dim bubbleH As Int = IIf(BubbleVisible, Max(MinBubbleHeight, PaddingV + bodyH + PaddingV), 0)
+	Dim minVisualBubbleH As Int = Max(44dip, IIf(AvatarVisible, AvatarSize, 0))
+	Dim bubbleH As Int = IIf(BubbleVisible, Max(Max(MinBubbleHeight, minVisualBubbleH), PaddingV + bodyH + PaddingV), 0)
 
 	Dim aW As Int = 0
 	Dim bubbleX As Int
-	If Side = "start" Then
+	If sideEff = "start" Then
 		If AvatarVisible Then aW = AvatarSize
 		bubbleX = OuterMargin + IIf(AvatarVisible, aW + Gap, 0)
 	Else
@@ -741,10 +827,15 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	'Avatar aligned with bubble block (not header/footer)
 	If AvatarVisible Then
 		ivAvatar.Visible = True
-		Dim avatarX As Int = IIf(Side = "start", OuterMargin, RowW - OuterMargin - AvatarSize)
-		Dim avatarAnchorH As Int = IIf(BubbleVisible, bubbleH, Max(hh, 0))
-		Dim avatarY As Int = bubbleY + Max(0, avatarAnchorH - AvatarSize)
+		Dim avatarX As Int = IIf(sideEff = "start", OuterMargin, RowW - OuterMargin - AvatarSize)
+		' Align avatar bottom edge with the chat bubble bottom edge (never below bubble bottom).
+		Dim avatarY As Int = IIf(BubbleVisible, bubbleY + bubbleH - AvatarSize, bubbleY)
 		ivAvatar.SetLayoutAnimated(0, avatarX, avatarY, AvatarSize, AvatarSize)
+		If DebugBorders Then
+			ivAvatar.SetColorAndBorder(xui.Color_Transparent, 1dip, xui.Color_Red, 0)
+		Else
+			ivAvatar.SetColorAndBorder(xui.Color_Transparent, 0, xui.Color_Transparent, 0)
+		End If
 		DrawAvatar
 	Else
 		ivAvatar.Visible = False
@@ -754,6 +845,11 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	If BubbleVisible Then
 		pnlBubble.SetLayoutAnimated(0, bubbleX, bubbleY, bubbleW, bubbleH)
 		ivBubbleBg.SetLayoutAnimated(0, 0, 0, bubbleW, bubbleH)
+		If DebugBorders Then
+			pnlBubble.SetColorAndBorder(xui.Color_Transparent, 1dip, xui.Color_Red, 0)
+		Else
+			pnlBubble.SetColorAndBorder(xui.Color_Transparent, 0, xui.Color_Transparent, 0)
+		End If
 	Else
 		pnlBubble.SetLayoutAnimated(0, bubbleX, bubbleY, 0, 0)
 	End If
@@ -768,19 +864,19 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	lblHeaderTime.TextColor = metaMuted
 	lblHeaderName.SetTextAlignment("CENTER", "LEFT")
 	lblHeaderTime.SetTextAlignment("CENTER", "LEFT")
-	lblFooter.SetTextAlignment("CENTER", IIf(Side = "start", "LEFT", "RIGHT"))
+	lblFooter.SetTextAlignment("CENTER", IIf(sideEff = "start", "LEFT", "RIGHT"))
 	Dim nameX As Int = headerX
 	Dim timeX As Int = headerX
 	If renderHeaderName And renderHeaderTime Then
-		If Side = "end" Then
+		If sideEff = "end" Then
 			Dim groupW As Int = nameW + gapW + timeW
 			nameX = headerX + bubbleBodyW - groupW
 		End If
 		timeX = nameX + nameW + gapW
 	Else If renderHeaderName Then
-		If Side = "end" Then nameX = headerX + bubbleBodyW - nameW
+		If sideEff = "end" Then nameX = headerX + bubbleBodyW - nameW
 	Else If renderHeaderTime Then
-		If Side = "end" Then timeX = headerX + bubbleBodyW - timeW
+		If sideEff = "end" Then timeX = headerX + bubbleBodyW - timeW
 	End If
 	If renderHeaderName Then
 		lblHeaderName.Text = FitSingleLineText(lblHeaderName, HeaderText, nameW)
@@ -792,12 +888,13 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	End If
 	If lblFooter.Visible Then
 		lblFooter.Text = FitSingleLineText(lblFooter, footerCombined, bubbleBodyW)
-		lblFooter.SetLayoutAnimated(0, footerX, bubbleY + bubbleH + 3dip, bubbleBodyW, fh)
+		lblFooter.SetLayoutAnimated(0, footerX, bubbleY + bubbleH + RowMetaGapY, bubbleBodyW, fh)
 	End If
 
 	'Content slot inside bubble
 	If BubbleVisible Then
-		pnlContent.SetLayoutAnimated(0, contentX, PaddingV, contentW, bodyH)
+		Dim contentY As Int = Max(PaddingV, (bubbleH - bodyH) / 2)
+		pnlContent.SetLayoutAnimated(0, contentX, contentY, contentW, bodyH)
 	Else
 		pnlContent.SetLayoutAnimated(0, 0, 0, 0, 0)
 	End If
@@ -840,7 +937,7 @@ Private Sub LayoutNow(RowW As Int, RowH As Int)
 	'Bubble background draw (cached)
 	If BubbleVisible Then
 		If OutlineColor = 0 Then OutlineColor = Blend(back, xui.Color_Black, 0.25)
-		DrawBubbleIfNeeded(bubbleW, bubbleH, back, Side, True, ShowOutline, OutlineColor, OutlineWidth, BubbleStyle)
+		DrawBubbleIfNeeded(bubbleW, bubbleH, back, sideEff, True, ShowOutline, OutlineColor, OutlineWidth, BubbleStyle)
 	End If
 
 End Sub
@@ -900,6 +997,15 @@ Private Sub MeasureLabelHeight(v As B4XView, Text As String, Width As Int) As In
 	Dim l As Label = v
 	l.Width = Max(1dip, Width)
 	Dim h As Int = tu.MeasureMultilineTextHeight(l, Text)
+	Return Max(1dip, h)
+End Sub
+
+Private Sub MeasureSingleLineHeight(v As B4XView) As Int
+	Dim l As Label = v
+	Dim oldW As Int = l.Width
+	l.Width = Max(120dip, oldW)
+	Dim h As Int = tu.MeasureMultilineTextHeight(l, "Ag")
+	l.Width = oldW
 	Return Max(1dip, h)
 End Sub
 
@@ -998,20 +1104,7 @@ Private Sub MaxBubbleWidth(RowW As Int) As Int
 End Sub
 
 Private Sub EstimateDesiredContentWidth(maxContentW As Int) As Int
-	Dim desired As Int = 80dip
-	Dim metaMaxW As Int = maxContentW
-	Dim showHeaderName As Boolean = HeaderVisible And HeaderNameVisible And HeaderText.Length > 0
-	Dim showHeaderTime As Boolean = HeaderVisible And HeaderTimeVisible And HeaderTimeText.Length > 0
-	
-	If showHeaderName And showHeaderTime Then
-		Dim nameW As Int = MeasureSingleLineWidth(lblHeaderName, HeaderText)
-		Dim timeW As Int = MeasureSingleLineWidth(lblHeaderTime, HeaderTimeText)
-		desired = Max(desired, Min(metaMaxW, nameW + 4dip + timeW))
-	Else If showHeaderName Then
-		desired = Max(desired, Min(metaMaxW, MeasureSingleLineWidth(lblHeaderName, HeaderText)))
-	Else If showHeaderTime Then
-		desired = Max(desired, Min(metaMaxW, MeasureSingleLineWidth(lblHeaderTime, HeaderTimeText)))
-	End If
+	Dim desired As Int = 1dip
 	
 	If BubbleVisible Then
 		Select Case ContentMode
@@ -1019,7 +1112,7 @@ Private Sub EstimateDesiredContentWidth(maxContentW As Int) As Int
 				desired = Max(desired, MeasureSingleLineWidth(lblMessage, MessageText))
 			Case "image"
 				If ContentImage.IsInitialized Then
-					desired = Max(desired, Min(maxContentW, Max(80dip, ContentImage.Width)))
+					desired = Max(desired, Min(maxContentW, Max(44dip, ContentImage.Width)))
 				End If
 			Case "custom"
 				If CustomContent.IsInitialized Then
@@ -1027,22 +1120,18 @@ Private Sub EstimateDesiredContentWidth(maxContentW As Int) As Int
 				End If
 		End Select
 	End If
-	
-	Dim footerCombined As String = FooterComposite
-	If FooterVisible And footerCombined.Length > 0 Then
-		desired = Max(desired, Min(metaMaxW, MeasureSingleLineWidth(lblFooter, footerCombined)))
-	End If
-	
+
 	If desired > maxContentW Then desired = maxContentW
-	Return Max(80dip, desired)
+	Return Max(1dip, desired)
 End Sub
 
 Private Sub ComputeBubbleWidth(RowW As Int) As Int
+	Dim sideEff As String = EffectiveSide
 	Dim maxBubble As Int = MaxBubbleWidth(RowW)
-	Dim tailLeft As Int = IIf(Side="start", TailSize, 0)
-	Dim tailRight As Int = IIf(Side="end", TailSize, 0)
+	Dim tailLeft As Int = IIf(sideEff="start", TailSize, 0)
+	Dim tailRight As Int = IIf(sideEff="end", TailSize, 0)
 	Dim chrome As Int = (PaddingH * 2) + tailLeft + tailRight
-	Dim maxContentW As Int = Max(80dip, maxBubble - chrome)
+	Dim maxContentW As Int = Max(1dip, maxBubble - chrome)
 	Dim desiredContentW As Int = EstimateDesiredContentWidth(maxContentW)
 	Dim w As Int = chrome + desiredContentW
 	If w > maxBubble Then w = maxBubble
@@ -1052,6 +1141,7 @@ End Sub
 
 Private Sub ResolveColors As Map
 	InitializeDefaultPalette
+	Dim sideEff As String = EffectiveSide
 	Dim pal As Map
 	If VariantPalette.IsInitialized Then
 		pal = VariantPalette
@@ -1075,7 +1165,7 @@ Private Sub ResolveColors As Map
 	muted = GetMapIntSafe(vm, "muted", Blend(txt, xui.Color_Gray, 0.35))
 	
 	If UseFromToColors Then
-		If Side = "start" Then
+		If sideEff = "start" Then
 			back = FromBackgroundColor
 			txt = FromTextColor
 		Else
@@ -1117,15 +1207,27 @@ End Sub
 Private Sub BuildDefaultPalette As Map
 	Dim m As Map
 	m.Initialize
-	m.Put("neutral", BuildVariantMap(xui.Color_RGB(241,245,249), xui.Color_Black))
-	m.Put("primary", BuildVariantMap(xui.Color_RGB(219,234,254), xui.Color_RGB(30,64,175)))
-	m.Put("secondary", BuildVariantMap(xui.Color_RGB(243,232,255), xui.Color_RGB(88,28,135)))
-	m.Put("accent", BuildVariantMap(xui.Color_RGB(204,251,241), xui.Color_RGB(19,78,74)))
-	m.Put("info", BuildVariantMap(xui.Color_RGB(224,242,254), xui.Color_RGB(12,74,110)))
-	m.Put("success", BuildVariantMap(xui.Color_RGB(220,252,231), xui.Color_RGB(20,83,45)))
-	m.Put("warning", BuildVariantMap(xui.Color_RGB(254,249,195), xui.Color_RGB(113,63,18)))
-	m.Put("error", BuildVariantMap(xui.Color_RGB(254,226,226), xui.Color_RGB(127,29,29)))
+	m.Put("neutral", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-base-300", xui.Color_RGB(241,245,249)), B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)))
+	m.Put("primary", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-primary", xui.Color_RGB(219,234,254)), B4XDaisyVariants.GetTokenColor("--color-primary-content", xui.Color_RGB(30,64,175))))
+	m.Put("secondary", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-secondary", xui.Color_RGB(243,232,255)), B4XDaisyVariants.GetTokenColor("--color-secondary-content", xui.Color_RGB(88,28,135))))
+	m.Put("accent", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-accent", xui.Color_RGB(204,251,241)), B4XDaisyVariants.GetTokenColor("--color-accent-content", xui.Color_RGB(19,78,74))))
+	m.Put("info", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-info", xui.Color_RGB(224,242,254)), B4XDaisyVariants.GetTokenColor("--color-info-content", xui.Color_RGB(12,74,110))))
+	m.Put("success", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-success", xui.Color_RGB(220,252,231)), B4XDaisyVariants.GetTokenColor("--color-success-content", xui.Color_RGB(20,83,45))))
+	m.Put("warning", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-warning", xui.Color_RGB(254,249,195)), B4XDaisyVariants.GetTokenColor("--color-warning-content", xui.Color_RGB(113,63,18))))
+	m.Put("error", BuildVariantMap(B4XDaisyVariants.GetTokenColor("--color-error", xui.Color_RGB(254,226,226)), B4XDaisyVariants.GetTokenColor("--color-error-content", xui.Color_RGB(127,29,29))))
 	Return m
+End Sub
+
+Private Sub EffectiveSide As String
+	Dim s As String = Side
+	If B4XDaisyVariants.IsRtl Then
+		If s = "start" Then
+			s = "end"
+		Else If s = "end" Then
+			s = "start"
+		End If
+	End If
+	Return s
 End Sub
 
 Private Sub BuildVariantMap(back As Int, text As Int) As Map
@@ -1156,7 +1258,8 @@ Private Sub DrawBubbleIfNeeded(w As Int, h As Int, back As Int, sideNow As Strin
 	
 	Dim rr As B4XRect
 	rr.Initialize(tailPadLeft, 0, w - tailPadRight, h)
-	Dim useCorner As Float = IIf(styleNow = "block", 9dip, Corner)
+	Dim fieldRadius As Float = B4XDaisyVariants.GetRadiusFieldDip(Corner)
+	Dim useCorner As Float = IIf(styleNow = "block", 9dip, fieldRadius)
 	Dim bubblePath As B4XPath
 	bubblePath.InitializeRoundedRect(rr, useCorner)
 	
