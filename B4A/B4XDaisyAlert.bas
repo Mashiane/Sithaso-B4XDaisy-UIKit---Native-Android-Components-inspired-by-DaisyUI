@@ -49,10 +49,10 @@ Sub Class_Globals
 	Private mBorderWidth As Float = 1dip
 	Private mActionSpacing As Float = 6dip
 	Private mShadow As String = "none"
-	Private mIconColorOverride As Int = 0
-	Private mBackgroundColorOverride As Int = 0
-	Private mTextColorOverride As Int = 0
-	Private mBorderColorOverride As Int = 0
+	Private mIconColor As Int = 0
+	Private mBackgroundColor As Int = 0
+	Private mTextColor As Int = 0
+	Private mBorderColor As Int = 0
 
 	' Active and default variant palettes used to resolve visual colors.
 	Private VariantPalette As Map
@@ -77,7 +77,6 @@ Sub Class_Globals
 	Private TextGap As Float = 2dip
 	Private tu As StringUtils
 	' Detached copy of designer/runtime properties.
-	Private CustProps As Map
 End Sub
 
 Public Sub Initialize(Callback As Object, EventName As String)
@@ -85,22 +84,28 @@ Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	InitializePalette
-	SetDefaults
 End Sub
 
-'Public Sub CreateView(Width As Int, Height As Int) As B4XView
-'	' Programmatic creation path that mirrors DesignerCreateView usage.
-'	Dim p As Panel
-'	p.Initialize("")
-'	Dim b As B4XView = p
-'	b.Color = xui.Color_Transparent
-'	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-'	Dim dummy As Label
-'	DesignerCreateView(b, dummy, CreateMap())
-'	mWidth = Width
-'	mHeight = Height
-'	Return mBase
-'End Sub
+Public Sub CreateView(Width As Int, Height As Int) As B4XView
+	' Programmatic creation path that mirrors DesignerCreateView usage.
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Return mBase
+End Sub
+
+Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
+	Dim px As Int = Max(1, Round(SizeDip / 1dip))
+	Return px & "px"
+End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	' Build visual hierarchy once, then apply properties and first layout pass.
@@ -162,33 +167,29 @@ Private Sub CreateLabel(EventName As String, Size As Float, Bold As Boolean) As 
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	' Read all supported properties from map into internal runtime fields.
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
-	Dim p As Map = Props
-	If p.IsInitialized = False Then
-		p.Initialize
-	End If
-	mWidthExplicit = p.ContainsKey("Width")
-	mHeightExplicit = p.ContainsKey("Height")
-	mWidth = Max(1dip, GetPropSizeDip(p, "Width", ResolveWidthBase(mWidth)))
-	mHeight = Max(1dip, GetPropSizeDip(p, "Height", ResolveHeightBase(mHeight)))
-	mVariant = NormalizeAlertVariant(GetPropString(p, "Variant", mVariant))
-	mStyle = NormalizeStyle(GetPropString(p, "AlertStyle", mStyle))
-	mDirection = NormalizeDirection(GetPropString(p, "Direction", mDirection))
-	mTitle = GetPropString(p, "Title", mTitle)
-	mText = GetPropString(p, "Text", mText)
-	mDescription = GetPropString(p, "Description", mDescription)
-	mRoundedBox = GetPropBool(p, "RoundedBox", mRoundedBox)
-	mIconAsset = GetPropString(p, "IconAsset", mIconAsset).Trim
+	mWidthExplicit = Props.ContainsKey("Width")
+	mHeightExplicit = Props.ContainsKey("Height")
+	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
+	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
+	mVariant = NormalizeAlertVariant(GetPropString(Props, "Variant", mVariant))
+	mStyle = NormalizeStyle(GetPropString(Props, "AlertStyle", mStyle))
+	mDirection = NormalizeDirection(GetPropString(Props, "Direction", mDirection))
+	mTitle = GetPropString(Props, "Title", mTitle)
+	mText = GetPropString(Props, "Text", mText)
+	mDescription = GetPropString(Props, "Description", mDescription)
+	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
+	mIconAsset = GetPropString(Props, "IconAsset", mIconAsset).Trim
 	If mIconAsset.Length > 0 Then mIconVisible = True
-	mIconSize = Max(12dip, GetPropSizeDip(p, "IconSize", mIconSize))
-	If p.ContainsKey("BorderWidth") Then
-		mBorderWidth = Max(0, GetPropDip(p, "BorderWidth", mBorderWidth))
+	mIconSize = Max(12dip, GetPropSizeDip(Props, "IconSize", mIconSize))
+	If Props.ContainsKey("BorderWidth") Then
+		mBorderWidth = Max(0, GetPropDip(Props, "BorderWidth", mBorderWidth))
 		BorderWidthFromTheme = False
 	End If
-	mActionSpacing = Max(0, GetPropDip(p, "ActionSpacing", mActionSpacing))
-	mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(p, "Shadow", mShadow))
+	mActionSpacing = Max(0, GetPropDip(Props, "ActionSpacing", mActionSpacing))
+	mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(Props, "Shadow", mShadow))
+	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", mBackgroundColor)
+	mTextColor = B4XDaisyVariants.GetPropInt(Props, "TextColor", mTextColor)
+	mBorderColor = B4XDaisyVariants.GetPropInt(Props, "BorderColor", mBorderColor)
 End Sub
 
 Public Sub Base_Resize(Width As Double, Height As Double)
@@ -230,14 +231,10 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim snap As Map = GetProperties
 	Dim props As Map
 	props.Initialize
-	For Each k As String In snap.Keys
-		props.Put(k, snap.Get(k))
-	Next
-	If mWidthExplicit = False Then props.Put("Width", ResolvePxSizeSpec(w))
-	If mHeightExplicit = False Then props.Put("Height", ResolvePxSizeSpec(h))
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
@@ -498,6 +495,11 @@ Private Sub ApplyVisualStyle(Box As Map)
 	ApplyShadow
 End Sub
 
+' Returns the resolved colors for the current variant and style.
+Public Sub GetVisualColors As Map
+	Return ResolveVisualColors
+End Sub
+
 Private Sub ResolveVisualColors As Map
 	InitializePalette
 	Dim theme As Map = B4XDaisyVariants.GetActiveTokens
@@ -534,9 +536,9 @@ Private Sub ResolveVisualColors As Map
 			border = accent
 	End Select
 
-	If mBackgroundColorOverride <> 0 Then back = mBackgroundColorOverride
-	If mTextColorOverride <> 0 Then text = mTextColorOverride
-	If mBorderColorOverride <> 0 Then border = mBorderColorOverride
+	If mBackgroundColor <> 0 Then back = mBackgroundColor
+	If mTextColor <> 0 Then text = mTextColor
+	If mBorderColor <> 0 Then border = mBorderColor
 	Dim muted As Int = B4XDaisyVariants.Blend(text, xui.Color_Gray, 0.45)
 	Return CreateMap("back": back, "text": text, "muted": muted, "border": border, "accent": accent)
 End Sub
@@ -573,7 +575,7 @@ Private Sub RefreshIcon(ColorMap As Map, AssetPath As String, ShowIcon As Boolea
 	IconComp.SetSvgAsset(AssetPath)
 	IconComp.SetPreserveOriginalColors(False)
 	Dim iconColor As Int = ColorMap.Get("text")
-	If mIconColorOverride <> 0 Then iconColor = mIconColorOverride
+	If mIconColor <> 0 Then iconColor = mIconColor
 	IconComp.SetColor(iconColor)
 	IconComp.SetSize(mIconSize)
 	IconComp.ResizeToParent(IconView)
@@ -671,65 +673,9 @@ Private Sub ResolveHeightBase(DefaultValue As Float) As Float
 	Return DefaultValue
 End Sub
 
-Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
-	Dim px As Int = Max(1, Round(SizeDip / 1dip))
-	Return px & "px"
-End Sub
-
-Public Sub SetDefaults
-	CustProps.Initialize
-	CustProps.Put("Width", ResolvePxSizeSpec(mWidth))
-	CustProps.Put("Height", ResolvePxSizeSpec(mHeight))
-	CustProps.Put("Variant", mVariant)
-	CustProps.Put("AlertStyle", mStyle)
-	CustProps.Put("Direction", mDirection)
-	CustProps.Put("Title", mTitle)
-	CustProps.Put("Text", mText)
-	CustProps.Put("Description", mDescription)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("IconVisible", mIconVisible)
-	CustProps.Put("IconAsset", mIconAsset)
-	CustProps.Put("IconSize", ResolvePxSizeSpec(mIconSize))
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("Shadow", mShadow)
-	CustProps.Put("ActionSpacing", mActionSpacing)
-End Sub
-
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	Dim src As Map
-	src.Initialize
-	For Each k As String In Props.Keys
-		src.Put(k, Props.Get(k))
-	Next
-	CustProps.Initialize
-	For Each k As String In src.Keys
-		CustProps.Put(k, src.Get(k))
-	Next
-End Sub
-
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("Width", ResolvePxSizeSpec(mWidth))
-	CustProps.Put("Height", ResolvePxSizeSpec(mHeight))
-	CustProps.Put("Variant", mVariant)
-	CustProps.Put("AlertStyle", mStyle)
-	CustProps.Put("Direction", mDirection)
-	CustProps.Put("Title", mTitle)
-	CustProps.Put("Text", mText)
-	CustProps.Put("Description", mDescription)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("IconVisible", mIconVisible)
-	CustProps.Put("IconAsset", mIconAsset)
-	CustProps.Put("IconSize", ResolvePxSizeSpec(mIconSize))
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("Shadow", mShadow)
-	CustProps.Put("ActionSpacing", mActionSpacing)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
 
 Private Sub Refresh
+
 	If mBase.IsInitialized = False Then Return
 	Base_Resize(mBase.Width, mBase.Height)
 End Sub
@@ -858,6 +804,11 @@ End Sub
 Public Sub setVariant(Value As String)
 	' Update alert variant token and refresh styles.
 	mVariant = NormalizeAlertVariant(Value)
+	' Reset manual colors to ensure variant colors take full effect.
+	mBackgroundColor = 0
+	mTextColor = 0
+	mBorderColor = 0
+	mIconColor = 0
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
@@ -990,30 +941,30 @@ Public Sub getIconSize As Float
 End Sub
 
 Public Sub setIconColor(Value As Object)
-	' Accept explicit color ints or theme color token names for icon tint override.
+	' Accept explicit color ints or theme color token names for icon tint.
 	Dim shouldRefresh As Boolean = False
 	If Value = Null Then
-		mIconColorOverride = 0
+		mIconColor = 0
 		shouldRefresh = True
 	Else If IsNumber(Value) Then
-		mIconColorOverride = Value
+		mIconColor = Value
 		shouldRefresh = True
 	Else
 		Dim s As String = Value
 		s = s.Trim
 		If s.Length = 0 Then
-			mIconColorOverride = 0
+			mIconColor = 0
 			shouldRefresh = True
 		Else
 			Dim k As String = s.ToLowerCase
 			If k = "auto" Or k = "default" Or k = "none" Then
-				mIconColorOverride = 0
+				mIconColor = 0
 				shouldRefresh = True
 			Else
 				Dim token As String = B4XDaisyVariants.ResolveThemeColorTokenName(k)
 				If token.Length > 0 Then
 					Dim fallback As Int = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)
-					mIconColorOverride = B4XDaisyVariants.GetTokenColor(token, fallback)
+					mIconColor = B4XDaisyVariants.GetTokenColor(token, fallback)
 					shouldRefresh = True
 				End If
 			End If
@@ -1024,8 +975,8 @@ Public Sub setIconColor(Value As Object)
 End Sub
 
 Public Sub getIconColor As Int
-	' Return resolved icon color override (0 means auto/theme).
-	Return mIconColorOverride
+	' Return current icon color (0 means auto/theme).
+	Return mIconColor
 End Sub
 
 Public Sub setRoundedBox(Value As Boolean)
@@ -1112,59 +1063,59 @@ Public Sub applyActiveTheme
 End Sub
 
 Public Sub setBackgroundColor(Color As Int)
-	' Set explicit background color override.
-	mBackgroundColorOverride = Color
+	' Set explicit background color.
+	mBackgroundColor = Color
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
 
 Public Sub getBackgroundColor As Int
-	' Return background color override.
-	Return mBackgroundColorOverride
+	' Return background color.
+	Return mBackgroundColor
 End Sub
 
 Public Sub setBackgroundColorVariant(VariantName As String)
 	' Resolve and apply background color from a palette variant key.
 	InitializePalette
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(VariantPalette, VariantName, "back", mBackgroundColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveBackgroundColorVariantFromPalette(VariantPalette, VariantName, mBackgroundColor)
 	setBackgroundColor(c)
 End Sub
 
 Public Sub setTextColor(Color As Int)
-	' Set explicit text color override.
-	mTextColorOverride = Color
+	' Set explicit text color.
+	mTextColor = Color
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
 
 Public Sub getTextColor As Int
-	' Return text color override.
-	Return mTextColorOverride
+	' Return text color.
+	Return mTextColor
 End Sub
 
 Public Sub setTextColorVariant(VariantName As String)
 	' Resolve and apply text color from a palette variant key.
 	InitializePalette
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(VariantPalette, VariantName, "text", mTextColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveTextColorVariantFromPalette(VariantPalette, VariantName, mTextColor)
 	setTextColor(c)
 End Sub
 
 Public Sub setBorderColor(Color As Int)
-	' Set explicit border color override.
-	mBorderColorOverride = Color
+	' Set explicit border color.
+	mBorderColor = Color
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
 
 Public Sub getBorderColor As Int
-	' Return border color override.
-	Return mBorderColorOverride
+	' Return border color.
+	Return mBorderColor
 End Sub
 
 Public Sub setBorderColorVariant(VariantName As String)
 	' Resolve and apply border color from a palette variant key.
 	InitializePalette
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(VariantPalette, VariantName, "border", mBorderColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveBorderColorVariantFromPalette(VariantPalette, VariantName, mBorderColor)
 	setBorderColor(c)
 End Sub
 
@@ -1176,4 +1127,10 @@ End Sub
 Public Sub getTag As Object
 	' Return caller tag object.
 	Return mTag
+End Sub
+
+
+
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
 End Sub

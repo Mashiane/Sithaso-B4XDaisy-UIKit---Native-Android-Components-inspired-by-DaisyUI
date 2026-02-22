@@ -1360,3 +1360,7 @@ Public Sub RaiseBubbleClick(Tag As Object)
 		CallSub2(mCallBack, mEventName & "_BubbleClick", Tag)
 	End If
 End Sub
+
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
+End Sub

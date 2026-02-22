@@ -8,13 +8,14 @@ Version=13.4
 #Event: ButtonClick (ButtonId As String, ButtonDef As Map)
 #Event: PageChanged (PageIndex As Int, PageCount As Int)
 
-#DesignerProperty: Key: RowsPerPage, DisplayName: Rows Per Page, FieldType: Int, DefaultValue: 7, Description: Number of grid rows per page.
+#DesignerProperty: Key: RowsPerPage, DisplayName: Rows Per Page, FieldType: Int, DefaultValue: 6, Description: Number of grid rows per page.
 #DesignerProperty: Key: ColumnsPerPage, DisplayName: Columns Per Page, FieldType: Int, DefaultValue: 4, Description: Number of grid columns per page when Auto Grid is False.
-#DesignerProperty: Key: AutoGrid, DisplayName: Auto Grid, FieldType: Boolean, DefaultValue: True, Description: Automatically calculate rows and columns from available size.
+#DesignerProperty: Key: AutoGrid, DisplayName: Auto Grid, FieldType: Boolean, DefaultValue: False, Description: Automatically calculate rows and columns from available size.
 #DesignerProperty: Key: MinCellWidth, DisplayName: Min Cell Width, FieldType: Int, DefaultValue: 72, Description: Minimum tile width in dip used by Auto Grid.
-#DesignerProperty: Key: MinCellHeight, DisplayName: Min Cell Height, FieldType: Int, DefaultValue: 72, Description: Minimum tile height in dip used by Auto Grid.
+#DesignerProperty: Key: MinCellHeight, DisplayName: Min Cell Height, FieldType: Int, DefaultValue: 100, Description: Minimum tile height in dip used by Auto Grid.
 #DesignerProperty: Key: PagePadding, DisplayName: Page Padding, FieldType: Int, DefaultValue: 16, Description: Outer page padding in dip.
-#DesignerProperty: Key: CellSpacing, DisplayName: Cell Spacing, FieldType: Int, DefaultValue: 12, Description: Spacing between grid cells in dip.
+#DesignerProperty: Key: CellSpacing, DisplayName: Cell Spacing X, FieldType: Int, DefaultValue: 12, Description: Spacing between grid cells horizontally in dip.
+#DesignerProperty: Key: CellSpacingY, DisplayName: Cell Spacing Y, FieldType: Int, DefaultValue: 0, Description: Spacing between grid cells vertically in dip.
 #DesignerProperty: Key: ActiveIndicatorColor, DisplayName: Active Dot Color, FieldType: Color, DefaultValue: 0xFF3B82F6, Description: Active page indicator color.
 #DesignerProperty: Key: InactiveIndicatorColor, DisplayName: Inactive Dot Color, FieldType: Color, DefaultValue: 0x553B82F6, Description: Inactive page indicator color.
 #DesignerProperty: Key: BackgroundImage, DisplayName: Background Image, FieldType: String, DefaultValue:, Description: Full image path or asset file name used as dashboard wallpaper.
@@ -43,12 +44,13 @@ Sub Class_Globals
 	Private IndicatorDots As List
 
 	Private mColumns As Int = 4
-	Private mRowsPerPage As Int = 7
-	Private mAutoGrid As Boolean = True
+	Private mRowsPerPage As Int = 6
+	Private mAutoGrid As Boolean = False
 	Private mMinCellWidth As Float = 72dip
-	Private mMinCellHeight As Float = 72dip
+	Private mMinCellHeight As Float = 100dip
 	Private mPagePadding As Float = 16dip
 	Private mCellSpacing As Float = 12dip
+	Private mCellSpacingY As Float = 0dip
 	Private mGridTopOffset As Float = 12dip
 	Private mIndicatorAreaHeight As Float = 26dip
 	Private mIndicatorSize As Float = 6dip
@@ -428,7 +430,7 @@ Public Sub getTextColor As Int
 End Sub
 
 Public Sub setTextColorVariant(VariantName As String)
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mTextColor)
+	Dim c As Int = B4XDaisyVariants.ResolveTextColorVariant(VariantName, mTextColor)
 	setTextColor(c)
 End Sub
 
@@ -555,14 +557,14 @@ Private Sub LayoutPageButtons(Page As B4XView, PageIndex As Int)
 	Dim usableW As Float = Max(1dip, Page.Width - (mPagePadding * 2))
 	Dim usableH As Float = Max(1dip, Page.Height - (mPagePadding * 2) - mGridTopOffset)
 	Dim cellW As Float = Max(44dip, (usableW - (cols - 1) * mCellSpacing) / cols)
-	Dim cellH As Float = Max(56dip, (usableH - (rows - 1) * mCellSpacing) / rows)
+	Dim cellH As Float = Max(56dip, (usableH - (rows - 1) * mCellSpacingY) / rows)
 
 	For i = startIndex To endIndex
 		Dim slot As Int = i - startIndex
 		Dim row As Int = slot / cols
 		Dim col As Int = slot Mod cols
 		Dim x As Float = mPagePadding + col * (cellW + mCellSpacing)
-		Dim y As Float = mPagePadding + mGridTopOffset + row * (cellH + mCellSpacing)
+		Dim y As Float = mPagePadding + mGridTopOffset + row * (cellH + mCellSpacingY)
 		Dim buttonDef As Map = Buttons.Get(i)
 		CreateButtonTile(Page, buttonDef, x, y, cellW, cellH)
 	Next
@@ -585,11 +587,11 @@ Private Sub CreateButtonTile(Page As B4XView, ButtonDef As Map, Left As Float, T
 
 	Dim topInset As Float = 2dip
 	Dim gap As Float = 4dip
-	Dim minLabelH As Float = 20dip
-	Dim maxLabelH As Float = Min(34dip, Height * 0.40)
-	Dim iconMaxH As Float = Max(16dip, Height - topInset - gap - minLabelH - 2dip)
-	Dim iconSize As Float = Min(50dip, Min(Width * 0.66, iconMaxH))
-	Dim targetLabelH As Float = Min(maxLabelH, Max(minLabelH, Height * 0.30))
+	Dim minLabelH As Float = 34dip
+	Dim maxLabelH As Float = Min(42dip, Height * 0.45)
+	Dim iconMaxH As Float = Max(20dip, Height - topInset - gap - minLabelH - 2dip)
+	Dim iconSize As Float = Min(60dip, Min(Width * 0.75, iconMaxH))
+	Dim targetLabelH As Float = Min(maxLabelH, Max(minLabelH, Height * 0.35))
 	Dim iconTop As Float = topInset
 	Dim iconLeft As Float = (Width - iconSize) / 2
 	Dim iconRadius As Float = Min(12dip, iconSize * 0.24)
@@ -609,8 +611,16 @@ Private Sub CreateButtonTile(Page As B4XView, ButtonDef As Map, Left As Float, T
 		iv.Initialize("")
 		Dim xiv As B4XView = iv
 		xiv.Enabled = False
-		iconHost.AddView(xiv, 0, 0, iconSize, iconSize)
-		xiv.SetBitmap(bmp.Resize(iconSize, iconSize, True))
+		' Calculate "Cover" scaling
+		Dim bw As Float = bmp.Width
+		Dim bh As Float = bmp.Height
+		Dim scale As Float = Max(iconSize / bw, iconSize / bh)
+		Dim nw As Float = bw * scale
+		Dim nh As Float = bh * scale
+		Dim leftOffset As Float = (iconSize - nw) / 2
+		Dim topOffset As Float = (iconSize - nh) / 2
+		iconHost.AddView(xiv, leftOffset, topOffset, nw, nh)
+		xiv.SetBitmap(bmp.Resize(nw, nh, True))
 	Else
 		Dim lblGlyph As Label
 		lblGlyph.Initialize("")
@@ -906,7 +916,6 @@ Private Sub LoadBitmapFromPath(Path As String) As B4XBitmap
 			Return xui.LoadBitmap(File.DirAssets, p)
 		End If
 	Catch
-		Log("B4XDashboard.LoadBitmapFromPath failed: " & LastException.Message)
 	End Try
 	Return empty
 End Sub
@@ -948,7 +957,6 @@ Private Sub LoadBackgroundBitmapFromPath(Path As String) As B4XBitmap
 			#End If
 		End If
 	Catch
-		Log("B4XDashboard.LoadBackgroundBitmapFromPath failed: " & LastException.Message)
 	End Try
 	Return empty
 End Sub
@@ -1047,38 +1055,23 @@ Private Sub AutoConfigureGrid(Width As Int, Height As Int)
 	Dim usableW As Float = Max(1dip, Width - (mPagePadding * 2))
 	Dim usableH As Float = Max(1dip, Height - mIndicatorAreaHeight - (mPagePadding * 2) - mGridTopOffset)
 	Dim targetCols As Int = Max(1, Floor((usableW + mCellSpacing) / (mMinCellWidth + mCellSpacing)))
-	Dim targetRows As Int = Max(1, Floor((usableH + mCellSpacing) / (mMinCellHeight + mCellSpacing)))
+	Dim targetRows As Int = Max(1, Floor((usableH + mCellSpacingY) / (mMinCellHeight + mCellSpacingY)))
 	mColumns = targetCols
 	mRowsPerPage = targetRows
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mColumns = 4
-	mRowsPerPage = 7
-	mAutoGrid = True
-	mMinCellWidth = 72dip
-	mMinCellHeight = 72dip
-	mPagePadding = 16dip
-	mCellSpacing = 12dip
-	mGridTopOffset = 12dip
-	mActiveIndicatorColor = 0xFF3B82F6
-	mInactiveIndicatorColor = 0x553B82F6
-	mBackgroundImagePath = ""
-	mTextColor = 0xFFFFFFFF
-	mWidthSpec = "100%"
-	mHeightSpec = "100%"
-	Dim empty As B4XBitmap
-	mBackgroundBitmap = empty
 	If Props.IsInitialized = False Then Return
 
 	mColumns = Max(1, GetPropInt(Props, "ColumnsPerPage", mColumns))
 	mRowsPerPage = Max(1, GetPropInt(Props, "RowsPerPage", mRowsPerPage))
 	mAutoGrid = GetPropBoolean(Props, "AutoGrid", mAutoGrid)
-	mMinCellWidth = Max(1dip, GetPropInt(Props, "MinCellWidth", 72) * 1dip)
-	mMinCellHeight = Max(1dip, GetPropInt(Props, "MinCellHeight", 72) * 1dip)
-	mPagePadding = Max(0, GetPropInt(Props, "PagePadding", 16) * 1dip)
-	mCellSpacing = Max(0, GetPropInt(Props, "CellSpacing", 12) * 1dip)
-	mGridTopOffset = Max(0, GetPropInt(Props, "GridTopOffset", 12) * 1dip)
+	mMinCellWidth = Max(1dip, GetPropInt(Props, "MinCellWidth", Round(mMinCellWidth / 1dip)) * 1dip)
+	mMinCellHeight = Max(1dip, GetPropInt(Props, "MinCellHeight", Round(mMinCellHeight / 1dip)) * 1dip)
+	mPagePadding = Max(0, GetPropInt(Props, "PagePadding", Round(mPagePadding / 1dip)) * 1dip)
+	mCellSpacing = Max(0, GetPropInt(Props, "CellSpacing", Round(mCellSpacing / 1dip)) * 1dip)
+	mCellSpacingY = Max(0, GetPropInt(Props, "CellSpacingY", Round(mCellSpacingY / 1dip)) * 1dip)
+	mGridTopOffset = Max(0, GetPropInt(Props, "GridTopOffset", Round(mGridTopOffset / 1dip)) * 1dip)
 	mActiveIndicatorColor = GetPropColor(Props, "ActiveIndicatorColor", mActiveIndicatorColor)
 	mInactiveIndicatorColor = GetPropColor(Props, "InactiveIndicatorColor", mInactiveIndicatorColor)
 	mTextColor = GetPropColor(Props, "TextColor", mTextColor)

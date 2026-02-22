@@ -17,7 +17,7 @@ Version=13.4
 #DesignerProperty: Key: OnColor, DisplayName: On Color, FieldType: Color, DefaultValue: 0x00000000, Description: On slot text/icon color (0 = theme base-content)
 #DesignerProperty: Key: OffColor, DisplayName: Off Color, FieldType: Color, DefaultValue: 0x00000000, Description: Off slot text/icon color (0 = theme base-content)
 #DesignerProperty: Key: IndeterminateColor, DisplayName: Indeterminate Color, FieldType: Color, DefaultValue: 0x00000000, Description: Indeterminate slot text/icon color (0 = theme base-content)
-#DesignerProperty: Key: TextSize, DisplayName: Text Size, FieldType: String, DefaultValue: text-base, Description: Tailwind text size token (eg text-xs, text-sm, text-lg, text-9xl, text-sm/6)
+#DesignerProperty: Key: TextSize, DisplayName: Text Size, FieldType: String, DefaultValue: text-sm, Description: Tailwind text size token (eg text-xs, text-sm, text-lg, text-9xl, text-sm/6)
 #DesignerProperty: Key: Width, DisplayName: Width, FieldType: String, DefaultValue: 12, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: String, DefaultValue: 12, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
 #DesignerProperty: Key: AnimationMs, DisplayName: Animation Ms, FieldType: Int, DefaultValue: 200, Description: Visibility animation in milliseconds
@@ -39,15 +39,15 @@ Sub Class_Globals
 	Private mStyle As String = "none"
 	Private mAnimationMs As Int = 200
 	Private mSwapType As String = "text"
-	Private mTextSize As String = "text-base"
+	Private mTextSize As String = "text-sm"
 	Private mTextLineHeightDip As Float = 20dip
 
 	Private mOnText As String = "ON"
 	Private mOffText As String = "OFF"
 	Private mIndText As String = ""
-	Private mOnColorOverride As Int = 0
-	Private mOffColorOverride As Int = 0
-	Private mIndColorOverride As Int = 0
+	Private mOnColor As Int = 0
+	Private mOffColor As Int = 0
+	Private mIndColor As Int = 0
 
 	Private Surface As B4XView
 	Private OnLayer As B4XView
@@ -60,7 +60,6 @@ Sub Class_Globals
 	Private OnContent As B4XView
 	Private OffContent As B4XView
 	Private IndContent As B4XView
-	private CustProps As Map
 	Private Anim As B4XAnimation
 End Sub
 
@@ -68,11 +67,26 @@ Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	Anim.Initialize
-	SetDefaults
+End Sub
+
+Public Sub CreateView(Width As Int, Height As Int) As B4XView
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Return mBase
 End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
+	mBase.RemoveAllViews ' Safety: clear any previous internal views
 	' Preserve a tag that was set before view creation (programmatic use).
 	If mTag = Null Then mTag = mBase.Tag
 	mBase.Tag = Me
@@ -132,8 +146,6 @@ Private Sub CreateSlotLabel As B4XView
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
 	mWidthExplicit = Props.IsInitialized And Props.ContainsKey("Width")
 	mHeightExplicit = Props.IsInitialized And Props.ContainsKey("Height")
 	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", ResolveWidthBase(mWidth)))
@@ -142,71 +154,26 @@ Private Sub ApplyDesignerProps(Props As Map)
 	mStyle = NormalizeStyle(B4XDaisyVariants.GetPropString(Props, "SwapStyle", mStyle))
 	mAnimationMs = Max(0, B4XDaisyVariants.GetPropInt(Props, "AnimationMs", mAnimationMs))
 	mSwapType = NormalizeSwapType(B4XDaisyVariants.GetPropString(Props, "SwapType", mSwapType))
-	mTextSize = NormalizeTextSize(B4XDaisyVariants.GetPropString(Props, "TextSize", mTextSize))
+	mTextSize = NormalizeTextSize(B4XDaisyVariants.GetPropString(Props, "TextSize", "text-sm"))
 	SyncTextSizeBySwapType
 	mOnText = B4XDaisyVariants.GetPropString(Props, "OnText", mOnText)
 	mOffText = B4XDaisyVariants.GetPropString(Props, "OffText", mOffText)
 	mIndText = B4XDaisyVariants.GetPropString(Props, "IndeterminateText", mIndText)
+	mOnColor = B4XDaisyVariants.GetPropInt(Props, "OnColor", mOnColor)
+	mOffColor = B4XDaisyVariants.GetPropInt(Props, "OffColor", mOffColor)
+	mIndColor = B4XDaisyVariants.GetPropInt(Props, "IndeterminateColor", mIndColor)
 	SyncThreeState
-	mOnColorOverride = B4XDaisyVariants.GetPropInt(Props, "OnColor", 0)
-	mOffColorOverride = B4XDaisyVariants.GetPropInt(Props, "OffColor", 0)
-	mIndColorOverride = B4XDaisyVariants.GetPropInt(Props, "IndeterminateColor", 0)
 
 	ApplyTextSizeStyle
 	RebuildSlotsByType
 	AdjustSizeForSwapType(False)
 End Sub
 
-Public Sub SetDefaults
-	SyncThreeState
-	SyncTextSizeBySwapType
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("State", mState)
-	CustProps.Put("SwapStyle", mStyle)
-	CustProps.Put("AnimationMs", mAnimationMs)
-	CustProps.Put("SwapType", mSwapType)
-	CustProps.Put("TextSize", mTextSize)
-	CustProps.Put("OnText", mOnText)
-	CustProps.Put("OffText", mOffText)
-	CustProps.Put("IndeterminateText", mIndText)
-	CustProps.Put("OnColor", mOnColorOverride)
-	CustProps.Put("OffColor", mOffColorOverride)
-	CustProps.Put("IndeterminateColor", mIndColorOverride)
-End Sub
 
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	Dim src As Map
-	src.Initialize
-	For Each k As String In Props.Keys
-		src.Put(k, Props.Get(k))
-	Next
-	CustProps.Initialize
-	For Each k As String In src.Keys
-		CustProps.Put(k, src.Get(k))
-	Next
-End Sub
 
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("State", mState)
-	CustProps.Put("SwapStyle", mStyle)
-	CustProps.Put("AnimationMs", mAnimationMs)
-	CustProps.Put("SwapType", mSwapType)
-	CustProps.Put("TextSize", mTextSize)
-	CustProps.Put("OnText", mOnText)
-	CustProps.Put("OffText", mOffText)
-	CustProps.Put("IndeterminateText", mIndText)
-	CustProps.Put("OnColor", mOnColorOverride)
-	CustProps.Put("OffColor", mOffColorOverride)
-	CustProps.Put("IndeterminateColor", mIndColorOverride)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
+
+
+
 
 Public Sub Base_Resize(Width As Double, Height As Double)
 	If mBase.IsInitialized = False Or Surface.IsInitialized = False Then Return
@@ -233,14 +200,10 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim snap As Map = GetProperties
 	Dim props As Map
 	props.Initialize
-	For Each k As String In snap.Keys
-		props.Put(k, snap.Get(k))
-	Next
-	If mWidthExplicit = False Then props.Put("Width", ResolvePxSizeSpec(w))
-	If mHeightExplicit = False Then props.Put("Height", ResolvePxSizeSpec(h))
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
@@ -405,17 +368,17 @@ Private Sub ResolveBaseContentColor As Int
 End Sub
 
 Private Sub ResolveOnColor(DefaultColor As Int) As Int
-	If mOnColorOverride <> 0 Then Return mOnColorOverride
+	If mOnColor <> 0 Then Return mOnColor
 	Return DefaultColor
 End Sub
 
 Private Sub ResolveOffColor(DefaultColor As Int) As Int
-	If mOffColorOverride <> 0 Then Return mOffColorOverride
+	If mOffColor <> 0 Then Return mOffColor
 	Return DefaultColor
 End Sub
 
 Private Sub ResolveIndeterminateColor(DefaultColor As Int) As Int
-	If mIndColorOverride <> 0 Then Return mIndColorOverride
+	If mIndColor <> 0 Then Return mIndColor
 	Return DefaultColor
 End Sub
 
@@ -523,27 +486,25 @@ Private Sub NormalizeStyle(Value As String) As String
 	End Select
 End Sub
 
+
 Private Sub NormalizeSwapType(Value As String) As String
-	Dim defaultType As String = "text"
-	If CustProps.IsInitialized Then defaultType = B4XDaisyVariants.GetPropString(CustProps, "SwapType", defaultType).ToLowerCase.Trim
-	Select Case defaultType
-		Case "text", "svg", "avatar"
-		Case Else
-			defaultType = "text"
-	End Select
-	If Value = Null Then Return defaultType
+	If Value = Null Then Return "text"
+
 	Dim s As String = Value.ToLowerCase.Trim
 	Select Case s
 		Case "text", "svg", "avatar"
 			Return s
+
 		Case Else
-			Return defaultType
+			Return "text"
 	End Select
+
 End Sub
 
+
 Private Sub NormalizeTextSize(Value As String) As String
-	Dim defaultSize As String = "text-base"
-	If CustProps.IsInitialized Then defaultSize = B4XDaisyVariants.GetPropString(CustProps, "TextSize", defaultSize)
+	Dim defaultSize As String = "text-sm"
+
 	If Value = Null Then Return defaultSize
 	Dim s As String = Value.Trim
 	If s.Length = 0 Then Return defaultSize
@@ -694,7 +655,7 @@ Private Sub EstimateTextWidthDip(Text As String, FontSize As Float) As Float
 	If t = Null Then t = ""
 	t = t.Trim
 	Dim chars As Int = Max(1, t.Length)
-	Dim widthPx As Float = (chars * fontSize * 0.62) + (fontSize * 0.9)
+	Dim widthPx As Float = (chars * FontSize * 0.62) + (FontSize * 0.9)
 	Return Max(12dip, widthPx)
 End Sub
 
@@ -1008,73 +969,73 @@ End Sub
 
 Public Sub setOnColor(Value As Object)
 	' On color supports numeric color or theme token name.
-	mOnColorOverride = ResolveColorValue(Value, 0)
+	mOnColor = ResolveColorValue(Value, 0)
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
 
 Public Sub getOnColor As Int
 	' Return resolved on color override (0 means use theme fallback).
-	Return mOnColorOverride
+	Return mOnColor
 End Sub
 
 Public Sub setOnColorVariant(VariantName As String)
 	' Resolve and apply on color using a daisy variant name.
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mOnColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mOnColor)
 	setOnColor(c)
 End Sub
 
 Public Sub setOnTextColorVariant(VariantName As String)
 	' Resolve and apply on text/content color using variant content token.
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mOnColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mOnColor)
 	setOnColor(c)
 End Sub
 
 Public Sub setOffColor(Value As Object)
 	' Off color supports numeric color or theme token name.
-	mOffColorOverride = ResolveColorValue(Value, 0)
+	mOffColor = ResolveColorValue(Value, 0)
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
 
 Public Sub getOffColor As Int
 	' Return resolved off color override (0 means use theme fallback).
-	Return mOffColorOverride
+	Return mOffColor
 End Sub
 
 Public Sub setOffColorVariant(VariantName As String)
 	' Resolve and apply off color using a daisy variant name.
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mOffColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mOffColor)
 	setOffColor(c)
 End Sub
 
 Public Sub setOffTextColorVariant(VariantName As String)
 	' Resolve and apply off text/content color using variant content token.
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mOffColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mOffColor)
 	setOffColor(c)
 End Sub
 
 Public Sub setIndeterminateColor(Value As Object)
 	' Indeterminate color supports numeric color or theme token name.
-	mIndColorOverride = ResolveColorValue(Value, 0)
+	mIndColor = ResolveColorValue(Value, 0)
 	If mBase.IsInitialized = False Then Return
 	Refresh
 End Sub
 
 Public Sub getIndeterminateColor As Int
 	' Return resolved indeterminate color override (0 means use theme fallback).
-	Return mIndColorOverride
+	Return mIndColor
 End Sub
 
 Public Sub setIndeterminateColorVariant(VariantName As String)
 	' Resolve and apply indeterminate color using a daisy variant name.
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mIndColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mIndColor)
 	setIndeterminateColor(c)
 End Sub
 
 Public Sub setIndeterminateTextColorVariant(VariantName As String)
 	' Resolve and apply indeterminate text/content color using variant content token.
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mIndColorOverride)
+	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mIndColor)
 	setIndeterminateColor(c)
 End Sub
 
@@ -1083,6 +1044,8 @@ Public Sub setTag(Value As Object)
 	mTag = Value
 	If mBase.IsInitialized = False Then Return
 End Sub
+
+
 
 Public Sub getTag As Object
 	' Return caller tag object.
@@ -1099,4 +1062,8 @@ Private Sub ResolveColorValue(Value As Object, DefaultColor As Int) As Int
 	Dim token As String = B4XDaisyVariants.ResolveThemeColorTokenName(s)
 	If token.Length > 0 Then Return B4XDaisyVariants.GetTokenColor(token, DefaultColor)
 	Return DefaultColor
+End Sub
+
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
 End Sub

@@ -136,7 +136,6 @@ Private Sub FormatDisplayTime(ValueMillis As Long) As String
 End Sub
 
 Private Sub daisy_AvatarClick(tag As Object)
-	Log("Daisy avatar click: " & tag)
 End Sub
 
 Private Sub GetLocalAvatarPaths As List
@@ -186,6 +185,7 @@ End Sub
 
 Private Sub IsAvatarImageFile(FileName As String) As Boolean
 	Dim lower As String = FileName.ToLowerCase
+	If lower.StartsWith("face") = False Then Return False
 	If lower.EndsWith(".jpg") Or lower.EndsWith(".jpeg") Or lower.EndsWith(".png") Or lower.EndsWith(".webp") Then
 		If lower.StartsWith("from.") Or lower.StartsWith("to.") Then Return False
 		If lower = "default.png" Then Return False

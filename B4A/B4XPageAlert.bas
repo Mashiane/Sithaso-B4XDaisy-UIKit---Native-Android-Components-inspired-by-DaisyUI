@@ -125,7 +125,7 @@ Private Sub AddAlertSample(Def As Map)
 	Dim initialW As Int = IIf(w <= 0, Max(1dip, Root.Width - 24dip), w)
 
 	' Create the title label and alert component, then register for layout.
-	Dim lbl As B4XView = CreateAlertLabel(title)
+	Dim lbl As B4XDaisyLabel = CreateAlertLabel(title)
 	Dim alert As B4XDaisyAlert
 	' Subscribe to alert events with the "alert_" event prefix.
 	alert.Initialize(Me, "alert")
@@ -175,31 +175,24 @@ Private Sub ApplyAlertExtras(Id As String, Alert As B4XDaisyAlert)
 	End Select
 End Sub
 
-Private Sub CreateAlertLabel(Text As String) As B4XView
+Private Sub CreateAlertLabel(Text As String) As B4XDaisyLabel
 	' Shared label styling for all sample captions.
-	Dim l As Label
-	l.Initialize("")
-	Dim x As B4XView = l
-	x.Text = Text
-	x.TextColor = xui.Color_RGB(51, 65, 85)
-	x.TextSize = 12
-	x.SetTextAlignment("CENTER", "LEFT")
-	pnlHost.AddView(x, 0, 0, 10dip, 10dip)
-	Return x
+	Dim l As B4XDaisyLabel
+	l.Initialize(Me, "")
+	l.AddToParent(pnlHost, 0, 0, 10dip, 10dip)
+	l.Text = Text
+	l.TextColor = xui.Color_RGB(51, 65, 85)
+	l.TextSize = 12
+	l.SetTextAlignment("CENTER", "LEFT")
+	Return l
 End Sub
 
-Private Sub AddAlertItem(Id As String, LabelView As B4XView, Alert As B4XDaisyAlert, AlertView As B4XView, DefaultW As Int, DefaultH As Int)
+Private Sub AddAlertItem(Id As String, LabelView As B4XDaisyLabel, Alert As B4XDaisyAlert, AlertView As B4XView, DefaultW As Int, DefaultH As Int)
 	' Store layout metadata so LayoutAlerts can position all items consistently.
 	' Read live props so stored width/height reflect component logic.
-	Dim props As Map = Alert.GetProperties
-	Dim w As Int
-	If DefaultW <= 0 Then
-		' Preserve "full width" sentinel used by LayoutAlerts.
-		w = 0
-	Else
-		w = ResolveAlertSize(props, "Width", DefaultW)
-	End If
-	Dim h As Int = ResolveAlertSize(props, "Height", DefaultH)
+	Dim w As Int = 0
+	If DefaultW > 0 Then w = Max(24dip, Alert.getWidth)
+	Dim h As Int = Max(24dip, Alert.getHeight)
 	AlertItems.Add(CreateMap( _
 		"id": Id, _
 		"label": LabelView, _
@@ -248,11 +241,12 @@ Private Sub LayoutAlerts(Width As Int, Height As Int)
 		' Keep button sample responsive by direction based on current width.
 		If itemId = "alert-buttons" Then
 			Dim responsiveDirection As String = IIf(Width >= 640dip, "horizontal", "vertical")
-			If alert.getDirection <> responsiveDirection Then alert.SetDirection(responsiveDirection)
+			If alert.Direction <> responsiveDirection Then alert.Direction = responsiveDirection
 		End If
 		' Place caption.
 		Dim labelH As Int = 18dip
-		xlbl.SetLayoutAnimated(0, pad, y, maxW, labelH)
+		Dim lblClass As B4XDaisyLabel = item.Get("label")
+		lblClass.SetLayoutAnimated(0, pad, y, maxW, labelH)
 		y = y + labelH + 4dip
 		' Place alert with computed preferred height and minimum configured height.
 		Dim computedAlertH As Int = Max(48dip, alert.GetPreferredHeight(aw))
@@ -269,18 +263,7 @@ Private Sub LayoutAlerts(Width As Int, Height As Int)
 End Sub
 
 Private Sub alert_Click(Tag As Object)
-	' Fired when the alert body is clicked.
-	Log("Alert click: " & Tag)
 End Sub
 
 Private Sub alert_ActionClick(Tag As Object)
-	' Fired when a dynamic action button is clicked.
-	Dim info As String = "Action"
-	If Tag Is Map Then
-		Dim m As Map = Tag
-		info = m.GetDefault("id", "") & " -> " & m.GetDefault("action", "")
-	Else If Tag <> Null Then
-		info = Tag
-	End If
-	Log("Alert action: " & info)
 End Sub

@@ -66,13 +66,16 @@ Public Sub TailwindSpacingToDip(Value As Object, DefaultDip As Float) As Float
 	EnsureDefaultSpacingScale
 
 	Dim raw As String = Value
+	If raw = Null Then Return Max(0, DefaultDip)
 	Dim s As String = raw.ToLowerCase.Trim
 	If s.Length = 0 Then Return Max(0, DefaultDip)
 
 	' Accept utility-style tokens and keep only the final spacing spec part.
 	Dim p As Int = s.LastIndexOf("-")
 	If p >= 0 And p < s.Length - 1 Then s = s.SubString(p + 1)
-	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then s = s.SubString2(1, s.Length - 1).Trim
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+	End If
 
 	If DefaultSpacingScalePx.ContainsKey(s) Then
 		Dim px As Float = DefaultSpacingScalePx.Get(s)

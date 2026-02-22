@@ -9,12 +9,9 @@ Version=13.4
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: String, DefaultValue: 12, Description: Tailwind size token or CSS size (eg 12, 80px, 5rem)
 #DesignerProperty: Key: Padding, DisplayName: Padding, FieldType: String, DefaultValue:, Description: Padding utility/value for group content (eg p-2, px-3, 2)
 #DesignerProperty: Key: Margin, DisplayName: Margin, FieldType: String, DefaultValue:, Description: Margin utility/value for group host insets (eg m-2, mx-1.5, 1)
-#DesignerProperty: Key: Overlap, DisplayName: Overlap, FieldType: Int, DefaultValue: 8, Description: Horizontal overlap between avatars in dip
-#DesignerProperty: Key: ItemSize, DisplayName: Item Size, FieldType: String, DefaultValue: 10, Description: Fallback avatar size when child has no size
-#DesignerProperty: Key: AvatarSize, DisplayName: Avatar Size, FieldType: String, DefaultValue: 0, Description: Forced avatar size for all items (0 keeps individual sizes)
+#DesignerProperty: Key: Spacing, DisplayName: Spacing, FieldType: String, DefaultValue: -space-x-6, Description: Overlap or gap utility (eg -space-x-6, space-x-4)
+#DesignerProperty: Key: AvatarSize, DisplayName: Avatar Size, FieldType: String, DefaultValue: 12, Description: Tailwind size for avatars (e.g. 12, 16, 24)
 #DesignerProperty: Key: LimitTo, DisplayName: Limit To, FieldType: Int, DefaultValue: 5, Description: Max avatars shown before overflow placeholder (+N)
-#DesignerProperty: Key: BorderWidth, DisplayName: Border Width, FieldType: Int, DefaultValue: 4, Description: Border width applied around each avatar
-#DesignerProperty: Key: BorderColor, DisplayName: Border Color, FieldType: Color, DefaultValue: 0x00000000, Description: Border color (0 = theme base-100)
 
 Sub Class_Globals
 	Private xui As XUI
@@ -29,22 +26,18 @@ Sub Class_Globals
 	Private mHeightExplicit As Boolean = False
 	Private mPadding As String = ""
 	Private mMargin As String = ""
-	Private mOverlap As Float = 8dip
-	Private mItemSize As Float = 40dip
-	Private mAvatarSize As Float = 0dip
+	Private mSpacing As String = "-space-x-6"
+	Private mAvatarSize As Object = "12"
 	Private mLimitTo As Int = 5
-	Private mBorderWidth As Float = 4dip
-	Private mBorderColor As Int = 0
 	Private Items As List
-	Private CustProps As Map
-	Private OverflowView As B4XView
+	Private OverflowAvatar As B4XDaisyAvatar
+	Private mOverflowCount As Int = 0
 End Sub
 
 Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	Items.Initialize
-	SetDefaults
 End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
@@ -66,14 +59,10 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim snap As Map = GetProperties
 	Dim props As Map
 	props.Initialize
-	For Each k As String In snap.Keys
-		props.Put(k, snap.Get(k))
-	Next
-	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
-	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
@@ -92,73 +81,97 @@ Public Sub Base_Resize(Width As Double, Height As Double)
 	Relayout
 End Sub
 
-Public Sub SetDefaults
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("Overlap", mOverlap)
-	CustProps.Put("ItemSize", mItemSize)
-	CustProps.Put("AvatarSize", mAvatarSize)
-	CustProps.Put("LimitTo", mLimitTo)
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("BorderColor", mBorderColor)
-End Sub
 
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	Dim src As Map
-	src.Initialize
-	For Each k As String In Props.Keys
-		src.Put(k, Props.Get(k))
-	Next
-	CustProps.Initialize
-	For Each k As String In src.Keys
-		CustProps.Put(k, src.Get(k))
-	Next
-End Sub
 
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("Overlap", mOverlap)
-	CustProps.Put("ItemSize", mItemSize)
-	CustProps.Put("AvatarSize", mAvatarSize)
-	CustProps.Put("LimitTo", mLimitTo)
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("BorderColor", mBorderColor)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
+
+
+
 
 Private Sub ApplyDesignerProps(Props As Map)
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
-	mWidth = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(CustProps.GetDefault("Width", mWidth), ResolveWidthBase(mWidth)))
-	mHeight = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(CustProps.GetDefault("Height", mHeight), ResolveHeightBase(mHeight)))
-	mWidthExplicit = CustProps.ContainsKey("Width")
-	mHeightExplicit = CustProps.ContainsKey("Height")
-	mPadding = CustProps.GetDefault("Padding", mPadding)
-	mMargin = CustProps.GetDefault("Margin", mMargin)
-	mOverlap = Max(0, B4XDaisyVariants.TailwindSizeToDip(CustProps.GetDefault("Overlap", mOverlap), mOverlap))
-	mItemSize = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(CustProps.GetDefault("ItemSize", mItemSize), mItemSize))
-	mAvatarSize = Max(0, B4XDaisyVariants.TailwindSizeToDip(CustProps.GetDefault("AvatarSize", mAvatarSize), mAvatarSize))
-	mLimitTo = Max(1, CustProps.GetDefault("LimitTo", mLimitTo))
-	mBorderWidth = Max(0, B4XDaisyVariants.TailwindSizeToDip(CustProps.GetDefault("BorderWidth", mBorderWidth), mBorderWidth))
-	mBorderColor = CustProps.GetDefault("BorderColor", mBorderColor)
+	mWidth = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(B4XDaisyVariants.GetPropString(Props, "Width", mWidth), ResolveWidthBase(mWidth)))
+	mHeight = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(B4XDaisyVariants.GetPropString(Props, "Height", mHeight), ResolveHeightBase(mHeight)))
+	mWidthExplicit = Props.ContainsKey("Width")
+	mHeightExplicit = Props.ContainsKey("Height")
+	mPadding = B4XDaisyVariants.GetPropString(Props, "Padding", mPadding)
+	mMargin = B4XDaisyVariants.GetPropString(Props, "Margin", mMargin)
+	mSpacing = B4XDaisyVariants.GetPropString(Props, "Spacing", mSpacing)
+	mAvatarSize = Props.GetDefault("AvatarSize", mAvatarSize)
+	mLimitTo = Max(0, B4XDaisyVariants.GetPropInt(Props, "LimitTo", mLimitTo))
 End Sub
 
-Public Sub AddAvatarComponent(Avatar As B4XDaisyAvatar) As Int
-	Dim tag As Object = Null
+Public Sub CreateView(Width As Int, Height As Int) As B4XView
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Return mBase
+End Sub
+
+Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
+	Dim px As Int = Max(1, Round(SizeDip / 1dip))
+	Return px & "px"
+End Sub
+
+Public Sub AddAvatar(Avatar As B4XDaisyAvatar) As Int
 	Dim v As B4XView = Avatar.View
 	If v.IsInitialized = False Then Return -1
-	tag = Avatar.getAvatarTag
+	
+	' --- Limit-aware overflow logic ---
+	' If adding this avatar would exceed the limit (and limit > 0), create or update the overflow placeholder.
+	If mLimitTo > 0 And Items.Size >= mLimitTo Then
+		mOverflowCount = mOverflowCount + 1
+		If OverflowAvatar.IsInitialized = False Then
+			CreateOverflowPlaceholder
+		Else
+			OverflowAvatar.SetPlaceHolder("+" & mOverflowCount)
+		End If
+		Return -1
+	End If
+	
+	' --- Normal add (slot available or no limit) ---
+	ApplyGroupStyle(Avatar)
+	Dim tag As Object = Avatar.getAvatarTag
 	Dim idx As Int = AddAvatarViewInternal(v, tag, Avatar)
 	Return idx
+End Sub
+
+Private Sub ApplyGroupStyle(Avatar As B4XDaisyAvatar)
+	' DaisyUI avatar-group spec: circle mask + 2px base-100 ring + 0 offset
+	Dim ringW As Float = 2dip
+	Dim ringColor As Int = ResolveBorderColor
+	' Order matters: Size and Mask first, then manual ring overrides
+	Avatar.setAvatarSize(mAvatarSize)
+	Avatar.SetAvatarMask("rounded-full")
+	Avatar.setRingWidth(ringW)
+	Avatar.setRingColor(ringColor)
+	Avatar.setRingOffset(0)
+End Sub
+
+Private Sub CreateOverflowPlaceholder
+	' Build the "+N" pill avatar and add it as a regular item in the Items list.
+	OverflowAvatar.Initialize(mCallBack, "overflow_placeholder")
+	OverflowAvatar.CreateView(32dip, 32dip) ' Initial size, will be reset by Relayout/ApplyGroupStyle
+	OverflowAvatar.SetAvatarType("text")
+	OverflowAvatar.SetPlaceHolder("+" & mOverflowCount)
+	OverflowAvatar.SetVariant("neutral")
+	OverflowAvatar.SetBackgroundColorVariant("neutral")
+	OverflowAvatar.SetTextColorVariant("neutral-content")
+	OverflowAvatar.TextSize = "text-sm"
+	
+	' Ensure ring is enabled explicitly before applying group style
+	OverflowAvatar.SetRingWidth(2dip)
+	ApplyGroupStyle(OverflowAvatar)
+	
+	Dim v As B4XView = OverflowAvatar.View
+	Dim tag As Object = OverflowAvatar.getAvatarTag
+	AddAvatarViewInternal(v, tag, OverflowAvatar)
 End Sub
 
 Public Sub AddAvatarView(ChildView As B4XView, Tag As Object) As Int
@@ -170,7 +183,10 @@ Private Sub AddAvatarViewInternal(ChildView As B4XView, Tag As Object, AvatarObj
 	Dim item As Map = CreateMap("view": ChildView, "tag": Tag, "avatar": AvatarObj)
 	Items.Add(item)
 	If mBase.IsInitialized Then
-		If ChildView.Parent.IsInitialized And ChildView.Parent <> mBase Then ChildView.RemoveViewFromParent
+		If ChildView.Parent.IsInitialized Then
+			Dim parentView As B4XView = ChildView.Parent
+			If parentView.IsInitialized And parentView <> mBase Then ChildView.RemoveViewFromParent
+		End If
 		If ChildView.Parent.IsInitialized = False Then mBase.AddView(ChildView, 0, 0, Max(1dip, ChildView.Width), Max(1dip, ChildView.Height))
 		Relayout
 	End If
@@ -184,11 +200,9 @@ Public Sub Clear
 		If v.IsInitialized Then v.RemoveViewFromParent
 	Next
 	Items.Clear
-	If OverflowView.IsInitialized Then
-		OverflowView.RemoveViewFromParent
-		Dim empty As B4XView
-		OverflowView = empty
-	End If
+	mOverflowCount = 0
+	Dim emptyAvatar As B4XDaisyAvatar
+	OverflowAvatar = emptyAvatar
 End Sub
 
 Public Sub getCount As Int
@@ -239,25 +253,17 @@ Public Sub getMargin As String
 	Return mMargin
 End Sub
 
-Public Sub setOverlap(Value As Object)
-	mOverlap = Max(0, B4XDaisyVariants.TailwindSizeToDip(Value, mOverlap))
+Public Sub setSpacing(Value As String)
+	mSpacing = IIf(Value = Null, "", Value)
 	If mBase.IsInitialized = False Then Return
 	Relayout
 End Sub
 
-Public Sub getOverlap As Float
-	Return mOverlap
+Public Sub getSpacing As String
+	Return mSpacing
 End Sub
 
-Public Sub setItemSize(Value As Object)
-	mItemSize = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(Value, mItemSize))
-	If mBase.IsInitialized = False Then Return
-	Relayout
-End Sub
 
-Public Sub getItemSize As Float
-	Return mItemSize
-End Sub
 
 Public Sub applyActiveTheme
 	If mBase.IsInitialized = False Then Return
@@ -265,12 +271,12 @@ Public Sub applyActiveTheme
 End Sub
 
 Public Sub setAvatarSize(Value As Object)
-	mAvatarSize = Max(0, B4XDaisyVariants.TailwindSizeToDip(Value, mAvatarSize))
+	mAvatarSize = Value
 	If mBase.IsInitialized = False Then Return
 	Relayout
 End Sub
 
-Public Sub getAvatarSize As Float
+Public Sub getAvatarSize As Object
 	Return mAvatarSize
 End Sub
 
@@ -284,25 +290,7 @@ Public Sub getLimitTo As Int
 	Return mLimitTo
 End Sub
 
-Public Sub setBorderWidth(Value As Object)
-	mBorderWidth = Max(0, B4XDaisyVariants.TailwindSizeToDip(Value, mBorderWidth))
-	If mBase.IsInitialized = False Then Return
-	Relayout
-End Sub
 
-Public Sub getBorderWidth As Float
-	Return mBorderWidth
-End Sub
-
-Public Sub setBorderColor(Value As Int)
-	mBorderColor = Value
-	If mBase.IsInitialized = False Then Return
-	Relayout
-End Sub
-
-Public Sub getBorderColor As Int
-	Return mBorderColor
-End Sub
 
 Private Sub Relayout
 	If mBase.IsInitialized = False Then Return
@@ -315,49 +303,53 @@ Private Sub Relayout
 	Dim x As Int = contentRect.Left
 	Dim h As Int = Max(1dip, contentRect.Height)
 	Dim yTop As Int = contentRect.Top
-	Dim visibleCount As Int = Min(Items.Size, mLimitTo)
+	
+	' Resolve avatar size for positioning only
+	Dim resolvedSize As Float = Max(16dip, B4XDaisyVariants.TailwindSizeToDip(mAvatarSize, h))
+	
+	' Parse spacing string (e.g. "-space-x-6" -> -24dip, "space-x-4" -> 16dip)
+	Dim spacingVal As Float = 0
+	Dim spc As String = mSpacing.ToLowerCase.Trim
+	If spc.Length > 0 Then
+		Dim isNeg As Boolean = spc.StartsWith("-")
+		If isNeg Then spc = spc.SubString(1).Trim
+		If spc.StartsWith("space-x-") Then
+			Dim token As String = spc.SubString("space-x-".Length)
+			spacingVal = B4XDaisyBoxModel.TailwindSpacingToDip(token, 0dip)
+			If isNeg Then spacingVal = -spacingVal
+		End If
+	End If
+	
+	' Position every item — all items in the list are visible (overflow is already a regular item)
 	For i = 0 To Items.Size - 1
 		Dim item As Map = Items.Get(i)
 		Dim v As B4XView = item.Get("view")
 		If v.IsInitialized = False Then Continue
-		Dim showItem As Boolean = (i < visibleCount)
-		v.Visible = showItem
-		If showItem = False Then Continue
+		
 		If v.Parent.IsInitialized = False Then mBase.AddView(v, 0, 0, Max(1dip, v.Width), Max(1dip, v.Height))
-		Dim forcedSize As Int = IIf(mAvatarSize > 0, Max(16dip, mAvatarSize), 0)
-		Dim w As Int = IIf(forcedSize > 0, forcedSize, Max(16dip, IIf(v.Width > 1dip, v.Width, mItemSize)))
-		Dim vh As Int = IIf(forcedSize > 0, forcedSize, Max(16dip, IIf(v.Height > 1dip, v.Height, mItemSize)))
+		
+		' Container size matches resolvedSize
+		Dim w As Int = resolvedSize
+		Dim vh As Int = resolvedSize
 		Dim y As Int = yTop + Max(0, (h - vh) / 2)
+		
 		v.SetLayoutAnimated(0, x, y, w, vh)
 		ApplyAvatarItemStyle(item, borderColor)
-		x = x + Max(1dip, w - mOverlap)
+		
+		x = x + w + spacingVal
 	Next
-	LayoutOverflowPlaceholder(x, yTop, h, borderColor)
+	
+	' Enforce left-to-right overlaps (Z-Index): later items draw on top.
+	For i = 0 To Items.Size - 1
+		Dim item As Map = Items.Get(i)
+		Dim v As B4XView = item.Get("view")
+		If v.IsInitialized And v.Parent.IsInitialized Then
+			v.BringToFront
+		End If
+	Next
 End Sub
 
-Private Sub LayoutOverflowPlaceholder(StartX As Int, TopY As Int, HostH As Int, BorderColor As Int)
-	Dim extra As Int = Items.Size - mLimitTo
-	If extra <= 0 Then
-		If OverflowView.IsInitialized Then OverflowView.Visible = False
-		Return
-	End If
-	If OverflowView.IsInitialized = False Then
-		Dim l As Label
-		l.Initialize("")
-		OverflowView = l
-		OverflowView.SetTextAlignment("CENTER", "CENTER")
-		OverflowView.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)
-		mBase.AddView(OverflowView, 0, 0, 1dip, 1dip)
-	End If
-	OverflowView.Visible = True
-	Dim forcedSize As Int = IIf(mAvatarSize > 0, Max(16dip, mAvatarSize), 0)
-	Dim sz As Int = IIf(forcedSize > 0, forcedSize, Max(16dip, mItemSize))
-	Dim y As Int = TopY + Max(0, (HostH - sz) / 2)
-	OverflowView.SetLayoutAnimated(0, StartX, y, sz, sz)
-	OverflowView.Text = "+" & extra
-	OverflowView.TextSize = Max(10, Min(16, sz / 3))
-	OverflowView.SetColorAndBorder(B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(229, 231, 235)), mBorderWidth, BorderColor, sz / 2)
-End Sub
+
 
 Private Sub BuildBoxModel As Map
 	Dim box As Map = B4XDaisyBoxModel.CreateDefaultModel
@@ -396,18 +388,24 @@ End Sub
 Private Sub ApplyAvatarItemStyle(Item As Map, BorderColor As Int)
 	Dim v As B4XView = Item.Get("view")
 	If v.IsInitialized = False Then Return
-	Dim r As Float = Min(v.Width, v.Height) / 2
-	v.SetColorAndBorder(xui.Color_Transparent, mBorderWidth, BorderColor, r)
+	
 	Dim avatarObj As Object = Item.GetDefault("avatar", Null)
 	If avatarObj <> Null Then
-		If mAvatarSize > 0 And xui.SubExists(avatarObj, "setAvatarSize", 1) Then CallSub2(avatarObj, "setAvatarSize", mAvatarSize)
-		If xui.SubExists(avatarObj, "setRingWidth", 1) Then CallSub2(avatarObj, "setRingWidth", mBorderWidth)
-		If xui.SubExists(avatarObj, "setRingColor", 1) Then CallSub2(avatarObj, "setRingColor", BorderColor)
+		' Styles (mask, ring, offset) already applied in AddAvatar.
+		' Here we only trigger the internal redraw to match the container size set by Relayout.
+		If xui.SubExists(avatarObj, "Base_Resize", 2) Then
+			CallSub3(avatarObj, "Base_Resize", v.Width, v.Height)
+		Else If xui.SubExists(avatarObj, "ResizeToParent", 1) Then
+			CallSub2(avatarObj, "ResizeToParent", v)
+		End If
+	Else
+		' Fallback to OS native border for raw non-Avatar views inside the group
+		Dim r As Float = Min(v.Width, v.Height) / 2
+		v.SetColorAndBorder(xui.Color_Transparent, 2dip, BorderColor, r)
 	End If
 End Sub
 
 Private Sub ResolveBorderColor As Int
-	If mBorderColor <> 0 Then Return mBorderColor
 	Return B4XDaisyVariants.GetTokenColor("--color-base-100", xui.Color_White)
 End Sub
 
@@ -436,4 +434,8 @@ End Sub
 
 Public Sub getTag As Object
 	Return mTag
+End Sub
+
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
 End Sub

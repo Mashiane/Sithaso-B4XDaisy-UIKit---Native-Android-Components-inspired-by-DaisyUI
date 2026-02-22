@@ -15,6 +15,7 @@ Version=13.4
 #DesignerProperty: Key: BorderColor, DisplayName: Border Color, FieldType: Color, DefaultValue: 0x00000000, Description: Border color (transparent by default)
 #DesignerProperty: Key: BackgroundColor, DisplayName: Background Color, FieldType: Color, DefaultValue: 0x00000000, Description: Background fill color (transparent by default)
 #DesignerProperty: Key: RoundedBox, DisplayName: Rounded Box, FieldType: Boolean, DefaultValue: False, Description: Applies rounded-box corner radius
+#DesignerProperty: Key: Variant, DisplayName: Variant, FieldType: String, DefaultValue: none, List: none|neutral|primary|secondary|accent|info|success|warning|error, Description: DaisyUI semantic color variant (sets icon color).
 
 Sub Class_Globals
 	Private mEventName As String 'ignore
@@ -38,26 +39,34 @@ Sub Class_Globals
 	Private mBorderColor As Int = xui.Color_Transparent
 	Private mBackgroundColor As Int = xui.Color_Transparent
 	Private mRoundedBox As Boolean = False
+	Private mVariant As String = "none"
 	Private mTag As Object
-	Private CustProps As Map
 End Sub
 
 Public Sub Initialize (Callback As Object, EventName As String)
 	mEventName = EventName
 	mCallBack = Callback
-	SetDefaults
 End Sub
 
-'Public Sub CreateView(Width As Int, Height As Int) As B4XView
-'	Dim p As Panel
-'	p.Initialize("")
-'	Dim b As B4XView = p
-'	b.Color = xui.Color_Transparent
-'	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-'	Dim dummy As Label
-'	DesignerCreateView(b, dummy, CreateMap())
-'	Return mBase
-'End Sub
+Public Sub CreateView(Width As Int, Height As Int) As B4XView
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Return mBase
+End Sub
+
+Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
+	Dim px As Int = Max(1, Round(SizeDip / 1dip))
+	Return px & "px"
+End Sub
 
 Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
@@ -83,7 +92,6 @@ Private Sub ConfigureNativeView
 		jo.RunMethod("setBackgroundColor", Array(0))
 		jo.RunMethod("setScaleType", Array(CreateScaleTypeFitXy))
 	Catch
-		Log("B4XDaisySvgIcon.ConfigureNativeView: " & LastException.Message)
 	End Try
 	#End If
 End Sub
@@ -99,85 +107,30 @@ Private Sub CreateScaleTypeFitXy As Object
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
-	Dim p As Map = CustProps
-	mWidth = B4XDaisyVariants.TailwindSizeToDip("6", 24dip)
-	mHeight = B4XDaisyVariants.TailwindSizeToDip("6", 24dip)
-	mWidthExplicit = False
-	mHeightExplicit = False
-	SvgAssetPath = ""
-	SvgMarkup = ""
-	IconColor = 0xFF3B82F6
-	PreserveColors = False
-	LastRenderer = ""
-	mPadding = 0dip
-	mBorderWidth = 0dip
-	mBorderColor = xui.Color_Transparent
-	mBackgroundColor = xui.Color_Transparent
-	mRoundedBox = False
-
-	If p.IsInitialized = False Then
-		RenderSvg
-		Return
+	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
+	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
+	IconColor = GetPropColor(Props, "Color", IconColor)
+	PreserveColors = GetPropBool(Props, "PreserveColors", PreserveColors)
+	mPadding = Max(0, GetPropDip(Props, "Padding", mPadding))
+	mBorderWidth = Max(0, GetPropDip(Props, "BorderWidth", mBorderWidth))
+	mBorderColor = GetPropColor(Props, "BorderColor", mBorderColor)
+	mBackgroundColor = GetPropColor(Props, "BackgroundColor", mBackgroundColor)
+	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
+	If Props.ContainsKey("Width") Then mWidthExplicit = True
+	If Props.ContainsKey("Height") Then mHeightExplicit = True
+	setSvgAsset(GetPropString(Props, "SvgAsset", SvgAssetPath))
+	Dim v As String = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
+	If v <> "none" Then
+		IconColor = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.GetVariantPalette, v, "back", IconColor)
 	End If
-
-	mWidth = Max(1dip, GetPropSizeDip(p, "Width", ResolveWidthBase(mWidth)))
-	mHeight = Max(1dip, GetPropSizeDip(p, "Height", ResolveHeightBase(mHeight)))
-	IconColor = GetPropColor(p, "Color", IconColor)
-	PreserveColors = GetPropBool(p, "PreserveColors", PreserveColors)
-	mPadding = Max(0, GetPropDip(p, "Padding", mPadding))
-	mBorderWidth = Max(0, GetPropDip(p, "BorderWidth", mBorderWidth))
-	mBorderColor = GetPropColor(p, "BorderColor", mBorderColor)
-	mBackgroundColor = GetPropColor(p, "BackgroundColor", mBackgroundColor)
-	mRoundedBox = GetPropBool(p, "RoundedBox", mRoundedBox)
-	If p.ContainsKey("Width") Then mWidthExplicit = True
-	If p.ContainsKey("Height") Then mHeightExplicit = True
-	SetSvgAsset(GetPropString(p, "SvgAsset", SvgAssetPath))
+	mVariant = v
 End Sub
 
-Public Sub SetDefaults
-	CustProps.Initialize
-	CustProps.Put("SvgAsset", SvgAssetPath)
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Color", IconColor)
-	CustProps.Put("PreserveColors", PreserveColors)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("BorderColor", mBorderColor)
-	CustProps.Put("BackgroundColor", mBackgroundColor)
-	CustProps.Put("RoundedBox", mRoundedBox)
-End Sub
 
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	Dim src As Map
-	src.Initialize
-	For Each k As String In Props.Keys
-		src.Put(k, Props.Get(k))
-	Next
-	CustProps.Initialize
-	For Each k As String In src.Keys
-		CustProps.Put(k, src.Get(k))
-	Next
-End Sub
 
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("SvgAsset", SvgAssetPath)
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Color", IconColor)
-	CustProps.Put("PreserveColors", PreserveColors)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("BorderColor", mBorderColor)
-	CustProps.Put("BackgroundColor", mBackgroundColor)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
+
+
+
 
 Public Sub Base_Resize (Width As Double, Height As Double)
 	If mBase.IsInitialized = False Then Return
@@ -218,14 +171,10 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim snap As Map = GetProperties
 	Dim props As Map
 	props.Initialize
-	For Each k As String In snap.Keys
-		props.Put(k, snap.Get(k))
-	Next
-	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
-	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
@@ -274,6 +223,22 @@ End Sub
 Public Sub setColorVariant(VariantName As String)
 	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", IconColor)
 	setColor(c)
+End Sub
+
+Public Sub setVariant(Value As String)
+	mVariant = B4XDaisyVariants.NormalizeVariant(Value)
+	If mVariant <> "none" Then
+		' Reset manual overrides to ensure variant colors take full effect.
+		mBackgroundColor = xui.Color_Transparent
+		mBorderColor = xui.Color_Transparent
+		IconColor = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.GetVariantPalette, mVariant, "back", IconColor)
+	End If
+	If mBase.IsInitialized = False Then Return
+	RenderSvg
+End Sub
+
+Public Sub getVariant As String
+	Return mVariant
 End Sub
 
 Public Sub setPreserveOriginalColors(Value As Boolean)
@@ -361,7 +326,7 @@ Public Sub getBorderColor As Int
 End Sub
 
 Public Sub setBorderColorVariant(VariantName As String)
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "border", mBorderColor)
+	Dim c As Int = B4XDaisyVariants.ResolveBorderColorVariant(VariantName, mBorderColor)
 	setBorderColor(c)
 End Sub
 
@@ -376,7 +341,7 @@ Public Sub getBackgroundColor As Int
 End Sub
 
 Public Sub setBackgroundColorVariant(VariantName As String)
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "back", mBackgroundColor)
+	Dim c As Int = B4XDaisyVariants.ResolveBackgroundColorVariant(VariantName, mBackgroundColor)
 	setBackgroundColor(c)
 End Sub
 
@@ -432,7 +397,6 @@ Private Sub TryRenderNative(Svg As String) As Boolean
 		ivNative.SetBitmap(bmp)
 		Return True
 	Catch
-		Log("B4XDaisySvgIcon.TryRenderNative: " & LastException.Message)
 	End Try
 	#End If
 	Return False
@@ -440,7 +404,7 @@ End Sub
 
 Private Sub GetResolvedSvgContent As String
 	Dim raw As String = SvgMarkup.Trim
-	If raw.Length = 0 And SvgAssetPath.Length > 0 Then raw = ReadTextFromPath(SvgAssetPath).Trim
+	If raw.Length = 0 And SvgAssetPath.Length > 0 Then raw = B4XDaisyVariants.ResolveAssetSVG(SvgAssetPath, "").Trim
 	If raw.Length = 0 Then Return ""
 	If raw.StartsWith("<?xml") Then
 		Dim endPi As Int = raw.IndexOf("?>")
@@ -473,7 +437,6 @@ Private Sub ReadTextFromPath(Path As String) As String
 		End If
 		If File.Exists(File.DirAssets, p) Then Return File.ReadString(File.DirAssets, p)
 	Catch
-		Log("B4XDaisySvgIcon.ReadTextFromPath: " & LastException.Message)
 	End Try
 	Return ""
 End Sub
@@ -1508,3 +1471,7 @@ private static class PathScanner {
 	}
 }
 #End If
+
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
+End Sub

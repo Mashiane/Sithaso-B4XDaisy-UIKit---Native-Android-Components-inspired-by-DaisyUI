@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\DaisuyUIKit
 ModulesStructureVersion=1
 Type=Class
@@ -10,9 +10,9 @@ Version=13.4
 #DesignerProperty: Key: Width, DisplayName: Width, FieldType: String, DefaultValue: 10, Description: Tailwind size token or CSS size (eg 12, 80px, 4em, 5rem)
 #DesignerProperty: Key: Height, DisplayName: Height, FieldType: String, DefaultValue: 6, Description: Tailwind size token or CSS size (eg 6, 24px, 1.5rem)
 #DesignerProperty: Key: Text, DisplayName: Text, FieldType: String, DefaultValue: , Description: Label text.
-#DesignerProperty: Key: TextColor, DisplayName: Text Color, FieldType: Color, DefaultValue: 0xFF334155, Description: Text color.
+#DesignerProperty: Key: TextColor, DisplayName: Text Color, FieldType: Color, DefaultValue: 0xFF000000, Description: Text color.
 #DesignerProperty: Key: BackgroundColor, DisplayName: Background Color, FieldType: Color, DefaultValue: 0x00000000, Description: Background color.
-#DesignerProperty: Key: TextSize, DisplayName: Text Size, FieldType: String, DefaultValue: 12, Description: Number in dip or Tailwind token (eg 12, text-sm, text-lg).
+#DesignerProperty: Key: TextSize, DisplayName: Text Size, FieldType: String, DefaultValue: text-sm, Description: Number in dip or Tailwind token (eg 12, text-sm, text-lg).
 #DesignerProperty: Key: FontBold, DisplayName: Font Bold, FieldType: Boolean, DefaultValue: False, Description: Use bold font.
 #DesignerProperty: Key: SingleLine, DisplayName: Single Line, FieldType: Boolean, DefaultValue: True, Description: Single line text.
 #DesignerProperty: Key: HAlign, DisplayName: Horizontal Align, FieldType: String, DefaultValue: LEFT, List: LEFT|CENTER|RIGHT, Description: Text horizontal alignment.
@@ -24,6 +24,8 @@ Version=13.4
 #DesignerProperty: Key: BorderColor, DisplayName: Border Color, FieldType: Color, DefaultValue: 0x00000000, Description: Border color.
 #DesignerProperty: Key: Visible, DisplayName: Visible, FieldType: Boolean, DefaultValue: True, Description: Visible state.
 #DesignerProperty: Key: Enabled, DisplayName: Enabled, FieldType: Boolean, DefaultValue: True, Description: Enabled state.
+#DesignerProperty: Key: IsSkeleton, DisplayName: Is Skeleton, FieldType: Boolean, DefaultValue: False, Description: Show skeleton loading state.
+#DesignerProperty: Key: Variant, DisplayName: Variant, FieldType: String, DefaultValue: none, List: none|neutral|primary|secondary|accent|info|success|warning|error, Description: DaisyUI semantic color variant.
 
 Sub Class_Globals
 	Private xui As XUI
@@ -31,16 +33,20 @@ Sub Class_Globals
 	Private mCallBack As Object
 	Private mEventName As String
 	Private mTag As Object
-	Private CustProps As Map
-
 	Private mWidth As Float = 40dip
 	Private mHeight As Float = 24dip
 	Private mWidthExplicit As Boolean = False
 	Private mHeightExplicit As Boolean = False
+	
 	Private mText As String = ""
-	Private mTextColor As Int = 0xFF334155
+	Private mTextColor As Int = 0xFF000000
 	Private mBackgroundColor As Int = xui.Color_Transparent
-	Private mTextSize As Float = 12
+	Private mBorderColor As Int = xui.Color_Transparent
+	Private mTextColorOverride As Int = 0
+	Private mBackgroundColorOverride As Int = 0
+	Private mBorderColorOverride As Int = 0
+
+	Private mTextSize As Float = 14dip 'resolved from text-sm
 	Private mFontBold As Boolean = False
 	Private mSingleLine As Boolean = True
 	Private mHAlign As String = "LEFT"
@@ -49,31 +55,43 @@ Sub Class_Globals
 	Private mMargin As String = ""
 	Private mRoundedBox As Boolean = False
 	Private mBorderWidth As Float = 0dip
-	Private mBorderColor As Int = xui.Color_Transparent
+	
 	Private mVisible As Boolean = True
 	Private mEnabled As Boolean = True
-
 	Private lblContent As B4XView
+
+	'Skeleton Support
+	Private mIsSkeleton As Boolean = False
+	Private mVariant As String = "none"
+	Private pnlSkeleton As B4XView
+	Private cvs As B4XCanvas
+	
+	Private mAnimProgress As Float = 1.5
+	Private mAnimTimer As Timer
+	Private mAnimDuration As Long = 1800
+	Private mAnimStartTime As Long
 End Sub
 
 Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
-	SetDefaults
+	mAnimTimer.Initialize("AnimTimer", 16)
 End Sub
 
-'Public Sub CreateView(Width As Int, Height As Int) As B4XView
-'	Dim p As Panel
-'	p.Initialize("base")
-'	Dim b As B4XView = p
-'	b.Color = xui.Color_Transparent
-'	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-'	Dim dummy As Label
-'	DesignerCreateView(b, dummy, CreateMap())
-'	mWidth = Width
-'	mHeight = Height
-'	Return mBase
-'End Sub
+Public Sub CreateView(Width As Int, Height As Int) As B4XView
+	Dim p As Panel
+	p.Initialize("base")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Return mBase
+End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
@@ -91,9 +109,6 @@ Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
-
 	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
 	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
 	mWidthExplicit = Props.IsInitialized And Props.ContainsKey("Width")
@@ -113,6 +128,9 @@ Private Sub ApplyDesignerProps(Props As Map)
 	mBorderColor = GetPropColor(Props, "BorderColor", mBorderColor)
 	mVisible = GetPropBool(Props, "Visible", mVisible)
 	mEnabled = GetPropBool(Props, "Enabled", mEnabled)
+	mIsSkeleton = GetPropBool(Props, "IsSkeleton", mIsSkeleton)
+	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
+	If mVariant <> "none" Then ApplyVariantColors
 End Sub
 
 Public Sub Base_Resize(Width As Double, Height As Double)
@@ -120,6 +138,12 @@ Public Sub Base_Resize(Width As Double, Height As Double)
 	Dim w As Int = Max(1dip, Width)
 	Dim h As Int = Max(1dip, Height)
 	mBase.SetLayoutAnimated(0, mBase.Left, mBase.Top, w, h)
+	
+	If pnlSkeleton.IsInitialized Then
+		pnlSkeleton.SetLayoutAnimated(0, 0, 0, w, h)
+		cvs.Resize(w, h)
+	End If
+	
 	ApplyVisual
 End Sub
 
@@ -147,6 +171,7 @@ Private Sub ApplyVisual
 	End If
 	mBase.Visible = mVisible
 	lblContent.Enabled = mEnabled
+	ApplySkeletonVisual
 End Sub
 
 Private Sub BuildBoxModel As Map
@@ -174,57 +199,11 @@ Private Sub ApplyMarginSpecToBox(Box As Map, MarginSpec As String)
 	End If
 End Sub
 
-Public Sub SetDefaults
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Text", mText)
-	CustProps.Put("TextColor", mTextColor)
-	CustProps.Put("BackgroundColor", mBackgroundColor)
-	CustProps.Put("TextSize", mTextSize)
-	CustProps.Put("FontBold", mFontBold)
-	CustProps.Put("SingleLine", mSingleLine)
-	CustProps.Put("HAlign", mHAlign)
-	CustProps.Put("VAlign", mVAlign)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("BorderColor", mBorderColor)
-	CustProps.Put("Visible", mVisible)
-	CustProps.Put("Enabled", mEnabled)
-End Sub
 
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	CustProps.Initialize
-	For Each k As String In Props.Keys
-		CustProps.Put(k, Props.Get(k))
-	Next
-End Sub
 
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Text", mText)
-	CustProps.Put("TextColor", mTextColor)
-	CustProps.Put("BackgroundColor", mBackgroundColor)
-	CustProps.Put("TextSize", mTextSize)
-	CustProps.Put("FontBold", mFontBold)
-	CustProps.Put("SingleLine", mSingleLine)
-	CustProps.Put("HAlign", mHAlign)
-	CustProps.Put("VAlign", mVAlign)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("BorderWidth", mBorderWidth)
-	CustProps.Put("BorderColor", mBorderColor)
-	CustProps.Put("Visible", mVisible)
-	CustProps.Put("Enabled", mEnabled)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
+
+
+
 
 Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
 	Dim empty As B4XView
@@ -236,18 +215,19 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim snap As Map = GetProperties
 	Dim props As Map
 	props.Initialize
-	For Each k As String In snap.Keys
-		props.Put(k, snap.Get(k))
-	Next
-	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
-	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
 	Return mBase
+End Sub
+
+Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
+	Dim px As Int = Max(1, Round(SizeDip / 1dip))
+	Return px & "px"
 End Sub
 
 Public Sub View As B4XView
@@ -377,7 +357,8 @@ Public Sub getHeight As Float
 End Sub
 
 Public Sub setTextColor(Value As Int)
-	mTextColor = Value
+	mTextColorOverride = Value
+	ApplyVariantColors
 	If mBase.IsInitialized = False Then Return
 	ApplyVisual
 End Sub
@@ -386,8 +367,11 @@ Public Sub getTextColor As Int
 	Return mTextColor
 End Sub
 
+
+
 Public Sub setBackgroundColor(Value As Int)
-	mBackgroundColor = Value
+	mBackgroundColorOverride = Value
+	ApplyVariantColors
 	If mBase.IsInitialized = False Then Return
 	ApplyVisual
 End Sub
@@ -397,8 +381,42 @@ Public Sub getBackgroundColor As Int
 End Sub
 
 Public Sub setTextColorVariant(VariantName As String)
-	Dim c As Int = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.DefaultPalette, VariantName, "text", mTextColor)
+	Dim c As Int = B4XDaisyVariants.ResolveTextColorVariant(VariantName, mTextColor)
 	setTextColor(c)
+End Sub
+
+Public Sub setVariant(Value As String)
+	mVariant = B4XDaisyVariants.NormalizeVariant(Value)
+	' Reset manual colors to ensure variant colors take full effect. (Last one wins)
+	mTextColorOverride = 0
+	mBackgroundColorOverride = 0
+	mBorderColorOverride = 0
+	If mBase.IsInitialized = False Then Return
+	ApplyVariantColors
+	ApplyVisual
+End Sub
+
+Public Sub getVariant As String
+	Return mVariant
+End Sub
+
+Private Sub ApplyVariantColors
+	' Start with theme defaults if no overrides
+	Dim p As Map = B4XDaisyVariants.GetVariantPalette
+	If mVariant = "none" Then
+		mBackgroundColor = xui.Color_Transparent
+		mTextColor = 0xFF000000
+		mBorderColor = xui.Color_Transparent
+	Else
+		mBackgroundColor = B4XDaisyVariants.ResolveVariantColor(p, mVariant, "back", xui.Color_Transparent)
+		mTextColor = B4XDaisyVariants.ResolveVariantColor(p, mVariant, "text", 0xFF000000)
+		mBorderColor = B4XDaisyVariants.ResolveBorderColorVariantFromPalette(p, mVariant, xui.Color_Transparent)
+	End If
+	
+	' Apply overrides if set
+	If mBackgroundColorOverride <> 0 Then mBackgroundColor = mBackgroundColorOverride
+	If mTextColorOverride <> 0 Then mTextColor = mTextColorOverride
+	If mBorderColorOverride <> 0 Then mBorderColor = mBorderColorOverride
 End Sub
 
 Public Sub setTextSize(Value As Object)
@@ -407,7 +425,7 @@ Public Sub setTextSize(Value As Object)
 	ApplyVisual
 End Sub
 
-Public Sub getTextSize As Float
+Public Sub getTextSize As Object
 	Return mTextSize
 End Sub
 
@@ -492,7 +510,8 @@ Public Sub getBorderWidth As Float
 End Sub
 
 Public Sub setBorderColor(Value As Int)
-	mBorderColor = Value
+	mBorderColorOverride = Value
+	ApplyVariantColors
 	If mBase.IsInitialized = False Then Return
 	ApplyVisual
 End Sub
@@ -500,6 +519,8 @@ End Sub
 Public Sub getBorderColor As Int
 	Return mBorderColor
 End Sub
+
+
 
 Public Sub setVisible(Value As Boolean)
 	mVisible = Value
@@ -527,4 +548,218 @@ End Sub
 
 Public Sub getTag As Object
 	Return mTag
+End Sub
+
+Private Sub ApplySkeletonVisual
+	If mIsSkeleton Then
+		EnsureSkeletonPanel
+		pnlSkeleton.Visible = True
+		pnlSkeleton.BringToFront
+		lblContent.Visible = False
+		StartAnimation
+	Else
+		StopAnimation
+		If pnlSkeleton.IsInitialized Then
+			pnlSkeleton.Visible = False
+		End If
+		lblContent.Visible = mVisible
+	End If
+End Sub
+
+Private Sub EnsureSkeletonPanel
+	If pnlSkeleton.IsInitialized And pnlSkeleton.Parent.IsInitialized Then
+		Return
+	End If
+	If pnlSkeleton.IsInitialized Then pnlSkeleton.RemoveViewFromParent
+	
+	Dim p As Panel
+	p.Initialize("")
+	pnlSkeleton = p
+	pnlSkeleton.Visible = False
+	mBase.AddView(pnlSkeleton, 0, 0, mBase.Width, mBase.Height)
+	cvs.Initialize(pnlSkeleton)
+End Sub
+
+Public Sub StartAnimation
+    mAnimStartTime = DateTime.Now
+    mAnimTimer.Enabled = True
+End Sub
+
+Public Sub StopAnimation
+    mAnimTimer.Enabled = False
+End Sub
+
+Private Sub AnimTimer_Tick
+    ' Calculate progress using ease-in-out timing
+    Dim elapsed As Long = DateTime.Now - mAnimStartTime
+    Dim t As Float = (elapsed Mod mAnimDuration) / mAnimDuration
+    
+    ' Ease-in-out cubic
+    If t < 0.5 Then
+        t = 4 * t * t * t
+    Else
+        t = 1 - Power(-2 * t + 2, 3) / 2
+    End If
+    
+    ' Map progress: -0.5 (-50%) -> 1.5 (150%) (Left to Right)
+    mAnimProgress = -0.5 + (t * 2.0)
+    
+    DrawSkeleton
+End Sub
+
+Private Sub DrawSkeleton
+    If pnlSkeleton.IsInitialized = False Then Return
+    Dim w As Float = pnlSkeleton.Width
+    Dim h As Float = pnlSkeleton.Height
+    If w <= 0 Or h <= 0 Then Return
+    
+    cvs.ClearRect(cvs.TargetRect)
+    DrawTextSkeleton(w, h)
+    cvs.Invalidate
+End Sub
+
+Public Sub setIsSkeleton(Value As Boolean)
+	If mIsSkeleton = Value Then Return
+	mIsSkeleton = Value
+	If mBase.IsInitialized = False Then Return
+	ApplyVisual
+End Sub
+
+Public Sub getIsSkeleton As Boolean
+	Return mIsSkeleton
+End Sub
+
+Private Sub SetAlpha (Color As Int, Alpha As Int) As Int
+    Dim r As Int = Bit.And(Bit.ShiftRight(Color, 16), 0xFF)
+    Dim g As Int = Bit.And(Bit.ShiftRight(Color, 8), 0xFF)
+    Dim b As Int = Bit.And(Color, 0xFF)
+    Return Bit.Or(Bit.ShiftLeft(Alpha, 24), Bit.Or(Bit.ShiftLeft(r, 16), Bit.Or(Bit.ShiftLeft(g, 8), b)))
+End Sub
+
+
+Private Sub DrawTextSkeleton (w As Float, h As Float)
+    If mText.Length = 0 Then Return
+    
+    ' Resolve layout (same as ApplyVisual)
+	Dim host As B4XRect : host.Initialize(0, 0, w, h)
+	Dim box As Map = BuildBoxModel
+	Dim outerRect As B4XRect = B4XDaisyBoxModel.ResolveOuterRect(host, box)
+	Dim contentRect As B4XRect = B4XDaisyBoxModel.ResolveContentRect(outerRect, box)
+    
+	Dim fnt As B4XFont
+    If mFontBold Then
+        fnt = xui.CreateDefaultBoldFont(mTextSize)
+    Else
+        fnt = xui.CreateDefaultFont(mTextSize)
+    End If
+    
+	Dim cx As Float, cy As Float
+	Dim halign As String = mHAlign
+	Dim valign As String = mVAlign
+
+	Select Case halign
+		Case "LEFT": cx = contentRect.Left
+		Case "CENTER": cx = contentRect.CenterX
+		Case "RIGHT": cx = contentRect.Right
+	End Select
+	
+	Dim Bounds As B4XRect = cvs.MeasureText(mText, fnt)
+	Select Case valign
+		Case "TOP": cy = contentRect.Top + Bounds.Height
+		Case "CENTER": cy = contentRect.CenterY - (Bounds.Top + Bounds.Bottom) / 2
+		Case "BOTTOM": cy = contentRect.Bottom - Bounds.Bottom
+	End Select
+
+    ' Base text color with low opacity (20%)
+    Dim baseAlpha As Int = 51  '255 * 0.2
+    Dim baseTextColor As Int = SetAlpha(mTextColor, baseAlpha)
+    
+    ' Draw base faded text
+    cvs.DrawText(mText, cx, cy, fnt, baseTextColor, halign)
+    
+    ' Define shimmer region
+    Dim shimmerCenter As Float = mAnimProgress * w
+    Dim shimmerWidth As Float = w * 0.3
+    Dim skew As Float = h
+    
+    ' ---- NATIVE CLIPPING for the bright text strip ----
+    #If B4A
+    Dim jo As JavaObject = cvs
+    Dim b4aCanvas As JavaObject = jo.GetFieldJO("cvs")
+    Dim nativeCanvas As JavaObject = b4aCanvas.GetFieldJO("canvas")
+    
+    Dim clipPath As JavaObject
+    clipPath.InitializeNewInstance("android.graphics.Path", Null)
+    
+    Dim stripX As Float = shimmerCenter - shimmerWidth
+    ' Define slanted strip points (/)
+    clipPath.RunMethod("moveTo", Array(stripX + skew, 0.0f))
+    clipPath.RunMethod("lineTo", Array(stripX + skew + shimmerWidth, 0.0f))
+    clipPath.RunMethod("lineTo", Array(stripX + shimmerWidth, h))
+    clipPath.RunMethod("lineTo", Array(stripX, h))
+    clipPath.RunMethod("close", Null)
+    
+    nativeCanvas.RunMethod("save", Null)
+    nativeCanvas.RunMethod("clipPath", Array(clipPath))
+    #End If
+    
+    ' Draw bright text (only the part inside the clipPath will show)
+    cvs.DrawText(mText, cx, cy, fnt, mTextColor, halign)
+    
+    #If B4A
+    nativeCanvas.RunMethod("restore", Null)
+    #End If
+End Sub
+
+' -------------------------------------------------------------
+' B4A Raw Label Drop-In Equivalency Methods
+' -------------------------------------------------------------
+
+Public Sub setLeft(Value As Int)
+    If mBase.IsInitialized Then mBase.Left = Value
+End Sub
+
+Public Sub getLeft As Int
+    If mBase.IsInitialized Then Return mBase.Left
+    Return 0
+End Sub
+
+Public Sub setTop(Value As Int)
+    If mBase.IsInitialized Then mBase.Top = Value
+End Sub
+
+Public Sub getTop As Int
+    If mBase.IsInitialized Then Return mBase.Top
+    Return 0
+End Sub
+
+Public Sub setColor(BackgroundColor As Int)
+    setBackgroundColor(BackgroundColor)
+End Sub
+
+Public Sub getColor As Int
+	Return mBackgroundColor
+End Sub
+
+Public Sub SetTextAlignment(Vertical As String, Horizontal As String)
+    setVAlign(Vertical)
+    setHAlign(Horizontal)
+End Sub
+
+Public Sub SetLayoutAnimated(Duration As Int, LeftPos As Int, TopPos As Int, Width As Int, Height As Int)
+    If mBase.IsInitialized = False Then Return
+    mBase.SetLayoutAnimated(Duration, LeftPos, TopPos, Max(1dip, Width), Max(1dip, Height))
+    If Width > 0 And Height > 0 Then Base_Resize(Width, Height)
+End Sub
+
+Public Sub SetColorAndBorder(CBackgroundColor As Int, CBorderW As Float, CBorderC As Int, CornerRadius As Float)
+    mBackgroundColor = CBackgroundColor
+    mBorderWidth = CBorderW
+    mBorderColor = CBorderC
+    mRoundedBox = (CornerRadius > 0)
+    If mBase.IsInitialized Then ApplyVisual
+End Sub
+
+Public Sub RemoveViewFromParent
+    If mBase.IsInitialized Then mBase.RemoveViewFromParent
 End Sub

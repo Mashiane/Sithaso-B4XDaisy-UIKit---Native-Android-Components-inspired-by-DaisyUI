@@ -53,7 +53,6 @@ Public Sub AnimateLayerNative(v As B4XView, AlphaValue As Float, Degrees As Floa
 	Try
 		anim.RunMethod("setDuration", Array As Object(safeDuration))
 	Catch
-		Log($"B4XAnimation warning: setDuration unavailable (${LastException.Message})."$)
 	End Try
 	anim.RunMethod("start", Null)
 	#Else
@@ -72,10 +71,46 @@ Public Sub SetNativeCameraDistance(v As B4XView, DistancePx As Float)
 	Try
 		jo.RunMethod("setCameraDistance", Array As Object(safeDistance))
 	Catch
-		Log($"B4XAnimation warning: setCameraDistance unavailable (${LastException.Message})."$)
 	End Try
 	#Else
 	Dim ignore As Object = v
 	Dim ignore2 As Float = DistancePx
 	#End If
+End Sub
+
+'Sets the translationX property of a view without animation.
+Public Sub SetTranslationX(v As B4XView, TranslationXPx As Float)
+	#If B4A
+	Dim jo As JavaObject = v
+	jo.RunMethod("setTranslationX", Array As Object(TranslationXPx))
+	#Else
+	Dim ignore As Object = v
+	Dim ignore2 As Float = TranslationXPx
+	#End If
+End Sub
+
+'Animates the translationX property using ViewPropertyAnimator (hardware-accelerated).
+Public Sub AnimateTranslationX(v As B4XView, TranslationXPx As Float, DurationMs As Int)
+	#If B4A
+	Dim jo As JavaObject = v
+	Dim anim As JavaObject = jo.RunMethodJO("animate", Null)
+	anim.RunMethod("cancel", Null)
+	anim.RunMethod("translationX", Array As Object(TranslationXPx))
+	Try
+		anim.RunMethod("setDuration", Array As Object(Max(0, DurationMs)))
+	Catch
+	End Try
+	anim.RunMethod("setInterpolator", Array(CreateLinearInterpolator))
+	anim.RunMethod("start", Null)
+	#Else
+	Dim ignore As Object = v
+	Dim ignore1 As Float = TranslationXPx
+	Dim ignore2 As Int = DurationMs
+	#End If
+End Sub
+
+Private Sub CreateLinearInterpolator As JavaObject
+	Dim li As JavaObject
+	li.InitializeNewInstance("android.view.animation.LinearInterpolator", Null)
+	Return li
 End Sub

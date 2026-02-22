@@ -68,7 +68,7 @@ Private Sub CreateSamples
 	Dim avatarView1 As B4XView = avatar1.AddToParent(card1, 0, 0, 120dip, 120dip)
 
 
-	avatar1.SetImage(ResolveAssetImage("daisyman1.png"))
+	avatar1.SetImage("face11.jpg")
 	avatar1.SetWidth("24")
 	avatar1.SetHeight("24")
 	avatar1.SetCenterOnParent(True)
@@ -110,7 +110,7 @@ Private Sub CreateSamples
 	Dim avatarView2 As B4XView = avatar2.AddToParent(card2, 0, 0, 120dip, 120dip)
 
 
-	avatar2.SetImage(ResolveAssetImage("daisywoman1.jpg"))
+	avatar2.SetImage("face12.jpg")
 	avatar2.SetWidth("24")
 	avatar2.SetHeight("24")
 	avatar2.SetCenterOnParent(True)
@@ -153,7 +153,7 @@ Private Sub CreateSamples
 	Dim avatarView3 As B4XView = avatar3.AddToParent(card3, 0, 0, 120dip, 120dip)
 
 
-	avatar3.SetImage(ResolveAssetImage("face27.jpg"))
+	avatar3.SetImage("face14.jpg")
 	avatar3.SetWidth("24")
 	avatar3.SetHeight("24")
 	avatar3.SetCenterOnParent(True)
@@ -195,7 +195,7 @@ Private Sub CreateSamples
 	Dim avatarView4 As B4XView = avatar4.AddToParent(card4, 0, 0, 120dip, 120dip)
 
 
-	avatar4.SetImage(ResolveAssetImage("face22.jpg"))
+	avatar4.SetImage("face16.jpg")
 	avatar4.SetWidth("24")
 	avatar4.SetHeight("24")
 	avatar4.SetCenterOnParent(True)
@@ -238,7 +238,7 @@ Private Sub CreateSamples
 	Dim avatarView5 As B4XView = avatar5.AddToParent(card5, 0, 0, 120dip, 120dip)
 
 
-	avatar5.SetImage(ResolveAssetImage("face23.jpg"))
+	avatar5.SetImage("face17.jpg")
 	avatar5.SetWidth("24")
 	avatar5.SetHeight("24")
 	avatar5.SetCenterOnParent(True)
@@ -280,7 +280,7 @@ Private Sub CreateSamples
 	Dim avatarView6 As B4XView = avatar6.AddToParent(card6, 0, 0, 120dip, 120dip)
 
 
-	avatar6.SetImage(ResolveAssetImage("face21.jpg"))
+	avatar6.SetImage("face18.jpg")
 	avatar6.SetWidth("24")
 	avatar6.SetHeight("24")
 	avatar6.SetCenterOnParent(True)
@@ -325,7 +325,7 @@ Private Sub CreateSamples
 	Dim avatarView7 As B4XView = avatar7.AddToParent(card7, 0, 0, 120dip, 120dip)
 
 
-	avatar7.SetImage(ResolveAssetImage("face24.jpg"))
+	avatar7.SetImage("face19.jpg")
 	avatar7.SetWidth("24")
 	avatar7.SetHeight("24")
 	avatar7.SetCenterOnParent(True)
@@ -367,7 +367,7 @@ Private Sub CreateSamples
 	Dim avatarView8 As B4XView = avatar8.AddToParent(card8, 0, 0, 120dip, 120dip)
 
 
-	avatar8.SetImage(ResolveAssetImage("face25.jpg"))
+	avatar8.SetImage("face21.jpg")
 	avatar8.SetWidth("24")
 	avatar8.SetHeight("24")
 	avatar8.SetCenterOnParent(True)
@@ -409,7 +409,7 @@ Private Sub CreateSamples
 	Dim avatarView9 As B4XView = avatar9.AddToParent(card9, 0, 0, 120dip, 120dip)
 
 
-	avatar9.SetImage(ResolveAssetImage("face26.jpg"))
+	avatar9.SetImage("face22.jpg")
 	avatar9.SetWidth("24")
 	avatar9.SetHeight("24")
 	avatar9.SetCenterOnParent(True)
@@ -451,7 +451,7 @@ Private Sub CreateSamples
 	Dim avatarView10 As B4XView = avatar10.AddToParent(card10, 0, 0, 120dip, 120dip)
 
 
-	avatar10.SetImage(ResolveAssetImage("daisyman1.png"))
+	avatar10.SetImage("face_1.jpg")
 	avatar10.SetWidth("32")
 	avatar10.SetHeight("32")
 	avatar10.SetCenterOnParent(True)
@@ -493,7 +493,7 @@ Private Sub CreateSamples
 	Dim avatarView11 As B4XView = avatar11.AddToParent(card11, 0, 0, 120dip, 120dip)
 
 
-	avatar11.SetImage(ResolveAssetImage("daisyman1.png"))
+	avatar11.SetImage("face_2.jpg")
 	avatar11.SetWidth("20")
 	avatar11.SetHeight("20")
 	avatar11.SetCenterOnParent(True)
@@ -535,7 +535,7 @@ Private Sub CreateSamples
 	Dim avatarView12 As B4XView = avatar12.AddToParent(card12, 0, 0, 120dip, 120dip)
 
 
-	avatar12.SetImage(ResolveAssetImage("daisyman1.png"))
+	avatar12.SetImage("face_3.jpg")
 	avatar12.SetWidth("16")
 	avatar12.SetHeight("16")
 	avatar12.SetCenterOnParent(True)
@@ -577,7 +577,7 @@ Private Sub CreateSamples
 	Dim avatarView13 As B4XView = avatar13.AddToParent(card13, 0, 0, 120dip, 120dip)
 
 
-	avatar13.SetImage(ResolveAssetImage("daisyman1.png"))
+	avatar13.SetImage("face4.jpg")
 	avatar13.SetWidth("8")
 	avatar13.SetHeight("8")
 	avatar13.SetCenterOnParent(True)
@@ -608,6 +608,168 @@ Private Sub CreateSamples
 		"title": xlblTitle13 _
 	)
 	AvatarCards.Add(item13)
+	
+	'Sample: Placeholder D sz-24
+	Dim cardD As B4XView = xui.CreatePanel("")
+	cardD.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardD, 0, 0, 10dip, 10dip)
+
+	Dim avatarD As B4XDaisyAvatar
+	avatarD.Initialize(Me, "avatar")
+	Dim avatarViewD As B4XView = avatarD.AddToParent(cardD, 0, 0, 120dip, 120dip)
+
+	avatarD.SetAvatarType("text")
+	avatarD.SetPlaceHolder("D")
+	avatarD.SetWidth("24")
+	avatarD.SetHeight("24")
+	avatarD.SetCenterOnParent(True)
+	avatarD.SetVariant("neutral")
+	avatarD.SetBackgroundColorVariant("neutral")
+	avatarD.SetTextColorVariant("neutral-content")
+	avatarD.SetAvatarMask("rounded-full")
+	avatarD.TextSize = "text-3xl"
+	
+	avatarViewD.Tag = "placeholder D sz-24"
+
+	Dim lblTitleD As Label
+	lblTitleD.Initialize("")
+	Dim xlblTitleD As B4XView = lblTitleD
+	xlblTitleD.Text = "placeholder w-24"
+	xlblTitleD.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitleD.TextSize = 13
+	xlblTitleD.SetTextAlignment("CENTER", "CENTER")
+	cardD.AddView(xlblTitleD, 0, 0, 10dip, 10dip)
+
+	Dim itemD As Map = CreateMap( _
+		"panel": cardD, _
+		"avatar": avatarD, _
+		"avatar_view": avatarViewD, _
+		"id": "", _
+		"title": xlblTitleD _
+	)
+	AvatarCards.Add(itemD)
+
+	'Sample: Placeholder AI sz-16 online
+	Dim cardAI As B4XView = xui.CreatePanel("")
+	cardAI.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardAI, 0, 0, 10dip, 10dip)
+
+	Dim avatarAI As B4XDaisyAvatar
+	avatarAI.Initialize(Me, "avatar")
+	Dim avatarViewAI As B4XView = avatarAI.AddToParent(cardAI, 0, 0, 120dip, 120dip)
+
+	avatarAI.SetAvatarType("text")
+	avatarAI.SetPlaceHolder("AI")
+	avatarAI.SetWidth("16")
+	avatarAI.SetHeight("16")
+	avatarAI.SetCenterOnParent(True)
+	avatarAI.SetVariant("neutral")
+	avatarAI.SetBackgroundColorVariant("neutral")
+	avatarAI.SetTextColorVariant("neutral-content")
+	avatarAI.SetAvatarMask("rounded-full")
+	avatarAI.SetStatus("online")
+	avatarAI.SetShowOnline(True)
+	avatarAI.TextSize = "text-xl"
+	
+	avatarViewAI.Tag = "placeholder AI sz-16 online"
+
+	Dim lblTitleAI As Label
+	lblTitleAI.Initialize("")
+	Dim xlblTitleAI As B4XView = lblTitleAI
+	xlblTitleAI.Text = "placeholder w-16 online"
+	xlblTitleAI.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitleAI.TextSize = 13
+	xlblTitleAI.SetTextAlignment("CENTER", "CENTER")
+	cardAI.AddView(xlblTitleAI, 0, 0, 10dip, 10dip)
+
+	Dim itemAI As Map = CreateMap( _
+		"panel": cardAI, _
+		"avatar": avatarAI, _
+		"avatar_view": avatarViewAI, _
+		"id": "", _
+		"title": xlblTitleAI _
+	)
+	AvatarCards.Add(itemAI)
+
+	'Sample: Placeholder SY sz-12
+	Dim cardSY As B4XView = xui.CreatePanel("")
+	cardSY.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardSY, 0, 0, 10dip, 10dip)
+
+	Dim avatarSY As B4XDaisyAvatar
+	avatarSY.Initialize(Me, "avatar")
+	Dim avatarViewSY As B4XView = avatarSY.AddToParent(cardSY, 0, 0, 120dip, 120dip)
+
+	avatarSY.SetAvatarType("text")
+	avatarSY.SetPlaceHolder("SY")
+	avatarSY.SetWidth("12")
+	avatarSY.SetHeight("12")
+	avatarSY.SetCenterOnParent(True)
+	avatarSY.SetVariant("neutral")
+	avatarSY.SetBackgroundColorVariant("neutral")
+	avatarSY.SetTextColorVariant("neutral-content")
+	avatarSY.SetAvatarMask("rounded-full")
+	avatarSY.TextSize = "text-base"
+	
+	avatarViewSY.Tag = "placeholder SY sz-12"
+
+	Dim lblTitleSY As Label
+	lblTitleSY.Initialize("")
+	Dim xlblTitleSY As B4XView = lblTitleSY
+	xlblTitleSY.Text = "placeholder w-12"
+	xlblTitleSY.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitleSY.TextSize = 13
+	xlblTitleSY.SetTextAlignment("CENTER", "CENTER")
+	cardSY.AddView(xlblTitleSY, 0, 0, 10dip, 10dip)
+
+	Dim itemSY As Map = CreateMap( _
+		"panel": cardSY, _
+		"avatar": avatarSY, _
+		"avatar_view": avatarViewSY, _
+		"id": "", _
+		"title": xlblTitleSY _
+	)
+	AvatarCards.Add(itemSY)
+
+	'Sample: Placeholder UI sz-8
+	Dim cardUI As B4XView = xui.CreatePanel("")
+	cardUI.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardUI, 0, 0, 10dip, 10dip)
+
+	Dim avatarUI As B4XDaisyAvatar
+	avatarUI.Initialize(Me, "avatar")
+	Dim avatarViewUI As B4XView = avatarUI.AddToParent(cardUI, 0, 0, 120dip, 120dip)
+
+	avatarUI.SetAvatarType("text")
+	avatarUI.SetPlaceHolder("UI")
+	avatarUI.SetWidth("8")
+	avatarUI.SetHeight("8")
+	avatarUI.SetCenterOnParent(True)
+	avatarUI.SetVariant("neutral")
+	avatarUI.SetBackgroundColorVariant("neutral")
+	avatarUI.SetTextColorVariant("neutral-content")
+	avatarUI.SetAvatarMask("rounded-full")
+	avatarUI.TextSize = "text-xs"
+	
+	avatarViewUI.Tag = "placeholder UI sz-8"
+
+	Dim lblTitleUI As Label
+	lblTitleUI.Initialize("")
+	Dim xlblTitleUI As B4XView = lblTitleUI
+	xlblTitleUI.Text = "placeholder w-8"
+	xlblTitleUI.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitleUI.TextSize = 13
+	xlblTitleUI.SetTextAlignment("CENTER", "CENTER")
+	cardUI.AddView(xlblTitleUI, 0, 0, 10dip, 10dip)
+
+	Dim itemUI As Map = CreateMap( _
+		"panel": cardUI, _
+		"avatar": avatarUI, _
+		"avatar_view": avatarViewUI, _
+		"id": "", _
+		"title": xlblTitleUI _
+	)
+	AvatarCards.Add(itemUI)
 End Sub
 
 Private Sub StartRuntimeDemos
@@ -716,12 +878,6 @@ Public Sub GetAvatarById(AvatarId As String) As B4XDaisyAvatar
 	Return item.Get("avatar")
 End Sub
 
-Private Sub ResolveAssetImage(FileName As String) As String
-	'Fallback keeps the demo stable even if one sample image is missing.
-	If File.Exists(File.DirAssets, FileName) Then Return FileName
-	Return "default.png"
-End Sub
-
 Private Sub LayoutCards(Width As Int, Height As Int)
 	'Responsive columns:
 	'<620dip = 2, >=620dip = 3, >=880dip = 4
@@ -751,7 +907,7 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 
 		Dim item As Map = AvatarCards.Get(i)
 		Dim card As B4XView = item.Get("panel")
-		Dim avatar As B4XDaisyAvatar = item.Get("avatar")
+		Dim avatar As Object = item.Get("avatar")
 		Dim avatarView As B4XView = item.Get("avatar_view")
 		Dim xlblTitle As B4XView = item.Get("title")
 		Dim titleTop As Int = 120dip
@@ -760,8 +916,14 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 		card.RemoveViewFromParent
 		pnlHost.AddView(card, x, y, cardW, cardH)
 		avatarView.SetLayoutAnimated(0, 10dip, 8dip, cardW - 20dip, 108dip)
+		
 		'Important: force avatar internal layout refresh after parent size changes.
-		avatar.ResizeToParent(avatarView)
+		If xui.SubExists(avatar, "ResizeToParent", 1) Then
+			CallSub2(avatar, "ResizeToParent", avatarView)
+		Else If xui.SubExists(avatar, "Base_Resize", 2) Then
+			CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
+		End If
+			
 		xlblTitle.SetLayoutAnimated(0, 8dip, titleTop, cardW - 16dip, 30dip)
 	Next
 End Sub

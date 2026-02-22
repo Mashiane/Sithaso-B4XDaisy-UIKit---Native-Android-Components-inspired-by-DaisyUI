@@ -46,14 +46,25 @@ Private Sub CreateLauncherButtons As List
 	Dim apps As List
 	apps.Initialize
 
-	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"face21.jpg", "svgPath":""))
-	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"face26.jpg", "svgPath":""))
-	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"face22.jpg", "svgPath":""))
-	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"face23.jpg", "svgPath":""))
-	apps.Add(CreateMap("id":"stack_photos", "label":"Stack Photos", "imagePath":"photo-1572635148818-ef6fd45eb394.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"face24.jpg", "svgPath":""))
+	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"alert.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"avatar.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"avatar_group", "label":"Avatar Group", "imagePath":"avatar.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"badge", "label":"Badge", "imagePath":"badge.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"stack_photos", "label":"Stack Photos", "imagePath":"stack.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"svg_icon", "label":"SVG Icon", "imagePath":"face25.jpg", "svgPath":""))
-	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"face27.jpg", "svgPath":""))
+	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"radialprogress", "label":"Radial Progress", "imagePath":"radial-progress.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"progress", "label":"Progress", "imagePath":"progress.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
 
 	'apps.Add(CreateMap("id":"calendar", "label":"Calendar", "imagePath":"face25.jpg", "svgPath":""))
 	'apps.Add(CreateMap("id":"notes", "label":"Notes", "imagePath":"face26.jpg", "svgPath":""))
@@ -109,7 +120,6 @@ Private Sub NormalizeDashboardButtonImages(Apps As List)
 			Dim resolvedPath As String = ResolveDashboardImagePath(originalPath, i)
 			If resolvedPath <> originalPath Then
 				item.Put("imagePath", resolvedPath)
-				Log($"Dashboard image fallback (${item.GetDefault("id", i)}): ${originalPath} -> ${resolvedPath}"$)
 			End If
 		End If
 	Next
@@ -179,6 +189,18 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "avatar"
 			NavigateFromMainPage("Avatar")
 			Return
+		Case "avatar_group"
+			NavigateFromMainPage("Avatar Group")
+			Return
+		Case "badge"
+			NavigateFromMainPage("Badge")
+			Return
+		Case "indicator"
+			NavigateFromMainPage("Indicator")
+			Return
+		Case "status"
+			NavigateFromMainPage("Status")
+			Return
 		Case "stack"
 			NavigateFromMainPage("Stack")
 			Return
@@ -194,11 +216,31 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "swap"
 			NavigateFromMainPage("Swap")
 			Return
+		Case "loading"
+			NavigateFromMainPage("Loading")
+			Return
+		Case "skeleton"
+			NavigateFromMainPage("Skeleton")
+			Return
+		Case "radialprogress"
+			NavigateFromMainPage("Radial Progress")
+			Return
+		Case "progress"
+			NavigateFromMainPage("Progress")
+			Return
+		Case "toast"
+			NavigateFromMainPage("Toast")
+			Return
+		Case "tooltip"
+			NavigateFromMainPage("Tooltip")
+			Return
+		Case "navbar"
+			NavigateFromMainPage("Navbar")
+			Return
 	End Select
 	'#If B4A
 	'ToastMessageShow("App: " & ButtonDef.GetDefault("label", ButtonId), False)
 	'#End If
-	Log("Dashboard click: " & ButtonId)
 End Sub
 
 Private Sub NavigateFromMainPage(PageId As String)
@@ -209,6 +251,5 @@ Private Sub NavigateFromMainPage(PageId As String)
 End Sub
 
 Private Sub dash_PageChanged(PageIndex As Int, PageCount As Int)
-	Log($"Dashboard page ${PageIndex + 1}/${PageCount}"$)
 End Sub
 

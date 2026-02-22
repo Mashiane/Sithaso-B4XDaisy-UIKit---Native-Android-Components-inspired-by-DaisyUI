@@ -26,8 +26,6 @@ Sub Class_Globals
 	Private mEventName As String 'ignore
 	Private mCallBack As Object 'ignore
 	Private mTag As Object
-	Private CustProps As Map
-
 	'Each item is a Map with keys: view, tag
 	Private Layers As List
 
@@ -50,24 +48,27 @@ Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	Layers.Initialize
-	SetDefaults
 End Sub
 
-'Public Sub CreateView(Width As Int, Height As Int) As B4XView
-'	Dim p As Panel
-'	p.Initialize("")
-'	Dim b As B4XView = p
-'	b.Color = xui.Color_Transparent
-'	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-'	Dim dummy As Label
-'	DesignerCreateView(b, dummy, CreateMap())
-'	
-'	' Initialize properties to match the created view size (pixels/dips)
-'	mWidth = Width
-'	mHeight = Height
-'	
-'	Return mBase
-'End Sub
+Public Sub CreateView(Width As Int, Height As Int) As B4XView
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Return mBase
+End Sub
+
+Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
+	Dim px As Int = Max(1, Round(SizeDip / 1dip))
+	Return px & "px"
+End Sub
 
 Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 	mBase = Base
@@ -95,14 +96,10 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim snap As Map = GetProperties
 	Dim props As Map
 	props.Initialize
-	For Each k As String In snap.Keys
-		props.Put(k, snap.Get(k))
-	Next
-	If mWidthExplicit = False Then props.Put("Width", Max(1, Round(w / 1dip)) & "px")
-	If mHeightExplicit = False Then props.Put("Height", Max(1, Round(h / 1dip)) & "px")
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
@@ -586,83 +583,26 @@ Private Sub SafeRect(X As Float, Y As Float, W As Float, H As Float, MaxW As Flo
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
-	Dim p As Map = CustProps
-	mWidth = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
-	mHeight = B4XDaisyVariants.TailwindSizeToDip("10", 40dip)
-	mWidthExplicit = p.ContainsKey("Width")
-	mHeightExplicit = p.ContainsKey("Height")
-	mPadding = ""
-	mMargin = ""
-	mDirection = "bottom"
-	mStepPrimary = 7dip
-	mStepSecondary = 3dip
-	mAutoFillLayers = True
-	mLayoutAnimationMs = 0
-	mRoundedBox = False
-	mStrictDaisyParity = True
-
-	If p.IsInitialized = False Then Return
-	mWidth = Max(16dip, GetPropSizeDip(p, "Width", ResolveWidthBase(mWidth)))
-	mHeight = Max(16dip, GetPropSizeDip(p, "Height", ResolveHeightBase(mHeight)))
-	mPadding = GetPropString(p, "Padding", mPadding)
-	mMargin = GetPropString(p, "Margin", mMargin)
-	mDirection = NormalizeDirection(GetPropString(p, "Direction", mDirection))
-	mStepPrimary = Max(0, GetPropDip(p, "StepPrimary", mStepPrimary))
-	mStepSecondary = Max(0, GetPropDip(p, "StepSecondary", mStepSecondary))
+	mWidth = Max(16dip, GetPropSizeDip(Props, "Width", mWidth))
+	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", mHeight))
+	mPadding = GetPropString(Props, "Padding", mPadding)
+	mMargin = GetPropString(Props, "Margin", mMargin)
+	mDirection = NormalizeDirection(GetPropString(Props, "Direction", mDirection))
+	mStepPrimary = Max(0, GetPropDip(Props, "StepPrimary", mStepPrimary))
+	mStepSecondary = Max(0, GetPropDip(Props, "StepSecondary", mStepSecondary))
 	If mStepSecondary > mStepPrimary Then mStepSecondary = mStepPrimary
-	mAutoFillLayers = GetPropBool(p, "AutoFillLayers", mAutoFillLayers)
-	mLayoutAnimationMs = Max(0, GetPropInt(p, "LayoutAnimationMs", mLayoutAnimationMs))
-	mRoundedBox = GetPropBool(p, "RoundedBox", mRoundedBox)
-	mStrictDaisyParity = GetPropBool(p, "StrictDaisyParity", mStrictDaisyParity)
+	mAutoFillLayers = GetPropBool(Props, "AutoFillLayers", mAutoFillLayers)
+	mLayoutAnimationMs = Max(0, GetPropInt(Props, "LayoutAnimationMs", mLayoutAnimationMs))
+	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
+	mStrictDaisyParity = GetPropBool(Props, "StrictDaisyParity", mStrictDaisyParity)
 	ApplyRoundedBox
 End Sub
 
-Public Sub SetDefaults
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("Direction", mDirection)
-	CustProps.Put("StepPrimary", mStepPrimary)
-	CustProps.Put("StepSecondary", mStepSecondary)
-	CustProps.Put("AutoFillLayers", mAutoFillLayers)
-	CustProps.Put("LayoutAnimationMs", mLayoutAnimationMs)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("StrictDaisyParity", mStrictDaisyParity)
-End Sub
 
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	Dim src As Map
-	src.Initialize
-	For Each k As String In Props.Keys
-		src.Put(k, Props.Get(k))
-	Next
-	CustProps.Initialize
-	For Each k As String In src.Keys
-		CustProps.Put(k, src.Get(k))
-	Next
-End Sub
 
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("Width", mWidth)
-	CustProps.Put("Height", mHeight)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("Direction", mDirection)
-	CustProps.Put("StepPrimary", mStepPrimary)
-	CustProps.Put("StepSecondary", mStepSecondary)
-	CustProps.Put("AutoFillLayers", mAutoFillLayers)
-	CustProps.Put("LayoutAnimationMs", mLayoutAnimationMs)
-	CustProps.Put("RoundedBox", mRoundedBox)
-	CustProps.Put("StrictDaisyParity", mStrictDaisyParity)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
+
+
+
 
 Public Sub setTag(Value As Object)
 	mTag = Value
@@ -783,3 +723,6 @@ Private Sub GetPropBool(Props As Map, Key As String, DefaultValue As Boolean) As
 	Return B4XDaisyVariants.GetPropBool(Props, Key, DefaultValue)
 End Sub
 
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
+End Sub

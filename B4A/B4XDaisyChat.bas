@@ -33,8 +33,6 @@ Sub Class_Globals
 	Private mEventName As String
 	Private mCallBack As Object
 	Private mTag As Object
-	Private CustProps As Map
-
 	Private sv As ScrollView
 	Private pnlContent As B4XView
 	Private ItemPanels As List
@@ -73,7 +71,6 @@ Public Sub Initialize(Callback As Object, EventName As String)
 	mCallBack = Callback
 	mEventName = EventName
 	InitializeThemes
-	SetDefaults
 End Sub
 
 Public Sub CreateView(Width As Int, Height As Int) As B4XView
@@ -82,8 +79,12 @@ Public Sub CreateView(Width As Int, Height As Int) As B4XView
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, Width, Height)
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
 	Dim dummy As Label
-	DesignerCreateView(b, dummy, CreateMap())
+	DesignerCreateView(b, dummy, props)
 	Return mBase
 End Sub
 
@@ -141,8 +142,21 @@ Public Sub AddToParentAt(Parent As B4XView, Left As Int, Top As Int, Width As In
 	If Parent.IsInitialized = False Then Return
 	Dim w As Int = Max(1dip, Width)
 	Dim h As Int = Max(1dip, Height)
-	Dim v As B4XView = CreateView(w, h)
-	Parent.AddView(v, Left, Top, w, h)
+	
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_Transparent
+	b.SetLayoutAnimated(0, 0, 0, w, h)
+	
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(w))
+	props.Put("Height", ResolvePxSizeSpec(h))
+	
+	Dim dummy As Label
+	DesignerCreateView(b, dummy, props)
+	Parent.AddView(mBase, Left, Top, w, h)
 End Sub
 
 Public Sub View As B4XView
@@ -165,82 +179,37 @@ Sub IsReady As Boolean
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	If CustProps.IsInitialized = False Then SetDefaults
-	SetProperties(Props)
-	Dim p As Map = CustProps
-	If p.IsInitialized = False Then Return
-	AvatarMask = B4XDaisyVariants.NormalizeMask(GetPropString(p, "AvatarMask", AvatarMask))
-	AvatarSize = Max(16dip, GetPropDip(p, "AvatarSize", AvatarSize))
-	FromBackgroundColor = GetPropInt(p, "FromBackgroundColor", FromBackgroundColor)
-	FromTextColor = GetPropInt(p, "FromTextColor", FromTextColor)
-	ToBackgroundColor = GetPropInt(p, "ToBackgroundColor", ToBackgroundColor)
-	ToTextColor = GetPropInt(p, "ToTextColor", ToTextColor)
-	UseFromToColors = GetPropBool(p, "UseFromToColors", UseFromToColors)
-	SetTheme(GetPropString(p, "Theme", CurrentTheme))
-	DateTimeFormat = B4XDaisyVariants.NormalizeDateTimeFormat(GetPropString(p, "DateTimeFormat", DateTimeFormat), "D, j M Y H:i")
-	UseTimeAgo = GetPropBool(p, "UseTimeAgo", UseTimeAgo)
-	ShowTimeAgoForToday = GetPropBool(p, "ShowTimeAgoForToday", ShowTimeAgoForToday)
-	VerticalGap = Max(0, GetPropDip(p, "VerticalGap", VerticalGap))
-	ChatWidth = Max(0, GetPropDip(p, "Width", 0))
-	ChatHeight = Max(0, GetPropDip(p, "Height", 0))
-	mPadding = GetPropString(p, "Padding", mPadding)
-	mMargin = GetPropString(p, "Margin", mMargin)
+	AvatarMask = B4XDaisyVariants.NormalizeMask(getPropString(Props, "AvatarMask", AvatarMask))
+	AvatarSize = Max(16dip, getPropDip(Props, "AvatarSize", AvatarSize))
+	FromBackgroundColor = getPropInt(Props, "FromBackgroundColor", FromBackgroundColor)
+	FromTextColor = getPropInt(Props, "FromTextColor", FromTextColor)
+	ToBackgroundColor = getPropInt(Props, "ToBackgroundColor", ToBackgroundColor)
+	ToTextColor = getPropInt(Props, "ToTextColor", ToTextColor)
+	UseFromToColors = getPropBool(Props, "UseFromToColors", UseFromToColors)
+	setTheme(getPropString(Props, "Theme", CurrentTheme))
+	DateTimeFormat = B4XDaisyVariants.NormalizeDateTimeFormat(getPropString(Props, "DateTimeFormat", DateTimeFormat), "D, j M Y H:i")
+	UseTimeAgo = getPropBool(Props, "UseTimeAgo", UseTimeAgo)
+	ShowTimeAgoForToday = getPropBool(Props, "ShowTimeAgoForToday", ShowTimeAgoForToday)
+	VerticalGap = Max(0, getPropDip(Props, "VerticalGap", VerticalGap))
+	ChatWidth = Max(0, getPropDip(Props, "Width", 0))
+	ChatHeight = Max(0, getPropDip(Props, "Height", 0))
+	mPadding = getPropString(Props, "Padding", mPadding)
+	mMargin = getPropString(Props, "Margin", mMargin)
+	
+	AvatarOnlineColor = getPropInt(Props, "OnlineColor", AvatarOnlineColor)
+	AvatarOfflineColor = getPropInt(Props, "OfflineColor", AvatarOfflineColor)
 End Sub
 
-Public Sub SetDefaults
-	CustProps.Initialize
-	CustProps.Put("AvatarMask", AvatarMask)
-	CustProps.Put("AvatarSize", AvatarSize)
-	CustProps.Put("FromBackgroundColor", FromBackgroundColor)
-	CustProps.Put("FromTextColor", FromTextColor)
-	CustProps.Put("ToBackgroundColor", ToBackgroundColor)
-	CustProps.Put("ToTextColor", ToTextColor)
-	CustProps.Put("UseFromToColors", UseFromToColors)
-	CustProps.Put("Theme", CurrentTheme)
-	CustProps.Put("DateTimeFormat", DateTimeFormat)
-	CustProps.Put("UseTimeAgo", UseTimeAgo)
-	CustProps.Put("ShowTimeAgoForToday", ShowTimeAgoForToday)
-	CustProps.Put("VerticalGap", VerticalGap)
-	CustProps.Put("Width", ChatWidth)
-	CustProps.Put("Height", ChatHeight)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
+Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
+	Dim px As Int = Max(1, Round(SizeDip / 1dip))
+	Return px & "px"
 End Sub
 
-Public Sub SetProperties(Props As Map)
-	If Props.IsInitialized = False Then Return
-	Dim src As Map
-	src.Initialize
-	For Each k As String In Props.Keys
-		src.Put(k, Props.Get(k))
-	Next
-	CustProps.Initialize
-	For Each k As String In src.Keys
-		CustProps.Put(k, src.Get(k))
-	Next
-End Sub
 
-Public Sub GetProperties As Map
-	CustProps.Initialize
-	CustProps.Put("AvatarMask", AvatarMask)
-	CustProps.Put("AvatarSize", AvatarSize)
-	CustProps.Put("FromBackgroundColor", FromBackgroundColor)
-	CustProps.Put("FromTextColor", FromTextColor)
-	CustProps.Put("ToBackgroundColor", ToBackgroundColor)
-	CustProps.Put("ToTextColor", ToTextColor)
-	CustProps.Put("UseFromToColors", UseFromToColors)
-	CustProps.Put("Theme", CurrentTheme)
-	CustProps.Put("DateTimeFormat", DateTimeFormat)
-	CustProps.Put("UseTimeAgo", UseTimeAgo)
-	CustProps.Put("ShowTimeAgoForToday", ShowTimeAgoForToday)
-	CustProps.Put("VerticalGap", VerticalGap)
-	CustProps.Put("Width", ChatWidth)
-	CustProps.Put("Height", ChatHeight)
-	CustProps.Put("Padding", mPadding)
-	CustProps.Put("Margin", mMargin)
-	CustProps.Put("Tag", mTag)
-	Return CustProps
-End Sub
+
+
+
+
 
 Public Sub setTag(Value As Object)
 	mTag = Value
@@ -583,24 +552,24 @@ Private Sub ConfigureBubbleFromMessage(bubble As B4XDaisyChatBubble, Message As 
 	End If
 	Dim showHeader As Boolean
 	If Message.ContainsKey("show_header") Then
-		showHeader = GetMapBool(Message, "show_header", False)
+		showHeader = getMapBool(Message, "show_header", False)
 	Else
 		showHeader = (header.Length > 0 Or headerTime.Length > 0)
 	End If
 	Dim showFooter As Boolean
 	If Message.ContainsKey("show_footer") Then
-		showFooter = GetMapBool(Message, "show_footer", False)
+		showFooter = getMapBool(Message, "show_footer", False)
 	Else
 		showFooter = (footer.Length > 0 Or statusMode <> "none" Or statusText.Length > 0)
 	End If
-	Dim avatarStatus As String = GetMapString(Message, "avatar_status", "none")
+	Dim avatarStatus As String = getMapString(Message, "avatar_status", "none")
 	If avatarStatus = "" Then avatarStatus = "none"
-	Dim onlineColor As Int = GetMapInt(Message, "avatar_online_color", AvatarOnlineColor)
-	Dim offlineColor As Int = GetMapInt(Message, "avatar_offline_color", AvatarOfflineColor)
-	Dim avatarMaskNow As String = GetMapString(Message, "avatar_mask", AvatarMask)
-	Dim backOverride As Int = GetMapInt(Message, "back_color", 0)
-	Dim textOverride As Int = GetMapInt(Message, "text_color", 0)
-	Dim mutedOverride As Int = GetMapInt(Message, "muted_color", 0)
+	Dim onlineColor As Int = getMapInt(Message, "avatar_online_color", AvatarOnlineColor)
+	Dim offlineColor As Int = getMapInt(Message, "avatar_offline_color", AvatarOfflineColor)
+	Dim avatarMaskNow As String = getMapString(Message, "avatar_mask", AvatarMask)
+	Dim backOverride As Int = getMapInt(Message, "back_color", 0)
+	Dim textOverride As Int = getMapInt(Message, "text_color", 0)
+	Dim mutedOverride As Int = getMapInt(Message, "muted_color", 0)
 	
 	bubble.SetSide(side)
 	bubble.SetVariant(variant)
@@ -624,11 +593,11 @@ Private Sub ConfigureBubbleFromMessage(bubble As B4XDaisyChatBubble, Message As 
 	bubble.SetStatus(statusMode, statusText)
 	bubble.SetFooterVisible(showFooter)
 	
-	Dim abmp As B4XBitmap = GetAvatarBitmapFromMessage(Message)
+	Dim abmp As B4XBitmap = getAvatarBitmapFromMessage(Message)
 	Dim hasAvatar As Boolean = abmp.IsInitialized
 	bubble.SetAvatarVisible(hasAvatar)
 	If hasAvatar Then
-		bubble.SetAvatarBitmap(abmp, GetMapObject(Message, "avatar_tag", Null))
+		bubble.SetAvatarBitmap(abmp, getMapObject(Message, "avatar_tag", Null))
 		If OnlineIndicatorsVisible Then bubble.SetAvatarStatus(avatarStatus) Else bubble.SetAvatarStatus("none")
 	Else
 		bubble.SetAvatarStatus("none")
@@ -998,7 +967,7 @@ Public Sub getAvatarMask As String
 End Sub
 
 Public Sub setMask(Mask As String)
-	SetAvatarMask(Mask)
+	setAvatarMask(Mask)
 End Sub
 
 Public Sub setAvatarSize(Size As Int)
@@ -1291,6 +1260,6 @@ Private Sub Blend(c1 As Int, c2 As Int, t As Double) As Int
 	Return xui.Color_RGB(r1 + (r2-r1)*t, g1 + (g2-g1)*t, b1 + (b2-b1)*t)
 End Sub
 
-
-
-
+Public Sub RemoveViewFromParent
+	If mBase.IsInitialized Then mBase.RemoveViewFromParent
+End Sub

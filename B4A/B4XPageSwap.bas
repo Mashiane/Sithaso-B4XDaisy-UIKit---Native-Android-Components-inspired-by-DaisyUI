@@ -191,11 +191,8 @@ Private Sub AddSampleItem(Id As String, LabelView As B4XView, Swap As B4XDaisySw
 	' Store layout metadata so LayoutSamples can position all items consistently.
 	' Read live props so stored width/height reflect component logic.
 	' Get current component property snapshot.
-	Dim props As Map = Swap.GetProperties
-	' Resolve effective width.
-	Dim w As Int = ResolveSampleSize(props, "Width", DefaultW)
-	' Resolve effective height.
-	Dim h As Int = ResolveSampleSize(props, "Height", DefaultH)
+	Dim w As Int = Max(24dip, Swap.getWidth)
+	Dim h As Int = Max(24dip, Swap.getHeight)
 	' One item map holds everything needed for layout and runtime access.
 	' Build metadata map for this sample.
 	Dim item As Map = CreateMap( _
@@ -271,11 +268,7 @@ Private Sub LayoutSamples(Width As Int, Height As Int)
 End Sub
 
 Private Sub swap_Changed(State As String, Checked As Boolean)
-	' Fired when component state actually changes.
-	Log($"Swap changed: state=${State}, checked=${Checked}"$)
 End Sub
 
 Private Sub swap_Click(State As String, Checked As Boolean)
-	' Fired on click/tap regardless of whether state changes.
-	Log($"Swap click: state=${State}, checked=${Checked}"$)
 End Sub

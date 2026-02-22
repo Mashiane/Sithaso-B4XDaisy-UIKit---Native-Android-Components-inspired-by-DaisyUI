@@ -18,21 +18,29 @@ Sub Class_Globals
 	Public ChatPage As B4xPageChat
 	Public AlertPage As B4XPageAlert
 	Public AvatarPage As B4xPageAvatar
+	Public AvatarGroupPage As B4XPageAvatarGroup
+	Public BadgePage As B4XPageBadge
+	Public IndicatorPage As B4XPageIndicator
+	Public StatusPage As B4XPageStatus
+	Public LoadingPage As B4XPageLoading
 	Public MaskPage As B4xPageMask
 	Public StackPage As B4XPageStack
 	Public StackPhotosPage As B4XPageStackPhotos
 	Public SvgIconPage As B4xPageSvgIcon
 	Public SwapPage As B4XPageSwap
+	Public RadialProgressPage As B4XPageRadialProgress
+	Public ProgressPage As B4XPageProgress
 	Public DashboardPage As B4XPageDashboard
+	Public SkeletonPage As B4XPageSkeleton
+	Public ToastPage As B4XPageToast
+	Public TooltipPage As B4XPageTooltip
+	Public NavbarPage As B4XPageNavbar
 	Private B4XGifView1 As B4XGifView
 End Sub
 
 Public Sub Initialize
-'	B4XPages.GetManager.LogEvents = True
+	B4XPages.GetManager.LogEvents = True
 	B4XPages.GetManager.TransitionAnimationDuration = 0
-'	DashboardPage.Initialize
-'	B4XPages.AddPageAndCreate("Dashboard", DashboardPage)
-'	B4XPages.ShowPage("Dashboard")
 End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
@@ -68,18 +76,39 @@ Sub ShowSplashScreen As ResumableSub
 	ChatPage.Initialize
 	AlertPage.Initialize
 	AvatarPage.Initialize
+	AvatarGroupPage.Initialize
+	BadgePage.Initialize
+	IndicatorPage.Initialize
+	StatusPage.Initialize
+	LoadingPage.Initialize
 	MaskPage.Initialize
 	StackPage.Initialize
 	StackPhotosPage.Initialize
 	SvgIconPage.Initialize
 	SwapPage.Initialize
+	RadialProgressPage.Initialize
+	ProgressPage.Initialize
 	DashboardPage.Initialize
+	SkeletonPage.Initialize
+	ToastPage.Initialize
+	TooltipPage.Initialize
+	NavbarPage.Initialize
 	
 	B4XPages.AddPageAndCreate("Chat", ChatPage)
 	Sleep(0)
 	B4XPages.AddPageAndCreate("Alert", AlertPage)
 	Sleep(0)
 	B4XPages.AddPageAndCreate("Avatar", AvatarPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Avatar Group", AvatarGroupPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Badge", BadgePage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Indicator", IndicatorPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Status", StatusPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Loading", LoadingPage)
 	Sleep(0)
 	B4XPages.AddPageAndCreate("Mask", MaskPage)
 	Sleep(0)
@@ -91,8 +120,19 @@ Sub ShowSplashScreen As ResumableSub
 	Sleep(0)
 	B4XPages.AddPageAndCreate("Swap", SwapPage)
 	Sleep(0)
+	B4XPages.AddPageAndCreate("Radial Progress", RadialProgressPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Progress", ProgressPage)
+	Sleep(0)
 	B4XPages.AddPageAndCreate("Dashboard", DashboardPage)
 	Sleep(0)
+	B4XPages.AddPageAndCreate("Skeleton", SkeletonPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Toast", ToastPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Tooltip", TooltipPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Navbar", NavbarPage)
 	Return True
 End Sub
 

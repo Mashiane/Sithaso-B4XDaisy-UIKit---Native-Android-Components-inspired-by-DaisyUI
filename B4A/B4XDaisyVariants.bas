@@ -46,8 +46,24 @@ Public Sub RegisterTheme(ThemeName As String, Tokens As Map)
 			t.Put(sk, Tokens.Get(mk))
 		End If
 	Next
-	t.Put("--theme-name", key)
+	themes.Put("--theme-name", key)
 	Themes.Put(key, t)
+End Sub
+
+Public Sub ResolveAssetImage(FileName As String, DefaultImage As String) As String
+	If FileName = Null Or FileName.Trim.Length = 0 Then Return DefaultImage
+	Dim f As String = FileName.Trim
+	If File.Exists(File.DirAssets, f) Then Return f
+	Return DefaultImage
+End Sub
+
+Public Sub ResolveAssetSVG(FileName As String, DefaultText As String) As String
+	If FileName = Null Or FileName.Trim.Length = 0 Then Return DefaultText
+	Dim f As String = FileName.Trim
+	If File.Exists(File.DirAssets, f) Then 
+		Return File.ReadString(File.DirAssets, f)
+	End If
+	Return DefaultText
 End Sub
 
 Public Sub GetThemeTokens(ThemeName As String) As Map
@@ -73,19 +89,48 @@ End Sub
 
 Public Sub ResolveThemeColorTokenName(Name As String) As String
 	If Name = Null Then Return ""
-	Dim key As String = Name.ToLowerCase.Trim
+	Dim key As String = NormalizeUtilityToken(Name.ToLowerCase.Trim)
 	If key.Length = 0 Then Return ""
-	If key.StartsWith("--") Then Return key
-	If key.StartsWith("stroke-") Then key = key.SubString(7)
-	If key.StartsWith("text-") Then key = key.SubString(5)
-	If key.StartsWith("bg-") Then key = key.SubString(3)
-	If key.StartsWith("color-") Then key = key.SubString(6)
-	Select Case key
+	Dim slashPos As Int = key.IndexOf("/")
+	If slashPos > 0 Then key = key.SubString2(0, slashPos).Trim
+	If key.StartsWith("[") And key.EndsWith("]") And key.Length > 2 Then
+		key = key.SubString2(1, key.Length - 1).Trim
+	End If
+	If key.StartsWith("(") And key.EndsWith(")") And key.Length > 2 Then
+		key = key.SubString2(1, key.Length - 1).Trim
+	End If
+	If key.StartsWith("var(") And key.EndsWith(")") Then
+		Dim pVar As Int = key.IndexOf("--")
+		If pVar >= 0 Then key = key.SubString2(pVar, key.Length - 1).Trim
+	End If
+	Dim direct As String = MapKnownThemeColorNameToToken(key)
+	If direct.Length > 0 Then Return direct
+	key = StripColorUtilityPrefix(key)
+	If key.StartsWith("--") Then Return NormalizeTokenKey(key)
+	Return MapKnownThemeColorNameToToken(key)
+End Sub
+
+Private Sub StripColorUtilityPrefix(Value As String) As String
+	Dim s As String = Value
+	Dim prefixes() As String = Array As String( _
+		"ring-offset-", "placeholder-", "decoration-", "divide-", "outline-", "shadow-", _
+		"stroke-", "fill-", "caret-", "ring-", "from-", "via-", "to-", "border-", "text-", "bg-", "accent-", "color-" _
+	)
+	For Each pref As String In prefixes
+		If s.StartsWith(pref) And s.Length > pref.Length Then
+			Return s.SubString(pref.Length).Trim
+		End If
+	Next
+	Return s
+End Sub
+
+Private Sub MapKnownThemeColorNameToToken(Key As String) As String
+	Select Case Key
 		Case "primary", "secondary", "accent", "neutral", "info", "success", "warning", "error", _
 			"base-100", "base-200", "base-300", "base-content", _
 			"primary-content", "secondary-content", "accent-content", "neutral-content", _
 			"info-content", "success-content", "warning-content", "error-content"
-			Return "--color-" & key
+			Return "--color-" & Key
 		Case Else
 			Return ""
 	End Select
@@ -189,6 +234,7 @@ Private Sub RegisterLightTheme
 	light.Put("--radius-box", "0.5rem")
 	light.Put("--size-selector", "0.25rem")
 	light.Put("--size-field", "0.25rem")
+	light.Put("--spacing", "0.25rem")
 	light.Put("--border", "1px")
 	light.Put("--depth", 0)
 	light.Put("--noise", 0)
@@ -246,6 +292,7 @@ Public Sub NormalizeVariant(Name As String) As String
 	If Name = Null Then Return "none"
 	Dim v As String = Name.ToLowerCase.Trim
 	If v.StartsWith("variant-") Then v = v.SubString(8)
+	If v.StartsWith("badge-") Then v = v.SubString(6)
 	If v = "" Then v = "none"
 	Select Case v
 		Case "none", "neutral", "primary", "secondary", "accent", "info", "success", "warning", "error"
@@ -286,6 +333,47 @@ Public Sub ResolveVariantColor(Palette As Map, VariantName As String, Key As Str
 		If o <> Null Then Return o
 	End If
 	Return DefaultColor
+End Sub
+
+' Resolves background color from either:
+' 1) Daisy/Tailwind-like token strings (for example: bg-base-100, bg-base-content), or
+' 2) semantic variant names (primary, success, etc).
+' Token lookups are read from the active theme.
+Public Sub ResolveBackgroundColorVariantFromPalette(Palette As Map, VariantOrToken As String, DefaultColor As Int) As Int
+	Return ResolveColorVariantFromPalette(Palette, VariantOrToken, "back", DefaultColor)
+End Sub
+
+Public Sub ResolveTextColorVariantFromPalette(Palette As Map, VariantOrToken As String, DefaultColor As Int) As Int
+	Return ResolveColorVariantFromPalette(Palette, VariantOrToken, "text", DefaultColor)
+End Sub
+
+Public Sub ResolveBorderColorVariantFromPalette(Palette As Map, VariantOrToken As String, DefaultColor As Int) As Int
+	Return ResolveColorVariantFromPalette(Palette, VariantOrToken, "border", DefaultColor)
+End Sub
+
+Public Sub ResolveBackgroundColorVariant(VariantOrToken As String, DefaultColor As Int) As Int
+	Return ResolveBackgroundColorVariantFromPalette(DefaultPalette, VariantOrToken, DefaultColor)
+End Sub
+
+Public Sub ResolveTextColorVariant(VariantOrToken As String, DefaultColor As Int) As Int
+	Return ResolveTextColorVariantFromPalette(DefaultPalette, VariantOrToken, DefaultColor)
+End Sub
+
+Public Sub ResolveBorderColorVariant(VariantOrToken As String, DefaultColor As Int) As Int
+	Return ResolveBorderColorVariantFromPalette(DefaultPalette, VariantOrToken, DefaultColor)
+End Sub
+
+Public Sub ResolveColorVariantFromPalette(Palette As Map, VariantOrToken As String, PaletteKey As String, DefaultColor As Int) As Int
+	If VariantOrToken = Null Then Return DefaultColor
+	Dim name As String = VariantOrToken.Trim
+	If name.Length = 0 Then Return DefaultColor
+
+	Dim token As String = ResolveThemeColorTokenName(name)
+	If token.Length > 0 Then
+		Return GetTokenColor(token, DefaultColor)
+	End If
+
+	Return ResolveVariantColor(Palette, name, PaletteKey, DefaultColor)
 End Sub
 
 Public Sub ResolveOnlineColor(VariantName As String, DefaultColor As Int) As Int
@@ -453,7 +541,7 @@ Public Sub CreateMaskPathInRect(TargetRect As B4XRect, MaskName As String) As B4
 	End Select
 End Sub
 
-Private Sub ResolveRoundedRadiusDip(MaskName As String, Size As Float) As Float
+Public Sub ResolveRoundedRadiusDip(MaskName As String, Size As Float) As Float
 	Select Case MaskName
 		Case "rounded-none"
 			Return 0
@@ -718,6 +806,123 @@ Private Sub CreateHalfRectPathAt(Size As Float, LeftHalf As Boolean, OffsetX As 
 	Return p
 End Sub
 
+' ============================================================
+' Universal canvas clipping / view overflow utilities.
+' Components should call these instead of duplicating native
+' save/clipPath/restore and setClipChildren logic.
+' ============================================================
+
+' Clips a B4XCanvas to the shape defined by MaskName inside TargetRect.
+' Call RestoreCanvasClip when done drawing to remove the clip.
+' Returns True if the clip was applied, False if not (unsupported platform).
+Public Sub ClipCanvasToShape(cvs As B4XCanvas, TargetRect As B4XRect, MaskName As String) As Boolean
+	#If B4A
+	' 1. Create the mask path
+	Dim maskPath As B4XPath = CreateMaskPathInRect(TargetRect, MaskName)
+	
+	' 2. Extract the native android.graphics.Path from the B4XPath wrapper
+	Dim joPath As JavaObject = maskPath
+	Dim nativePath As JavaObject = joPath.RunMethod("getObject", Null)
+	
+	' 3. Drill down: B4XCanvas → B4A Canvas → android.graphics.Canvas
+	Dim jo As JavaObject = cvs
+	Dim b4aCanvas As JavaObject = jo.GetFieldJO("cvs")
+	Dim nativeCanvas As JavaObject = b4aCanvas.GetFieldJO("canvas")
+	
+	' 4. Save and clip
+	nativeCanvas.RunMethod("save", Null)
+	nativeCanvas.RunMethod("clipPath", Array(nativePath))
+	Return True
+	#Else
+	Dim ignoreCvs As Object = cvs
+	Dim ignoreRect As Object = TargetRect
+	Dim ignoreMask As String = MaskName
+	Return False
+	#End If
+End Sub
+
+' Restores the canvas state after a ClipCanvasToShape call.
+' Must be called to undo the clip applied by ClipCanvasToShape.
+Public Sub RestoreCanvasClip(cvs As B4XCanvas)
+	#If B4A
+	Dim jo As JavaObject = cvs
+	Dim b4aCanvas As JavaObject = jo.GetFieldJO("cvs")
+	Dim nativeCanvas As JavaObject = b4aCanvas.GetFieldJO("canvas")
+	nativeCanvas.RunMethod("restore", Null)
+	#Else
+	Dim ignoreCvs As Object = cvs
+	#End If
+End Sub
+
+' Disables clip-children and clip-to-padding on a B4XView,
+' allowing child views or canvas drawings to overflow its bounds
+' (e.g. pulse animations, status indicators, drop shadows).
+Public Sub DisableViewClipping(v As B4XView)
+	#If B4A
+	Dim jo As JavaObject = v
+	jo.RunMethod("setClipChildren", Array(False))
+	jo.RunMethod("setClipToPadding", Array(False))
+	#Else
+	Dim ignore As Object = v
+	#End If
+End Sub
+
+' Enables view-level shaped clipping (CSS overflow:hidden with a shape).
+' Uses Android's ViewOutlineProvider + setClipToOutline to clip ALL children
+' to the specified shape. This is the true overflow:hidden for non-rectangular bounds.
+' NOTE: Android OutlineProvider only supports oval and rounded-rect shapes.
+'       Complex masks (heart, hexagon, star etc.) are NOT supported at view level.
+'       For those, use ClipCanvasToShape at the canvas drawing level instead.
+Public Sub EnableShapedClipping(v As B4XView, MaskName As String)
+	#If B4A
+	Dim m As String = NormalizeMask(MaskName)
+	Dim jo As JavaObject = v
+	
+	Select Case m
+		Case "circle", "rounded-full"
+			' Oval outline provider — clips to a perfect circle/ellipse
+			Dim provider As JavaObject
+			provider.InitializeNewInstance("anywheresoftware.b4a.objects.CustomViewWrapper.OvalOutlineProvider", Null)
+			jo.RunMethod("setOutlineProvider", Array(provider))
+			jo.RunMethod("setClipToOutline", Array(True))
+		Case "rounded-none", "square"
+			' Rectangular — just use default clip
+			jo.RunMethod("setClipToOutline", Array(False))
+		Case "rounded-sm", "rounded", "rounded-md", "rounded-lg", "rounded-xl", "rounded-2xl", "rounded-3xl"
+			' Rounded-rect outline via corner radius
+			Dim size As Float = Min(v.Width, v.Height)
+			Dim radius As Float = ResolveRoundedRadiusDip(m, size)
+			' Use background-based outline: set a rounded GradientDrawable,
+			' Android will derive the outline from it automatically
+			Dim gd As JavaObject
+			gd.InitializeNewInstance("android.graphics.drawable.GradientDrawable", Null)
+			gd.RunMethod("setCornerRadius", Array(radius))
+			gd.RunMethod("setColor", Array(0))  ' Transparent — we only want the outline shape
+			jo.RunMethod("setBackground", Array(gd))
+			jo.RunMethod("setClipToOutline", Array(True))
+		Case Else
+			' Complex masks (squircle, heart, hexagon etc.)
+			' Android OutlineProvider cannot clip to arbitrary paths.
+			' Caller should use ClipCanvasToShape for these instead.
+			jo.RunMethod("setClipToOutline", Array(False))
+	End Select
+	#Else
+	Dim ignore As Object = v
+	Dim ignoreMask As String = MaskName
+	#End If
+End Sub
+
+' Disables any previously applied shaped clipping on a view.
+' Resets to Android's default rectangular clip behavior.
+Public Sub DisableShapedClipping(v As B4XView)
+	#If B4A
+	Dim jo As JavaObject = v
+	jo.RunMethod("setClipToOutline", Array(False))
+	#Else
+	Dim ignore As Object = v
+	#End If
+End Sub
+
 Private Sub BuildShadowSpec(Y1 As Float, Blur1 As Float, Spread1 As Float, Alpha1 As Double, Y2 As Float, Blur2 As Float, Spread2 As Float, Alpha2 As Double) As Map
 	Dim m As Map
 	m.Initialize
@@ -884,7 +1089,16 @@ Public Sub GetPropFloat(Props As Map, Key As String, DefaultValue As Float) As F
 	If Props.ContainsKey(Key) = False Then Return DefaultValue
 	Dim o As Object = Props.Get(Key)
 	If o = Null Then Return DefaultValue
-	Return o
+	Try
+		If IsNumber(o) Then Return o
+	Catch
+	End Try
+	Try
+		Dim s As String = "" & o
+		Return ParseCssLengthToPx(s, DefaultValue)
+	Catch
+		Return DefaultValue
+	End Try
 End Sub
 
 Public Sub GetPropInt(Props As Map, Key As String, DefaultValue As Int) As Int
@@ -892,7 +1106,16 @@ Public Sub GetPropInt(Props As Map, Key As String, DefaultValue As Int) As Int
 	If Props.ContainsKey(Key) = False Then Return DefaultValue
 	Dim o As Object = Props.Get(Key)
 	If o = Null Then Return DefaultValue
-	Return o
+	Try
+		If IsNumber(o) Then Return o
+	Catch
+	End Try
+	Try
+		Dim s As String = "" & o
+		Return ParseCssLengthToPx(s, DefaultValue)
+	Catch
+		Return DefaultValue
+	End Try
 End Sub
 
 Public Sub GetPropBool(Props As Map, Key As String, DefaultValue As Boolean) As Boolean
@@ -905,53 +1128,59 @@ End Sub
 
 Public Sub TailwindSizeToPx(Value As Object, DefaultPx As Float) As Float
 	If Value = Null Then Return Max(0, DefaultPx)
-	If IsNumber(Value) Then Return Max(0, Value * TW_SPACE_STEP_PX)
-	Dim raw As String = Value
-	Dim s As String = raw.ToLowerCase.Trim
-	If s.Length = 0 Then Return Max(0, DefaultPx)
-
-	'Accept class-like tokens: w-12, h-12, size-12.
-	If s.StartsWith("w-") Or s.StartsWith("h-") Or s.StartsWith("size-") Then
-		Dim p As Int = s.LastIndexOf("-")
-		If p >= 0 And p < s.Length - 1 Then s = s.SubString(p + 1)
-	End If
-
-	'Accept bracket notation: [80px], [5rem], [12]
-	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
-		s = s.SubString2(1, s.Length - 1).Trim
-	End If
-
-	If s = "full" Or s = "screen" Then s = "100%"
-	If s = "auto" Then Return Max(0, DefaultPx)
-
-	If s.EndsWith("%") Then
-		Dim pctText As String = s.SubString2(0, s.Length - 1).Trim
-		Dim npct As Double = ParseCssNumber(pctText, -1)
-		If npct >= 0 Then Return Max(0, DefaultPx * npct / 100)
+	If Value Is String Then
+		Dim raw As String = Value
+		Dim s As String = raw.ToLowerCase.Trim
+		If s.Length = 0 Then Return Max(0, DefaultPx)
+		
+		'Accept class-like tokens: w-12, h-12, size-12.
+		If s.StartsWith("w-") Or s.StartsWith("h-") Or s.StartsWith("size-") Then
+			Dim p As Int = s.LastIndexOf("-")
+			If p >= 0 And p < s.Length - 1 Then s = s.SubString(p + 1)
+		End If
+	
+		'Accept bracket notation: [80px], [5rem], [12]
+		If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+			s = s.SubString2(1, s.Length - 1).Trim
+		End If
+	
+		If s = "full" Or s = "screen" Then s = "100%"
+		If s = "auto" Then Return Max(0, DefaultPx)
+	
+		If s.EndsWith("%") Then
+			Dim pctText As String = s.SubString2(0, s.Length - 1).Trim
+			Dim npct As Double = ParseCssNumber(pctText, -1)
+			If npct >= 0 Then Return Max(0, DefaultPx * npct / 100)
+			Return Max(0, DefaultPx)
+		End If
+	
+		If s.EndsWith("px") Then
+			Dim npx As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
+			If npx >= 0 Then Return npx
+			Return Max(0, DefaultPx)
+		End If
+	
+		If s.EndsWith("rem") Then
+			Dim nrem As Double = ParseCssNumber(s.SubString2(0, s.Length - 3), -1)
+			If nrem >= 0 Then Return nrem * CSS_BASE_FONT_PX
+			Return Max(0, DefaultPx)
+		End If
+	
+		If s.EndsWith("em") Then
+			Dim nem As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
+			If nem >= 0 Then Return nem * CSS_BASE_FONT_PX
+			Return Max(0, DefaultPx)
+		End If
+	
+		'Bare numbers in strings are Tailwind spacing tokens: "12" -> 12 * 0.25rem -> 48px.
+		Dim ntw As Double = ParseCssNumber(s, -1)
+		If ntw >= 0 Then Return ntw * TW_SPACE_STEP_PX
 		Return Max(0, DefaultPx)
+	Else If IsNumber(Value) Then
+		'If the value is already a numeric type (Int/Float from a variable), treat it as a literal pixel/dip value.
+		Dim pf As Float = Value
+		Return Max(0, pf)
 	End If
-
-	If s.EndsWith("px") Then
-		Dim npx As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
-		If npx >= 0 Then Return npx
-		Return Max(0, DefaultPx)
-	End If
-
-	If s.EndsWith("rem") Then
-		Dim nrem As Double = ParseCssNumber(s.SubString2(0, s.Length - 3), -1)
-		If nrem >= 0 Then Return nrem * CSS_BASE_FONT_PX
-		Return Max(0, DefaultPx)
-	End If
-
-	If s.EndsWith("em") Then
-		Dim nem As Double = ParseCssNumber(s.SubString2(0, s.Length - 2), -1)
-		If nem >= 0 Then Return nem * CSS_BASE_FONT_PX
-		Return Max(0, DefaultPx)
-	End If
-
-	'Bare numbers are Tailwind spacing tokens: 12 -> 12 * 0.25rem -> 48px.
-	Dim ntw As Double = ParseCssNumber(s, -1)
-	If ntw >= 0 Then Return ntw * TW_SPACE_STEP_PX
 	Return Max(0, DefaultPx)
 End Sub
 
@@ -959,6 +1188,257 @@ Public Sub TailwindSizeToDip(Value As Object, DefaultDip As Float) As Float
 	Dim defaultPx As Float = Max(0, DefaultDip / 1dip)
 	Dim px As Float = TailwindSizeToPx(Value, defaultPx)
 	Return px * 1dip
+End Sub
+
+' Resolves Tailwind spacing values (including gap tokens) to pixels.
+' Supports: px, rem, em, %, bracket notation, bare scale numbers, and utility prefixes.
+Public Sub TailwindSpacingToPx(Value As Object, DefaultPx As Float) As Float
+	If Value = Null Then Return Max(0, DefaultPx)
+
+	Dim raw As String = Value
+	Dim s As String = raw.ToLowerCase.Trim
+	If s.Length = 0 Then Return Max(0, DefaultPx)
+
+	Dim token As String = NormalizeSpacingValueToken(s)
+	If token.Length = 0 Then Return Max(0, DefaultPx)
+
+	' Tailwind spacing special token.
+	If token = "px" Then Return 1
+
+	' Accept bracket notation: [80px], [5rem], [12]
+	If token.StartsWith("[") And token.EndsWith("]") And token.Length > 2 Then
+		token = token.SubString2(1, token.Length - 1).Trim
+	End If
+
+	If token.EndsWith("%") Then
+		Dim npct As Double = ParseCssNumber(token.SubString2(0, token.Length - 1), -1)
+		If npct >= 0 Then Return Max(0, DefaultPx * npct / 100)
+		Return Max(0, DefaultPx)
+	End If
+	If token.EndsWith("px") Then
+		Dim npx As Double = ParseCssNumber(token.SubString2(0, token.Length - 2), -1)
+		If npx >= 0 Then Return npx
+		Return Max(0, DefaultPx)
+	End If
+	If token.EndsWith("rem") Then
+		Dim nrem As Double = ParseCssNumber(token.SubString2(0, token.Length - 3), -1)
+		If nrem >= 0 Then Return nrem * CSS_BASE_FONT_PX
+		Return Max(0, DefaultPx)
+	End If
+	If token.EndsWith("em") Then
+		Dim nem As Double = ParseCssNumber(token.SubString2(0, token.Length - 2), -1)
+		If nem >= 0 Then Return nem * CSS_BASE_FONT_PX
+		Return Max(0, DefaultPx)
+	End If
+
+	' Bare numbers follow Tailwind v4 spacing: calc(var(--spacing) * n).
+	Dim n As Double = ParseCssNumber(token, -1)
+	If n >= 0 Then Return n * ResolveSpacingStepPx
+	Return Max(0, DefaultPx)
+End Sub
+
+Public Sub TailwindSpacingToDip(Value As Object, DefaultDip As Float) As Float
+	Dim defaultPx As Float = Max(0, DefaultDip / 1dip)
+	Dim px As Float = TailwindSpacingToPx(Value, defaultPx)
+	Return px * 1dip
+End Sub
+
+Public Sub TailwindGapToDip(Value As Object, DefaultDip As Float) As Float
+	Return TailwindSpacingToDip(Value, DefaultDip)
+End Sub
+
+' Parses utility strings like "gap-2", "gap-x-4", "gap-y-1.5".
+' Returns map keys: gap_x, gap_y, gap.
+Public Sub ParseGapUtilities(Utilities As String, DefaultGapDip As Float) As Map
+	Dim gx As Float = Max(0, DefaultGapDip)
+	Dim gy As Float = Max(0, DefaultGapDip)
+	Dim m As Map
+	m.Initialize
+
+	Dim raw As String = IIf(Utilities = Null, "", Utilities.Trim)
+	If raw.Length = 0 Then
+		m.Put("gap_x", gx)
+		m.Put("gap_y", gy)
+		m.Put("gap", (gx + gy) / 2)
+		Return m
+	End If
+
+	Dim tokens() As String = Regex.Split("\s+", raw)
+	For Each t As String In tokens
+		Dim u As String = t.ToLowerCase.Trim
+		If u.StartsWith("gap-x-") Then
+			gx = TailwindSpacingToDip(u.SubString(6), gx)
+		Else If u.StartsWith("gap-y-") Then
+			gy = TailwindSpacingToDip(u.SubString(6), gy)
+		Else If u.StartsWith("gap-") Then
+			Dim gv As Float = TailwindSpacingToDip(u.SubString(4), (gx + gy) / 2)
+			gx = gv
+			gy = gv
+		End If
+	Next
+
+	m.Put("gap_x", gx)
+	m.Put("gap_y", gy)
+	m.Put("gap", (gx + gy) / 2)
+	Return m
+End Sub
+
+Public Sub BorderStyleList As String
+	Return "solid|dashed|dotted|double|hidden|none"
+End Sub
+
+' Resolves Tailwind border width tokens (v4-friendly) to dip.
+' Supports: border, border-2, border-[3px], border-[0.125rem], border-px, bare numeric values.
+Public Sub TailwindBorderWidthToDip(Value As Object, DefaultDip As Float) As Float
+	If Value = Null Then Return Max(0, DefaultDip)
+	Dim raw As String = Value
+	Dim s As String = NormalizeUtilityToken(raw.ToLowerCase.Trim)
+	If s.Length = 0 Then Return Max(0, DefaultDip)
+
+	If s = "border" Then Return Max(0, GetBorderDip(IIf(DefaultDip > 0, DefaultDip, 1dip)))
+	If s.StartsWith("border-") Then
+		Dim rest As String = s.SubString(7)
+		Dim sideParsed As Map = ParseBorderSideScope(rest)
+		If sideParsed.GetDefault("has_scope", False) Then rest = sideParsed.GetDefault("value", "")
+		If rest.Length = 0 Then Return Max(0, GetBorderDip(IIf(DefaultDip > 0, DefaultDip, 1dip)))
+		s = rest
+	End If
+
+	If s = "px" Then Return 1dip
+	If s = "thin" Then Return 1dip
+	If s = "medium" Then Return 3dip
+	If s = "thick" Then Return 5dip
+
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+		If s.StartsWith("length:") Then s = s.SubString(7).Trim
+	End If
+	If s.StartsWith("(") And s.EndsWith(")") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+		If s.StartsWith("length:") Then s = s.SubString(7).Trim
+	End If
+	If s.Contains("--border") Then Return Max(0, GetBorderDip(IIf(DefaultDip > 0, DefaultDip, 1dip)))
+	If s.StartsWith("--") Then Return Max(0, GetTokenDip(s, DefaultDip))
+
+	Dim px As Float = ParseCssLengthToPx(s, -1)
+	If px >= 0 Then Return Max(0, px * 1dip)
+	Return Max(0, DefaultDip)
+End Sub
+
+' Resolves Tailwind rounded tokens to dip.
+' Supports: rounded, rounded-sm/md/lg/xl/2xl/3xl/4xl/full/none, rounded-[10px], and Daisy rounded-box|field|selector.
+Public Sub TailwindBorderRadiusToDip(Value As Object, DefaultDip As Float) As Float
+	If Value = Null Then Return Max(0, DefaultDip)
+	Dim raw As String = Value
+	Dim s As String = NormalizeUtilityToken(raw.ToLowerCase.Trim)
+	If s.Length = 0 Then Return Max(0, DefaultDip)
+	If s.StartsWith("rounded-") Then s = s.SubString(8)
+
+	Select Case s
+		Case "", "default"
+			Return 4dip
+		Case "none"
+			Return 0
+		Case "sm"
+			Return 2dip
+		Case "md"
+			Return 6dip
+		Case "lg"
+			Return 8dip
+		Case "xl"
+			Return 12dip
+		Case "2xl"
+			Return 16dip
+		Case "3xl"
+			Return 24dip
+		Case "4xl"
+			Return 32dip
+		Case "full"
+			Return 9999dip
+		Case "box"
+			Return Max(0, GetRadiusBoxDip(IIf(DefaultDip > 0, DefaultDip, 8dip)))
+		Case "field"
+			Return Max(0, GetRadiusFieldDip(IIf(DefaultDip > 0, DefaultDip, 6dip)))
+		Case "selector"
+			Return Max(0, GetRadiusSelectorDip(IIf(DefaultDip > 0, DefaultDip, 4dip)))
+	End Select
+
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+		If s.StartsWith("length:") Then s = s.SubString(7).Trim
+	End If
+	Dim px As Float = ParseCssLengthToPx(s, -1)
+	If px >= 0 Then Return Max(0, px * 1dip)
+	Return Max(0, DefaultDip)
+End Sub
+
+' Resolves Tailwind border color tokens (including optional /opacity suffix) to a B4X color.
+' Supports Daisy theme tokens, variant names, hex/rgb/rgba, common color names, and Tailwind hue-shade names.
+Public Sub TailwindBorderColorToColor(Value As String, DefaultColor As Int) As Int
+	If Value = Null Then Return DefaultColor
+	Dim token As String = NormalizeUtilityToken(Value.ToLowerCase.Trim)
+	If token.Length = 0 Then Return DefaultColor
+
+	If token.StartsWith("border-") Then token = token.SubString(7)
+	Dim scopeInfo As Map = ParseBorderSideScope(token)
+	If scopeInfo.GetDefault("has_scope", False) Then token = scopeInfo.GetDefault("value", "")
+	If token.Length = 0 Then Return DefaultColor
+
+	Return ResolveUtilityColorWithOpacity(token, DefaultColor)
+End Sub
+
+' Parses utility strings such as:
+' border, border-2, border-x-4, border-t, border-s, border-[3px],
+' border-solid|dashed|dotted|double|hidden|none,
+' border-primary/30, border-[#1f2937]/50, border-red-500,
+' rounded, rounded-lg, rounded-t-md, rounded-ss-xl, rounded-[12px], rounded-t-box.
+' Returns a map with width/color/style for all sides and corner radii.
+Public Sub ParseBorderUtilities(Utilities As String, DefaultBorderDip As Float, DefaultBorderColor As Int, DefaultRadiusDip As Float, RtlEnabled As Boolean) As Map
+	Dim spec As Map = CreateDefaultBorderSpec(DefaultBorderDip, DefaultBorderColor, DefaultRadiusDip)
+	Dim raw As String = IIf(Utilities = Null, "", Utilities.Trim)
+	If raw.Length = 0 Then Return spec
+
+	Dim hasUtility As Boolean = False
+	Dim parts() As String = Regex.Split("\s+", raw)
+	For Each part As String In parts
+		Dim u As String = NormalizeUtilityToken(part.ToLowerCase.Trim)
+		If u.Length = 0 Then Continue
+		If u.StartsWith("border") Then
+			If ApplyBorderUtilityToken(spec, u, RtlEnabled) Then hasUtility = True
+		Else If u.StartsWith("rounded") Then
+			If ApplyRoundedUtilityToken(spec, u, RtlEnabled) Then hasUtility = True
+		End If
+	Next
+
+	spec.Put("has_border_utility", hasUtility)
+	SyncBorderAggregate(spec)
+	SyncRadiusAggregate(spec)
+	Return spec
+End Sub
+
+' Applies parsed border/radius values to a box model map.
+' For non-uniform side widths, border_width uses the max side to avoid clipping.
+Public Sub ApplyBorderSpecToBoxModel(Model As Map, BorderSpec As Map)
+	If Model.IsInitialized = False Or BorderSpec.IsInitialized = False Then Return
+	SyncBorderAggregate(BorderSpec)
+	SyncRadiusAggregate(BorderSpec)
+
+	Dim tw As Float = Max(0, BorderSpec.GetDefault("border_top_width", 0))
+	Dim rw As Float = Max(0, BorderSpec.GetDefault("border_right_width", 0))
+	Dim bw As Float = Max(0, BorderSpec.GetDefault("border_bottom_width", 0))
+	Dim lw As Float = Max(0, BorderSpec.GetDefault("border_left_width", 0))
+	Dim uniformW As Boolean = BorderSpec.GetDefault("border_uniform_width", False)
+	Dim resolvedW As Float = IIf(uniformW, tw, Max(Max(tw, rw), Max(bw, lw)))
+
+	Dim style As String = BorderSpec.GetDefault("border_style", "solid")
+	If style = "none" Or style = "hidden" Then resolvedW = 0
+
+	Model.Put("border_width", resolvedW)
+	Model.Put("radius", Max(0, BorderSpec.GetDefault("radius", 0)))
+	Model.Put("radius_tl", Max(0, BorderSpec.GetDefault("radius_tl", 0)))
+	Model.Put("radius_tr", Max(0, BorderSpec.GetDefault("radius_tr", 0)))
+	Model.Put("radius_br", Max(0, BorderSpec.GetDefault("radius_br", 0)))
+	Model.Put("radius_bl", Max(0, BorderSpec.GetDefault("radius_bl", 0)))
 End Sub
 
 Public Sub TailwindTextMetrics(Value As Object, DefaultFontSize As Float, DefaultLineHeightPx As Float) As Map
@@ -1212,6 +1692,832 @@ Private Sub ResolveLeadingSpecToPx(Spec As String, FontSize As Float, DefaultLin
 	Return Max(1, ParseCssLengthToPx(s, DefaultLineHeightPx))
 End Sub
 
+Private Sub CreateDefaultBorderSpec(DefaultBorderDip As Float, DefaultBorderColor As Int, DefaultRadiusDip As Float) As Map
+	Dim spec As Map
+	spec.Initialize
+	Dim w As Float = Max(0, DefaultBorderDip)
+	Dim r As Float = Max(0, DefaultRadiusDip)
+
+	spec.Put("border_width", w)
+	spec.Put("border_top_width", w)
+	spec.Put("border_right_width", w)
+	spec.Put("border_bottom_width", w)
+	spec.Put("border_left_width", w)
+
+	spec.Put("border_style", "solid")
+	spec.Put("border_top_style", "solid")
+	spec.Put("border_right_style", "solid")
+	spec.Put("border_bottom_style", "solid")
+	spec.Put("border_left_style", "solid")
+
+	spec.Put("border_color", DefaultBorderColor)
+	spec.Put("border_top_color", DefaultBorderColor)
+	spec.Put("border_right_color", DefaultBorderColor)
+	spec.Put("border_bottom_color", DefaultBorderColor)
+	spec.Put("border_left_color", DefaultBorderColor)
+	spec.Put("border_color_token", "")
+	spec.Put("border_opacity", ColorAlpha01(DefaultBorderColor))
+
+	spec.Put("radius", r)
+	spec.Put("radius_tl", r)
+	spec.Put("radius_tr", r)
+	spec.Put("radius_br", r)
+	spec.Put("radius_bl", r)
+
+	spec.Put("border_uniform_width", True)
+	spec.Put("border_uniform_color", True)
+	spec.Put("border_uniform_style", True)
+	spec.Put("radius_uniform", True)
+	spec.Put("has_border_utility", False)
+	Return spec
+End Sub
+
+Private Sub ApplyBorderUtilityToken(Spec As Map, Utility As String, RtlEnabled As Boolean) As Boolean
+	If Spec.IsInitialized = False Then Return False
+	If Utility = Null Then Return False
+	Dim u As String = Utility.ToLowerCase.Trim
+	If u.Length = 0 Then Return False
+
+	Dim defaultBorderDip As Float = GetBorderDip(1dip)
+	If u = "border" Then
+		SetBorderWidthScope(Spec, "all", defaultBorderDip, RtlEnabled)
+		SyncBorderAggregate(Spec)
+		Return True
+	End If
+	If u.StartsWith("border-") = False Then Return False
+
+	Dim rest As String = u.SubString(7).Trim
+	If rest.Length = 0 Then
+		SetBorderWidthScope(Spec, "all", defaultBorderDip, RtlEnabled)
+		SyncBorderAggregate(Spec)
+		Return True
+	End If
+
+	If IsBorderStyleToken(rest) Then
+		SetBorderStyleScope(Spec, "all", NormalizeBorderStyle(rest), RtlEnabled)
+		SyncBorderAggregate(Spec)
+		Return True
+	End If
+
+	Dim scopeInfo As Map = ParseBorderSideScope(rest)
+	Dim scope As String = "all"
+	Dim valueToken As String = rest
+	If scopeInfo.GetDefault("has_scope", False) Then
+		scope = scopeInfo.GetDefault("scope", "all")
+		valueToken = scopeInfo.GetDefault("value", "")
+		If valueToken.Length = 0 Then
+			SetBorderWidthScope(Spec, scope, defaultBorderDip, RtlEnabled)
+			SyncBorderAggregate(Spec)
+			Return True
+		End If
+	End If
+
+	If IsBorderStyleToken(valueToken) Then
+		SetBorderStyleScope(Spec, scope, NormalizeBorderStyle(valueToken), RtlEnabled)
+		SyncBorderAggregate(Spec)
+		Return True
+	End If
+
+	Dim maybeWidth As Float = ResolveBorderWidthTokenDip(valueToken, -1)
+	If maybeWidth >= 0 Then
+		SetBorderWidthScope(Spec, scope, maybeWidth, RtlEnabled)
+		SyncBorderAggregate(Spec)
+		Return True
+	End If
+
+	Dim baseColor As Int = Spec.GetDefault("border_color", xui.Color_Black)
+	Dim c As Int = ResolveUtilityColorWithOpacity(valueToken, baseColor)
+	SetBorderColorScope(Spec, scope, c, RtlEnabled)
+	Spec.Put("border_color_token", valueToken)
+	SyncBorderAggregate(Spec)
+	Return True
+End Sub
+
+Private Sub ApplyRoundedUtilityToken(Spec As Map, Utility As String, RtlEnabled As Boolean) As Boolean
+	If Spec.IsInitialized = False Then Return False
+	If Utility = Null Then Return False
+	Dim u As String = Utility.ToLowerCase.Trim
+	If u.Length = 0 Then Return False
+	If u.StartsWith("rounded") = False Then Return False
+
+	Dim scope As String = "all"
+	Dim valueToken As String = "default"
+	If u = "rounded" Then
+		scope = "all"
+		valueToken = "default"
+	Else If u.StartsWith("rounded-") Then
+		Dim rest As String = u.SubString(8).Trim
+		Dim scopeInfo As Map = ParseRoundedScope(rest)
+		If scopeInfo.GetDefault("has_scope", False) Then
+			scope = scopeInfo.GetDefault("scope", "all")
+			valueToken = scopeInfo.GetDefault("value", "")
+			If valueToken.Length = 0 Then valueToken = "default"
+		Else
+			scope = "all"
+			valueToken = rest
+			If valueToken.Length = 0 Then valueToken = "default"
+		End If
+	Else
+		Return False
+	End If
+
+	Dim fallbackRadius As Float = Max(0, Spec.GetDefault("radius", 4dip))
+	Dim r As Float = TailwindBorderRadiusToDip(valueToken, fallbackRadius)
+	SetRoundedScope(Spec, scope, r, RtlEnabled)
+	SyncRadiusAggregate(Spec)
+	Return True
+End Sub
+
+Private Sub ParseBorderSideScope(Token As String) As Map
+	Dim m As Map
+	m.Initialize
+	m.Put("has_scope", False)
+	m.Put("scope", "all")
+	m.Put("value", Token)
+	If Token = Null Then Return m
+
+	Dim t As String = Token.ToLowerCase.Trim
+	If t.Length = 0 Then Return m
+	Dim scopes() As String = Array As String("x", "y", "t", "r", "b", "l", "s", "e")
+	For Each sc As String In scopes
+		If t = sc Then
+			m.Put("has_scope", True)
+			m.Put("scope", sc)
+			m.Put("value", "")
+			Return m
+		End If
+		Dim pref As String = sc & "-"
+		If t.StartsWith(pref) And t.Length > pref.Length Then
+			m.Put("has_scope", True)
+			m.Put("scope", sc)
+			m.Put("value", t.SubString(pref.Length))
+			Return m
+		End If
+	Next
+	Return m
+End Sub
+
+Private Sub ParseRoundedScope(Token As String) As Map
+	Dim m As Map
+	m.Initialize
+	m.Put("has_scope", False)
+	m.Put("scope", "all")
+	m.Put("value", Token)
+	If Token = Null Then Return m
+
+	Dim t As String = Token.ToLowerCase.Trim
+	If t.Length = 0 Then Return m
+	Dim scopes() As String = Array As String("ss", "se", "ee", "es", "tl", "tr", "br", "bl", "s", "e", "t", "b", "l", "r")
+	For Each sc As String In scopes
+		If t = sc Then
+			m.Put("has_scope", True)
+			m.Put("scope", sc)
+			m.Put("value", "")
+			Return m
+		End If
+		Dim pref As String = sc & "-"
+		If t.StartsWith(pref) And t.Length > pref.Length Then
+			m.Put("has_scope", True)
+			m.Put("scope", sc)
+			m.Put("value", t.SubString(pref.Length))
+			Return m
+		End If
+	Next
+	Return m
+End Sub
+
+Private Sub ResolveBorderWidthTokenDip(Token As String, FallbackDip As Float) As Float
+	If Token = Null Then Return FallbackDip
+	Dim s As String = Token.ToLowerCase.Trim
+	If s.Length = 0 Then Return FallbackDip
+	If s = "default" Then Return GetBorderDip(IIf(FallbackDip >= 0, FallbackDip, 1dip))
+	If s = "px" Then Return 1dip
+	If s = "thin" Then Return 1dip
+	If s = "medium" Then Return 3dip
+	If s = "thick" Then Return 5dip
+
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+		If s.StartsWith("length:") Then s = s.SubString(7).Trim
+	End If
+	If s.StartsWith("(") And s.EndsWith(")") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+		If s.StartsWith("length:") Then s = s.SubString(7).Trim
+	End If
+	If s.Contains("--border") Then Return GetBorderDip(IIf(FallbackDip >= 0, FallbackDip, 1dip))
+	If s.StartsWith("--") Then Return GetTokenDip(s, IIf(FallbackDip >= 0, FallbackDip, 1dip))
+
+	Dim px As Float = ParseCssLengthToPx(s, -1)
+	If px >= 0 Then Return Max(0, px * 1dip)
+	Return FallbackDip
+End Sub
+
+Private Sub ResolveUtilityColorWithOpacity(ColorToken As String, DefaultColor As Int) As Int
+	If ColorToken = Null Then Return DefaultColor
+	Dim s As String = ColorToken.ToLowerCase.Trim
+	If s.Length = 0 Then Return DefaultColor
+
+	Dim alpha01 As Float = 1
+	Dim pSlash As Int = s.LastIndexOf("/")
+	If pSlash > 0 And pSlash < s.Length - 1 Then
+		alpha01 = ParseUtilityOpacity01(s.SubString(pSlash + 1), 1)
+		s = s.SubString2(0, pSlash).Trim
+	End If
+
+	Dim baseColor As Int = ResolveUtilityColor(s, DefaultColor)
+	Dim a As Float = Max(0, Min(1, ColorAlpha01(baseColor) * alpha01))
+	Return AlphaColor(baseColor, a)
+End Sub
+
+Private Sub ResolveUtilityColor(ColorToken As String, DefaultColor As Int) As Int
+	If ColorToken = Null Then Return DefaultColor
+	Dim s As String = ColorToken.ToLowerCase.Trim
+	If s.Length = 0 Then Return DefaultColor
+
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+	End If
+	If s.StartsWith("color:") Then s = s.SubString(6).Trim
+	If s = "current" Or s = "inherit" Then Return DefaultColor
+	If s = "transparent" Then Return xui.Color_Transparent
+	If s.StartsWith("--") Then Return GetTokenColor(s, DefaultColor)
+
+	Dim themeKey As String = ResolveThemeColorTokenName(s)
+	If themeKey.Length > 0 Then Return GetTokenColor(themeKey, DefaultColor)
+	Dim normalizedVariant As String = NormalizeVariant(s)
+	If normalizedVariant <> "none" Then Return ResolveVariantColor(DefaultPalette, normalizedVariant, "back", DefaultColor)
+
+	If s.StartsWith("#") Then Return ParseHexColorToken(s, DefaultColor)
+	If s.StartsWith("rgb(") Or s.StartsWith("rgba(") Then Return ParseRgbColorToken(s, DefaultColor)
+	If s.StartsWith("hsl(") Or s.StartsWith("hsla(") Then Return ParseHslColorToken(s, DefaultColor)
+	If s.StartsWith("var(") Then
+		Dim pVar As Int = s.IndexOf("--")
+		If pVar >= 0 Then
+			Dim tail As String = s.SubString(pVar)
+			Dim pEnd As Int = tail.IndexOf(")")
+			If pEnd >= 0 Then tail = tail.SubString2(0, pEnd)
+			Return GetTokenColor(tail, DefaultColor)
+		End If
+	End If
+
+	Dim basic As Int = ResolveCssNamedColor(s, -1)
+	If basic <> -1 Then Return basic
+	Dim tw As Int = ResolveTailwindPaletteColor(s, -1)
+	If tw <> -1 Then Return tw
+	If IsNumber(s) Then Return s
+	Return DefaultColor
+End Sub
+
+Private Sub ResolveCssNamedColor(Name As String, DefaultColor As Int) As Int
+	Select Case Name
+		Case "black"
+			Return xui.Color_Black
+		Case "white"
+			Return xui.Color_White
+		Case "red"
+			Return xui.Color_Red
+		Case "green"
+			Return xui.Color_Green
+		Case "blue"
+			Return xui.Color_Blue
+		Case "yellow"
+			Return xui.Color_Yellow
+		Case "cyan", "aqua"
+			Return xui.Color_Cyan
+		Case "magenta", "fuchsia"
+			Return xui.Color_Magenta
+		Case "gray", "grey"
+			Return xui.Color_Gray
+		Case "orange"
+			Return xui.Color_RGB(249, 115, 22)
+		Case "pink"
+			Return xui.Color_RGB(236, 72, 153)
+		Case "purple"
+			Return xui.Color_RGB(168, 85, 247)
+		Case "teal"
+			Return xui.Color_RGB(20, 184, 166)
+		Case "lime"
+			Return xui.Color_RGB(132, 204, 22)
+		Case "amber"
+			Return xui.Color_RGB(245, 158, 11)
+		Case "indigo"
+			Return xui.Color_RGB(99, 102, 241)
+		Case "rose"
+			Return xui.Color_RGB(244, 63, 94)
+		Case "slate"
+			Return xui.Color_RGB(100, 116, 139)
+		Case "zinc"
+			Return xui.Color_RGB(113, 113, 122)
+		Case "neutral"
+			Return xui.Color_RGB(115, 115, 115)
+		Case "stone"
+			Return xui.Color_RGB(120, 113, 108)
+		Case Else
+			Return DefaultColor
+	End Select
+End Sub
+
+Private Sub ResolveTailwindPaletteColor(Token As String, DefaultColor As Int) As Int
+	If Token = Null Then Return DefaultColor
+	Dim s As String = Token.ToLowerCase.Trim
+	If s.Length = 0 Then Return DefaultColor
+
+	Dim hue As String = s
+	Dim shade As Int = 500
+	Dim p As Int = s.LastIndexOf("-")
+	If p > 0 And p < s.Length - 1 Then
+		Dim shadeText As String = s.SubString(p + 1).Trim
+		If IsNumber(shadeText) Then
+			hue = s.SubString2(0, p).Trim
+			shade = shadeText
+		End If
+	End If
+
+	Dim base500 As Int = ResolveTailwindHue500(hue, -1)
+	If base500 = -1 Then Return DefaultColor
+	Return ShadeTailwindColor(base500, shade)
+End Sub
+
+Private Sub ResolveTailwindHue500(Hue As String, DefaultColor As Int) As Int
+	Select Case Hue
+		Case "slate"
+			Return xui.Color_RGB(100, 116, 139)
+		Case "gray", "grey"
+			Return xui.Color_RGB(107, 114, 128)
+		Case "zinc"
+			Return xui.Color_RGB(113, 113, 122)
+		Case "neutral"
+			Return xui.Color_RGB(115, 115, 115)
+		Case "stone"
+			Return xui.Color_RGB(120, 113, 108)
+		Case "red"
+			Return xui.Color_RGB(239, 68, 68)
+		Case "orange"
+			Return xui.Color_RGB(249, 115, 22)
+		Case "amber"
+			Return xui.Color_RGB(245, 158, 11)
+		Case "yellow"
+			Return xui.Color_RGB(234, 179, 8)
+		Case "lime"
+			Return xui.Color_RGB(132, 204, 22)
+		Case "green"
+			Return xui.Color_RGB(34, 197, 94)
+		Case "emerald"
+			Return xui.Color_RGB(16, 185, 129)
+		Case "teal"
+			Return xui.Color_RGB(20, 184, 166)
+		Case "cyan"
+			Return xui.Color_RGB(6, 182, 212)
+		Case "sky"
+			Return xui.Color_RGB(14, 165, 233)
+		Case "blue"
+			Return xui.Color_RGB(59, 130, 246)
+		Case "indigo"
+			Return xui.Color_RGB(99, 102, 241)
+		Case "violet"
+			Return xui.Color_RGB(139, 92, 246)
+		Case "purple"
+			Return xui.Color_RGB(168, 85, 247)
+		Case "fuchsia"
+			Return xui.Color_RGB(217, 70, 239)
+		Case "pink"
+			Return xui.Color_RGB(236, 72, 153)
+		Case "rose"
+			Return xui.Color_RGB(244, 63, 94)
+		Case Else
+			Return DefaultColor
+	End Select
+End Sub
+
+Private Sub ShadeTailwindColor(BaseColor As Int, Shade As Int) As Int
+	Dim s As Int = Shade
+	If s <= 50 Then Return Blend(BaseColor, xui.Color_White, 0.92)
+	If s < 500 Then
+		Dim tLight As Float = (500 - s) / 450
+		Return Blend(BaseColor, xui.Color_White, Max(0, Min(1, tLight * 0.92)))
+	End If
+	If s = 500 Then Return BaseColor
+	If s >= 950 Then Return Blend(BaseColor, xui.Color_Black, 0.72)
+	Dim tDark As Float = (s - 500) / 450
+	Return Blend(BaseColor, xui.Color_Black, Max(0, Min(1, tDark * 0.72)))
+End Sub
+
+Private Sub ParseHexColorToken(Value As String, DefaultColor As Int) As Int
+	Try
+		Dim hex As String = Value.Trim
+		If hex.StartsWith("#") Then hex = hex.SubString(1)
+		Select Case hex.Length
+			Case 3
+				Dim r3 As Int = Bit.ParseInt(hex.SubString2(0, 1) & hex.SubString2(0, 1), 16)
+				Dim g3 As Int = Bit.ParseInt(hex.SubString2(1, 2) & hex.SubString2(1, 2), 16)
+				Dim b3 As Int = Bit.ParseInt(hex.SubString2(2, 3) & hex.SubString2(2, 3), 16)
+				Return xui.Color_ARGB(255, r3, g3, b3)
+			Case 4
+				Dim r4 As Int = Bit.ParseInt(hex.SubString2(0, 1) & hex.SubString2(0, 1), 16)
+				Dim g4 As Int = Bit.ParseInt(hex.SubString2(1, 2) & hex.SubString2(1, 2), 16)
+				Dim b4 As Int = Bit.ParseInt(hex.SubString2(2, 3) & hex.SubString2(2, 3), 16)
+				Dim a4 As Int = Bit.ParseInt(hex.SubString2(3, 4) & hex.SubString2(3, 4), 16)
+				Return xui.Color_ARGB(a4, r4, g4, b4)
+			Case 6
+				Dim r6 As Int = Bit.ParseInt(hex.SubString2(0, 2), 16)
+				Dim g6 As Int = Bit.ParseInt(hex.SubString2(2, 4), 16)
+				Dim b6 As Int = Bit.ParseInt(hex.SubString2(4, 6), 16)
+				Return xui.Color_ARGB(255, r6, g6, b6)
+			Case 8
+				' CSS 8-digit hex uses RRGGBBAA.
+				Dim r8 As Int = Bit.ParseInt(hex.SubString2(0, 2), 16)
+				Dim g8 As Int = Bit.ParseInt(hex.SubString2(2, 4), 16)
+				Dim b8 As Int = Bit.ParseInt(hex.SubString2(4, 6), 16)
+				Dim a8 As Int = Bit.ParseInt(hex.SubString2(6, 8), 16)
+				Return xui.Color_ARGB(a8, r8, g8, b8)
+			Case Else
+				Return DefaultColor
+		End Select
+	Catch
+		Return DefaultColor
+	End Try
+End Sub
+
+Private Sub ParseRgbColorToken(Value As String, DefaultColor As Int) As Int
+	Try
+		Dim s As String = Value.Trim
+		Dim p1 As Int = s.IndexOf("(")
+		Dim p2 As Int = s.LastIndexOf(")")
+		If p1 < 0 Or p2 <= p1 Then Return DefaultColor
+		Dim inside As String = s.SubString2(p1 + 1, p2).Trim
+		If inside.Length = 0 Then Return DefaultColor
+
+		inside = inside.Replace("/", ",")
+		inside = Regex.Replace("\s+", inside, ",")
+		inside = Regex.Replace(",+", inside, ",")
+		If inside.StartsWith(",") Then inside = inside.SubString(1)
+		If inside.EndsWith(",") Then inside = inside.SubString2(0, inside.Length - 1)
+
+		Dim parts() As String = Regex.Split(",", inside)
+		If parts.Length < 3 Then Return DefaultColor
+		Dim r As Int = ParseColorChannel(parts(0), -1)
+		Dim g As Int = ParseColorChannel(parts(1), -1)
+		Dim b As Int = ParseColorChannel(parts(2), -1)
+		If r < 0 Or g < 0 Or b < 0 Then Return DefaultColor
+		Dim a01 As Float = 1
+		If parts.Length >= 4 Then a01 = ParseUtilityOpacity01(parts(3), 1)
+		Return xui.Color_ARGB(Round(255 * Max(0, Min(1, a01))), r, g, b)
+	Catch
+		Return DefaultColor
+	End Try
+End Sub
+
+Private Sub ParseHslColorToken(Value As String, DefaultColor As Int) As Int
+	Try
+		Dim s As String = Value.Trim
+		Dim p1 As Int = s.IndexOf("(")
+		Dim p2 As Int = s.LastIndexOf(")")
+		If p1 < 0 Or p2 <= p1 Then Return DefaultColor
+		Dim inside As String = s.SubString2(p1 + 1, p2).Trim
+		If inside.Length = 0 Then Return DefaultColor
+
+		inside = inside.Replace("/", ",")
+		inside = Regex.Replace("\s+", inside, ",")
+		inside = Regex.Replace(",+", inside, ",")
+		If inside.StartsWith(",") Then inside = inside.SubString(1)
+		If inside.EndsWith(",") Then inside = inside.SubString2(0, inside.Length - 1)
+
+		Dim parts() As String = Regex.Split(",", inside)
+		If parts.Length < 3 Then Return DefaultColor
+
+		Dim hText As String = parts(0).ToLowerCase.Trim
+		If hText.EndsWith("deg") Then hText = hText.SubString2(0, hText.Length - 3).Trim
+		Dim h As Float = ParseCssNumber(hText, 0)
+		Dim s01 As Float = ParseUtilityOpacity01(parts(1), -1)
+		Dim l01 As Float = ParseUtilityOpacity01(parts(2), -1)
+		If s01 < 0 Or l01 < 0 Then Return DefaultColor
+
+		Dim rgb As Map = HslToRgb(h, s01, l01)
+		Dim a01 As Float = 1
+		If parts.Length >= 4 Then a01 = ParseUtilityOpacity01(parts(3), 1)
+		Return xui.Color_ARGB(Round(255 * Max(0, Min(1, a01))), rgb.GetDefault("r", 0), rgb.GetDefault("g", 0), rgb.GetDefault("b", 0))
+	Catch
+		Return DefaultColor
+	End Try
+End Sub
+
+Private Sub HslToRgb(H As Float, S As Float, L As Float) As Map
+	Dim h01 As Float = H / 360
+	Do While h01 < 0
+		h01 = h01 + 1
+	Loop
+	Do While h01 >= 1
+		h01 = h01 - 1
+	Loop
+	Dim s01 As Float = Max(0, Min(1, S))
+	Dim l01 As Float = Max(0, Min(1, L))
+	Dim r As Float
+	Dim g As Float
+	Dim b As Float
+	If s01 = 0 Then
+		r = l01
+		g = l01
+		b = l01
+	Else
+		Dim q As Float = IIf(l01 < 0.5, l01 * (1 + s01), l01 + s01 - l01 * s01)
+		Dim p As Float = 2 * l01 - q
+		r = HueToRgb(p, q, h01 + (1 / 3))
+		g = HueToRgb(p, q, h01)
+		b = HueToRgb(p, q, h01 - (1 / 3))
+	End If
+	Dim m As Map
+	m.Initialize
+	m.Put("r", Round(255 * Max(0, Min(1, r))))
+	m.Put("g", Round(255 * Max(0, Min(1, g))))
+	m.Put("b", Round(255 * Max(0, Min(1, b))))
+	Return m
+End Sub
+
+Private Sub HueToRgb(p As Float, q As Float, tIn As Float) As Float
+	Dim t As Float = tIn
+	If t < 0 Then t = t + 1
+	If t > 1 Then t = t - 1
+	If t < 1 / 6 Then Return p + (q - p) * 6 * t
+	If t < 1 / 2 Then Return q
+	If t < 2 / 3 Then Return p + (q - p) * (2 / 3 - t) * 6
+	Return p
+End Sub
+
+Private Sub ParseColorChannel(Text As String, DefaultValue As Int) As Int
+	If Text = Null Then Return DefaultValue
+	Dim s As String = Text.ToLowerCase.Trim
+	If s.Length = 0 Then Return DefaultValue
+	If s.EndsWith("%") Then
+		Dim pct As Double = ParseCssNumber(s.SubString2(0, s.Length - 1), -1)
+		If pct < 0 Then Return DefaultValue
+		Return Round(Max(0, Min(255, 255 * pct / 100)))
+	End If
+	Dim n As Double = ParseCssNumber(s, -1)
+	If n < 0 Then Return DefaultValue
+	Return Round(Max(0, Min(255, n)))
+End Sub
+
+Private Sub ParseUtilityOpacity01(Value As String, DefaultValue As Float) As Float
+	If Value = Null Then Return Max(0, Min(1, DefaultValue))
+	Dim s As String = Value.ToLowerCase.Trim
+	If s.Length = 0 Then Return Max(0, Min(1, DefaultValue))
+	If s.StartsWith("[") And s.EndsWith("]") And s.Length > 2 Then
+		s = s.SubString2(1, s.Length - 1).Trim
+	End If
+	If s.EndsWith("%") Then
+		Dim pct As Double = ParseCssNumber(s.SubString2(0, s.Length - 1), -1)
+		If pct >= 0 Then Return Max(0, Min(1, pct / 100))
+		Return Max(0, Min(1, DefaultValue))
+	End If
+	Dim n As Double = ParseCssNumber(s, -1)
+	If n < 0 Then Return Max(0, Min(1, DefaultValue))
+	If n > 1 Then n = n / 100
+	Return Max(0, Min(1, n))
+End Sub
+
+Private Sub ColorAlpha01(ColorValue As Int) As Float
+	Dim a As Int = Bit.And(Bit.ShiftRight(ColorValue, 24), 0xFF)
+	Return a / 255
+End Sub
+
+Private Sub IsBorderStyleToken(Token As String) As Boolean
+	Dim s As String = NormalizeBorderStyle(Token)
+	Return s.Length > 0
+End Sub
+
+Private Sub NormalizeBorderStyle(Token As String) As String
+	If Token = Null Then Return ""
+	Dim s As String = Token.ToLowerCase.Trim
+	If s.StartsWith("border-") Then s = s.SubString(7).Trim
+	Select Case s
+		Case "solid", "dashed", "dotted", "double", "hidden", "none"
+			Return s
+		Case Else
+			Return ""
+	End Select
+End Sub
+
+Private Sub SetBorderWidthScope(Spec As Map, Scope As String, WidthDip As Float, RtlEnabled As Boolean)
+	Dim v As Float = Max(0, WidthDip)
+	Select Case Scope
+		Case "all"
+			Spec.Put("border_top_width", v)
+			Spec.Put("border_right_width", v)
+			Spec.Put("border_bottom_width", v)
+			Spec.Put("border_left_width", v)
+		Case "x"
+			Spec.Put("border_left_width", v)
+			Spec.Put("border_right_width", v)
+		Case "y"
+			Spec.Put("border_top_width", v)
+			Spec.Put("border_bottom_width", v)
+		Case "t"
+			Spec.Put("border_top_width", v)
+		Case "r"
+			Spec.Put("border_right_width", v)
+		Case "b"
+			Spec.Put("border_bottom_width", v)
+		Case "l"
+			Spec.Put("border_left_width", v)
+		Case "s"
+			If RtlEnabled Then
+				Spec.Put("border_right_width", v)
+			Else
+				Spec.Put("border_left_width", v)
+			End If
+		Case "e"
+			If RtlEnabled Then
+				Spec.Put("border_left_width", v)
+			Else
+				Spec.Put("border_right_width", v)
+			End If
+	End Select
+End Sub
+
+Private Sub SetBorderStyleScope(Spec As Map, Scope As String, StyleValue As String, RtlEnabled As Boolean)
+	Dim styleResolved As String = NormalizeBorderStyle(StyleValue)
+	If styleResolved.Length = 0 Then styleResolved = "solid"
+	Select Case Scope
+		Case "all"
+			Spec.Put("border_top_style", styleResolved)
+			Spec.Put("border_right_style", styleResolved)
+			Spec.Put("border_bottom_style", styleResolved)
+			Spec.Put("border_left_style", styleResolved)
+		Case "x"
+			Spec.Put("border_left_style", styleResolved)
+			Spec.Put("border_right_style", styleResolved)
+		Case "y"
+			Spec.Put("border_top_style", styleResolved)
+			Spec.Put("border_bottom_style", styleResolved)
+		Case "t"
+			Spec.Put("border_top_style", styleResolved)
+		Case "r"
+			Spec.Put("border_right_style", styleResolved)
+		Case "b"
+			Spec.Put("border_bottom_style", styleResolved)
+		Case "l"
+			Spec.Put("border_left_style", styleResolved)
+		Case "s"
+			If RtlEnabled Then
+				Spec.Put("border_right_style", styleResolved)
+			Else
+				Spec.Put("border_left_style", styleResolved)
+			End If
+		Case "e"
+			If RtlEnabled Then
+				Spec.Put("border_left_style", styleResolved)
+			Else
+				Spec.Put("border_right_style", styleResolved)
+			End If
+	End Select
+End Sub
+
+Private Sub SetBorderColorScope(Spec As Map, Scope As String, ColorValue As Int, RtlEnabled As Boolean)
+	Select Case Scope
+		Case "all"
+			Spec.Put("border_top_color", ColorValue)
+			Spec.Put("border_right_color", ColorValue)
+			Spec.Put("border_bottom_color", ColorValue)
+			Spec.Put("border_left_color", ColorValue)
+		Case "x"
+			Spec.Put("border_left_color", ColorValue)
+			Spec.Put("border_right_color", ColorValue)
+		Case "y"
+			Spec.Put("border_top_color", ColorValue)
+			Spec.Put("border_bottom_color", ColorValue)
+		Case "t"
+			Spec.Put("border_top_color", ColorValue)
+		Case "r"
+			Spec.Put("border_right_color", ColorValue)
+		Case "b"
+			Spec.Put("border_bottom_color", ColorValue)
+		Case "l"
+			Spec.Put("border_left_color", ColorValue)
+		Case "s"
+			If RtlEnabled Then
+				Spec.Put("border_right_color", ColorValue)
+			Else
+				Spec.Put("border_left_color", ColorValue)
+			End If
+		Case "e"
+			If RtlEnabled Then
+				Spec.Put("border_left_color", ColorValue)
+			Else
+				Spec.Put("border_right_color", ColorValue)
+			End If
+	End Select
+End Sub
+
+Private Sub SetRoundedScope(Spec As Map, Scope As String, RadiusDip As Float, RtlEnabled As Boolean)
+	Dim r As Float = Max(0, RadiusDip)
+	Select Case Scope
+		Case "all"
+			Spec.Put("radius_tl", r)
+			Spec.Put("radius_tr", r)
+			Spec.Put("radius_br", r)
+			Spec.Put("radius_bl", r)
+		Case "t"
+			Spec.Put("radius_tl", r)
+			Spec.Put("radius_tr", r)
+		Case "b"
+			Spec.Put("radius_bl", r)
+			Spec.Put("radius_br", r)
+		Case "l"
+			Spec.Put("radius_tl", r)
+			Spec.Put("radius_bl", r)
+		Case "r"
+			Spec.Put("radius_tr", r)
+			Spec.Put("radius_br", r)
+		Case "tl"
+			Spec.Put("radius_tl", r)
+		Case "tr"
+			Spec.Put("radius_tr", r)
+		Case "br"
+			Spec.Put("radius_br", r)
+		Case "bl"
+			Spec.Put("radius_bl", r)
+		Case "s"
+			If RtlEnabled Then
+				Spec.Put("radius_tr", r)
+				Spec.Put("radius_br", r)
+			Else
+				Spec.Put("radius_tl", r)
+				Spec.Put("radius_bl", r)
+			End If
+		Case "e"
+			If RtlEnabled Then
+				Spec.Put("radius_tl", r)
+				Spec.Put("radius_bl", r)
+			Else
+				Spec.Put("radius_tr", r)
+				Spec.Put("radius_br", r)
+			End If
+		Case "ss"
+			If RtlEnabled Then
+				Spec.Put("radius_tr", r)
+			Else
+				Spec.Put("radius_tl", r)
+			End If
+		Case "se"
+			If RtlEnabled Then
+				Spec.Put("radius_tl", r)
+			Else
+				Spec.Put("radius_tr", r)
+			End If
+		Case "ee"
+			If RtlEnabled Then
+				Spec.Put("radius_bl", r)
+			Else
+				Spec.Put("radius_br", r)
+			End If
+		Case "es"
+			If RtlEnabled Then
+				Spec.Put("radius_br", r)
+			Else
+				Spec.Put("radius_bl", r)
+			End If
+	End Select
+End Sub
+
+Private Sub SyncBorderAggregate(Spec As Map)
+	If Spec.IsInitialized = False Then Return
+	Dim tw As Float = Max(0, Spec.GetDefault("border_top_width", 0))
+	Dim rw As Float = Max(0, Spec.GetDefault("border_right_width", 0))
+	Dim bw As Float = Max(0, Spec.GetDefault("border_bottom_width", 0))
+	Dim lw As Float = Max(0, Spec.GetDefault("border_left_width", 0))
+	Dim uniformW As Boolean = (tw = rw And rw = bw And bw = lw)
+	Spec.Put("border_uniform_width", uniformW)
+	Spec.Put("border_width", IIf(uniformW, tw, Max(Max(tw, rw), Max(bw, lw))))
+
+	Dim tc As Int = Spec.GetDefault("border_top_color", xui.Color_Black)
+	Dim rc As Int = Spec.GetDefault("border_right_color", tc)
+	Dim bc As Int = Spec.GetDefault("border_bottom_color", tc)
+	Dim lc As Int = Spec.GetDefault("border_left_color", tc)
+	Dim uniformC As Boolean = (tc = rc And rc = bc And bc = lc)
+	Spec.Put("border_uniform_color", uniformC)
+	Spec.Put("border_color", tc)
+	Spec.Put("border_opacity", ColorAlpha01(tc))
+
+	Dim ts As String = Spec.GetDefault("border_top_style", "solid")
+	Dim rs As String = Spec.GetDefault("border_right_style", ts)
+	Dim bs As String = Spec.GetDefault("border_bottom_style", ts)
+	Dim ls As String = Spec.GetDefault("border_left_style", ts)
+	Dim uniformS As Boolean = (ts = rs And rs = bs And bs = ls)
+	Spec.Put("border_uniform_style", uniformS)
+	Spec.Put("border_style", ts)
+End Sub
+
+Private Sub SyncRadiusAggregate(Spec As Map)
+	If Spec.IsInitialized = False Then Return
+	Dim tl As Float = Max(0, Spec.GetDefault("radius_tl", 0))
+	Dim tr As Float = Max(0, Spec.GetDefault("radius_tr", 0))
+	Dim br As Float = Max(0, Spec.GetDefault("radius_br", 0))
+	Dim bl As Float = Max(0, Spec.GetDefault("radius_bl", 0))
+	Dim uniformR As Boolean = (tl = tr And tr = br And br = bl)
+	Spec.Put("radius_uniform", uniformR)
+	Spec.Put("radius", IIf(uniformR, tl, Max(Max(tl, tr), Max(br, bl))))
+End Sub
+
 Private Sub NormalizeUtilityToken(Token As String) As String
 	If Token = Null Then Return ""
 	Dim t As String = Token.Trim
@@ -1219,6 +2525,26 @@ Private Sub NormalizeUtilityToken(Token As String) As String
 	Dim p As Int = t.LastIndexOf(":")
 	If p >= 0 And p < t.Length - 1 Then t = t.SubString(p + 1)
 	Return t
+End Sub
+
+Private Sub NormalizeSpacingValueToken(Value As String) As String
+	Dim s As String = NormalizeUtilityToken(Value.ToLowerCase)
+	If s.Length = 0 Then Return ""
+
+	' Strip common utility prefixes while preserving the trailing spacing token.
+	Dim prefixes() As String = Array As String( _
+		"gap-x-", "gap-y-", "gap-", _
+		"space-x-", "space-y-", _
+		"px-", "py-", "pt-", "pr-", "pb-", "pl-", "ps-", "pe-", "p-", _
+		"mx-", "my-", "mt-", "mr-", "mb-", "ml-", "ms-", "me-", "m-", _
+		"w-", "h-", "size-" _
+	)
+	For Each pref As String In prefixes
+		If s.StartsWith(pref) And s.Length > pref.Length Then
+			Return s.SubString(pref.Length).Trim
+		End If
+	Next
+	Return s
 End Sub
 
 Public Sub ContainsAny(Text As String, Needles() As String) As Boolean
@@ -1277,9 +2603,123 @@ Private Sub ParseCssLengthToPx(Value As String, DefaultPx As Float) As Float
 	Return DefaultPx
 End Sub
 
+Private Sub ResolveSpacingStepPx As Float
+	Dim raw As String = GetTokenString("--spacing", "0.25rem")
+	Dim px As Float = ParseCssLengthToPx(raw, 4)
+	Return Max(0.0001, px)
+End Sub
+
 Private Sub ParseCssNumber(Text As String, DefaultValue As Double) As Double
 	Dim s As String = Text.Trim
 	If s.Length = 0 Then Return DefaultValue
 	If IsNumber(s) = False Then Return DefaultValue
 	Return s
+End Sub
+Public Sub NormalizeRounded(Value As String) As String
+	If Value = Null Then Return "rounded-none"
+	Dim s As String = Value.ToLowerCase.Trim
+	Select Case s
+		Case "", "theme", "selector"
+			Return "rounded-md" ' Default for daisy
+		Case "none", "rounded-none"
+			Return "rounded-none"
+		Case "sm", "rounded-sm"
+			Return "rounded-sm"
+		Case "default", "rounded"
+			Return "rounded"
+		Case "md", "rounded-md"
+			Return "rounded-md"
+		Case "lg", "rounded-lg"
+			Return "rounded-lg"
+		Case "xl", "rounded-xl"
+			Return "rounded-xl"
+		Case "2xl", "rounded-2xl"
+			Return "rounded-2xl"
+		Case "3xl", "rounded-3xl"
+			Return "rounded-3xl"
+		Case "full", "rounded-full"
+			Return "rounded-full"
+		Case Else
+			Return "rounded-md"
+	End Select
+End Sub
+
+Public Sub ResolveRoundedDip(Rounded As String, DefaultDip As Float) As Float
+	Select Case NormalizeRounded(Rounded)
+		Case "rounded-none"
+			Return 0
+		Case "rounded-sm"
+			Return 2dip
+		Case "rounded"
+			Return 4dip
+		Case "rounded-md"
+			Return 6dip
+		Case "rounded-lg"
+			Return 8dip
+		Case "rounded-xl"
+			Return 12dip
+		Case "rounded-2xl"
+			Return 16dip
+		Case "rounded-3xl"
+			Return 24dip
+		Case "rounded-full"
+			Return 9999dip
+		Case Else
+			Return DefaultDip
+	End Select
+End Sub
+Public Sub SetAlpha(Color As Int, Alpha As Int) As Int
+	Dim r As Int = Bit.And(Bit.ShiftRight(Color, 16), 0xFF)
+	Dim g As Int = Bit.And(Bit.ShiftRight(Color, 8), 0xFF)
+	Dim b As Int = Bit.And(Color, 0xFF)
+	Return Bit.Or(Bit.ShiftLeft(Alpha, 24), Bit.Or(Bit.ShiftLeft(r, 16), Bit.Or(Bit.ShiftLeft(g, 8), b)))
+End Sub
+
+Public Sub ShiftColor(Color As Int, Factor As Float) As Int
+	Dim a As Int = Bit.And(Bit.ShiftRight(Color, 24), 0xFF)
+	Dim r As Int = Bit.And(Bit.ShiftRight(Color, 16), 0xFF)
+	Dim g As Int = Bit.And(Bit.ShiftRight(Color, 8), 0xFF)
+	Dim b As Int = Bit.And(Color, 0xFF)
+	r = Max(0, Min(255, r * Factor))
+	g = Max(0, Min(255, g * Factor))
+	b = Max(0, Min(255, b * Factor))
+	Return Bit.Or(Bit.ShiftLeft(a, 24), Bit.Or(Bit.ShiftLeft(r, 16), Bit.Or(Bit.ShiftLeft(g, 8), b)))
+End Sub
+
+Public Sub CloneProps(Props As Map) As Map
+	Dim m As Map
+	m.Initialize
+	If Props.IsInitialized Then
+		For Each k As Object In Props.Keys
+			m.Put(k, Props.Get(k))
+		Next
+	End If
+	Return m
+End Sub
+
+Public Sub DisableClipping(v As B4XView)
+	If v.IsInitialized = False Then Return
+	#If B4A
+	Try
+		Dim jo As JavaObject = v
+		jo.RunMethod("setClipChildren", Array(False))
+		jo.RunMethod("setClipToPadding", Array(False))
+	Catch
+	End Try
+	#End If
+End Sub
+
+Public Sub ApplyElevation(v As B4XView, ShadowLevel As String)
+	If v.IsInitialized = False Then Return
+	Dim e As Float = ResolveShadowElevation(ShadowLevel)
+	#If B4A
+	Try
+		Dim p As Panel = v
+		p.Elevation = e
+		' Ensure elevation follows the outline for rounded corners
+		Dim jo As JavaObject = v
+		jo.RunMethod("setClipToOutline", Array(True))
+	Catch
+	End Try
+	#End If
 End Sub

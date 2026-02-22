@@ -55,7 +55,7 @@ Private Sub CreateSamples
 	Dim avatarView1 As B4XView = avatar1.AddToParent(card1, 0, 0, 180dip, 180dip)
 
 
-	avatar1.SetImage(ResolveAssetImage("mask.webp"))
+	avatar1.SetImage("mask1.webp")
 	avatar1.SetWidth("40")
 	avatar1.SetHeight("40")
 	avatar1.SetCenterOnParent(True)
@@ -90,7 +90,7 @@ Private Sub CreateSamples
 	Dim avatarView2 As B4XView = avatar2.AddToParent(card2, 0, 0, 180dip, 180dip)
 
 
-	avatar2.SetImage(ResolveAssetImage("mask.webp"))
+	avatar2.SetImage("mask1.webp")
 	avatar2.SetWidth("40")
 	avatar2.SetHeight("40")
 	avatar2.SetCenterOnParent(True)
@@ -125,7 +125,7 @@ Private Sub CreateSamples
 	Dim avatarView3 As B4XView = avatar3.AddToParent(card3, 0, 0, 180dip, 180dip)
 
 
-	avatar3.SetImage(ResolveAssetImage("mask.webp"))
+	avatar3.SetImage("mask1.webp")
 	avatar3.SetWidth("40")
 	avatar3.SetHeight("40")
 	avatar3.SetCenterOnParent(True)
@@ -160,7 +160,7 @@ Private Sub CreateSamples
 	Dim avatarView4 As B4XView = avatar4.AddToParent(card4, 0, 0, 180dip, 180dip)
 
 
-	avatar4.SetImage(ResolveAssetImage("mask.webp"))
+	avatar4.SetImage("mask1.webp")
 	avatar4.SetWidth("40")
 	avatar4.SetHeight("40")
 	avatar4.SetCenterOnParent(True)
@@ -195,7 +195,7 @@ Private Sub CreateSamples
 	Dim avatarView5 As B4XView = avatar5.AddToParent(card5, 0, 0, 180dip, 180dip)
 
 
-	avatar5.SetImage(ResolveAssetImage("mask.webp"))
+	avatar5.SetImage("mask1.webp")
 	avatar5.SetWidth("40")
 	avatar5.SetHeight("40")
 	avatar5.SetCenterOnParent(True)
@@ -230,7 +230,7 @@ Private Sub CreateSamples
 	Dim avatarView6 As B4XView = avatar6.AddToParent(card6, 0, 0, 180dip, 180dip)
 
 
-	avatar6.SetImage(ResolveAssetImage("mask.webp"))
+	avatar6.SetImage("mask1.webp")
 	avatar6.SetWidth("40")
 	avatar6.SetHeight("40")
 	avatar6.SetCenterOnParent(True)
@@ -265,7 +265,7 @@ Private Sub CreateSamples
 	Dim avatarView7 As B4XView = avatar7.AddToParent(card7, 0, 0, 180dip, 180dip)
 
 
-	avatar7.SetImage(ResolveAssetImage("mask.webp"))
+	avatar7.SetImage("mask1.webp")
 	avatar7.SetWidth("40")
 	avatar7.SetHeight("40")
 	avatar7.SetCenterOnParent(True)
@@ -300,7 +300,7 @@ Private Sub CreateSamples
 	Dim avatarView8 As B4XView = avatar8.AddToParent(card8, 0, 0, 180dip, 180dip)
 
 
-	avatar8.SetImage(ResolveAssetImage("mask.webp"))
+	avatar8.SetImage("mask1.webp")
 	avatar8.SetWidth("40")
 	avatar8.SetHeight("40")
 	avatar8.SetCenterOnParent(True)
@@ -335,7 +335,7 @@ Private Sub CreateSamples
 	Dim avatarView9 As B4XView = avatar9.AddToParent(card9, 0, 0, 180dip, 180dip)
 
 
-	avatar9.SetImage(ResolveAssetImage("mask.webp"))
+	avatar9.SetImage("mask1.webp")
 	avatar9.SetWidth("40")
 	avatar9.SetHeight("40")
 	avatar9.SetCenterOnParent(True)
@@ -370,7 +370,7 @@ Private Sub CreateSamples
 	Dim avatarView10 As B4XView = avatar10.AddToParent(card10, 0, 0, 180dip, 180dip)
 
 
-	avatar10.SetImage(ResolveAssetImage("mask.webp"))
+	avatar10.SetImage("mask1.webp")
 	avatar10.SetWidth("40")
 	avatar10.SetHeight("40")
 	avatar10.SetCenterOnParent(True)
@@ -405,7 +405,7 @@ Private Sub CreateSamples
 	Dim avatarView11 As B4XView = avatar11.AddToParent(card11, 0, 0, 180dip, 180dip)
 
 
-	avatar11.SetImage(ResolveAssetImage("mask.webp"))
+	avatar11.SetImage("mask1.webp")
 	avatar11.SetWidth("40")
 	avatar11.SetHeight("40")
 	avatar11.SetCenterOnParent(True)
@@ -440,7 +440,7 @@ Private Sub CreateSamples
 	Dim avatarView12 As B4XView = avatar12.AddToParent(card12, 0, 0, 180dip, 180dip)
 
 
-	avatar12.SetImage(ResolveAssetImage("mask.webp"))
+	avatar12.SetImage("mask1.webp")
 	avatar12.SetWidth("40")
 	avatar12.SetHeight("40")
 	avatar12.SetCenterOnParent(True)
@@ -475,7 +475,7 @@ Private Sub CreateSamples
 	Dim avatarView13 As B4XView = avatar13.AddToParent(card13, 0, 0, 180dip, 180dip)
 
 
-	avatar13.SetImage(ResolveAssetImage("mask.webp"))
+	avatar13.SetImage("mask1.webp")
 	avatar13.SetWidth("40")
 	avatar13.SetHeight("40")
 	avatar13.SetCenterOnParent(True)
@@ -510,7 +510,7 @@ Private Sub CreateSamples
 	Dim avatarView14 As B4XView = avatar14.AddToParent(card14, 0, 0, 180dip, 180dip)
 
 
-	avatar14.SetImage(ResolveAssetImage("mask.webp"))
+	avatar14.SetImage("mask1.webp")
 	avatar14.SetWidth("40")
 	avatar14.SetHeight("40")
 	avatar14.SetCenterOnParent(True)
@@ -545,7 +545,7 @@ Private Sub CreateSamples
 	Dim avatarView15 As B4XView = avatar15.AddToParent(card15, 0, 0, 180dip, 180dip)
 
 
-	avatar15.SetImage(ResolveAssetImage("mask.webp"))
+	avatar15.SetImage("mask1.webp")
 	avatar15.SetWidth("40")
 	avatar15.SetHeight("40")
 	avatar15.SetCenterOnParent(True)
@@ -581,7 +581,7 @@ Private Sub CreateSamples
 	Dim avatarView16 As B4XView = avatar16.AddToParent(card16, 0, 0, 180dip, 180dip)
 
 
-	avatar16.SetImage(ResolveAssetImage("mask.webp"))
+	avatar16.SetImage("mask1.webp")
 	avatar16.SetWidth("40")
 	avatar16.SetHeight("40")
 	avatar16.SetCenterOnParent(True)
@@ -616,7 +616,7 @@ Private Sub CreateSamples
 	Dim avatarView17 As B4XView = avatar17.AddToParent(card17, 0, 0, 180dip, 180dip)
 
 
-	avatar17.SetImage(ResolveAssetImage("mask.webp"))
+	avatar17.SetImage("mask1.webp")
 	avatar17.SetWidth("40")
 	avatar17.SetHeight("40")
 	avatar17.SetCenterOnParent(True)
@@ -643,10 +643,6 @@ Private Sub CreateSamples
 	MaskCards.Add(CreateMap("panel": card17, "avatar": avatar17, "avatar_view": avatarView17, "title": xlblTitle17))
 End Sub
 
-Private Sub ResolveAssetImage(FileName As String) As String
-	If File.Exists(File.DirAssets, FileName) Then Return FileName
-	Return "default.png"
-End Sub
 
 Private Sub LayoutCards(Width As Int, Height As Int)
 	'Responsive columns:
@@ -693,5 +689,4 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 End Sub
 
 Private Sub maskavatar_AvatarClick(Payload As Object)
-	Log("Mask page click: " & Payload)
 End Sub

@@ -62,7 +62,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	div1.Initialize(Me, "")
 	Dim divView1 As B4XView = div1.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	div1.SetBackgroundColorVariant("primary")
-	div1.SetTextColorVariant("primary")
+	div1.SetTextColorVariant("primary-content")
 	div1.Text = "1"
 	div1.setWidth("100%")
 	div1.setHeight("100%")
@@ -76,7 +76,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	div2.Initialize(Me, "")
 	Dim divView2 As B4XView = div2.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	div2.SetBackgroundColorVariant("accent")
-	div2.SetTextColorVariant("accent")
+	div2.SetTextColorVariant("accent-content")
 	div2.Text = "2"
 	div2.setWidth("100%")
 	div2.setHeight("100%")
@@ -90,7 +90,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	div3.Initialize(Me, "")
 	Dim divView3 As B4XView = div3.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	div3.SetBackgroundColorVariant("secondary")
-	div3.SetTextColorVariant("secondary")
+	div3.SetTextColorVariant("secondary-content")
 	div3.Text = "3"
 	div3.setWidth("100%")
 	div3.setHeight("100%")
