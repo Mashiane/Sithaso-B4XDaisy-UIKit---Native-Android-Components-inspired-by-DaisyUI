@@ -11,6 +11,9 @@ Version=9.85
 ' LibDownloader: ide://run?file=%JAVABIN%\java.exe&Args=-jar&Args=%ADDITIONAL%\..\B4X\libget-non-ui.jar&Args=%PROJECT%&Args=true
 ' Export as zip: ide://run?File=%B4X%\Zipper.jar&Args=%PROJECT_NAME%.zip
 
+'https://github.com/users/Mashiane/projects/1
+'https://www.b4x.com/android/forum/threads/b4x-b4a-b4xdaisy-ui-kit-native-components-inspired-by-daisyui-tailwind.170352/
+
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -35,7 +38,10 @@ Sub Class_Globals
 	Public ToastPage As B4XPageToast
 	Public TooltipPage As B4XPageTooltip
 	Public NavbarPage As B4XPageNavbar
+	Private WindowPage As B4XPageWindow
 	Private B4XGifView1 As B4XGifView
+	Private FieldSetPage As B4XPageFieldset
+	Private BadgeGroupSelectPage As B4XPageBadgeGroupSelect
 End Sub
 
 Public Sub Initialize
@@ -93,6 +99,9 @@ Sub ShowSplashScreen As ResumableSub
 	ToastPage.Initialize
 	TooltipPage.Initialize
 	NavbarPage.Initialize
+	WindowPage.Initialize
+	FieldSetPage.Initialize 
+	BadgeGroupSelectPage.Initialize
 	
 	B4XPages.AddPageAndCreate("Chat", ChatPage)
 	Sleep(0)
@@ -133,6 +142,12 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPageAndCreate("Tooltip", TooltipPage)
 	Sleep(0)
 	B4XPages.AddPageAndCreate("Navbar", NavbarPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Window", WindowPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("FieldSet", FieldSetPage)
+	Sleep(0)
+	B4XPages.AddPageAndCreate("Badge Group Select", BadgeGroupSelectPage)
 	Return True
 End Sub
 
