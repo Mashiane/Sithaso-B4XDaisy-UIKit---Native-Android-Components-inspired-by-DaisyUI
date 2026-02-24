@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -58,7 +58,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 
 	'Create 3 stack layers (divs) in-place so each demo is self-contained.
 
-	Dim div1 As B4XDaisyDiv
+	Dim div1 As B4XDaisyDivision
 	div1.Initialize(Me, "")
 	Dim divView1 As B4XView = div1.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	div1.SetBackgroundColorVariant("primary")
@@ -72,7 +72,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 '	Dim divView1 As B4XView = div1.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	stack.AddLayer(divView1)
 
-	Dim div2 As B4XDaisyDiv
+	Dim div2 As B4XDaisyDivision
 	div2.Initialize(Me, "")
 	Dim divView2 As B4XView = div2.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	div2.SetBackgroundColorVariant("accent")
@@ -86,7 +86,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 '	Dim divView2 As B4XView = div2.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	stack.AddLayer(divView2)
 
-	Dim div3 As B4XDaisyDiv
+	Dim div3 As B4XDaisyDivision
 	div3.Initialize(Me, "")
 	Dim divView3 As B4XView = div3.AddToParent(pStack, 0, 0, 10dip, 10dip)
 	div3.SetBackgroundColorVariant("secondary")
@@ -147,3 +147,4 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
         sv.SetLayout(0, 0, Width, Height)
     End If
 End Sub
+

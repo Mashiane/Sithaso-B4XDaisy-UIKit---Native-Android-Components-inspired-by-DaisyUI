@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -32,19 +32,20 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim currentY As Int = 20dip
 	
 	'Header
-	Dim lblHeader As B4XDaisyLabel
+	Dim lblHeader As B4XDaisyText
 	lblHeader.Initialize(Me, "")
 	lblHeader.AddToParent(content, 10dip, currentY, 300dip, 40dip)
 	lblHeader.Text = "Radial Progress"
-	lblHeader.TextSize = "text-2xl"
+	lblHeader.TextSize = "text-sm"
 	lblHeader.FontBold = True
 	currentY = currentY + 50dip
 	
 	'--- Radial progress ---
-	Dim lblEx1 As B4XDaisyLabel
+	Dim lblEx1 As B4XDaisyText
 	lblEx1.Initialize(Me, "")
 	lblEx1.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx1.Text = "Radial progress"
+	lblEx1.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rp1 As B4XDaisyRadialProgress
@@ -54,10 +55,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 100dip
 	
 	'--- Different values ---
-	Dim lblEx2 As B4XDaisyLabel
+	Dim lblEx2 As B4XDaisyText
 	lblEx2.Initialize(Me, "")
 	lblEx2.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx2.Text = "Different values"
+	lblEx2.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim vals() As Int = Array As Int(0, 20, 60, 80, 100)
@@ -71,10 +73,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 80dip
 	
 	'--- Custom colors ---
-	Dim lblEx3 As B4XDaisyLabel
+	Dim lblEx3 As B4XDaisyText
 	lblEx3.Initialize(Me, "")
 	lblEx3.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx3.Text = "Custom colors"
+	lblEx3.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rpCol1 As B4XDaisyRadialProgress
@@ -106,10 +109,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 100dip
 	
 	'--- Different thickness ---
-	Dim lblEx4 As B4XDaisyLabel
+	Dim lblEx4 As B4XDaisyText
 	lblEx4.Initialize(Me, "")
 	lblEx4.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx4.Text = "Different thickness"
+	lblEx4.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rpThick1 As B4XDaisyRadialProgress
@@ -126,10 +130,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 100dip
 	
 	'--- Different sizes ---
-	Dim lblEx5 As B4XDaisyLabel
+	Dim lblEx5 As B4XDaisyText
 	lblEx5.Initialize(Me, "")
 	lblEx5.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx5.Text = "Different sizes"
+	lblEx5.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rpSize1 As B4XDaisyRadialProgress
@@ -144,10 +149,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 140dip
 	
 	'--- Custom Background and Border ---
-	Dim lblEx6 As B4XDaisyLabel
+	Dim lblEx6 As B4XDaisyText
 	lblEx6.Initialize(Me, "")
 	lblEx6.AddToParent(content, 10dip, currentY, 340dip, 30dip)
 	lblEx6.Text = "Custom Background & Border"
+	lblEx6.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rpBg As B4XDaisyRadialProgress
@@ -162,10 +168,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 100dip
 	
 	'--- Text CountUp & Prefixes ---
-	Dim lblEx7 As B4XDaisyLabel
+	Dim lblEx7 As B4XDaisyText
 	lblEx7.Initialize(Me, "")
 	lblEx7.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx7.Text = "Text CountUp & Prefixes"
+	lblEx7.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rpAnim As B4XDaisyRadialProgress
@@ -180,10 +187,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 100dip
 	
 	'--- SVG DisplayType ---
-	Dim lblEx8 As B4XDaisyLabel
+	Dim lblEx8 As B4XDaisyText
 	lblEx8.Initialize(Me, "")
 	lblEx8.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx8.Text = "SVG DisplayType"
+	lblEx8.TextSize = "text-sm"
 	currentY = currentY + 40dip
 	
 	Dim rpSvg1 As B4XDaisyRadialProgress
@@ -258,3 +266,4 @@ End Sub
 Public Sub SetParent(Parent As B4XMainPage)
 	mParent = Parent
 End Sub
+

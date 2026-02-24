@@ -7,7 +7,6 @@ Version=13.4
 
 #DesignerProperty: Key: LoadingStyle, DisplayName: Style, FieldType: String, DefaultValue: spinner, List: spinner|dots|ring|ball|bars|infinity, Description: The loading animation style.
 #DesignerProperty: Key: Size, DisplayName: Size, FieldType: String, DefaultValue: md, List: xs|sm|md|lg|xl, Description: Size of the loading indicator (xs, sm, md, lg, xl).
-#DesignerProperty: Key: Color, DisplayName: Color, FieldType: String, DefaultValue: currentColor, Description: Color of the loading indicator (e.g. primary, error, or hex).
 #DesignerProperty: Key: Speed, DisplayName: Speed, FieldType: Int, DefaultValue: 100, Description: Animation speed percentage (100 = normal).
 #DesignerProperty: Key: Visible, DisplayName: Visible, FieldType: Boolean, DefaultValue: True, Description: Visibility of the component.
 #DesignerProperty: Key: Variant, DisplayName: Variant, FieldType: String, DefaultValue: none, List: none|neutral|primary|secondary|accent|info|success|warning|error, Description: DaisyUI semantic color variant (sets spinner color).
@@ -23,7 +22,6 @@ Sub Class_Globals
 	' Properties
 	Private mLoadingStyle As String = "spinner"
 	Private mSize As String = "md"
-	Private mColor As String = "currentColor"
 	Private mColorInt As Int = xui.Color_Black
 	Private mSpeed As Int = 100
 	Private mVisible As Boolean = True
@@ -107,12 +105,11 @@ Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mLoadingStyle = B4XDaisyVariants.GetPropString(Props, "LoadingStyle", mLoadingStyle)
-	mSize = B4XDaisyVariants.GetPropString(Props, "Size", mSize)
-	mColor = B4XDaisyVariants.GetPropString(Props, "Color", mColor)
-	mSpeed = B4XDaisyVariants.GetPropInt(Props, "Speed", mSpeed)
-	mVisible = B4XDaisyVariants.GetPropBool(Props, "Visible", mVisible)
-	mVariant = B4XDaisyVariants.NormalizeVariant(B4XDaisyVariants.GetPropString(Props, "Variant", mVariant))
+	mLoadingStyle = B4XDaisyVariants.GetPropString(Props, "LoadingStyle", "spinner")
+	mSize = B4XDaisyVariants.GetPropString(Props, "Size", "md")
+	mSpeed = B4XDaisyVariants.GetPropInt(Props, "Speed", 100)
+	mVisible = B4XDaisyVariants.GetPropBool(Props, "Visible", True)
+	mVariant = B4XDaisyVariants.NormalizeVariant(B4XDaisyVariants.GetPropString(Props, "Variant", "none"))
 	' Initial render
 	UpdateLayout
 End Sub
@@ -159,13 +156,13 @@ Private Sub UpdateLayout
 	Dim contentX As Float = (mBase.Width - contentSize) / 2
 	Dim contentY As Float = (mBase.Height - contentSize) / 2
 	
-	' Resolve Color
-	Dim colorInt As Int = B4XDaisyVariants.ResolveTextColorVariant(mColor, xui.Color_Black)
-	If mColor = "currentColor" Then 
-		' Try to get parent text color? Hard in B4X. Default to Black/White depending on theme?
-		' For now, default to black if currentColor, or rely on explicit colors.
-		' In B4X, "currentColor" isn't native. We'll default to Theme's base-content if not specified.
-		colorInt = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
+	' Resolve Color from Variant only.
+	Dim baseContent As Int = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
+	Dim colorInt As Int
+	If mVariant = "none" Then
+		colorInt = baseContent
+	Else
+		colorInt = B4XDaisyVariants.ResolveBackgroundColorVariant(mVariant, baseContent)
 	End If
 	mColorInt = colorInt
 
@@ -565,15 +562,6 @@ Public Sub setSize(Value As String)
 	UpdateLayout
 End Sub
 
-Public Sub getColor As String
-	Return mColor
-End Sub
-
-Public Sub setColor(Value As String)
-	mColor = Value
-	UpdateLayout
-End Sub
-
 Public Sub getSpeed As Int
 	Return mSpeed
 End Sub
@@ -598,11 +586,6 @@ End Sub
 
 Public Sub setVariant(Value As String)
 	mVariant = B4XDaisyVariants.NormalizeVariant(Value)
-	If mVariant <> "none" Then
-		mColor = mVariant
-	Else
-		mColor = "neutral"
-	End If
 	UpdateLayout
 End Sub
 

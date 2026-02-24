@@ -92,15 +92,15 @@ Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mValue = B4XDaisyVariants.GetPropFloat(Props, "Value", mValue)
-	mMaxValue = B4XDaisyVariants.GetPropFloat(Props, "MaxValue", mMaxValue)
-	mVariant = B4XDaisyVariants.NormalizeVariant(B4XDaisyVariants.GetPropString(Props, "Variant", mVariant))
-	mSize = B4XDaisyVariants.GetPropString(Props, "Size", mSize)
-	mVisible = B4XDaisyVariants.GetPropBool(Props, "Visible", mVisible)
-	mWidth = B4XDaisyVariants.GetPropString(Props, "Width", mWidth)
-	mHeight = B4XDaisyVariants.GetPropString(Props, "Height", mHeight)
-	mShowTooltip = B4XDaisyVariants.GetPropBool(Props, "ShowTooltip", mShowTooltip)
-	mTooltipPosition = B4XDaisyVariants.GetPropString(Props, "TooltipPosition", mTooltipPosition)
+	mValue = B4XDaisyVariants.GetPropFloat(Props, "Value", 0)
+	mMaxValue = B4XDaisyVariants.GetPropFloat(Props, "MaxValue", 100)
+	mVariant = B4XDaisyVariants.NormalizeVariant(B4XDaisyVariants.GetPropString(Props, "Variant", "none"))
+	mSize = B4XDaisyVariants.GetPropString(Props, "Size", "none")
+	mVisible = B4XDaisyVariants.GetPropBool(Props, "Visible", True)
+	mWidth = B4XDaisyVariants.GetPropString(Props, "Width", "w-full")
+	mHeight = B4XDaisyVariants.GetPropString(Props, "Height", "h-2")
+	mShowTooltip = B4XDaisyVariants.GetPropBool(Props, "ShowTooltip", False)
+	mTooltipPosition = B4XDaisyVariants.GetPropString(Props, "TooltipPosition", "top")
 	
 	If mBase.IsInitialized Then
 		mBase.Visible = mVisible

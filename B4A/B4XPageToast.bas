@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -41,19 +41,20 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim currentY As Int = 20dip
 	
 	'Header
-	Dim lblHeader As B4XDaisyLabel
+	Dim lblHeader As B4XDaisyText
 	lblHeader.Initialize(Me, "")
 	lblHeader.AddToParent(content, 10dip, currentY, 300dip, 40dip)
 	lblHeader.Text = "Toast Notifications"
-	lblHeader.TextSize = "text-2xl"
+	lblHeader.TextSize = "text-sm"
 	lblHeader.FontBold = True
 	currentY = currentY + 60dip
 	
 	'--- Example 1: Position Controls ---
-	Dim lblEx1 As B4XDaisyLabel
+	Dim lblEx1 As B4XDaisyText
 	lblEx1.Initialize(Me, "")
 	lblEx1.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx1.Text = "Screen Positioning"
+	lblEx1.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
 	Dim btnBottomEnd As Button = CreateButton("Bottom End", "bottom_end")
@@ -71,10 +72,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 60dip
 
 	'--- Example 2: Timed Notifications ---
-	Dim lblEx2 As B4XDaisyLabel
+	Dim lblEx2 As B4XDaisyText
 	lblEx2.Initialize(Me, "")
 	lblEx2.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx2.Text = "Timed Notifications (3s)"
+	lblEx2.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
 	Dim btnTimedSuccess As Button = CreateButton("Timed Success", "timed_success")
@@ -85,10 +87,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 60dip
 
 	'--- Example 3: Stacked ---
-	Dim lblEx3 As B4XDaisyLabel
+	Dim lblEx3 As B4XDaisyText
 	lblEx3.Initialize(Me, "")
 	lblEx3.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx3.Text = "Stacked Messages"
+	lblEx3.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
 	Dim btnStackInfo As Button = CreateButton("Add Info Stack", "stack_info")
@@ -151,3 +154,4 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 		sv.Height = Height
 	End If
 End Sub
+

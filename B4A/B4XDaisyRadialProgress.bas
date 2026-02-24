@@ -118,37 +118,37 @@ End Sub
 Private Sub ApplyDesignerProps(Props As Map)
 	mWidthExplicit = Props.ContainsKey("Size")
 	mHeightExplicit = mWidthExplicit
-	Dim sz As Float = Max(16dip, GetPropSizeDip(Props, "Size", mWidth))
+	Dim sz As Float = Max(16dip, GetPropSizeDip(Props, "Size", "80px"))
 	mWidth = sz
 	mHeight = sz
 	
-	mValue = B4XDaisyVariants.GetPropInt(Props, "Value", mValue)
-	mMinValue = B4XDaisyVariants.GetPropInt(Props, "MinValue", mMinValue)
-	mMaxValue = B4XDaisyVariants.GetPropInt(Props, "MaxValue", mMaxValue)
+	mValue = B4XDaisyVariants.GetPropInt(Props, "Value", 0)
+	mMinValue = B4XDaisyVariants.GetPropInt(Props, "MinValue", 0)
+	mMaxValue = B4XDaisyVariants.GetPropInt(Props, "MaxValue", 100)
 	If mMinValue > mMaxValue Then
 		Dim t_min As Int = mMinValue
 		mMinValue = mMaxValue
 		mMaxValue = t_min
 	End If
 	
-	mStepValue = B4XDaisyVariants.GetPropInt(Props, "StepValue", mStepValue)
+	mStepValue = B4XDaisyVariants.GetPropInt(Props, "StepValue", 1)
 	If mStepValue <= 0 Then mStepValue = 1
 	
-	mThickness = GetPropString(Props, "Thickness", mThickness)
-	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
-	mDisplayType = GetPropString(Props, "DisplayType", mDisplayType).ToLowerCase.Trim
-	mText = GetPropString(Props, "Text", mText)
-	mPrefix = GetPropString(Props, "Prefix", mPrefix)
-	mSuffix = GetPropString(Props, "Suffix", mSuffix)
-	mTextCountUp = GetPropBool(Props, "TextCountUp", mTextCountUp)
-	mCountUpSpeed = B4XDaisyVariants.GetPropInt(Props, "CountUpSpeed", mCountUpSpeed)
-	mSvgAsset = GetPropString(Props, "SvgAsset", mSvgAsset)
+	mThickness = GetPropString(Props, "Thickness", "10%")
+	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", "none"))
+	mDisplayType = GetPropString(Props, "DisplayType", "text").ToLowerCase.Trim
+	mText = GetPropString(Props, "Text", "0")
+	mPrefix = GetPropString(Props, "Prefix", "")
+	mSuffix = GetPropString(Props, "Suffix", "%")
+	mTextCountUp = GetPropBool(Props, "TextCountUp", False)
+	mCountUpSpeed = B4XDaisyVariants.GetPropInt(Props, "CountUpSpeed", 300)
+	mSvgAsset = GetPropString(Props, "SvgAsset", "")
 	
-	mTrackColor = B4XDaisyVariants.GetPropInt(Props, "TrackColor", mTrackColor)
-	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", mBackgroundColor)
-	mTextColor = B4XDaisyVariants.GetPropInt(Props, "TextColor", mTextColor)
-	mBorderColor = B4XDaisyVariants.GetPropInt(Props, "BorderColor", mBorderColor)
-	mBorderWidth = GetPropString(Props, "BorderWidth", mBorderWidth)
+	mTrackColor = B4XDaisyVariants.GetPropInt(Props, "TrackColor", 0x00000000)
+	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", 0x00000000)
+	mTextColor = B4XDaisyVariants.GetPropInt(Props, "TextColor", 0xFF000000)
+	mBorderColor = B4XDaisyVariants.GetPropInt(Props, "BorderColor", 0x00000000)
+	mBorderWidth = GetPropString(Props, "BorderWidth", "0")
 	
 	mValue = Max(mMinValue, Min(mMaxValue, mValue))
 End Sub
@@ -607,10 +607,12 @@ End Sub
 
 
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub ResolveWidthBase(DefaultValue As Float) As Float

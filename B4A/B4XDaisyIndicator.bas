@@ -80,10 +80,7 @@ Public Sub CreateView(Width As Int, Height As Int) As B4XView
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-	Dim props As Map
-	props.Initialize
-	props.Put("OffsetX", ResolvePxSizeSpec(0))
-	props.Put("OffsetY", ResolvePxSizeSpec(0))
+	Dim props As Map = BuildRuntimeProps
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Return mBase
@@ -102,16 +99,33 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
 
-	Dim props As Map
-	props.Initialize
-	props.Put("OffsetX", ResolvePxSizeSpec(0))
-	props.Put("OffsetY", ResolvePxSizeSpec(0))
+	Dim props As Map = BuildRuntimeProps
 
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
 	BringSelfToFront
 	Return mBase
+End Sub
+
+Private Sub BuildRuntimeProps As Map
+	' Preserve runtime state when recreating indicator through DesignerCreateView.
+	Dim props As Map
+	props.Initialize
+	props.Put("HorizontalPlacement", mHorizontalPlacement)
+	props.Put("VerticalPlacement", mVerticalPlacement)
+	props.Put("OffsetX", ResolvePxSizeSpec(mOffsetX))
+	props.Put("OffsetY", ResolvePxSizeSpec(mOffsetY))
+	props.Put("Text", mText)
+	props.Put("Counter", mCounter)
+	props.Put("Variant", mVariant)
+	props.Put("Size", mSize)
+	props.Put("IconAsset", mIconAsset)
+	props.Put("Rounded", mRounded)
+	props.Put("TextColor", mTextColor)
+	props.Put("BackgroundColor", mBackgroundColor)
+	props.Put("Visible", mVisible)
+	Return props
 End Sub
 
 Private Sub ResolvePxSizeSpec(SizeDip As Float) As String
@@ -294,19 +308,19 @@ Private Sub LayoutIndicatorItem
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mHorizontalPlacement = NormalizeHorizontalPlacement(GetPropString(Props, "HorizontalPlacement", mHorizontalPlacement))
-	mVerticalPlacement = NormalizeVerticalPlacement(GetPropString(Props, "VerticalPlacement", mVerticalPlacement))
-	mOffsetX = GetPropSizeDip(Props, "OffsetX", mOffsetX)
-	mOffsetY = GetPropSizeDip(Props, "OffsetY", mOffsetY)
-	mText = GetPropString(Props, "Text", mText)
-	mCounter = GetPropBool(Props, "Counter", mCounter)
-	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
-	mSize = NormalizeSize(GetPropString(Props, "Size", mSize))
-	mIconAsset = GetPropString(Props, "IconAsset", mIconAsset).Trim
-	mRounded = NormalizeRounded(GetPropString(Props, "Rounded", mRounded))
-	mTextColor = B4XDaisyVariants.GetPropInt(Props, "TextColor", mTextColor)
-	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", mBackgroundColor)
-	mVisible = GetPropBool(Props, "Visible", mVisible)
+	mHorizontalPlacement = NormalizeHorizontalPlacement(GetPropString(Props, "HorizontalPlacement", "end"))
+	mVerticalPlacement = NormalizeVerticalPlacement(GetPropString(Props, "VerticalPlacement", "top"))
+	mOffsetX = GetPropSizeDip(Props, "OffsetX", "0")
+	mOffsetY = GetPropSizeDip(Props, "OffsetY", "0")
+	mText = GetPropString(Props, "Text", "")
+	mCounter = GetPropBool(Props, "Counter", False)
+	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", "none"))
+	mSize = NormalizeSize(GetPropString(Props, "Size", "sm"))
+	mIconAsset = GetPropString(Props, "IconAsset", "").Trim
+	mRounded = NormalizeRounded(GetPropString(Props, "Rounded", "rounded"))
+	mTextColor = B4XDaisyVariants.GetPropInt(Props, "TextColor", 0x00000000)
+	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", 0x00000000)
+	mVisible = GetPropBool(Props, "Visible", True)
 End Sub
 
 
@@ -546,10 +560,12 @@ Private Sub GetPropBool(Props As Map, Key As String, DefaultValue As Boolean) As
 	Return B4XDaisyVariants.GetPropBool(Props, Key, DefaultValue)
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim raw As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(raw, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(raw, baseDip)
 End Sub
 
 Private Sub BringSelfToFront

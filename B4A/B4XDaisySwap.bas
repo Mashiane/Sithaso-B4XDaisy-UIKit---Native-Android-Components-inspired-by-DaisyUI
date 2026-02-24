@@ -148,20 +148,20 @@ End Sub
 Private Sub ApplyDesignerProps(Props As Map)
 	mWidthExplicit = Props.IsInitialized And Props.ContainsKey("Width")
 	mHeightExplicit = Props.IsInitialized And Props.ContainsKey("Height")
-	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", ResolveWidthBase(mWidth)))
-	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", ResolveHeightBase(mHeight)))
-	mState = NormalizeState(B4XDaisyVariants.GetPropString(Props, "State", mState))
-	mStyle = NormalizeStyle(B4XDaisyVariants.GetPropString(Props, "SwapStyle", mStyle))
-	mAnimationMs = Max(0, B4XDaisyVariants.GetPropInt(Props, "AnimationMs", mAnimationMs))
-	mSwapType = NormalizeSwapType(B4XDaisyVariants.GetPropString(Props, "SwapType", mSwapType))
+	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", "12"))
+	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", "12"))
+	mState = NormalizeState(B4XDaisyVariants.GetPropString(Props, "State", "off"))
+	mStyle = NormalizeStyle(B4XDaisyVariants.GetPropString(Props, "SwapStyle", "none"))
+	mAnimationMs = Max(0, B4XDaisyVariants.GetPropInt(Props, "AnimationMs", 200))
+	mSwapType = NormalizeSwapType(B4XDaisyVariants.GetPropString(Props, "SwapType", "text"))
 	mTextSize = NormalizeTextSize(B4XDaisyVariants.GetPropString(Props, "TextSize", "text-sm"))
 	SyncTextSizeBySwapType
-	mOnText = B4XDaisyVariants.GetPropString(Props, "OnText", mOnText)
-	mOffText = B4XDaisyVariants.GetPropString(Props, "OffText", mOffText)
-	mIndText = B4XDaisyVariants.GetPropString(Props, "IndeterminateText", mIndText)
-	mOnColor = B4XDaisyVariants.GetPropInt(Props, "OnColor", mOnColor)
-	mOffColor = B4XDaisyVariants.GetPropInt(Props, "OffColor", mOffColor)
-	mIndColor = B4XDaisyVariants.GetPropInt(Props, "IndeterminateColor", mIndColor)
+	mOnText = B4XDaisyVariants.GetPropString(Props, "OnText", "ON")
+	mOffText = B4XDaisyVariants.GetPropString(Props, "OffText", "OFF")
+	mIndText = B4XDaisyVariants.GetPropString(Props, "IndeterminateText", "")
+	mOnColor = B4XDaisyVariants.GetPropInt(Props, "OnColor", 0x00000000)
+	mOffColor = B4XDaisyVariants.GetPropInt(Props, "OffColor", 0x00000000)
+	mIndColor = B4XDaisyVariants.GetPropInt(Props, "IndeterminateColor", 0x00000000)
 	SyncThreeState
 
 	ApplyTextSizeStyle
@@ -448,7 +448,7 @@ End Sub
 
 Private Sub SyncTextSizeBySwapType
 	If mSwapType = "text" Then
-		If ResolveTextSizeToken.Length = 0 Then mTextSize = "text-md"
+		If ResolveTextSizeToken.Length = 0 Then mTextSize = "text-sm"
 	Else
 		mTextSize = ""
 	End If
@@ -659,10 +659,12 @@ Private Sub EstimateTextWidthDip(Text As String, FontSize As Float) As Float
 	Return Max(12dip, widthPx)
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub ResolveWidthBase(DefaultValue As Float) As Float

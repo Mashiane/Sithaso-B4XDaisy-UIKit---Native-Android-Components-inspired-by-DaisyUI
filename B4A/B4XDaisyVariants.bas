@@ -13,6 +13,11 @@ Sub Process_Globals
 	Public Const FLATPICKR_UNIX_PLACEHOLDER As String = "__fp_unix__"
 	Private Themes As Map
 	Private ActiveThemeName As String = "light"
+	'
+	Public FLEX_DEBUG As Boolean = False
+    Public FLEX_SPACE_UNIT_DIP As Float = 4
+	Type NullableInt (Success As Boolean, Value As Int)
+	Type NullableFloat (Success As Boolean, Value As Float)
 End Sub
 
 Public Sub SetActiveTheme(ThemeName As String)
@@ -367,13 +372,23 @@ Public Sub ResolveColorVariantFromPalette(Palette As Map, VariantOrToken As Stri
 	If VariantOrToken = Null Then Return DefaultColor
 	Dim name As String = VariantOrToken.Trim
 	If name.Length = 0 Then Return DefaultColor
+	Dim normalizedName As String = name.ToLowerCase.Trim
+	Dim keyName As String = PaletteKey.ToLowerCase.Trim
+
+	' Semantic variants should resolve through the variant palette first.
+	Select Case normalizedName
+		Case "none", "neutral", "primary", "secondary", "accent", "info", "success", "warning", "error"
+			If keyName = "border" Then keyName = "back"
+			Return ResolveVariantColor(Palette, normalizedName, keyName, DefaultColor)
+	End Select
 
 	Dim token As String = ResolveThemeColorTokenName(name)
 	If token.Length > 0 Then
 		Return GetTokenColor(token, DefaultColor)
 	End If
 
-	Return ResolveVariantColor(Palette, name, PaletteKey, DefaultColor)
+	If keyName = "border" Then keyName = "back"
+	Return ResolveVariantColor(Palette, name, keyName, DefaultColor)
 End Sub
 
 Public Sub ResolveOnlineColor(VariantName As String, DefaultColor As Int) As Int
@@ -2722,4 +2737,702 @@ Public Sub ApplyElevation(v As B4XView, ShadowLevel As String)
 	Catch
 	End Try
 	#End If
+End Sub
+
+'**** FLEX"
+
+'========================
+' PUBLIC API - CONTAINER
+'========================
+
+Public Sub ParseFlexContainerTokens(TokenString As String) As Map
+    Dim r As Map
+    r.Initialize
+    
+    r.Put("hasDirection", False)
+    r.Put("direction", "row")
+    
+    r.Put("hasWrapMode", False)
+    r.Put("wrapmode", "wrap")
+    
+    r.Put("hasJustify", False)
+    r.Put("justify", "start")
+    
+    r.Put("hasItems", False)
+    r.Put("items", "start")
+    
+    r.Put("hasContent", False)
+    r.Put("content", "start")
+    
+    r.Put("hasGapX", False) : r.Put("gapx", 0)
+    r.Put("hasGapY", False) : r.Put("gapy", 0)
+    
+    r.Put("hasPadding", False)
+    r.Put("pl", 0) : r.Put("pt", 0) : r.Put("pr", 0) : r.Put("pb", 0)
+    
+    If TokenString = Null Then Return r
+    
+    Dim tokens() As String = Regex.Split("\s+", TokenString.Trim)
+    For Each tRaw As String In tokens
+        Dim t As String = tRaw.Trim.ToLowerCase
+        If t = "" Then Continue
+        
+        If ParseContainerTokenIntoMap(r, t) = False Then
+            If FLEX_DEBUG Then Log($"[FlexContainerTokens] Unknown token: ${t}"$)
+        End If
+    Next
+    
+    Return r
+End Sub
+
+Public Sub ApplyFlexContainerTokens(fp As B4XFlexPanel, TokenString As String, DoRelayout As Boolean)
+    If fp.IsInitialized = False Then Return
+    Dim parsed As Map = ParseFlexContainerTokens(TokenString)
+    ApplyParsedFlexContainerTokens(fp, parsed, DoRelayout)
+End Sub
+
+Public Sub ApplyParsedFlexContainerTokens(fp As B4XFlexPanel, Parsed As Map, DoRelayout As Boolean)
+    If fp.IsInitialized = False Then Return
+    If Parsed.IsInitialized = False Then Return
+    
+    fp.BeginUpdate
+    
+    If GetMapBool(Parsed, "hasDirection", False) Then fp.Direction = GetMapString(Parsed, "direction", fp.Direction)
+    If GetMapBool(Parsed, "hasWrapMode", False) Then fp.WrapMode = GetMapString(Parsed, "wrapmode", fp.WrapMode)
+    If GetMapBool(Parsed, "hasJustify", False) Then fp.JustifyContent = GetMapString(Parsed, "justify", fp.JustifyContent)
+    If GetMapBool(Parsed, "hasItems", False) Then fp.AlignItems = GetMapString(Parsed, "items", fp.AlignItems)
+    If GetMapBool(Parsed, "hasContent", False) Then fp.AlignContent = GetMapString(Parsed, "content", fp.AlignContent)
+    
+    If GetMapBool(Parsed, "hasGapX", False) Then fp.GapX = GetMapInt(Parsed, "gapx", fp.GapX)
+    If GetMapBool(Parsed, "hasGapY", False) Then fp.GapY = GetMapInt(Parsed, "gapy", fp.GapY)
+    
+    If GetMapBool(Parsed, "hasPadding", False) Then
+        fp.PaddingLeft = GetMapInt(Parsed, "pl", fp.PaddingLeft)
+        fp.PaddingTop = GetMapInt(Parsed, "pt", fp.PaddingTop)
+        fp.PaddingRight = GetMapInt(Parsed, "pr", fp.PaddingRight)
+        fp.PaddingBottom = GetMapInt(Parsed, "pb", fp.PaddingBottom)
+    End If
+    
+    fp.EndUpdate(DoRelayout)
+End Sub
+
+'========================
+' PUBLIC API - ITEM
+'========================
+
+Public Sub ParseFlexItemTokens(TokenString As String) As Map
+    Dim r As Map
+    r.Initialize
+    
+    'flex + constraints
+    r.Put("hasFlex", False)
+    r.Put("grow", 0)
+    r.Put("shrink", 1)
+    r.Put("minw", -1)
+    r.Put("maxw", -1)
+    r.Put("minh", -1)
+    r.Put("maxh", -1)
+    
+    'absolute basis (w/h)
+    r.Put("hasBasis", False)
+    r.Put("basisw", -1)
+    r.Put("basish", -1)
+    
+    'main-axis absolute basis (needs direction at apply time)
+    r.Put("hasBasisMainAbs", False)
+    r.Put("basis_main_abs", -1)
+    
+    'percent basis
+    r.Put("hasBasisPct", False)
+    r.Put("basis_main_pct", -1)
+    r.Put("basis_cross_pct", -1)
+    
+    'margins
+    r.Put("hasMargins", False)
+    r.Put("ml", 0) : r.Put("mt", 0) : r.Put("mr", 0) : r.Put("mb", 0)
+    
+    'align/order/wrapbefore
+    r.Put("hasAlignSelf", False)
+    r.Put("alignself", "auto")
+    
+    r.Put("hasOrder", False)
+    r.Put("order", 0)
+    
+    r.Put("hasWrapBefore", False)
+    r.Put("wrapbefore", False)
+    
+    If TokenString = Null Then Return r
+    
+    Dim tokens() As String = Regex.Split("\s+", TokenString.Trim)
+    For Each tRaw As String In tokens
+        Dim t As String = tRaw.Trim.ToLowerCase
+        If t = "" Then Continue
+        
+        If ParseItemTokenIntoMap(r, t) = False Then
+            If FLEX_DEBUG Then Log($"[FlexItemTokens] Unknown token: ${t}"$)
+        End If
+    Next
+    
+    Return r
+End Sub
+
+Public Sub ApplyFlexItemTokens(fp As B4XFlexPanel, v As B4XView, TokenString As String, DoRelayout As Boolean)
+    If fp.IsInitialized = False Then Return
+    If v.IsInitialized = False Then Return
+    
+    Dim parsed As Map = ParseFlexItemTokens(TokenString)
+    ApplyParsedFlexItemTokens(fp, v, parsed, DoRelayout)
+End Sub
+
+Public Sub ApplyParsedFlexItemTokens(fp As B4XFlexPanel, v As B4XView, Parsed As Map, DoRelayout As Boolean)
+    If fp.IsInitialized = False Then Return
+    If v.IsInitialized = False Then Return
+    If Parsed.IsInitialized = False Then Return
+    
+    Dim it As B4XFlexItem = fp.Item(v)
+    
+    'Flex + constraints
+    If GetMapBool(Parsed, "hasFlex", False) Then
+        it.Flex(GetMapFloat(Parsed, "grow", 0), GetMapFloat(Parsed, "shrink", 1)) _
+          .MinW(GetMapInt(Parsed, "minw", -1)) _
+          .MaxW(GetMapInt(Parsed, "maxw", -1)) _
+          .MinH(GetMapInt(Parsed, "minh", -1)) _
+          .MaxH(GetMapInt(Parsed, "maxh", -1))
+    End If
+    
+    'basis-20 (main axis absolute) -> map to w/h based on panel direction
+    If GetMapBool(Parsed, "hasBasisMainAbs", False) Then
+        Dim b As Int = GetMapInt(Parsed, "basis_main_abs", -1)
+        Dim dir As String = fp.Direction.ToLowerCase
+        Parsed.Put("hasBasis", True)
+        If dir.StartsWith("row") Then
+            Parsed.Put("basisw", b)
+        Else
+            Parsed.Put("basish", b)
+        End If
+    End If
+    
+    'Absolute basis
+    If GetMapBool(Parsed, "hasBasis", False) Then
+        it.Basis(GetMapInt(Parsed, "basisw", -1), GetMapInt(Parsed, "basish", -1))
+    End If
+    
+    'Percent basis
+    If GetMapBool(Parsed, "hasBasisPct", False) Then
+        it.BasisPercent(GetMapFloat(Parsed, "basis_main_pct", -1), GetMapFloat(Parsed, "basis_cross_pct", -1))
+    End If
+    
+    'Margins
+    If GetMapBool(Parsed, "hasMargins", False) Then
+        it.Margins( _
+            GetMapInt(Parsed, "ml", 0), _
+            GetMapInt(Parsed, "mt", 0), _
+            GetMapInt(Parsed, "mr", 0), _
+            GetMapInt(Parsed, "mb", 0))
+    End If
+    
+    'Align self
+    If GetMapBool(Parsed, "hasAlignSelf", False) Then
+        it.AlignSelf(GetMapString(Parsed, "alignself", "auto"))
+    End If
+    
+    'Order
+    If GetMapBool(Parsed, "hasOrder", False) Then
+        it.Order(GetMapInt(Parsed, "order", 0))
+    End If
+    
+    'Wrap-before
+    If GetMapBool(Parsed, "hasWrapBefore", False) Then
+        it.WrapBefore(GetMapBool(Parsed, "wrapbefore", False))
+    End If
+    
+    it.ApplyEx(DoRelayout)
+End Sub
+
+'========================
+' INTERNAL PARSER - CONTAINER
+'========================
+
+Private Sub ParseContainerTokenIntoMap(r As Map, t As String) As Boolean
+    'Direction
+    Select t
+        Case "flex-row"
+            r.Put("hasDirection", True) : r.Put("direction", "row")
+            Return True
+        Case "flex-row-reverse"
+            r.Put("hasDirection", True) : r.Put("direction", "row-reverse")
+            Return True
+        Case "flex-col"
+            r.Put("hasDirection", True) : r.Put("direction", "column")
+            Return True
+        Case "flex-col-reverse"
+            r.Put("hasDirection", True) : r.Put("direction", "column-reverse")
+            Return True
+    End Select
+    
+    'Wrap mode
+    Select t
+        Case "flex-wrap"
+            r.Put("hasWrapMode", True) : r.Put("wrapmode", "wrap")
+            Return True
+        Case "flex-nowrap"
+            r.Put("hasWrapMode", True) : r.Put("wrapmode", "nowrap")
+            Return True
+        Case "flex-wrap-reverse"
+            r.Put("hasWrapMode", True) : r.Put("wrapmode", "wrap-reverse")
+            Return True
+    End Select
+    
+    'Justify
+    If t.StartsWith("justify-") Then
+        Dim s As String = t.SubString(8)
+        Select s
+            Case "start"
+                r.Put("hasJustify", True) : r.Put("justify", "start") : Return True
+            Case "center"
+                r.Put("hasJustify", True) : r.Put("justify", "center") : Return True
+            Case "end"
+                r.Put("hasJustify", True) : r.Put("justify", "end") : Return True
+            Case "between"
+                r.Put("hasJustify", True) : r.Put("justify", "space-between") : Return True
+            Case "around"
+                r.Put("hasJustify", True) : r.Put("justify", "space-around") : Return True
+            Case "evenly"
+                r.Put("hasJustify", True) : r.Put("justify", "space-evenly") : Return True
+        End Select
+    End If
+    
+    'Align items
+    If t.StartsWith("items-") Then
+        Dim i As String = t.SubString(6)
+        Select i
+            Case "start"
+                r.Put("hasItems", True) : r.Put("items", "start") : Return True
+            Case "center"
+                r.Put("hasItems", True) : r.Put("items", "center") : Return True
+            Case "end"
+                r.Put("hasItems", True) : r.Put("items", "end") : Return True
+            Case "stretch"
+                r.Put("hasItems", True) : r.Put("items", "stretch") : Return True
+        End Select
+    End If
+    
+    'Align content
+    If t.StartsWith("content-") Then
+        Dim c As String = t.SubString(8)
+        Select c
+            Case "start"
+                r.Put("hasContent", True) : r.Put("content", "start") : Return True
+            Case "center"
+                r.Put("hasContent", True) : r.Put("content", "center") : Return True
+            Case "end"
+                r.Put("hasContent", True) : r.Put("content", "end") : Return True
+            Case "stretch"
+                r.Put("hasContent", True) : r.Put("content", "stretch") : Return True
+            Case "between"
+                r.Put("hasContent", True) : r.Put("content", "space-between") : Return True
+            Case "around"
+                r.Put("hasContent", True) : r.Put("content", "space-around") : Return True
+            Case "evenly"
+                r.Put("hasContent", True) : r.Put("content", "space-evenly") : Return True
+        End Select
+    End If
+    
+    'Gap
+    If t.StartsWith("gap-") Then
+        'Could be gap-2 OR gap-x-2 OR gap-y-2
+        If t.StartsWith("gap-x-") Then
+            Dim ngx As NullableFloat = TryParseFloat(t.SubString(6))
+            If ngx.Success Then
+                r.Put("hasGapX", True)
+                r.Put("gapx", SpaceTokenToPx(ngx.Value))
+                Return True
+            End If
+        Else If t.StartsWith("gap-y-") Then
+            Dim ngy As NullableFloat = TryParseFloat(t.SubString(6))
+            If ngy.Success Then
+                r.Put("hasGapY", True)
+                r.Put("gapy", SpaceTokenToPx(ngy.Value))
+                Return True
+            End If
+        Else
+            Dim ng As NullableFloat = TryParseFloat(t.SubString(4))
+            If ng.Success Then
+                Dim px As Int = SpaceTokenToPx(ng.Value)
+                r.Put("hasGapX", True) : r.Put("gapx", px)
+                r.Put("hasGapY", True) : r.Put("gapy", px)
+                Return True
+            End If
+        End If
+    End If
+    
+    'Padding
+    If ParsePaddingToken(r, t) Then Return True
+    
+    Return False
+End Sub
+
+Private Sub ParsePaddingToken(r As Map, t As String) As Boolean
+    'p-2, px-2, py-1, pt-2, pr-1, pb-2, pl-1
+    If t.StartsWith("p-") Then
+        Dim n As NullableFloat = TryParseFloat(t.SubString(2))
+        If n.Success Then
+            Dim px As Int = SpaceTokenToPx(n.Value)
+            r.Put("hasPadding", True)
+            r.Put("pl", px) : r.Put("pt", px) : r.Put("pr", px) : r.Put("pb", px)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("px-") Then
+        Dim n2 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n2.Success Then
+            Dim px2 As Int = SpaceTokenToPx(n2.Value)
+            r.Put("hasPadding", True)
+            r.Put("pl", px2) : r.Put("pr", px2)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("py-") Then
+        Dim n3 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n3.Success Then
+            Dim px3 As Int = SpaceTokenToPx(n3.Value)
+            r.Put("hasPadding", True)
+            r.Put("pt", px3) : r.Put("pb", px3)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("pt-") Then
+        Dim n4 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n4.Success Then
+            r.Put("hasPadding", True)
+            r.Put("pt", SpaceTokenToPx(n4.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("pr-") Then
+        Dim n5 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n5.Success Then
+            r.Put("hasPadding", True)
+            r.Put("pr", SpaceTokenToPx(n5.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("pb-") Then
+        Dim n6 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n6.Success Then
+            r.Put("hasPadding", True)
+            r.Put("pb", SpaceTokenToPx(n6.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("pl-") Then
+        Dim n7 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n7.Success Then
+            r.Put("hasPadding", True)
+            r.Put("pl", SpaceTokenToPx(n7.Value))
+            Return True
+        End If
+    End If
+    
+    Return False
+End Sub
+
+'========================
+' INTERNAL PARSER - ITEM
+'========================
+
+Private Sub ParseItemTokenIntoMap(r As Map, t As String) As Boolean
+    'Boolean aliases
+    If t = "grow" Then
+        r.Put("hasFlex", True)
+        r.Put("grow", 1)
+        Return True
+    End If
+    
+    If t = "shrink" Then
+        r.Put("hasFlex", True)
+        r.Put("shrink", 1)
+        Return True
+    End If
+    
+    If t = "wrap-before" Then
+        r.Put("hasWrapBefore", True)
+        r.Put("wrapbefore", True)
+        Return True
+    End If
+    
+    'Align self
+    If t.StartsWith("self-") Then
+        Dim s As String = t.SubString(5)
+        Select s
+            Case "auto", "start", "center", "end", "stretch", "flex-start", "flex-end"
+                r.Put("hasAlignSelf", True)
+                r.Put("alignself", s)
+                Return True
+        End Select
+    End If
+    
+    'Order
+    If t.StartsWith("order-") Then
+        Dim nOrder As NullableInt = TryParseInt(t.SubString(6))
+        If nOrder.Success Then
+            r.Put("hasOrder", True)
+            r.Put("order", nOrder.Value)
+            Return True
+        End If
+    End If
+    
+    'Grow / Shrink numeric
+    If t.StartsWith("grow-") Then
+        Dim ng As NullableFloat = TryParseFloat(t.SubString(5))
+        If ng.Success Then
+            r.Put("hasFlex", True)
+            r.Put("grow", ng.Value)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("shrink-") Then
+        Dim ns As NullableFloat = TryParseFloat(t.SubString(7))
+        If ns.Success Then
+            r.Put("hasFlex", True)
+            r.Put("shrink", ns.Value)
+            Return True
+        End If
+    End If
+    
+    'Basis
+    If t.StartsWith("basis-") Then
+        If ParseBasisToken(r, t.SubString(6)) Then Return True
+    End If
+    
+    'Min/Max size
+    If t.StartsWith("min-w-") Then
+        Dim n1 As NullableFloat = TryParseFloat(t.SubString(6))
+        If n1.Success Then
+            r.Put("hasFlex", True)
+            r.Put("minw", SpaceTokenToPx(n1.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("min-h-") Then
+        Dim n2 As NullableFloat = TryParseFloat(t.SubString(6))
+        If n2.Success Then
+            r.Put("hasFlex", True)
+            r.Put("minh", SpaceTokenToPx(n2.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("max-w-") Then
+        Dim n3 As NullableFloat = TryParseFloat(t.SubString(6))
+        If n3.Success Then
+            r.Put("hasFlex", True)
+            r.Put("maxw", SpaceTokenToPx(n3.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("max-h-") Then
+        Dim n4 As NullableFloat = TryParseFloat(t.SubString(6))
+        If n4.Success Then
+            r.Put("hasFlex", True)
+            r.Put("maxh", SpaceTokenToPx(n4.Value))
+            Return True
+        End If
+    End If
+    
+    'Margins
+    If ParseMarginToken(r, t) Then Return True
+    
+    Return False
+End Sub
+
+Private Sub ParseBasisToken(r As Map, suffix As String) As Boolean
+    'basis-full -> 100%
+    If suffix = "full" Then
+        r.Put("hasBasisPct", True)
+        r.Put("basis_main_pct", 100)
+        Return True
+    End If
+    
+    'basis-w-20 / basis-h-10 => explicit axis basis
+    If suffix.StartsWith("w-") Then
+        Dim nw As NullableFloat = TryParseFloat(suffix.SubString(2))
+        If nw.Success Then
+            r.Put("hasBasis", True)
+            r.Put("basisw", SpaceTokenToPx(nw.Value))
+            Return True
+        End If
+    End If
+    
+    If suffix.StartsWith("h-") Then
+        Dim nh As NullableFloat = TryParseFloat(suffix.SubString(2))
+        If nh.Success Then
+            r.Put("hasBasis", True)
+            r.Put("basish", SpaceTokenToPx(nh.Value))
+            Return True
+        End If
+    End If
+    
+    'basis-1/2, basis-2/3, etc
+    If suffix.Contains("/") Then
+        Dim p() As String = Regex.Split("/", suffix)
+        If p.Length = 2 Then
+            Dim a As NullableFloat = TryParseFloat(p(0))
+            Dim b As NullableFloat = TryParseFloat(p(1))
+            If a.Success And b.Success And b.Value <> 0 Then
+                r.Put("hasBasisPct", True)
+                r.Put("basis_main_pct", (a.Value / b.Value) * 100)
+                Return True
+            End If
+        End If
+    End If
+    
+    'basis-20 => main-axis absolute basis, resolved on apply
+    Dim n As NullableFloat = TryParseFloat(suffix)
+    If n.Success Then
+        r.Put("hasBasisMainAbs", True)
+        r.Put("basis_main_abs", SpaceTokenToPx(n.Value))
+        Return True
+    End If
+    
+    Return False
+End Sub
+
+Private Sub ParseMarginToken(r As Map, t As String) As Boolean
+    'm-2, mx-2, my-1, mt-2, mr-1, mb-2, ml-1
+    If t.StartsWith("m-") Then
+        Dim n As NullableFloat = TryParseFloat(t.SubString(2))
+        If n.Success Then
+            Dim px As Int = SpaceTokenToPx(n.Value)
+            r.Put("hasMargins", True)
+            r.Put("ml", px) : r.Put("mt", px) : r.Put("mr", px) : r.Put("mb", px)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("mx-") Then
+        Dim n2 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n2.Success Then
+            Dim px2 As Int = SpaceTokenToPx(n2.Value)
+            r.Put("hasMargins", True)
+            r.Put("ml", px2) : r.Put("mr", px2)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("my-") Then
+        Dim n3 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n3.Success Then
+            Dim px3 As Int = SpaceTokenToPx(n3.Value)
+            r.Put("hasMargins", True)
+            r.Put("mt", px3) : r.Put("mb", px3)
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("mt-") Then
+        Dim n4 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n4.Success Then
+            r.Put("hasMargins", True)
+            r.Put("mt", SpaceTokenToPx(n4.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("mr-") Then
+        Dim n5 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n5.Success Then
+            r.Put("hasMargins", True)
+            r.Put("mr", SpaceTokenToPx(n5.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("mb-") Then
+        Dim n6 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n6.Success Then
+            r.Put("hasMargins", True)
+            r.Put("mb", SpaceTokenToPx(n6.Value))
+            Return True
+        End If
+    End If
+    
+    If t.StartsWith("ml-") Then
+        Dim n7 As NullableFloat = TryParseFloat(t.SubString(3))
+        If n7.Success Then
+            r.Put("hasMargins", True)
+            r.Put("ml", SpaceTokenToPx(n7.Value))
+            Return True
+        End If
+    End If
+    
+    Return False
+End Sub
+
+'========================
+' UTILITIES
+'========================
+
+Private Sub SpaceTokenToPx(tokenValue As Float) As Int
+    Dim dips As Float = tokenValue * FLEX_SPACE_UNIT_DIP
+    Return DipToCurrent(Round(dips))
+End Sub
+
+Private Sub GetMapInt(m As Map, k As String, d As Int) As Int
+    If m.IsInitialized = False Then Return d
+    If m.ContainsKey(k) = False Then Return d
+    Return m.Get(k)
+End Sub
+
+Private Sub GetMapFloat(m As Map, k As String, d As Float) As Float
+    If m.IsInitialized = False Then Return d
+    If m.ContainsKey(k) = False Then Return d
+    Return m.Get(k)
+End Sub
+
+Private Sub GetMapString(m As Map, k As String, d As String) As String
+    If m.IsInitialized = False Then Return d
+    If m.ContainsKey(k) = False Then Return d
+    Return m.Get(k)
+End Sub
+
+Private Sub GetMapBool(m As Map, k As String, d As Boolean) As Boolean
+    If m.IsInitialized = False Then Return d
+    If m.ContainsKey(k) = False Then Return d
+    Return m.Get(k)
+End Sub
+
+Private Sub TryParseInt(s As String) As NullableInt
+    Dim r As NullableInt
+    r.Initialize
+    Try
+        r.Success = True
+        r.Value = s
+    Catch
+        r.Success = False
+        r.Value = 0
+    End Try
+    Return r
+End Sub
+
+Private Sub TryParseFloat(s As String) As NullableFloat
+    Dim r As NullableFloat
+    r.Initialize
+    Try
+        r.Success = True
+        r.Value = s
+    Catch
+        r.Success = False
+        r.Value = 0
+    End Try
+    Return r
 End Sub

@@ -266,28 +266,28 @@ End Sub
 Private Sub ApplyDesignerProps(Props As Map)
 	If Props.IsInitialized = False Then Return
 	
-	AvatarMask = B4XDaisyVariants.NormalizeMask(GetPropString(Props, "AvatarMask", AvatarMask))
-	AvatarSize = Max(16dip, GetPropDip(Props, "AvatarSize", AvatarSize))
-	SetSide(GetPropString(Props, "Side", Side))
-	SetBubbleStyle(GetPropString(Props, "BubbleStyle", BubbleStyle))
-	Dim mwp As Float = GetPropFloat(Props, "MaxWidthPercent", MaxWidthPct * 100)
+	AvatarMask = B4XDaisyVariants.NormalizeMask(GetPropString(Props, "AvatarMask", "squircle"))
+	AvatarSize = Max(16dip, GetPropDip(Props, "AvatarSize", 40))
+	SetSide(GetPropString(Props, "Side", "start"))
+	SetBubbleStyle(GetPropString(Props, "BubbleStyle", "rounded"))
+	Dim mwp As Float = GetPropFloat(Props, "MaxWidthPercent", 90)
 	If mwp > 1 Then mwp = mwp / 100
 	SetMaxWidthPercent(mwp)
 	'Backward compatibility with older designer keys.
 	If Props.ContainsKey("AvatarWidth") Then AvatarSize = Max(16dip, GetPropDip(Props, "AvatarWidth", AvatarSize))
 	If Props.ContainsKey("AvatarHeight") Then AvatarSize = Max(16dip, GetPropDip(Props, "AvatarHeight", AvatarSize))
-	OnlineIndicatorVisible = GetPropBool(Props, "ShowOnline", OnlineIndicatorVisible)
+	OnlineIndicatorVisible = GetPropBool(Props, "ShowOnline", True)
 	
-	UseFromToColors = GetPropBool(Props, "UseFromToColors", UseFromToColors)
-	FromBackgroundColor = GetPropInt(Props, "FromBackgroundColor", FromBackgroundColor)
-	FromTextColor = GetPropInt(Props, "FromTextColor", FromTextColor)
-	ToBackgroundColor = GetPropInt(Props, "ToBackgroundColor", ToBackgroundColor)
-	ToTextColor = GetPropInt(Props, "ToTextColor", ToTextColor)
-	mPadding = GetPropString(Props, "Padding", mPadding)
-	mMargin = GetPropString(Props, "Margin", mMargin)
-	BubbleId = GetPropString(Props, "Id", BubbleId)
-	BubbleFromId = GetPropString(Props, "FromId", BubbleFromId)
-	SetVariant(GetPropString(Props, "Variant", Variant))
+	UseFromToColors = GetPropBool(Props, "UseFromToColors", False)
+	FromBackgroundColor = GetPropInt(Props, "FromBackgroundColor", 0xFFE5E7EB)
+	FromTextColor = GetPropInt(Props, "FromTextColor", 0xFF111827)
+	ToBackgroundColor = GetPropInt(Props, "ToBackgroundColor", 0xFFDBEAFE)
+	ToTextColor = GetPropInt(Props, "ToTextColor", 0xFF1E3A8A)
+	mPadding = GetPropString(Props, "Padding", "")
+	mMargin = GetPropString(Props, "Margin", "")
+	BubbleId = GetPropString(Props, "Id", "")
+	BubbleFromId = GetPropString(Props, "FromId", "")
+	SetVariant(GetPropString(Props, "Variant", "neutral"))
 End Sub
 
 Private Sub GetPropDip(Props As Map, Key As String, DefaultDipValue As Float) As Float

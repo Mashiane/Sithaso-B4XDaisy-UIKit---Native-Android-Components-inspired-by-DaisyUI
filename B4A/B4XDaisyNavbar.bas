@@ -108,12 +108,12 @@ End Sub
 
 
 Private Sub ApplyDesignerProps(Props As Map)
-	msVariant = B4XDaisyVariants.NormalizeVariant(B4XDaisyVariants.GetPropString(Props, "Variant", msVariant))
+	msVariant = B4XDaisyVariants.NormalizeVariant(B4XDaisyVariants.GetPropString(Props, "Variant", "none"))
 	mcBackgroundColor = ResolveColorValue(Props.Get("BackgroundColor"), mcBackgroundColor)
 	mcTextColor = ResolveColorValue(Props.Get("TextColor"), mcTextColor)
-	msShadow = B4XDaisyVariants.NormalizeShadow(B4XDaisyVariants.GetPropString(Props, "Shadow", msShadow))
-	msRounded = B4XDaisyVariants.NormalizeRounded(B4XDaisyVariants.GetPropString(Props, "Rounded", msRounded))
-	mbGlass = B4XDaisyVariants.GetPropBool(Props, "Glass", mbGlass)
+	msShadow = B4XDaisyVariants.NormalizeShadow(B4XDaisyVariants.GetPropString(Props, "Shadow", "sm"))
+	msRounded = B4XDaisyVariants.NormalizeRounded(B4XDaisyVariants.GetPropString(Props, "Rounded", "none"))
+	mbGlass = B4XDaisyVariants.GetPropBool(Props, "Glass", False)
 	miPadding = B4XDaisyVariants.GetPropInt(Props, "Padding", 8) * 1dip
 	
 	msWidth = B4XDaisyVariants.GetPropString(Props, "Width", "full")

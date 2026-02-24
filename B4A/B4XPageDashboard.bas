@@ -65,6 +65,9 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"badge_group_select", "label":"Badge Group Select", "imagePath":"badge.webp", "svgPath":""))
 
 	'apps.Add(CreateMap("id":"calendar", "label":"Calendar", "imagePath":"face25.jpg", "svgPath":""))
 	'apps.Add(CreateMap("id":"notes", "label":"Notes", "imagePath":"face26.jpg", "svgPath":""))
@@ -236,6 +239,15 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "navbar"
 			NavigateFromMainPage("Navbar")
+			Return
+		Case "fieldset"
+			NavigateFromMainPage("FieldSet")
+			Return
+		Case "window"
+			NavigateFromMainPage("Window")
+			Return
+		Case "badge_group_select"
+			NavigateFromMainPage("Badge Group Select")
 			Return
 	End Select
 	'#If B4A

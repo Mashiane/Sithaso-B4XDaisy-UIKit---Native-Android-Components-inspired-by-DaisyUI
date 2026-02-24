@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -10,16 +10,16 @@ Sub Class_Globals
 	Private xui As XUI 'ignore
 	Private mParent As B4XMainPage
 	
-	Private divAvatar As B4XDaisyDiv
-	Private lblTitle As B4XDaisyLabel
-	Private lblSubtitle As B4XDaisyLabel
-	Private divCard As B4XDaisyDiv
+	Private divAvatar As B4XDaisyDivision
+	Private lblTitle As B4XDaisyText
+	Private lblSubtitle As B4XDaisyText
+	Private divCard As B4XDaisyDivision
 	
-	Private btnToggle As B4XDaisyDiv
+	Private btnToggle As B4XDaisyDivision
 	
-	Private divCircle As B4XDaisyDiv
-	Private divRect As B4XDaisyDiv
-	Private divRect2 As B4XDaisyDiv
+	Private divCircle As B4XDaisyDivision
+	Private divRect As B4XDaisyDivision
+	Private divRect2 As B4XDaisyDivision
 End Sub
 
 Public Sub Initialize
@@ -41,11 +41,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim currentY As Int = 20dip
 	
 	'Header
-	Dim lblHeader As B4XDaisyLabel
+	Dim lblHeader As B4XDaisyText
 	lblHeader.Initialize(Me, "")
 	lblHeader.AddToParent(content, 10dip, currentY, 300dip, 40dip)
 	lblHeader.Text = "Skeleton"
-	lblHeader.TextSize = "text-2xl"
+	lblHeader.TextSize = "text-sm"
 	lblHeader.FontBold = True
 	currentY = currentY + 50dip
 	
@@ -60,10 +60,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 60dip
 	
 	'--- Example 1: Basic Shapes ---
-	Dim lblEx1 As B4XDaisyLabel
+	Dim lblEx1 As B4XDaisyText
 	lblEx1.Initialize(Me, "")
 	lblEx1.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx1.Text = "Basic Shapes"
+	lblEx1.TextSize = "text-sm"
 	currentY = currentY + 35dip
 	
 	divCircle.Initialize(Me, "")
@@ -88,10 +89,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 80dip
 	
 	'--- Example 2: Card ---
-	Dim lblEx2 As B4XDaisyLabel
+	Dim lblEx2 As B4XDaisyText
 	lblEx2.Initialize(Me, "")
 	lblEx2.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx2.Text = "Profile Card (Toggle me)"
+	lblEx2.TextSize = "text-sm"
 	currentY = currentY + 35dip
 	
 	divCard.Initialize(Me, "")
@@ -126,7 +128,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	lblSubtitle.TextSize = "text-sm"
 	lblSubtitle.TextColor = 0xFF6B7280
 	
-	Dim lblDesc As B4XDaisyLabel
+	Dim lblDesc As B4XDaisyText
 	lblDesc.Initialize(Me, "")
 	lblDesc.AddToParent(divCard.View, 20dip, 120dip, 300dip, 60dip)
 	lblDesc.Text = "Passionate about building scalable web applications and exploring new technologies."
@@ -170,3 +172,5 @@ End Sub
 Public Sub SetParent(Parent As B4XMainPage)
 	mParent = Parent
 End Sub
+
+

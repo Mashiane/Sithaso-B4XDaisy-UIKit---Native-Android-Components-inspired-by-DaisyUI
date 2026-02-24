@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -40,7 +40,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim currentY As Int = 20dip
 	
 	'Header
-	Dim lblHeader As B4XDaisyLabel
+	Dim lblHeader As B4XDaisyText
 	lblHeader.Initialize(Me, "")
 	lblHeader.AddToParent(content, 10dip, currentY, 300dip, 40dip)
 	lblHeader.Text = "Tooltip Component"
@@ -154,7 +154,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 End Sub
 
 Private Sub AddSectionHeader(Parent As B4XView, Text As String, Y As Int)
-	Dim lbl As B4XDaisyLabel
+	Dim lbl As B4XDaisyText
 	lbl.Initialize(Me, "")
 	lbl.AddToParent(Parent, 15dip, Y, 280dip, 30dip)
 	lbl.Text = Text
@@ -201,3 +201,4 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 		sv.SetLayoutAnimated(0, 0, 0, Width, Height)
 	End If
 End Sub
+

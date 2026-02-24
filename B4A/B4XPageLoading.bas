@@ -43,7 +43,7 @@ Private Sub CreateSamples
 	
 	Dim styles() As String = Array As String("spinner", "dots", "ring", "ball", "bars", "infinity")
 	Dim sizes() As String = Array As String("xs", "sm", "md", "lg", "xl")
-	Dim colorNames() As String = Array As String("primary", "secondary", "accent", "neutral", "info", "success", "warning", "error")
+	Dim variantNames() As String = Array As String("none", "primary", "secondary", "accent", "neutral", "info", "success", "warning", "error")
 
 	' 1. Size Matrix for all styles
 	For Each style As String In styles
@@ -51,7 +51,7 @@ Private Sub CreateSamples
 		
 		For Each size As String In sizes
 			' Create a row for this size
-			AddVariantRow(style, size, colorNames)
+			AddVariantRow(style, size, variantNames)
 		Next
 	Next
 End Sub
@@ -87,7 +87,7 @@ Private Sub AddHeader(Title As String)
 	SampleItems.Add(item)
 End Sub
 
-Private Sub AddVariantRow(Style As String, Size As String, VariantColors() As String)
+Private Sub AddVariantRow(Style As String, Size As String, VariantNames() As String)
 	' Container for the whole row (Label + HSV)
 	Dim p As Panel
 	p.Initialize("")
@@ -115,15 +115,12 @@ Private Sub AddVariantRow(Style As String, Size As String, VariantColors() As St
 	Dim pContent As B4XView = hsv.Panel
 	pContent.Color = xui.Color_Transparent
 	
-	' Add Default (currentColor)
+	' Add variants (including none).
 	Dim currentX As Int = 5dip
 	Dim compSize As Int = GetSizeDip(Size)
-	
-	currentX = AddLoadingComponent(pContent, Style, Size, "currentColor", currentX, compSize)
-	
-	' Add Variants
-	For Each color As String In VariantColors
-		currentX = AddLoadingComponent(pContent, Style, Size, color, currentX, compSize)
+
+	For Each variantName As String In VariantNames
+		currentX = AddLoadingComponent(pContent, Style, Size, variantName, currentX, compSize)
 	Next
 	
 	hsv.Panel.Width = currentX
@@ -141,14 +138,14 @@ Private Sub AddVariantRow(Style As String, Size As String, VariantColors() As St
 	SampleItems.Add(item)
 End Sub
 
-Private Sub AddLoadingComponent(Parent As B4XView, Style As String, Size As String, Color As String, Left As Int, CompSize As Int) As Int
+Private Sub AddLoadingComponent(Parent As B4XView, Style As String, Size As String, VariantName As String, Left As Int, CompSize As Int) As Int
 	Dim loading As B4XDaisyLoading
 	loading.Initialize(Me, "loading")
 	loading.AddToParent(Parent, Left, 10dip, CompSize, CompSize) ' 10dip top padding
 	
 	loading.SetStyle(Style)
 	loading.SetSize(Size)
-	loading.SetColor(Color)
+	loading.SetVariant(VariantName)
 	
 	Return Left + CompSize + 15dip ' Gap
 End Sub

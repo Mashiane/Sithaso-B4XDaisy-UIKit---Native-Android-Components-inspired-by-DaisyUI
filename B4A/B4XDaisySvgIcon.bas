@@ -107,19 +107,19 @@ Private Sub CreateScaleTypeFitXy As Object
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
-	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
-	IconColor = GetPropColor(Props, "Color", IconColor)
-	PreserveColors = GetPropBool(Props, "PreserveColors", PreserveColors)
-	mPadding = Max(0, GetPropDip(Props, "Padding", mPadding))
-	mBorderWidth = Max(0, GetPropDip(Props, "BorderWidth", mBorderWidth))
-	mBorderColor = GetPropColor(Props, "BorderColor", mBorderColor)
-	mBackgroundColor = GetPropColor(Props, "BackgroundColor", mBackgroundColor)
-	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
+	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", "6"))
+	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", "6"))
+	IconColor = GetPropColor(Props, "Color", 0xFF3B82F6)
+	PreserveColors = GetPropBool(Props, "PreserveColors", False)
+	mPadding = Max(0, GetPropDip(Props, "Padding", 0))
+	mBorderWidth = Max(0, GetPropDip(Props, "BorderWidth", 0))
+	mBorderColor = GetPropColor(Props, "BorderColor", 0x00000000)
+	mBackgroundColor = GetPropColor(Props, "BackgroundColor", 0x00000000)
+	mRoundedBox = GetPropBool(Props, "RoundedBox", False)
 	If Props.ContainsKey("Width") Then mWidthExplicit = True
 	If Props.ContainsKey("Height") Then mHeightExplicit = True
-	setSvgAsset(GetPropString(Props, "SvgAsset", SvgAssetPath))
-	Dim v As String = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
+	setSvgAsset(GetPropString(Props, "SvgAsset", ""))
+	Dim v As String = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", "none"))
 	If v <> "none" Then
 		IconColor = B4XDaisyVariants.ResolveVariantColor(B4XDaisyVariants.GetVariantPalette, v, "back", IconColor)
 	End If
@@ -185,6 +185,15 @@ Public Sub View As B4XView
 	Dim empty As B4XView
 	If mBase.IsInitialized = False Then Return empty
 	Return mBase
+End Sub
+
+' Returns the inner image view where the SVG is actually rendered.
+' Use this for overlays (like indicators) that should anchor to the glyph bounds.
+Public Sub GetContentView As B4XView
+	Dim empty As B4XView
+	If ivNative.IsInitialized Then Return ivNative
+	If mBase.IsInitialized Then Return mBase
+	Return empty
 End Sub
 
 Public Sub setSvgAsset(Path As String)
@@ -475,10 +484,12 @@ Private Sub ResolveHeightBase(DefaultValue As Float) As Float
 	Return DefaultValue
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub GetPropDip(Props As Map, Key As String, DefaultDipValue As Float) As Float

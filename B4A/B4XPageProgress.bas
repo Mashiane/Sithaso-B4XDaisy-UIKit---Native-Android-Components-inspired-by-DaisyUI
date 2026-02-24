@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -32,19 +32,20 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim currentY As Int = 20dip
 	
 	'Header
-	Dim lblHeader As B4XDaisyLabel
+	Dim lblHeader As B4XDaisyText
 	lblHeader.Initialize(Me, "")
 	lblHeader.AddToParent(content, 10dip, currentY, 300dip, 40dip)
 	lblHeader.Text = "Progress"
-	lblHeader.TextSize = "text-2xl"
+	lblHeader.TextSize = "text-sm"
 	lblHeader.FontBold = True
 	currentY = currentY + 50dip
 	
 	'--- Example 1 ---
-	Dim lblEx1 As B4XDaisyLabel
+	Dim lblEx1 As B4XDaisyText
 	lblEx1.Initialize(Me, "")
 	lblEx1.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx1.Text = "Progress (Default Neutral)"
+	lblEx1.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
 	Dim vals() As Int = Array As Int(0, 10, 40, 70, 100)
@@ -58,10 +59,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 20dip
 	
 	'--- Example 2 ---
-	Dim lblEx2 As B4XDaisyLabel
+	Dim lblEx2 As B4XDaisyText
 	lblEx2.Initialize(Me, "")
 	lblEx2.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx2.Text = "Progress (Primary)"
+	lblEx2.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
 	For i = 0 To vals.Length - 1
@@ -75,10 +77,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 20dip
 	
 	'--- Example Colors ---
-	Dim lblEx3 As B4XDaisyLabel
+	Dim lblEx3 As B4XDaisyText
 	lblEx3.Initialize(Me, "")
 	lblEx3.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx3.Text = "Progress Colors"
+	lblEx3.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
 	Dim colorKeys() As String = Array As String("secondary", "accent", "info", "success", "warning", "error")
@@ -93,10 +96,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 20dip
 
 	'--- Sizes ---
-	Dim lblEx4 As B4XDaisyLabel
+	Dim lblEx4 As B4XDaisyText
 	lblEx4.Initialize(Me, "")
 	lblEx4.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx4.Text = "Progress Sizes (with Tooltips)"
+	lblEx4.TextSize = "text-sm"
 	currentY = currentY + 60dip ' More space
 
 	Dim sizes() As String = Array As String("xs", "sm", "md", "lg", "xl")
@@ -112,10 +116,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 40dip
 
 	'--- Animation & Tooltip ---
-	Dim lblEx5 As B4XDaisyLabel
+	Dim lblEx5 As B4XDaisyText
 	lblEx5.Initialize(Me, "")
 	lblEx5.AddToParent(content, 10dip, currentY, 300dip, 30dip)
 	lblEx5.Text = "Animated with Tooltip"
+	lblEx5.TextSize = "text-sm"
 	currentY = currentY + 60dip ' More space for tooltip
 
 	pAnim.Initialize(Me, "pAnim")
@@ -176,3 +181,4 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 		sv.Height = Height
 	End If
 End Sub
+

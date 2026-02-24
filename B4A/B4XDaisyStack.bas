@@ -583,18 +583,18 @@ Private Sub SafeRect(X As Float, Y As Float, W As Float, H As Float, MaxW As Flo
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mWidth = Max(16dip, GetPropSizeDip(Props, "Width", mWidth))
-	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", mHeight))
-	mPadding = GetPropString(Props, "Padding", mPadding)
-	mMargin = GetPropString(Props, "Margin", mMargin)
-	mDirection = NormalizeDirection(GetPropString(Props, "Direction", mDirection))
-	mStepPrimary = Max(0, GetPropDip(Props, "StepPrimary", mStepPrimary))
-	mStepSecondary = Max(0, GetPropDip(Props, "StepSecondary", mStepSecondary))
+	mWidth = Max(16dip, GetPropSizeDip(Props, "Width", "10"))
+	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", "10"))
+	mPadding = GetPropString(Props, "Padding", "")
+	mMargin = GetPropString(Props, "Margin", "")
+	mDirection = NormalizeDirection(GetPropString(Props, "Direction", "bottom"))
+	mStepPrimary = Max(0, GetPropDip(Props, "StepPrimary", 7))
+	mStepSecondary = Max(0, GetPropDip(Props, "StepSecondary", 3))
 	If mStepSecondary > mStepPrimary Then mStepSecondary = mStepPrimary
-	mAutoFillLayers = GetPropBool(Props, "AutoFillLayers", mAutoFillLayers)
-	mLayoutAnimationMs = Max(0, GetPropInt(Props, "LayoutAnimationMs", mLayoutAnimationMs))
-	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
-	mStrictDaisyParity = GetPropBool(Props, "StrictDaisyParity", mStrictDaisyParity)
+	mAutoFillLayers = GetPropBool(Props, "AutoFillLayers", True)
+	mLayoutAnimationMs = Max(0, GetPropInt(Props, "LayoutAnimationMs", 0))
+	mRoundedBox = GetPropBool(Props, "RoundedBox", False)
+	mStrictDaisyParity = GetPropBool(Props, "StrictDaisyParity", True)
 	ApplyRoundedBox
 End Sub
 
@@ -701,10 +701,12 @@ Private Sub GetPropDip(Props As Map, Key As String, DefaultDipValue As Float) As
 	Return B4XDaisyVariants.GetPropFloat(Props, Key, 0) * 1dip
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub GetPropString(Props As Map, Key As String, DefaultValue As String) As String

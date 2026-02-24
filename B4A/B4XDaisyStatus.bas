@@ -102,12 +102,12 @@ Public Sub DesignerCreateView(Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mSize = NormalizeSize(GetPropString(Props, "Size", mSize))
-	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
-	mAnimation = NormalizeAnimation(GetPropString(Props, "Animation", mAnimation))
-	mPadding = GetPropString(Props, "Padding", mPadding)
-	mMargin = GetPropString(Props, "Margin", mMargin)
-	mVisible = GetPropBool(Props, "Visible", mVisible)
+	mSize = NormalizeSize(GetPropString(Props, "Size", "md"))
+	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", "none"))
+	mAnimation = NormalizeAnimation(GetPropString(Props, "Animation", "none"))
+	mPadding = GetPropString(Props, "Padding", "")
+	mMargin = GetPropString(Props, "Margin", "1")
+	mVisible = GetPropBool(Props, "Visible", True)
 
 	mWidthExplicit = IsExplicitSizeProp(Props, "Width")
 	mHeightExplicit = IsExplicitSizeProp(Props, "Height")
@@ -115,8 +115,8 @@ Private Sub ApplyDesignerProps(Props As Map)
 	Dim sz As Map = ResolveSizeSpec
 	Dim defSize As Float = sz.GetDefault("size", 8dip)
 	
-	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
-	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
+	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", ""))
+	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", ""))
 	
 	If mWidthExplicit = False Then mWidth = defSize
 	If mHeightExplicit = False Then mHeight = defSize
@@ -128,10 +128,7 @@ Public Sub CreateView(Width As Int, Height As Int) As B4XView
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-	Dim props As Map
-	props.Initialize
-	props.Put("Width", ResolvePxSizeSpec(Width))
-	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim props As Map = BuildRuntimeProps(Width, Height)
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Return mBase
@@ -178,10 +175,7 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
 
-	Dim props As Map
-	props.Initialize
-	props.Put("Width", ResolvePxSizeSpec(w))
-	props.Put("Height", ResolvePxSizeSpec(h))
+	Dim props As Map = BuildRuntimeProps(w, h)
 
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
@@ -192,6 +186,23 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	If autoH And Parent.Height > 0 Then finalTop = Top + (Parent.Height - mBase.Height) / 2
 	Parent.AddView(mBase, finalLeft, finalTop, mBase.Width, mBase.Height)
 	Return mBase
+End Sub
+
+Private Sub BuildRuntimeProps(Width As Int, Height As Int) As Map
+	' Preserve runtime settings when recreating through DesignerCreateView.
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	props.Put("Size", mSize)
+	props.Put("Variant", mVariant)
+	props.Put("Animation", mAnimation)
+	props.Put("Padding", mPadding)
+	props.Put("Margin", mMargin)
+	props.Put("Visible", mVisible)
+	props.Put("TextColor", mTextColor)
+	props.Put("BackgroundColor", mBackgroundColor)
+	Return props
 End Sub
 
 Public Sub AddToParentAt(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
@@ -433,10 +444,12 @@ Private Sub AlphaColor(ColorValue As Int, Alpha01 As Float) As Int
 	Return xui.Color_ARGB(a, r, g, b)
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub GetPropString(Props As Map, Key As String, DefaultValue As String) As String

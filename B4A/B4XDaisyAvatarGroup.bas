@@ -88,15 +88,15 @@ End Sub
 
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mWidth = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(B4XDaisyVariants.GetPropString(Props, "Width", mWidth), ResolveWidthBase(mWidth)))
-	mHeight = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(B4XDaisyVariants.GetPropString(Props, "Height", mHeight), ResolveHeightBase(mHeight)))
+	mWidth = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(B4XDaisyVariants.GetPropString(Props, "Width", "full"), ResolveWidthBase(mWidth)))
+	mHeight = Max(1dip, B4XDaisyVariants.TailwindSizeToDip(B4XDaisyVariants.GetPropString(Props, "Height", "12"), ResolveHeightBase(mHeight)))
 	mWidthExplicit = Props.ContainsKey("Width")
 	mHeightExplicit = Props.ContainsKey("Height")
-	mPadding = B4XDaisyVariants.GetPropString(Props, "Padding", mPadding)
-	mMargin = B4XDaisyVariants.GetPropString(Props, "Margin", mMargin)
-	mSpacing = B4XDaisyVariants.GetPropString(Props, "Spacing", mSpacing)
+	mPadding = B4XDaisyVariants.GetPropString(Props, "Padding", "")
+	mMargin = B4XDaisyVariants.GetPropString(Props, "Margin", "")
+	mSpacing = B4XDaisyVariants.GetPropString(Props, "Spacing", "-space-x-6")
 	mAvatarSize = Props.GetDefault("AvatarSize", mAvatarSize)
-	mLimitTo = Max(0, B4XDaisyVariants.GetPropInt(Props, "LimitTo", mLimitTo))
+	mLimitTo = Max(0, B4XDaisyVariants.GetPropInt(Props, "LimitTo", 5))
 End Sub
 
 Public Sub CreateView(Width As Int, Height As Int) As B4XView

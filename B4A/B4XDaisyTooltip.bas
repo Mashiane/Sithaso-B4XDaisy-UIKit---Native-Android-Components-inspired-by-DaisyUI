@@ -86,13 +86,13 @@ Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 Private Sub ApplyDesignerProps(Props As Map)
-	mMessage = GetPropString(Props, "Message", mMessage)
-	mPosition = GetPropString(Props, "Position", mPosition).ToLowerCase
-	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
-	mShowArrow = GetPropBool(Props, "ShowArrow", mShowArrow)
-	mClickToClose = GetPropBool(Props, "ClickToClose", mClickToClose)
-	mTextWrapped = GetPropBool(Props, "TextWrapped", mTextWrapped)
-	mVisible = GetPropBool(Props, "Visible", mVisible)
+	mMessage = GetPropString(Props, "Message", "Tooltip message")
+	mPosition = GetPropString(Props, "Position", "top").ToLowerCase
+	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", "neutral"))
+	mShowArrow = GetPropBool(Props, "ShowArrow", True)
+	mClickToClose = GetPropBool(Props, "ClickToClose", True)
+	mTextWrapped = GetPropBool(Props, "TextWrapped", True)
+	mVisible = GetPropBool(Props, "Visible", True)
 End Sub
 
 

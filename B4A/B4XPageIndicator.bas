@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -72,7 +72,7 @@ Private Sub RenderSidesSection(MaxW As Int, StartY As Int) As Int
 	Dim boxLeft As Int = Max(0, (MaxW - boxSize) / 2)
 	Dim boxTop As Int = 42dip
 
-	Dim baseDiv As B4XDaisyDiv
+	Dim baseDiv As B4XDaisyDivision
 	baseDiv.Initialize(Me, "")
 	Dim baseView As B4XView = baseDiv.AddToParent(row, boxLeft, boxTop, boxSize, boxSize)
 	baseDiv.setWidth("32")
@@ -134,7 +134,7 @@ Private Sub RenderNoTextSidesSection(MaxW As Int, StartY As Int) As Int
 	Dim boxLeft As Int = Max(0, (MaxW - boxSize) / 2)
 	Dim boxTop As Int = 34dip
 
-	Dim baseDiv As B4XDaisyDiv
+	Dim baseDiv As B4XDaisyDivision
 	baseDiv.Initialize(Me, "")
 	Dim baseView As B4XView = baseDiv.AddToParent(row, boxLeft, boxTop, boxSize, boxSize)
 	baseDiv.setWidth("32")
@@ -215,7 +215,7 @@ Private Sub RenderVariantSection(MaxW As Int, StartY As Int) As Int
 		Dim variant As String = variants.Get(i)
 		Dim top As Int = topPad + (i * (boxSize + gapY))
 
-		Dim baseDiv As B4XDaisyDiv
+		Dim baseDiv As B4XDaisyDivision
 		baseDiv.Initialize(Me, "")
 		Dim baseView As B4XView = baseDiv.AddToParent(row, left, top, boxSize, boxSize)
 		baseDiv.setWidth("32")
@@ -301,7 +301,7 @@ Private Sub RenderCountIndicatorSection(MaxW As Int, StartY As Int) As Int
 	Dim boxLeft As Int = Max(0, (MaxW - boxSize) / 2)
 	Dim boxTop As Int = 22dip
 
-	Dim baseDiv As B4XDaisyDiv
+	Dim baseDiv As B4XDaisyDivision
 	baseDiv.Initialize(Me, "")
 	Dim baseView As B4XView = baseDiv.AddToParent(row, boxLeft, boxTop, boxSize, boxSize)
 	baseDiv.setWidth("32")
@@ -429,3 +429,4 @@ Private Sub DisableClipping(v As B4XView)
 	Dim ignore As Object = v
 	#End If
 End Sub
+

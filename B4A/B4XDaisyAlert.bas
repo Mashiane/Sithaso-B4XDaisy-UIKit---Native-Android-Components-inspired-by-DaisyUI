@@ -93,10 +93,7 @@ Public Sub CreateView(Width As Int, Height As Int) As B4XView
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-	Dim props As Map
-	props.Initialize
-	props.Put("Width", ResolvePxSizeSpec(Width))
-	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim props As Map = BuildRuntimeProps(Width, Height)
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Return mBase
@@ -169,24 +166,24 @@ End Sub
 Private Sub ApplyDesignerProps(Props As Map)
 	mWidthExplicit = Props.ContainsKey("Width")
 	mHeightExplicit = Props.ContainsKey("Height")
-	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", mWidth))
-	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", mHeight))
-	mVariant = NormalizeAlertVariant(GetPropString(Props, "Variant", mVariant))
-	mStyle = NormalizeStyle(GetPropString(Props, "AlertStyle", mStyle))
-	mDirection = NormalizeDirection(GetPropString(Props, "Direction", mDirection))
-	mTitle = GetPropString(Props, "Title", mTitle)
-	mText = GetPropString(Props, "Text", mText)
-	mDescription = GetPropString(Props, "Description", mDescription)
-	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
-	mIconAsset = GetPropString(Props, "IconAsset", mIconAsset).Trim
+	mWidth = Max(1dip, GetPropSizeDip(Props, "Width", "full"))
+	mHeight = Max(1dip, GetPropSizeDip(Props, "Height", "12"))
+	mVariant = NormalizeAlertVariant(GetPropString(Props, "Variant", "none"))
+	mStyle = NormalizeStyle(GetPropString(Props, "AlertStyle", "solid"))
+	mDirection = NormalizeDirection(GetPropString(Props, "Direction", "horizontal"))
+	mTitle = GetPropString(Props, "Title", "")
+	mText = GetPropString(Props, "Text", "12 unread messages. Tap to see.")
+	mDescription = GetPropString(Props, "Description", "")
+	mRoundedBox = GetPropBool(Props, "RoundedBox", True)
+	mIconAsset = GetPropString(Props, "IconAsset", "").Trim
 	If mIconAsset.Length > 0 Then mIconVisible = True
-	mIconSize = Max(12dip, GetPropSizeDip(Props, "IconSize", mIconSize))
+	mIconSize = Max(12dip, GetPropSizeDip(Props, "IconSize", "6"))
 	If Props.ContainsKey("BorderWidth") Then
-		mBorderWidth = Max(0, GetPropDip(Props, "BorderWidth", mBorderWidth))
+		mBorderWidth = Max(0, GetPropDip(Props, "BorderWidth", 1))
 		BorderWidthFromTheme = False
 	End If
-	mActionSpacing = Max(0, GetPropDip(Props, "ActionSpacing", mActionSpacing))
-	mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(Props, "Shadow", mShadow))
+	mActionSpacing = Max(0, GetPropDip(Props, "ActionSpacing", 6))
+	mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(Props, "Shadow", "none"))
 	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", mBackgroundColor)
 	mTextColor = B4XDaisyVariants.GetPropInt(Props, "TextColor", mTextColor)
 	mBorderColor = B4XDaisyVariants.GetPropInt(Props, "BorderColor", mBorderColor)
@@ -231,14 +228,35 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
-	Dim props As Map
-	props.Initialize
-	props.Put("Width", ResolvePxSizeSpec(w))
-	props.Put("Height", ResolvePxSizeSpec(h))
+	Dim props As Map = BuildRuntimeProps(w, h)
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Parent.AddView(mBase, Left, Top, w, h)
 	Return mBase
+End Sub
+
+Private Sub BuildRuntimeProps(Width As Int, Height As Int) As Map
+	' Preserve runtime property state when recreating through DesignerCreateView.
+	Dim props As Map
+	props.Initialize
+	props.Put("Width", ResolvePxSizeSpec(Width))
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	props.Put("Variant", mVariant)
+	props.Put("AlertStyle", mStyle)
+	props.Put("Direction", mDirection)
+	props.Put("Title", mTitle)
+	props.Put("Text", mText)
+	props.Put("Description", mDescription)
+	props.Put("IconAsset", mIconAsset)
+	props.Put("IconSize", ResolvePxSizeSpec(mIconSize))
+	props.Put("RoundedBox", mRoundedBox)
+	props.Put("BorderWidth", Max(0, Round(mBorderWidth / 1dip)))
+	props.Put("Shadow", mShadow)
+	props.Put("ActionSpacing", Max(0, Round(mActionSpacing / 1dip)))
+	props.Put("BackgroundColor", mBackgroundColor)
+	props.Put("TextColor", mTextColor)
+	props.Put("BorderColor", mBorderColor)
+	Return props
 End Sub
 
 Public Sub View As B4XView
@@ -636,10 +654,12 @@ Private Sub NormalizeDirection(Value As String) As String
 	Return "horizontal"
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub GetPropString(Props As Map, Key As String, DefaultValue As String) As String

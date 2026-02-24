@@ -96,10 +96,7 @@ Public Sub CreateView(Width As Int, Height As Int) As B4XView
 	Dim b As B4XView = p
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, Width, Height)
-	Dim props As Map
-	props.Initialize
-	props.Put("Width", ResolvePxSizeSpec(Width))
-	props.Put("Height", ResolvePxSizeSpec(Height))
+	Dim props As Map = BuildRuntimeProps(Width, Height)
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
 	Return mBase
@@ -169,33 +166,33 @@ Private Sub ApplyDesignerProps(Props As Map)
 	Else
 		mFitContentWidth = False
 		mWidthExplicit = True
-		mWidth = Max(24dip, GetPropSizeDip(Props, "Width", mWidth))
+		mWidth = Max(24dip, GetPropSizeDip(Props, "Width", "fit-content"))
 	End If
-	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", mHeight))
-	mSize = NormalizeSize(GetPropString(Props, "Size", mSize))
-	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", mVariant))
-	mBadgeStyle = NormalizeBadgeStyle(GetPropString(Props, "BadgeStyle", mBadgeStyle))
-	mText = GetPropString(Props, "Text", mText)
+	mHeight = Max(16dip, GetPropSizeDip(Props, "Height", "6"))
+	mSize = NormalizeSize(GetPropString(Props, "Size", "md"))
+	mVariant = B4XDaisyVariants.NormalizeVariant(GetPropString(Props, "Variant", "none"))
+	mBadgeStyle = NormalizeBadgeStyle(GetPropString(Props, "BadgeStyle", "solid"))
+	mText = GetPropString(Props, "Text", "Badge")
 	mTextCentered = GetPropBool(Props, "TextCentered", mTextCentered)
-	mPadding = GetPropString(Props, "Padding", mPadding)
-	mMargin = GetPropString(Props, "Margin", mMargin)
-	mVisible = GetPropBool(Props, "Visible", mVisible)
-	mRounded = NormalizeRounded(GetPropString(Props, "Rounded", mRounded))
-	mRoundedBox = GetPropBool(Props, "RoundedBox", mRoundedBox)
-	mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(Props, "Shadow", mShadow))
-	mAvatarVisible = GetPropBool(Props, "AvatarVisible", mAvatarVisible)
-	mAvatarImage = GetPropString(Props, "AvatarImage", mAvatarImage).Trim
-	mAvatarText = GetPropString(Props, "AvatarText", mAvatarText)
-	mAvatarPosition = NormalizeAvatarPosition(GetPropString(Props, "AvatarPosition", mAvatarPosition))
-	mIconAsset = GetPropString(Props, "IconAsset", mIconAsset).Trim
-	mToggle = GetPropBool(Props, "Toggle", mToggle)
-	mId = GetPropString(Props, "ID", mId)
-	mChecked = GetPropBool(Props, "Checked", mChecked)
+	mPadding = GetPropString(Props, "Padding", "")
+	mMargin = GetPropString(Props, "Margin", "")
+	mVisible = GetPropBool(Props, "Visible", True)
+	mRounded = NormalizeRounded(GetPropString(Props, "Rounded", "theme"))
+	mRoundedBox = GetPropBool(Props, "RoundedBox", True)
+	mShadow = B4XDaisyVariants.NormalizeShadow(GetPropString(Props, "Shadow", "none"))
+	mAvatarVisible = GetPropBool(Props, "AvatarVisible", False)
+	mAvatarImage = GetPropString(Props, "AvatarImage", "").Trim
+	mAvatarText = GetPropString(Props, "AvatarText", "")
+	mAvatarPosition = NormalizeAvatarPosition(GetPropString(Props, "AvatarPosition", "left"))
+	mIconAsset = GetPropString(Props, "IconAsset", "").Trim
+	mToggle = GetPropBool(Props, "Toggle", False)
+	mId = GetPropString(Props, "ID", "")
+	mChecked = GetPropBool(Props, "Checked", False)
 	mCheckedColor = Props.GetDefault("CheckedColor", mCheckedColor)
 	mCheckedTextColor = Props.GetDefault("CheckedTextColor", mCheckedTextColor)
-	mId = GetPropString(Props, "ID", mId)
-	mClosable = GetPropBool(Props, "Closable", mClosable)
-	mCloseIconAsset = GetPropString(Props, "CloseIconAsset", mCloseIconAsset).Trim
+	mId = GetPropString(Props, "ID", "")
+	mClosable = GetPropBool(Props, "Closable", False)
+	mCloseIconAsset = GetPropString(Props, "CloseIconAsset", "xmark-solid.svg").Trim
 	If mCloseIconAsset.Length = 0 Then mCloseIconAsset = "xmark-solid.svg"
 
 	mBackgroundColor = B4XDaisyVariants.GetPropInt(Props, "BackgroundColor", mBackgroundColor)
@@ -246,14 +243,7 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	b.Color = xui.Color_Transparent
 	b.SetLayoutAnimated(0, 0, 0, w, h)
 
-	Dim props As Map
-	props.Initialize
-	If mFitContentWidth Then
-		props.Put("Width", "fit-content")
-	Else
-		props.Put("Width", ResolvePxSizeSpec(w))
-	End If
-	props.Put("Height", ResolvePxSizeSpec(h))
+	Dim props As Map = BuildRuntimeProps(w, h)
 
 	Dim dummy As Label
 	DesignerCreateView(b, dummy, props)
@@ -262,6 +252,45 @@ Public Sub AddToParent(Parent As B4XView, Left As Int, Top As Int, Width As Int,
 	mBase.SetLayoutAnimated(0, 0, 0, finalW, h)
 	Parent.AddView(mBase, Left, Top, finalW, h)
 	Return mBase
+End Sub
+
+Private Sub BuildRuntimeProps(Width As Int, Height As Int) As Map
+	' Keep runtime state when view is recreated through DesignerCreateView.
+	Dim props As Map
+	props.Initialize
+	If mFitContentWidth Then
+		props.Put("Width", "fit-content")
+	Else
+		props.Put("Width", ResolvePxSizeSpec(Width))
+	End If
+	props.Put("Height", ResolvePxSizeSpec(Height))
+	props.Put("Size", mSize)
+	props.Put("Variant", mVariant)
+	props.Put("BadgeStyle", mBadgeStyle)
+	props.Put("Text", mText)
+	props.Put("TextCentered", mTextCentered)
+	props.Put("Padding", mPadding)
+	props.Put("Margin", mMargin)
+	props.Put("Visible", mVisible)
+	props.Put("Rounded", mRounded)
+	props.Put("RoundedBox", mRoundedBox)
+	props.Put("Shadow", mShadow)
+	props.Put("AvatarVisible", mAvatarVisible)
+	props.Put("AvatarImage", mAvatarImage)
+	props.Put("AvatarText", mAvatarText)
+	props.Put("AvatarPosition", mAvatarPosition)
+	props.Put("IconAsset", mIconAsset)
+	props.Put("Toggle", mToggle)
+	props.Put("Checked", mChecked)
+	props.Put("CheckedColor", mCheckedColor)
+	props.Put("CheckedTextColor", mCheckedTextColor)
+	props.Put("ID", mId)
+	props.Put("Closable", mClosable)
+	props.Put("CloseIconAsset", mCloseIconAsset)
+	props.Put("BackgroundColor", mBackgroundColor)
+	props.Put("TextColor", mTextColor)
+	props.Put("BorderColor", mBorderColor)
+	Return props
 End Sub
 
 Public Sub AddToParentAt(Parent As B4XView, Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
@@ -710,10 +739,12 @@ Private Sub NormalizeAvatarPosition(Value As String) As String
 	Return "left"
 End Sub
 
-Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Float) As Float
-	If Props.ContainsKey(Key) = False Then Return DefaultDipValue
+Private Sub GetPropSizeDip(Props As Map, Key As String, DefaultDipValue As Object) As Float
+	Dim baseDip As Float = B4XDaisyVariants.TailwindSizeToDip(DefaultDipValue, 0)
+	If Props.IsInitialized = False Then Return baseDip
+	If Props.ContainsKey(Key) = False Then Return baseDip
 	Dim o As Object = Props.Get(Key)
-	Return B4XDaisyVariants.TailwindSizeToDip(o, DefaultDipValue)
+	Return B4XDaisyVariants.TailwindSizeToDip(o, baseDip)
 End Sub
 
 Private Sub GetPropString(Props As Map, Key As String, DefaultValue As String) As String

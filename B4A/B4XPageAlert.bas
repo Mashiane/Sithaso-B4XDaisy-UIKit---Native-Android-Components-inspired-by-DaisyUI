@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -125,7 +125,7 @@ Private Sub AddAlertSample(Def As Map)
 	Dim initialW As Int = IIf(w <= 0, Max(1dip, Root.Width - 24dip), w)
 
 	' Create the title label and alert component, then register for layout.
-	Dim lbl As B4XDaisyLabel = CreateAlertLabel(title)
+	Dim lbl As B4XDaisyText = CreateAlertLabel(title)
 	Dim alert As B4XDaisyAlert
 	' Subscribe to alert events with the "alert_" event prefix.
 	alert.Initialize(Me, "alert")
@@ -175,9 +175,9 @@ Private Sub ApplyAlertExtras(Id As String, Alert As B4XDaisyAlert)
 	End Select
 End Sub
 
-Private Sub CreateAlertLabel(Text As String) As B4XDaisyLabel
+Private Sub CreateAlertLabel(Text As String) As B4XDaisyText
 	' Shared label styling for all sample captions.
-	Dim l As B4XDaisyLabel
+	Dim l As B4XDaisyText
 	l.Initialize(Me, "")
 	l.AddToParent(pnlHost, 0, 0, 10dip, 10dip)
 	l.Text = Text
@@ -187,7 +187,7 @@ Private Sub CreateAlertLabel(Text As String) As B4XDaisyLabel
 	Return l
 End Sub
 
-Private Sub AddAlertItem(Id As String, LabelView As B4XDaisyLabel, Alert As B4XDaisyAlert, AlertView As B4XView, DefaultW As Int, DefaultH As Int)
+Private Sub AddAlertItem(Id As String, LabelView As B4XDaisyText, Alert As B4XDaisyAlert, AlertView As B4XView, DefaultW As Int, DefaultH As Int)
 	' Store layout metadata so LayoutAlerts can position all items consistently.
 	' Read live props so stored width/height reflect component logic.
 	Dim w As Int = 0
@@ -245,7 +245,7 @@ Private Sub LayoutAlerts(Width As Int, Height As Int)
 		End If
 		' Place caption.
 		Dim labelH As Int = 18dip
-		Dim lblClass As B4XDaisyLabel = item.Get("label")
+		Dim lblClass As B4XDaisyText = item.Get("label")
 		lblClass.SetLayoutAnimated(0, pad, y, maxW, labelH)
 		y = y + labelH + 4dip
 		' Place alert with computed preferred height and minimum configured height.
@@ -267,3 +267,4 @@ End Sub
 
 Private Sub alert_ActionClick(Tag As Object)
 End Sub
+
