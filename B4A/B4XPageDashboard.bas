@@ -51,12 +51,14 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"avatar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"avatar_group", "label":"Avatar Group", "imagePath":"avatar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"badge", "label":"Badge", "imagePath":"badge.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"card", "label":"Card", "imagePath":"card.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"stack_photos", "label":"Stack Photos", "imagePath":"stack.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"svg_icon", "label":"SVG Icon", "imagePath":"face25.jpg", "svgPath":""))
+	apps.Add(CreateMap("id":"svg_icon", "label":"SVG", "imagePath":"", "svgPath":"bell-solid.svg"))
 	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
@@ -119,6 +121,11 @@ Private Sub NormalizeDashboardButtonImages(Apps As List)
 		Dim raw As Object = Apps.Get(i)
 		If raw Is Map Then
 			Dim item As Map = raw
+			Dim svgPath As String = item.GetDefault("svgPath", "")
+			If svgPath.Trim.Length > 0 Then
+				item.Put("imagePath", "")
+				Continue
+			End If
 			Dim originalPath As String = item.GetDefault("imagePath", "")
 			Dim resolvedPath As String = ResolveDashboardImagePath(originalPath, i)
 			If resolvedPath <> originalPath Then
@@ -198,6 +205,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "badge"
 			NavigateFromMainPage("Badge")
 			Return
+		Case "card"
+			NavigateFromMainPage("Card")
+			Return
+		Case "divider"
+			NavigateFromMainPage("Divider")
+			Return
 		Case "indicator"
 			NavigateFromMainPage("Indicator")
 			Return
@@ -264,4 +277,5 @@ End Sub
 
 Private Sub dash_PageChanged(PageIndex As Int, PageCount As Int)
 End Sub
+
 

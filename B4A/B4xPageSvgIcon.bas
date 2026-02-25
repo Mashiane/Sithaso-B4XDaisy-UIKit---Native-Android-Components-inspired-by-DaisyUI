@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class

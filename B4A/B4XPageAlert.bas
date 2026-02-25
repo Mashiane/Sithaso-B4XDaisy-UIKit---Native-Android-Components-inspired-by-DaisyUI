@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -63,49 +63,49 @@ Private Sub CreateSamples
 	Dim defs As List
 	defs.Initialize
 	' Base neutral alert.
-	defs.Add(CreateMap("id":"alert-base","title":"Alert","w":0,"h":56dip,"variant":"none","style":"solid","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-base","title":"Alert","w":0,"h":48dip,"variant":"none","style":"solid","direction":"horizontal", _
 		"text":"12 unread messages. Tap to see.","iconAsset":"circle-question-regular.svg"))
 	' Variant color samples: solid.
-	defs.Add(CreateMap("id":"alert-info","title":"Info color","w":0,"h":56dip,"variant":"info","style":"solid","direction":"horizontal", _
-		"text":"New software update available.","iconAsset":"circle-question-regular.svg"))
-	defs.Add(CreateMap("id":"alert-success","title":"Success color","w":0,"h":56dip,"variant":"success","style":"solid","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-info","title":"Info color","w":0,"h":48dip,"variant":"info","style":"solid","direction":"horizontal", _
+		"text":"New software update available.","iconAsset":"circle-info-solid.svg"))
+	defs.Add(CreateMap("id":"alert-success","title":"Success color","w":0,"h":48dip,"variant":"success","style":"solid","direction":"horizontal", _
 		"text":"Your purchase has been confirmed!","iconAsset":"check-solid.svg"))
-	defs.Add(CreateMap("id":"alert-warning","title":"Warning color","w":0,"h":56dip,"variant":"warning","style":"solid","direction":"horizontal", _
-		"text":"Warning: Invalid email address!","iconAsset":"circle-question-regular.svg"))
-	defs.Add(CreateMap("id":"alert-error","title":"Error color","w":0,"h":56dip,"variant":"error","style":"solid","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-warning","title":"Warning color","w":0,"h":48dip,"variant":"warning","style":"solid","direction":"horizontal", _
+		"text":"Warning: Invalid email address!","iconAsset":"triangle-exclamation-solid.svg"))
+	defs.Add(CreateMap("id":"alert-error","title":"Error color","w":0,"h":48dip,"variant":"error","style":"solid","direction":"horizontal", _
 		"text":"Error! Task failed successfully.","iconAsset":"xmark-solid.svg"))
 	' Variant color samples: soft style.
-	defs.Add(CreateMap("id":"alert-soft-info","title":"Alert soft style / info","w":0,"h":56dip,"variant":"info","style":"soft","direction":"horizontal", _
-		"text":"12 unread messages. Tap to see.","iconAsset":"circle-question-regular.svg","iconColor":"info"))
-	defs.Add(CreateMap("id":"alert-soft-success","title":"Alert soft style / success","w":0,"h":56dip,"variant":"success","style":"soft","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-soft-info","title":"Alert soft style / info","w":0,"h":48dip,"variant":"info","style":"soft","direction":"horizontal", _
+		"text":"12 unread messages. Tap to see.","iconAsset":"circle-info-solid.svg","iconColor":"info"))
+	defs.Add(CreateMap("id":"alert-soft-success","title":"Alert soft style / success","w":0,"h":48dip,"variant":"success","style":"soft","direction":"horizontal", _
 		"text":"Your purchase has been confirmed!","iconAsset":"check-solid.svg","iconColor":"success"))
-	defs.Add(CreateMap("id":"alert-soft-warning","title":"Alert soft style / warning","w":0,"h":56dip,"variant":"warning","style":"soft","direction":"horizontal", _
-		"text":"Warning: Invalid email address!","iconAsset":"circle-question-regular.svg","iconColor":"warning"))
-	defs.Add(CreateMap("id":"alert-soft-error","title":"Alert soft style / error","w":0,"h":56dip,"variant":"error","style":"soft","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-soft-warning","title":"Alert soft style / warning","w":0,"h":48dip,"variant":"warning","style":"soft","direction":"horizontal", _
+		"text":"Warning: Invalid email address!","iconAsset":"triangle-exclamation-solid.svg","iconColor":"warning"))
+	defs.Add(CreateMap("id":"alert-soft-error","title":"Alert soft style / error","w":0,"h":48dip,"variant":"error","style":"soft","direction":"horizontal", _
 		"text":"Error! Task failed successfully.","iconAsset":"xmark-solid.svg","iconColor":"error"))
 	' Variant color samples: outline style.
-	defs.Add(CreateMap("id":"alert-outline-info","title":"Alert outline style / info","w":0,"h":56dip,"variant":"info","style":"outline","direction":"horizontal", _
-		"text":"12 unread messages. Tap to see.","iconAsset":"circle-question-regular.svg","iconColor":"info"))
-	defs.Add(CreateMap("id":"alert-outline-success","title":"Alert outline style / success","w":0,"h":56dip,"variant":"success","style":"outline","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-outline-info","title":"Alert outline style / info","w":0,"h":48dip,"variant":"info","style":"outline","direction":"horizontal", _
+		"text":"12 unread messages. Tap to see.","iconAsset":"circle-info-solid.svg","iconColor":"info"))
+	defs.Add(CreateMap("id":"alert-outline-success","title":"Alert outline style / success","w":0,"h":48dip,"variant":"success","style":"outline","direction":"horizontal", _
 		"text":"Your purchase has been confirmed!","iconAsset":"check-solid.svg","iconColor":"success"))
-	defs.Add(CreateMap("id":"alert-outline-warning","title":"Alert outline style / warning","w":0,"h":56dip,"variant":"warning","style":"outline","direction":"horizontal", _
-		"text":"Warning: Invalid email address!","iconAsset":"circle-question-regular.svg","iconColor":"warning"))
-	defs.Add(CreateMap("id":"alert-outline-error","title":"Alert outline style / error","w":0,"h":56dip,"variant":"error","style":"outline","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-outline-warning","title":"Alert outline style / warning","w":0,"h":48dip,"variant":"warning","style":"outline","direction":"horizontal", _
+		"text":"Warning: Invalid email address!","iconAsset":"triangle-exclamation-solid.svg","iconColor":"warning"))
+	defs.Add(CreateMap("id":"alert-outline-error","title":"Alert outline style / error","w":0,"h":48dip,"variant":"error","style":"outline","direction":"horizontal", _
 		"text":"Error! Task failed successfully.","iconAsset":"xmark-solid.svg","iconColor":"error"))
 	' Variant color samples: dash style.
-	defs.Add(CreateMap("id":"alert-dash-info","title":"Alert dash style / info","w":0,"h":56dip,"variant":"info","style":"dash","direction":"horizontal", _
-		"text":"12 unread messages. Tap to see.","iconAsset":"circle-question-regular.svg","iconColor":"info"))
-	defs.Add(CreateMap("id":"alert-dash-success","title":"Alert dash style / success","w":0,"h":56dip,"variant":"success","style":"dash","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-dash-info","title":"Alert dash style / info","w":0,"h":48dip,"variant":"info","style":"dash","direction":"horizontal", _
+		"text":"12 unread messages. Tap to see.","iconAsset":"circle-info-solid.svg","iconColor":"info"))
+	defs.Add(CreateMap("id":"alert-dash-success","title":"Alert dash style / success","w":0,"h":48dip,"variant":"success","style":"dash","direction":"horizontal", _
 		"text":"Your purchase has been confirmed!","iconAsset":"check-solid.svg","iconColor":"success"))
-	defs.Add(CreateMap("id":"alert-dash-warning","title":"Alert dash style / warning","w":0,"h":56dip,"variant":"warning","style":"dash","direction":"horizontal", _
-		"text":"Warning: Invalid email address!","iconAsset":"circle-question-regular.svg","iconColor":"warning"))
-	defs.Add(CreateMap("id":"alert-dash-error","title":"Alert dash style / error","w":0,"h":56dip,"variant":"error","style":"dash","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-dash-warning","title":"Alert dash style / warning","w":0,"h":48dip,"variant":"warning","style":"dash","direction":"horizontal", _
+		"text":"Warning: Invalid email address!","iconAsset":"triangle-exclamation-solid.svg","iconColor":"warning"))
+	defs.Add(CreateMap("id":"alert-dash-error","title":"Alert dash style / error","w":0,"h":48dip,"variant":"error","style":"dash","direction":"horizontal", _
 		"text":"Error! Task failed successfully.","iconAsset":"xmark-solid.svg","iconColor":"error"))
 	' Vertical/horizontal responsive action button sample.
-	defs.Add(CreateMap("id":"alert-buttons","title":"Alert with buttons + responsive","w":0,"h":56dip,"variant":"none","style":"solid","direction":"vertical", _
+	defs.Add(CreateMap("id":"alert-buttons","title":"Alert with buttons + responsive","w":0,"h":48dip,"variant":"none","style":"solid","direction":"vertical", _
 		"text":"We use cookies for no reason.","iconAsset":"circle-question-regular.svg"))
 	' Title + description content sample.
-	defs.Add(CreateMap("id":"alert-title-desc","title":"Alert with title and description","w":0,"h":56dip,"variant":"none","style":"solid","direction":"horizontal", _
+	defs.Add(CreateMap("id":"alert-title-desc","title":"Alert with title and description","w":0,"h":48dip,"variant":"none","style":"solid","direction":"horizontal", _
 		"titleText":"New message!","text":"","description":"You have 1 unread message","iconAsset":"circle-question-regular.svg"))
 
 	' Materialize each definition into UI controls.
@@ -120,7 +120,7 @@ Private Sub AddAlertSample(Def As Map)
 	Dim title As String = Def.Get("title")
 	' Optional initial dimensions with safe defaults.
 	Dim w As Int = Def.GetDefault("w", 0)
-	Dim h As Int = Def.GetDefault("h", 56dip)
+	Dim h As Int = Def.GetDefault("h", 48dip)
 	' AddToParent requires a positive size, so seed full-width samples with current page width.
 	Dim initialW As Int = IIf(w <= 0, Max(1dip, Root.Width - 24dip), w)
 
@@ -158,21 +158,28 @@ Private Sub ApplyAlertDef(Alert As B4XDaisyAlert, Def As Map)
 End Sub
 
 Private Sub ApplyAlertExtras(Id As String, Alert As B4XDaisyAlert)
-	' Add optional action buttons for samples that require them.
+	' Add optional action badges for samples that require them.
 	Select Case Id
 		Case "alert-buttons"
-			' Secondary action button.
-			Dim deny As B4XView = Alert.AddActionButton("Deny", CreateMap("id": Id, "action": "deny"))
-			deny.SetColorAndBorder(xui.Color_Transparent, 1dip, xui.Color_RGB(100, 116, 139), 6dip)
-			' Primary action button.
-			Dim accept As B4XView = Alert.AddActionButton("Accept", CreateMap("id": Id, "action": "accept"))
-			accept.SetColorAndBorder(xui.Color_RGB(59, 130, 246), 0, xui.Color_Transparent, 6dip)
-			accept.TextColor = xui.Color_White
+			AddAlertActionBadge(Alert, "Deny", "warning", "outline", CreateMap("id": Id, "action": "deny"))
+			AddAlertActionBadge(Alert, "Accept", "primary", "outline", CreateMap("id": Id, "action": "accept"))
 		Case "alert-title-desc"
 			' Single auxiliary action for title/description sample.
-			Dim seeBtn As B4XView = Alert.AddActionButton("See", CreateMap("id": Id, "action": "see"))
-			seeBtn.SetColorAndBorder(xui.Color_Transparent, 1dip, xui.Color_RGB(100, 116, 139), 6dip)
+			AddAlertActionBadge(Alert, "See", "info", "outline", CreateMap("id": Id, "action": "see"))
 	End Select
+End Sub
+
+Private Sub AddAlertActionBadge(Alert As B4XDaisyAlert, Text As String, Variant As String, BadgeStyle As String, Tag As Object) As B4XView
+	Dim b As B4XDaisyBadge
+	b.Initialize(Me, "alertbadge")
+	b.Text = Text
+	b.Size = "sm"
+	b.Variant = Variant
+	b.BadgeStyle = BadgeStyle
+	b.Tag = Tag
+	Dim parent As B4XView = Alert.GetContentPanel
+	Dim badgeView As B4XView = b.AddToParent(parent, 0, 0, 0, 24dip)
+	Return badgeView
 End Sub
 
 Private Sub CreateAlertLabel(Text As String) As B4XDaisyText
@@ -267,4 +274,9 @@ End Sub
 
 Private Sub alert_ActionClick(Tag As Object)
 End Sub
+
+Private Sub alertbadge_Click(Tag As Object)
+	alert_ActionClick(Tag)
+End Sub
+
 

@@ -23,6 +23,8 @@ Sub Class_Globals
 	Public AvatarPage As B4xPageAvatar
 	Public AvatarGroupPage As B4XPageAvatarGroup
 	Public BadgePage As B4XPageBadge
+	Public CardPage As B4XPageCard
+	Public DividerPage As B4XPageDivider
 	Public IndicatorPage As B4XPageIndicator
 	Public StatusPage As B4XPageStatus
 	Public LoadingPage As B4XPageLoading
@@ -60,7 +62,6 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Wait For (ShowSplashScreen) Complete (Unused As Boolean)
 '	Root.RemoveAllViews
 	B4XPages.SetTitle(Me, "B4XDaisy UIKit")
-	'Show dashboard once at startup. Avoid reopening it on every MainPage appear.
 	B4XPages.ShowPage("Dashboard")
 End Sub
 
@@ -84,6 +85,8 @@ Sub ShowSplashScreen As ResumableSub
 	AvatarPage.Initialize
 	AvatarGroupPage.Initialize
 	BadgePage.Initialize
+	CardPage.Initialize
+	DividerPage.Initialize
 	IndicatorPage.Initialize
 	StatusPage.Initialize
 	LoadingPage.Initialize
@@ -102,52 +105,35 @@ Sub ShowSplashScreen As ResumableSub
 	WindowPage.Initialize
 	FieldSetPage.Initialize 
 	BadgeGroupSelectPage.Initialize
-	
-	B4XPages.AddPageAndCreate("Chat", ChatPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Alert", AlertPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Avatar", AvatarPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Avatar Group", AvatarGroupPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Badge", BadgePage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Indicator", IndicatorPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Status", StatusPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Loading", LoadingPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Mask", MaskPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Stack", StackPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Stack Photos", StackPhotosPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("SVG Icon", SvgIconPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Swap", SwapPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Radial Progress", RadialProgressPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Progress", ProgressPage)
-	Sleep(0)
+
+	' Create dashboard immediately so the user sees it right after splash.
 	B4XPages.AddPageAndCreate("Dashboard", DashboardPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Skeleton", SkeletonPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Toast", ToastPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Tooltip", TooltipPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Navbar", NavbarPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Window", WindowPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("FieldSet", FieldSetPage)
-	Sleep(0)
-	B4XPages.AddPageAndCreate("Badge Group Select", BadgeGroupSelectPage)
+
+	' Register the rest lazily (first open creates each page).
+	B4XPages.AddPage("Chat", ChatPage)
+	B4XPages.AddPage("Alert", AlertPage)
+	B4XPages.AddPage("Avatar", AvatarPage)
+	B4XPages.AddPage("Avatar Group", AvatarGroupPage)
+	B4XPages.AddPage("Badge", BadgePage)
+	B4XPages.AddPage("Card", CardPage)
+	B4XPages.AddPage("Divider", DividerPage)
+	B4XPages.AddPage("Indicator", IndicatorPage)
+	B4XPages.AddPage("Status", StatusPage)
+	B4XPages.AddPage("Loading", LoadingPage)
+	B4XPages.AddPage("Mask", MaskPage)
+	B4XPages.AddPage("Stack", StackPage)
+	B4XPages.AddPage("Stack Photos", StackPhotosPage)
+	B4XPages.AddPage("SVG Icon", SvgIconPage)
+	B4XPages.AddPage("Swap", SwapPage)
+	B4XPages.AddPage("Radial Progress", RadialProgressPage)
+	B4XPages.AddPage("Progress", ProgressPage)
+	B4XPages.AddPage("Skeleton", SkeletonPage)
+	B4XPages.AddPage("Toast", ToastPage)
+	B4XPages.AddPage("Tooltip", TooltipPage)
+	B4XPages.AddPage("Navbar", NavbarPage)
+	B4XPages.AddPage("Window", WindowPage)
+	B4XPages.AddPage("FieldSet", FieldSetPage)
+	B4XPages.AddPage("Badge Group Select", BadgeGroupSelectPage)
 	Return True
 End Sub
 
@@ -185,3 +171,4 @@ End Sub
 '	ctxt.RunMethodJO("getWindow", Null).RunMethodJO("getDecorView", Null).RunMethodJO("getWindowInsetsController", Null).RunMethod( _
 '		IIf(Show, "show", "hide"), Array(t.RunMethod("statusBars", Null)))
 'End Sub
+
