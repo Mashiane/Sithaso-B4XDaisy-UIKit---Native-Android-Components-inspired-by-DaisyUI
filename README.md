@@ -1,6 +1,6 @@
 Greetings
 
-This component library seeks to "wrap" DaisyUI Tailwind components into native mobile app based components.
+This component library seeks to "wrap" DaisyUI Tailwind components into native mobile app based components for use with the B4X ecosystem, https://www.b4x.com/
 
 Our Inspiration
 
