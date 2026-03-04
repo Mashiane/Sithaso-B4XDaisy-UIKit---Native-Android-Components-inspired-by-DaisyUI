@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -13,6 +14,11 @@ Sub Class_Globals
 	Private ExampleDefs As List
 	Private PAGE_PAD As Int = 12dip
 	Private ROW_GAP As Int = 8dip
+	
+	Private singleGroup As B4XDaisyBadgeGroupSelect
+	Private multiGroup As B4XDaisyBadgeGroupSelect
+	Private lblSingleState As B4XView
+	Private lblMultiState As B4XView
 End Sub
 
 Public Sub Initialize As Object
@@ -30,7 +36,13 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	pnlHost.Color = xui.Color_Transparent
 
 	BuildExampleDefinitions
-	RenderExamples(Root.Width, Root.Height)
+End Sub
+
+Private Sub B4XPage_Appear
+	If pnlHost.NumberOfViews = 0 Then
+		Wait For (RenderExamples(Root.Width, Root.Height)) Complete  (Done As Boolean)
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
@@ -226,9 +238,9 @@ Private Sub BadgeItem(Text As String, Size As String, Variant As String, Style A
 	Return m
 End Sub
 
-Private Sub RenderExamples(Width As Int, Height As Int)
-	If pnlHost.IsInitialized = False Then Return
-	If ExampleDefs.IsInitialized = False Then Return
+Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
+	If pnlHost.IsInitialized = False Then Return False
+	If ExampleDefs.IsInitialized = False Then Return False
 	pnlHost.RemoveAllViews
 
 	Dim maxW As Int = Max(180dip, Width - (PAGE_PAD * 2))
@@ -236,12 +248,80 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
 	For Each section As Map In ExampleDefs
 		y = RenderBadgeSection(section, maxW, y)
+		' Yield after each section to keep spinner fluid
+		Sleep(0)
 	Next
 
 	'y = RenderHeadingExamples(maxW, y)
 	'y = RenderButtonExamples(maxW, y)
 
+	y = RenderBadgeGroupSelectSections(maxW, y)
+
 	pnlHost.Height = Max(Height, y + PAGE_PAD)
+	Return True
+End Sub
+
+Private Sub RenderBadgeGroupSelectSections(MaxW As Int, StartY As Int) As Int
+	Dim y As Int = StartY
+	
+	Dim titleLbl As B4XView = CreateSectionLabel("BadgeGroupSelect - Single Select", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleLbl, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+	
+	singleGroup.Initialize(Me, "singlegroup")
+	Dim v1 As B4XView = singleGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	singleGroup.setLegend("Priority")
+	singleGroup.setBadgeSelectionMode("single")
+	singleGroup.setBadgeColor("neutral")
+	singleGroup.setBadgeStyle("solid")
+	singleGroup.setBadgeCheckedColor(B4XDaisyVariants.ResolveBackgroundColorVariant("success", xui.Color_RGB(34, 197, 94)))
+	singleGroup.setBadgeCheckedTextColor(B4XDaisyVariants.ResolveTextColorVariant("success", xui.Color_White))
+	singleGroup.setItemsSpec("low:Low|normal:Normal|high:High|urgent:Urgent")
+	
+	Dim selected1 As List
+	selected1.Initialize
+	selected1.Add("normal")
+	singleGroup.setSelectedIds(selected1)
+	
+	lblSingleState = CreateStateLabel("Selected: normal")
+	pnlHost.AddView(lblSingleState, PAGE_PAD, y + v1.Height + 8dip, MaxW, 18dip)
+	y = y + v1.Height + 34dip
+
+	Dim titleLbl2 As B4XView = CreateSectionLabel("BadgeGroupSelect - Multi Select", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleLbl2, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+	
+	multiGroup.Initialize(Me, "multigroup")
+	Dim v2 As B4XView = multiGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	multiGroup.setLegend("Skills")
+	multiGroup.setBadgeSelectionMode("multi")
+	multiGroup.setBadgeColor("neutral")
+	multiGroup.setBadgeStyle("solid")
+	multiGroup.setBadgeCheckedColor(B4XDaisyVariants.ResolveBackgroundColorVariant("success", xui.Color_RGB(34, 197, 94)))
+	multiGroup.setBadgeCheckedTextColor(B4XDaisyVariants.ResolveTextColorVariant("success", xui.Color_White))
+	multiGroup.setItemsSpec("ui:UI|api:API|db:Database|qa:QA|ops:Ops|ai:AI")
+	
+	Dim selected2 As List
+	selected2.Initialize
+	selected2.Add("ui")
+	selected2.Add("api")
+	multiGroup.setSelectedIds(selected2)
+	
+	lblMultiState = CreateStateLabel("Selected: ui, api")
+	pnlHost.AddView(lblMultiState, PAGE_PAD, y + v2.Height + 8dip, MaxW, 18dip)
+	y = y + v2.Height + 34dip
+	
+	Return y
+End Sub
+
+Private Sub CreateStateLabel(Text As String) As B4XView
+	Dim lbl As Label
+	lbl.Initialize("")
+	Dim v As B4XView = lbl
+	v.Text = Text
+	v.Font = xui.CreateDefaultFont(13)
+	v.TextColor = xui.Color_RGB(71, 85, 105)
+	Return v
 End Sub
 
 Private Sub RenderBadgeSection(Section As Map, MaxW As Int, StartY As Int) As Int
@@ -467,3 +547,38 @@ Private Sub badge_Checked(Id As String, Checked As Boolean)
 	Dim stateText As String = IIf(Checked, "true", "false")
 	ToastMessageShow("Toggle badge id=" & chipId & ", checked=" & stateText, False)
 End Sub
+
+Private Sub singlegroup_SelectionChanged(SelectedIds As List)
+	Dim txt As String = "Selected: " & JoinIds(SelectedIds)
+	If lblSingleState.IsInitialized Then lblSingleState.Text = txt
+End Sub
+
+Private Sub multigroup_SelectionChanged(SelectedIds As List)
+	Dim txt As String = "Selected: " & JoinIds(SelectedIds)
+	If lblMultiState.IsInitialized Then lblMultiState.Text = txt
+End Sub
+
+Private Sub singlegroup_ItemChanged(Item As Map)
+	Dim id As String = Item.GetDefault("id", "")
+	Dim checked As Boolean = Item.GetDefault("checked", False)
+	ToastMessageShow("single -> " & id & " = " & checked, False)
+End Sub
+
+Private Sub multigroup_ItemChanged(Item As Map)
+	Dim id As String = Item.GetDefault("id", "")
+	Dim checked As Boolean = Item.GetDefault("checked", False)
+	ToastMessageShow("multi -> " & id & " = " & checked, False)
+End Sub
+
+Private Sub JoinIds(Ids As List) As String
+	If Ids.IsInitialized = False Or Ids.Size = 0 Then Return "(none)"
+	Dim sb As StringBuilder
+	sb.Initialize
+	For i = 0 To Ids.Size - 1
+		If i > 0 Then sb.Append(", ")
+		sb.Append(Ids.Get(i))
+	Next
+	Return sb.ToString
+End Sub
+
+

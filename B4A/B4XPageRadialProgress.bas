@@ -5,13 +5,15 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
-	Private mParent As B4XMainPage
+	'Private mParent As B4XMainPage
 	
 	Private Timer1 As Timer
 	Private animatedRadial As B4XDaisyRadialProgress
+	Private svHost As ScrollView
 End Sub
 
 Public Sub Initialize As Object
@@ -23,12 +25,20 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Root.Color = xui.Color_RGB(245, 247, 250)
 	B4XPages.SetTitle(Me, "Radial Progress")
 
-	Dim sv As ScrollView
-	sv.Initialize(Max(1dip, Root.Height))
-	Root.AddView(sv, 0, 0, Root.Width, Root.Height)
-	Dim content As B4XView = sv.Panel
+	svHost.Initialize(Max(1dip, Root.Height))
+	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
+	Dim content As B4XView = svHost.Panel
 	content.Color = xui.Color_Transparent
-	
+End Sub
+
+Private Sub B4XPage_Appear
+	If svHost.Panel.NumberOfViews = 0 Then
+		Wait For (CreateSamples(svHost.Panel)) Complete  (Done As Boolean)
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub
+
+Private Sub CreateSamples(content As B4XView) As ResumableSub
 	Dim currentY As Int = 20dip
 	
 	'Header
@@ -39,6 +49,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	lblHeader.TextSize = "text-sm"
 	lblHeader.FontBold = True
 	currentY = currentY + 50dip
+	Sleep(0)
 	
 	'--- Radial progress ---
 	Dim lblEx1 As B4XDaisyText
@@ -166,6 +177,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	rpBg.BorderColor = xui.Color_RGB(59, 130, 246)
 	rpBg.BorderWidth = "4dip"
 	currentY = currentY + 100dip
+	Sleep(0)
 	
 	'--- Text CountUp & Prefixes ---
 	Dim lblEx7 As B4XDaisyText
@@ -238,6 +250,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	currentY = currentY + 50dip
 	
 	content.Height = currentY + 50dip
+	Return True
+End Sub
+
+Private Sub B4XPage_Disappear
+	If animatedRadial.IsInitialized Then animatedRadial.StopAnimation
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
@@ -263,7 +280,7 @@ Private Sub btnReset_Click
 	animatedRadial.SetValueAnimated(0, 500)
 End Sub
 
-Public Sub SetParent(Parent As B4XMainPage)
-	mParent = Parent
-End Sub
+'Public Sub SetParent(Parent As B4XMainPage)
+'	mParent = Parent
+'End Sub
 

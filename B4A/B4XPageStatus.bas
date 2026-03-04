@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -40,6 +41,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 End Sub
 
 Private Sub B4XPage_Appear
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 	mServerLoopEnabled = True
 	If mServerLoopRunning = False Then
 		CallSubDelayed(Me, "ServerStatusLoop")

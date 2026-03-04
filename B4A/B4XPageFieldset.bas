@@ -5,6 +5,7 @@ Type=Class
 Version=1
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
     Private xui As XUI
     Private Root As B4XView
@@ -285,4 +286,8 @@ Private Sub CreateHelperLabel(Text As String, VariantName As String) As B4XView
         lbl.TextColor = B4XDaisyVariants.SetAlpha(B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray), 150)
     End If
     Return lbl
+End Sub
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

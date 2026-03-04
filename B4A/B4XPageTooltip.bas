@@ -5,10 +5,11 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
-	Private mParent As B4XMainPage
+	'Private mParent As B4XMainPage
 	
 	' Tooltips
 	Private ttInfo As B4XDaisyTooltip
@@ -202,3 +203,7 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	End If
 End Sub
 
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub

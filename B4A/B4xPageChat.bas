@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -161,7 +162,7 @@ Private Sub GetLocalAvatarPaths As List
 			End If
 		Catch
 			'Ignore copy errors and continue with any already available files.
-		End Try
+		End Try			'ignore
 		AddAvatarPathIfValid(result, seen, File.Combine(avatarDir, fn))
 	Next
 	
@@ -233,7 +234,7 @@ Private Sub RunDemoSequence As ResumableSub
 	For Each maskName As String In maskTokens
 		If maskName.Trim.Length = 0 Then Continue
 		DaisyChat.UpdateMessageById(targetId, CreateMap("avatar_mask": maskName))
-		DaisyChat.UpdateFooterById(targetId, "Mask • " & maskName)
+		DaisyChat.UpdateFooterById(targetId, "Mask ? " & maskName)
 		Sleep(5000)
 	Next
 	'Reset mask to circle before continuing with online/ring tests.
@@ -289,7 +290,7 @@ Private Sub RunDemoSequence As ResumableSub
 			Dim vm As Map = palette.Get(v)
 			Dim onlineColor As Int = vm.Get("back")
 			DaisyChat.UpdateOnlineStatusById(targetId, "online", onlineColor)
-			DaisyChat.UpdateFooterById(targetId, "Online • " & v)
+			DaisyChat.UpdateFooterById(targetId, "Online ? " & v)
 			Sleep(5000)
 		End If
 	Next
@@ -333,4 +334,8 @@ Private Sub RandomDemoName As String
 		"Jasper Kingsley" _
 	))
 	Return options.Get(Rnd(0, options.Size))
+End Sub
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

@@ -4,7 +4,8 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-
+#IgnoreWarnings:12
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -29,7 +30,13 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	pnlHost = svHost.Panel
 	pnlHost.Color = xui.Color_Transparent
 
-	RenderExamples(Root.Width, Root.Height)
+End Sub
+
+Private Sub B4XPage_Appear
+	If pnlHost.NumberOfViews = 0 Then
+		Wait For (RenderExamples(Root.Width, Root.Height)) Complete  (Done As Boolean)
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
@@ -39,8 +46,8 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	RenderExamples(Width, Height)
 End Sub
 
-Private Sub RenderExamples(Width As Int, Height As Int)
-	If pnlHost.IsInitialized = False Then Return
+Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
+	If pnlHost.IsInitialized = False Then Return False
 	pnlHost.RemoveAllViews
 	currentY = PAGE_PAD
 
@@ -61,6 +68,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cBase.LayoutMode = "top"
 	cBase.Shadow = "sm"
 	currentY = currentY + vBase.Height + SECTION_GAP
+	Sleep(0)
 
 	AddSectionTitle("Border and dash styles")
 	Dim cBorder As B4XDaisyCard
@@ -80,6 +88,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cDash.Style = "dash"
 	SetCardContent(cDash, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now")
 	currentY = currentY + vDash.Height + SECTION_GAP
+	Sleep(0)
 
 	AddSectionTitle("Card sizes")
 	Dim sizeTokens() As String = Array As String("xs", "sm", "md", "lg", "xl")
@@ -94,6 +103,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 		SetCardContent(cSize, token.ToUpperCase & " Card", "Card size token: " & token, "Buy Now")
 		currentY = currentY + vSize.Height + 8dip
 	Next
+	Sleep(0)
 	currentY = currentY + SECTION_GAP
 
 	AddSectionTitle("Card with image overlay")
@@ -187,9 +197,29 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 		cVariant.Variant = token
 		currentY = currentY + vVariant.Height + 8dip
 	Next
+	Sleep(0)
+	currentY = currentY + SECTION_GAP
+
+	' dashed border cards using variant colors
+	AddSectionTitle("Dashed variant-border cards")
+	For Each token As String In variantTokens
+		Dim cDashVar As B4XDaisyCard
+		cDashVar.Initialize(Me, "card")
+		Dim vDashVar As B4XView = cDashVar.AddToParent(pnlHost, leftBase, currentY, baseW, 240dip)
+		ApplyCardDefaults(cDashVar, "dash-" & token)
+		cDashVar.Style = "dash"
+		cDashVar.LayoutMode = "none"
+		SetCardContent(cDashVar, token & " border", "Dashed border using variant color.", "Primary")
+		' manually apply variant-colored dashed border on the container
+		Dim borderCol As Int = B4XDaisyVariants.ResolveBorderColorVariant(token, xui.Color_Transparent)
+		Dim corner As Float = B4XDaisyVariants.ResolveRoundedDip("rounded-box", 0)
+		B4XDaisyVariants.ApplyDashedBorder(cDashVar.GetContainer, xui.Color_White, 1dip, borderCol, corner, "dash")
+		currentY = currentY + vDashVar.Height + 8dip
+	Next
 	currentY = currentY + SECTION_GAP
 
 	pnlHost.Height = Max(Height, currentY + PAGE_PAD)
+	Return True
 End Sub
 
 Private Sub ApplyCardDefaults(Card As B4XDaisyCard, TagName As String)
@@ -325,3 +355,5 @@ End Sub
 Private Sub card_ActionClick(ActionId As String, Tag As Object)
 	ToastMessageShow("Action click (" & ActionId & "): " & Tag, False)
 End Sub
+
+

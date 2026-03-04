@@ -5,10 +5,11 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
-	Private Dashboard As B4XDashboard
+	Private Dashboard As B4XDaisyDashboard
 End Sub
 
 Public Sub Initialize As Object
@@ -17,9 +18,7 @@ End Sub
 
 'no action bar
 Private Sub B4XPage_Appear
-'    Dim jo As JavaObject = B4XPages.GetManager.ActionBar
-'    jo.RunMethod("show", Null)
-'    Root.Parent.Height = 100%y
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
@@ -46,71 +45,35 @@ Private Sub CreateLauncherButtons As List
 	Dim apps As List
 	apps.Initialize
 
-	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"avatar.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"avatar_group", "label":"Avatar Group", "imagePath":"avatar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"badge", "label":"Badge", "imagePath":"badge.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"button", "label":"Button", "imagePath":"button.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"card", "label":"Card", "imagePath":"card.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"carousel", "label":"Carousel", "imagePath":"carousel.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"collapse", "label":"Collapse", "imagePath":"collapse.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"stack_photos", "label":"Stack Photos", "imagePath":"stack.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"kbd", "label":"Kbd", "imagePath":"kbd.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"overlay", "label":"Overlay", "imagePath":"", "svgPath":"eye-solid.svg"))
+	apps.Add(CreateMap("id":"progress", "label":"Progress", "imagePath":"progress.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"radialprogress", "label":"Radial Progress", "imagePath":"radial-progress.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"stat", "label":"Stat", "imagePath":"stat.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"svg_icon", "label":"SVG", "imagePath":"", "svgPath":"bell-solid.svg"))
 	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"radialprogress", "label":"Radial Progress", "imagePath":"radial-progress.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"progress", "label":"Progress", "imagePath":"progress.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"badge_group_select", "label":"Badge Group Select", "imagePath":"badge.webp", "svgPath":""))
-
-	'apps.Add(CreateMap("id":"calendar", "label":"Calendar", "imagePath":"face25.jpg", "svgPath":""))
-	'apps.Add(CreateMap("id":"notes", "label":"Notes", "imagePath":"face26.jpg", "svgPath":""))
-	'apps.Add(CreateMap("id":"browser", "label":"Browser", "imagePath":"face27.jpg", "svgPath":""))
-	'apps.Add(CreateMap("id":"files", "label":"Files", "imagePath":"default.png", "svgPath":""))
-
-	'apps.Add(CreateMap("id":"mail", "label":"Cloud Storage & Drive", "imagePath":"daisywoman1.jpg", "svgPath":""))
-	'apps.Add(CreateMap("id":"contacts", "label":"Contacts", "imagePath":"daisywoman2.png", "svgPath":""))
-	'apps.Add(CreateMap("id":"music", "label":"Music", "imagePath":"daisywoman3.png", "svgPath":""))
-	'apps.Add(CreateMap("id":"store", "label":"Store", "imagePath":"daisywoman4.png", "svgPath":""))
-
-	'apps.Add(CreateMap("id":"maps", "label":"Maps", "imagePath":"angela.jpg", "svgPath":""))
-	'apps.Add(CreateMap("id":"weather", "label":"Malware-bytes", "imagePath":"anna.jpg", "svgPath":"", "badgeCount": 1))
-	'apps.Add(CreateMap("id":"calculator", "label":"TikTok Lite", "imagePath":"from.png", "svgPath":""))
-	'apps.Add(CreateMap("id":"settings", "label":"ESET Mobile Security", "imagePath":"to.png", "svgPath":""))
-
-	Dim extraLabels() As String = Array As String( _
-		"Phone", "Files 2", "Gallery 2", "Clock 2", _
-		"Wallet", "Translate", "Notes 2", "Browser 2", _
-		"Reader", "Tasks", "Recorder", "Voice", _
-		"Drive", "Photos", "Maps 2", "Weather 2", _
-		"Scanner", "Compass", "Calendar 2", "Store 2", _
-		"Music 2", "Mail 2", "Contacts 2", "Settings 2", _
-		"Health", "Finance", "News", "Video", _
-		"Podcasts", "Travel", "Tickets", "Food", _
-		"Ride", "Games", "Books", "Camera 2", _
-		"Messages 2", "Tools", "Studio", "Cloud" _
-	)
-	Dim extraImages() As String = Array As String( _
-		"face1.jpg", "face3.jpg", "face4.jpg", "face5.jpg", "face6.jpg", "face7.jpg", "face8.jpg", "face9.jpg", _
-		"face10.jpg", "face11.jpg", "face12.jpg", "face13.jpg", "face14.jpg", "face15.jpg", "face16.jpg", "face17.jpg", _
-		"face18.jpg", "face19.jpg", "face20.jpg", "face22.jpg", "face23.jpg", "face24.jpg", "face25.jpg", "face26.jpg", _
-		"face27.jpg", "daisywoman1.jpg", "daisywoman2.png", "daisywoman3.png", "daisywoman4.png", "daisyman1.png", "default.png", "angela.jpg" _
-	)
-	For i = 0 To extraLabels.Length - 1
-		Dim appLabel As String = extraLabels(i)
-		Dim appId As String = appLabel.ToLowerCase.Replace(" ", "_")
-		Dim appImage As String = extraImages(i Mod extraImages.Length)
-		'apps.Add(CreateMap("id": appId, "label": appLabel, "imagePath": appImage, "svgPath": ""))
-	Next
-
+	apps.Add(CreateMap("id":"cspinner", "label":"Canvas Spinner", "imagePath":"canvasspinner.jpeg", "svgPath":""))
 	NormalizeDashboardButtonImages(apps)
 	Return apps
 End Sub
@@ -190,41 +153,74 @@ End Sub
 
 Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 	Select Case ButtonId
-		Case "chat"
-			NavigateFromMainPage("Chat")
-			Return
 		Case "alert"
 			NavigateFromMainPage("Alert")
 			Return
 		Case "avatar"
 			NavigateFromMainPage("Avatar")
 			Return
-		Case "avatar_group"
-			NavigateFromMainPage("Avatar Group")
-			Return
 		Case "badge"
 			NavigateFromMainPage("Badge")
+			Return
+		Case "button"
+			NavigateFromMainPage("Button")
 			Return
 		Case "card"
 			NavigateFromMainPage("Card")
 			Return
+		Case "carousel"
+			NavigateFromMainPage("Carousel")
+			Return
+		Case "chat"
+			NavigateFromMainPage("Chat")
+			Return
+		Case "collapse"
+			NavigateFromMainPage("Collapse")
+			Return
 		Case "divider"
 			NavigateFromMainPage("Divider")
+			Return
+		Case "fieldset"
+			NavigateFromMainPage("FieldSet")
+			Return
+		Case "hero"
+			NavigateFromMainPage("Hero")
 			Return
 		Case "indicator"
 			NavigateFromMainPage("Indicator")
 			Return
-		Case "status"
-			NavigateFromMainPage("Status")
+		Case "kbd"
+			NavigateFromMainPage("Kbd")
+			Return
+		Case "loading"
+			NavigateFromMainPage("Loading")
+			Return
+		Case "mask"
+			NavigateFromMainPage("Mask")
+			Return
+		Case "navbar"
+			NavigateFromMainPage("Navbar")
+			Return
+		Case "overlay"
+			NavigateFromMainPage("Overlay")
+			Return
+		Case "progress"
+			NavigateFromMainPage("Progress")
+			Return
+		Case "radialprogress"
+			NavigateFromMainPage("Radial Progress")
+			Return
+		Case "skeleton"
+			NavigateFromMainPage("Skeleton")
 			Return
 		Case "stack"
 			NavigateFromMainPage("Stack")
 			Return
-		Case "stack_photos"
-			NavigateFromMainPage("Stack Photos")
+		Case "stat"
+			NavigateFromMainPage("Stat")
 			Return
-		Case "mask"
-			NavigateFromMainPage("Mask")
+		Case "status"
+			NavigateFromMainPage("Status")
 			Return
 		Case "svg_icon"
 			NavigateFromMainPage("SVG Icon")
@@ -232,35 +228,17 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "swap"
 			NavigateFromMainPage("Swap")
 			Return
-		Case "loading"
-			NavigateFromMainPage("Loading")
-			Return
-		Case "skeleton"
-			NavigateFromMainPage("Skeleton")
-			Return
-		Case "radialprogress"
-			NavigateFromMainPage("Radial Progress")
-			Return
-		Case "progress"
-			NavigateFromMainPage("Progress")
-			Return
 		Case "toast"
 			NavigateFromMainPage("Toast")
 			Return
 		Case "tooltip"
 			NavigateFromMainPage("Tooltip")
 			Return
-		Case "navbar"
-			NavigateFromMainPage("Navbar")
-			Return
-		Case "fieldset"
-			NavigateFromMainPage("FieldSet")
-			Return
 		Case "window"
 			NavigateFromMainPage("Window")
 			Return
-		Case "badge_group_select"
-			NavigateFromMainPage("Badge Group Select")
+		Case "cspinner"
+			NavigateFromMainPage("CanvasSpinner")
 			Return
 	End Select
 	'#If B4A
@@ -271,11 +249,8 @@ End Sub
 Private Sub NavigateFromMainPage(PageId As String)
 	Dim target As String = PageId.Trim
 	If target.Length = 0 Then Return
-'	B4XPages.ShowPageAndRemovePreviousPages("MainPage")
-	B4XPages.ShowPage(target)
+	B4XPages.MainPage.ShowPageWithLoader(target)
 End Sub
 
 Private Sub dash_PageChanged(PageIndex As Int, PageCount As Int)
 End Sub
-
-

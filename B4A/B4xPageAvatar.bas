@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -34,13 +35,14 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 
 	AvatarCards.Initialize
 	AvatarById.Initialize
-	'Build demo cards once, then place them based on current page size.
-	CreateSamples
-	LayoutCards(Root.Width, Root.Height)
 End Sub
 
 Private Sub B4XPage_Appear
+	If AvatarCards.Size = 0 Then
+		Wait For (CreateSamples) Complete  (Done As Boolean)
+	End If
 	StartRuntimeDemos
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub B4XPage_Disappear
@@ -53,7 +55,7 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	LayoutCards(Width, Height)
 End Sub
 
-Private Sub CreateSamples
+Private Sub CreateSamples As ResumableSub
 	'Clear and recreate all sample cards from scratch.
 	AvatarCards.Clear
 	AvatarById.Clear
@@ -142,6 +144,7 @@ Private Sub CreateSamples
 	)
 	AvatarCards.Add(item2)
 	AvatarById.Put("mask-demo", item2)
+	Sleep(0)
 
 	'Sample: sz-24 rounded-full
 	Dim card3 As B4XView = xui.CreatePanel("")
@@ -227,6 +230,7 @@ Private Sub CreateSamples
 	)
 	AvatarCards.Add(item4)
 	AvatarById.Put("online-demo", item4)
+	Sleep(0)
 
 	'Sample: avatar-offline sz-24 rounded-full
 	Dim card5 As B4XView = xui.CreatePanel("")
@@ -314,6 +318,7 @@ Private Sub CreateSamples
 	)
 	AvatarCards.Add(item6)
 	AvatarById.Put("ring-demo", item6)
+	Sleep(0)
 
 	'Sample: mask-heart sz-24
 	Dim card7 As B4XView = xui.CreatePanel("")
@@ -398,6 +403,7 @@ Private Sub CreateSamples
 		"title": xlblTitle8 _
 	)
 	AvatarCards.Add(item8)
+	Sleep(0)
 
 	'Sample: mask-hexagon-2 sz-24
 	Dim card9 As B4XView = xui.CreatePanel("")
@@ -566,6 +572,7 @@ Private Sub CreateSamples
 		"title": xlblTitle12 _
 	)
 	AvatarCards.Add(item12)
+	Sleep(0)
 
 	'Sample: sz-8 rounded
 	Dim card13 As B4XView = xui.CreatePanel("")
@@ -648,6 +655,7 @@ Private Sub CreateSamples
 		"title": xlblTitleD _
 	)
 	AvatarCards.Add(itemD)
+	Sleep(0)
 
 	'Sample: Placeholder AI sz-16 online
 	Dim cardAI As B4XView = xui.CreatePanel("")
@@ -730,6 +738,7 @@ Private Sub CreateSamples
 		"title": xlblTitleSY _
 	)
 	AvatarCards.Add(itemSY)
+	Sleep(0)
 
 	'Sample: Placeholder UI sz-8
 	Dim cardUI As B4XView = xui.CreatePanel("")
@@ -769,7 +778,221 @@ Private Sub CreateSamples
 		"id": "", _
 		"title": xlblTitleUI _
 	)
+	itemUI.Put("title", xlblTitleUI)
 	AvatarCards.Add(itemUI)
+
+	'Sample: Avatar Group Overlap (-space-x-6)
+	Dim cardG1 As B4XView = xui.CreatePanel("")
+	cardG1.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardG1, 0, 0, 10dip, 10dip)
+
+	Dim groupG1 As B4XDaisyAvatarGroup
+	groupG1.Initialize(Me, "avatar_group1")
+	Dim groupViewG1 As B4XView = groupG1.AddToParent(cardG1, 0, 0, 120dip, 120dip)
+	
+	For Each img As String In Array As String("face11.jpg", "face12.jpg", "face14.jpg", "face16.jpg")
+		Dim av As B4XDaisyAvatar
+		av.Initialize(Me, "grp_av")
+		av.CreateView(48dip, 48dip)
+		av.SetImage(img)
+		av.SetAvatarMask("rounded-full")
+		groupG1.AddAvatar(av)
+	Next
+
+	groupViewG1.Tag = "avatar-group -space-x-6"
+
+	Dim lblTitleG1 As Label
+	lblTitleG1.Initialize("")
+	Dim xlblTitleG1 As B4XView = lblTitleG1
+	xlblTitleG1.Text = "Group -space-x-6 (Overlap)"
+	xlblTitleG1.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitleG1.TextSize = 13
+	xlblTitleG1.SetTextAlignment("CENTER", "CENTER")
+	cardG1.AddView(xlblTitleG1, 0, 0, 10dip, 10dip)
+
+	Dim itemG1 As Map = CreateMap( _
+		"panel": cardG1, _
+		"avatar": groupG1, _
+		"avatar_view": groupViewG1, _
+		"id": "", _
+		"title": xlblTitleG1 _
+	)
+	AvatarCards.Add(itemG1)
+
+	'Sample: Avatar Group with Overflow Placeholder (+4)
+	Dim cardOverflow As B4XView = xui.CreatePanel("")
+	cardOverflow.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardOverflow, 0, 0, 10dip, 10dip)
+
+	Dim groupOverflow As B4XDaisyAvatarGroup
+	groupOverflow.Initialize(Me, "avatar_group_overflow")
+	Dim groupViewOverflow As B4XView = groupOverflow.AddToParent(cardOverflow, 0, 0, 120dip, 120dip)
+	
+	groupOverflow.setLimitTo(5)
+	
+	For Each img As String In Array As String("face_1.jpg", "face_2.jpg", "face_3.jpg", "face4.jpg", "face5.jpg", "face6.jpg", "face7.jpg", "face9.jpg", "face_8.jpg")
+		Dim av As B4XDaisyAvatar
+		av.Initialize(Me, "grp_av_overflow")
+		av.CreateView(48dip, 48dip)
+		av.SetImage(img)
+		av.SetAvatarMask("rounded-full")
+		groupOverflow.AddAvatar(av)
+	Next
+
+	groupViewOverflow.Tag = "avatar-group overflow"
+
+	Dim lblTitleOverflow As Label
+	lblTitleOverflow.Initialize("")
+	Dim xlblTitleOverflow As B4XView = lblTitleOverflow
+	xlblTitleOverflow.Text = "Group Overflow (9 avatars, limit 5 = +4)"
+	xlblTitleOverflow.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitleOverflow.TextSize = 13
+	xlblTitleOverflow.SetTextAlignment("CENTER", "CENTER")
+	cardOverflow.AddView(xlblTitleOverflow, 0, 0, 10dip, 10dip)
+
+	Dim itemOverflow As Map = CreateMap( _
+		"panel": cardOverflow, _
+		"avatar": groupOverflow, _
+		"avatar_view": groupViewOverflow, _
+		"id": "", _
+		"title": xlblTitleOverflow _
+	)
+	AvatarCards.Add(itemOverflow)
+
+	'Sample: Avatar Group Mixed Images + Placeholder
+	Dim cardG3 As B4XView = xui.CreatePanel("")
+	cardG3.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardG3, 0, 0, 10dip, 10dip)
+
+	Dim group3 As B4XDaisyAvatarGroup
+	group3.Initialize(Me, "avatar_group_mixed")
+	Dim groupView3 As B4XView = group3.AddToParent(cardG3, 0, 0, 120dip, 120dip)
+	
+	group3.setLimitTo(2)
+	
+	For Each img As String In Array As String("face22.jpg", "face_2.jpg", "face24.jpg")
+		Dim av As B4XDaisyAvatar
+		av.Initialize(Me, "grp_av_img")
+		av.CreateView(48dip, 48dip)
+		av.SetImage(img)
+		av.SetAvatarMask("rounded-full")
+		group3.AddAvatar(av)
+	Next
+	
+	' Add the placeholder at the end of the group
+	Dim avText As B4XDaisyAvatar
+	avText.Initialize(Me, "grp_av_txt")
+	avText.CreateView(48dip, 48dip)
+	avText.SetAvatarType("text")
+	avText.SetPlaceHolder("+99")
+	avText.SetVariant("secondary")
+	avText.SetBackgroundColorVariant("secondary")
+	avText.SetTextColorVariant("secondary-content")
+	avText.SetAvatarMask("rounded-full")
+	group3.AddAvatar(avText)
+
+	groupView3.Tag = "avatar-group mixed"
+
+	Dim lblTitle3 As Label
+	lblTitle3.Initialize("")
+	Dim xlblTitle3 As B4XView = lblTitle3
+	xlblTitle3.Text = "Group Mixed (limit 2, +3)"
+	xlblTitle3.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitle3.TextSize = 13
+	xlblTitle3.SetTextAlignment("CENTER", "CENTER")
+	cardG3.AddView(xlblTitle3, 0, 0, 10dip, 10dip)
+
+	Dim itemG3 As Map = CreateMap( _
+		"panel": cardG3, _
+		"avatar": group3, _
+		"avatar_view": groupView3, _
+		"id": "", _
+		"title": xlblTitle3 _
+	)
+	AvatarCards.Add(itemG3)
+
+	
+	'Sample: Avatar Group Gap (space-x-4)
+	Dim card2G As B4XView = xui.CreatePanel("")
+	card2G.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(card2G, 0, 0, 10dip, 10dip)
+
+	Dim group2 As B4XDaisyAvatarGroup
+	group2.Initialize(Me, "avatar_group2")
+	Dim groupView2 As B4XView = group2.AddToParent(card2G, 0, 0, 120dip, 120dip)
+	
+	group2.setSpacing("space-x-4")
+	
+	For Each img As String In Array As String("face17.jpg", "face18.jpg", "face19.jpg", "face21.jpg")
+		Dim av As B4XDaisyAvatar
+		av.Initialize(Me, "grp_av")
+		av.CreateView(48dip, 48dip)
+		av.SetImage(img)
+		av.SetAvatarMask("rounded-full")
+		group2.AddAvatar(av)
+	Next
+
+	groupView2.Tag = "avatar-group space-x-4"
+
+	Dim lblTitle2G As Label
+	lblTitle2G.Initialize("")
+	Dim xlblTitle2G As B4XView = lblTitle2G
+	xlblTitle2G.Text = "Group space-x-4 (Gap)"
+	xlblTitle2G.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitle2G.TextSize = 13
+	xlblTitle2G.SetTextAlignment("CENTER", "CENTER")
+	card2G.AddView(xlblTitle2G, 0, 0, 10dip, 10dip)
+
+	Dim item2G As Map = CreateMap( _
+		"panel": card2G, _
+		"avatar": group2, _
+		"avatar_view": groupView2, _
+		"id": "", _
+		"title": xlblTitle2G _
+	)
+	AvatarCards.Add(item2G)
+
+	'Sample: Text Placeholder Accent
+	Dim cardG5 As B4XView = xui.CreatePanel("")
+	cardG5.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(cardG5, 0, 0, 10dip, 10dip)
+
+	Dim avatar5 As B4XDaisyAvatar
+	avatar5.Initialize(Me, "avatar")
+	Dim avatarView5 As B4XView = avatar5.AddToParent(cardG5, 0, 0, 120dip, 120dip)
+
+	avatar5.SetAvatarType("text")
+	avatar5.SetPlaceHolder("+99")
+	avatar5.SetWidth("16")
+	avatar5.SetHeight("16")
+	avatar5.SetCenterOnParent(True)
+	avatar5.SetVariant("accent")
+	avatar5.SetBackgroundColorVariant("accent")
+	avatar5.SetTextColorVariant("accent-content")
+	avatar5.SetAvatarMask("rounded-full")
+	
+	avatarView5.Tag = "placeholder accent sz-16"
+
+	Dim lblTitle5 As Label
+	lblTitle5.Initialize("")
+	Dim xlblTitle5 As B4XView = lblTitle5
+	xlblTitle5.Text = "Placeholder (+99, Accent)"
+	xlblTitle5.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitle5.TextSize = 13
+	xlblTitle5.SetTextAlignment("CENTER", "CENTER")
+	cardG5.AddView(xlblTitle5, 0, 0, 10dip, 10dip)
+
+	Dim item5 As Map = CreateMap( _
+		"panel": cardG5, _
+		"avatar": avatar5, _
+		"avatar_view": avatarView5, _
+		"id": "", _
+		"title": xlblTitle5 _
+	)
+	AvatarCards.Add(item5)
+	Sleep(0)
+	LayoutCards(Root.Width, Root.Height)
+	Return true
 End Sub
 
 Private Sub StartRuntimeDemos
@@ -879,8 +1102,6 @@ Public Sub GetAvatarById(AvatarId As String) As B4XDaisyAvatar
 End Sub
 
 Private Sub LayoutCards(Width As Int, Height As Int)
-	'Responsive columns:
-	'<620dip = 2, >=620dip = 3, >=880dip = 4
 	If pnlHost.IsInitialized = False Then Return
 	If AvatarCards.IsInitialized = False Then Return
 
@@ -894,40 +1115,79 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 
 	Dim cardW As Int = Max(120dip, (Width - pad * (cols + 1)) / cols)
 	Dim cardH As Int = 158dip
-	Dim rows As Int = 0
-	If AvatarCards.Size > 0 Then rows = (AvatarCards.Size + cols - 1) / cols
-	Dim contentH As Int = pad + rows * (cardH + pad)
-	svHost.Panel.Height = Max(Height, contentH)
+	Dim currentY As Int = pad
+	Dim currentX As Int = pad
+	Dim colIndex As Int = 0
+	Dim maxRowH As Int = cardH
 
 	For i = 0 To AvatarCards.Size - 1
-		Dim row As Int = i / cols
-		Dim col As Int = i Mod cols
-		Dim x As Int = pad + col * (cardW + pad)
-		Dim y As Int = pad + row * (cardH + pad)
-
 		Dim item As Map = AvatarCards.Get(i)
-		Dim card As B4XView = item.Get("panel")
 		Dim avatar As Object = item.Get("avatar")
+		Dim card As B4XView = item.Get("panel")
 		Dim avatarView As B4XView = item.Get("avatar_view")
 		Dim xlblTitle As B4XView = item.Get("title")
-		Dim titleTop As Int = 120dip
-
-		'ScrollView.Panel uses FrameLayout params; re-add with bounds instead of SetLayoutAnimated.
-		card.RemoveViewFromParent
-		pnlHost.AddView(card, x, y, cardW, cardH)
-		avatarView.SetLayoutAnimated(0, 10dip, 8dip, cardW - 20dip, 108dip)
 		
-		'Important: force avatar internal layout refresh after parent size changes.
-		If xui.SubExists(avatar, "ResizeToParent", 1) Then
-			CallSub2(avatar, "ResizeToParent", avatarView)
-		Else If xui.SubExists(avatar, "Base_Resize", 2) Then
-			CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
-		End If
+		Dim isGroup As Boolean = (GetType(avatar).ToLowerCase.Contains("avatargroup"))
+		
+		If isGroup Then
+			' Finish current single row if needed
+			If colIndex > 0 Then
+				currentY = currentY + maxRowH + pad
+				colIndex = 0
+				currentX = pad
+			End If
 			
-		xlblTitle.SetLayoutAnimated(0, 8dip, titleTop, cardW - 16dip, 30dip)
+			Dim rowW As Int = Width - pad * 2
+			Dim rowH As Int = cardH ' Maintain consistency with single cards
+			
+			card.RemoveViewFromParent
+			pnlHost.AddView(card, pad, currentY, rowW, rowH)
+			
+			' Center group inside the full-width card with internal padding
+			avatarView.SetLayoutAnimated(0, 10dip, 8dip, rowW - 20dip, 108dip)
+			xlblTitle.SetLayoutAnimated(0, 8dip, 120dip, rowW - 16dip, 30dip)
+			
+			If xui.SubExists(avatar, "ResizeToParent", 1) Then
+				CallSub2(avatar, "ResizeToParent", avatarView)
+			Else If xui.SubExists(avatar, "Base_Resize", 2) Then
+				CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
+			End If
+			
+			currentY = currentY + rowH + pad
+		Else
+			' Standard grid layout for individual avatars
+			card.RemoveViewFromParent
+			pnlHost.AddView(card, currentX, currentY, cardW, cardH)
+			
+			avatarView.SetLayoutAnimated(0, 10dip, 8dip, cardW - 20dip, 108dip)
+			xlblTitle.SetLayoutAnimated(0, 8dip, 120dip, cardW - 16dip, 30dip)
+			
+			If xui.SubExists(avatar, "ResizeToParent", 1) Then
+				CallSub2(avatar, "ResizeToParent", avatarView)
+			Else If xui.SubExists(avatar, "Base_Resize", 2) Then
+				CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
+			End If
+			
+			colIndex = colIndex + 1
+			If colIndex >= cols Then
+				currentY = currentY + cardH + pad
+				colIndex = 0
+				currentX = pad
+			Else
+				currentX = currentX + cardW + pad
+			End If
+		End If
 	Next
+	
+	If colIndex > 0 Then
+		currentY = currentY + cardH + pad
+	End If
+	
+	svHost.Panel.Height = Max(Height, currentY)
 End Sub
 
 Private Sub avatar_AvatarClick(Payload As Object)
 	Log("Avatar page click: " & Payload)
 End Sub
+
+

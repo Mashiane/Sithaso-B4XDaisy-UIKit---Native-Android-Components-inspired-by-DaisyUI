@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -65,7 +66,7 @@ Private Sub RenderSidesSection(MaxW As Int, StartY As Int) As Int
 
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
-	DisableClipping(row)
+	B4XDaisyVariants.DisableClipping(row)
 	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
 
 	Dim boxSize As Int = B4XDaisyVariants.TailwindSizeToDip("32", 128dip)
@@ -127,7 +128,7 @@ Private Sub RenderNoTextSidesSection(MaxW As Int, StartY As Int) As Int
 
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
-	DisableClipping(row)
+	B4XDaisyVariants.DisableClipping(row)
 	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
 
 	Dim boxSize As Int = B4XDaisyVariants.TailwindSizeToDip("32", 128dip)
@@ -197,7 +198,7 @@ Private Sub RenderVariantSection(MaxW As Int, StartY As Int) As Int
 
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
-	DisableClipping(row)
+	B4XDaisyVariants.DisableClipping(row)
 	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
 
 	Dim variants As List
@@ -254,7 +255,7 @@ Private Sub RenderAvatarSection(MaxW As Int, StartY As Int) As Int
 
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
-	DisableClipping(row)
+	B4XDaisyVariants.DisableClipping(row)
 	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
 
 	Dim avatarSize As Int = 80dip
@@ -294,7 +295,7 @@ Private Sub RenderCountIndicatorSection(MaxW As Int, StartY As Int) As Int
 
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
-	DisableClipping(row)
+	B4XDaisyVariants.DisableClipping(row)
 	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
 
 	Dim boxSize As Int = B4XDaisyVariants.TailwindSizeToDip("32", 128dip)
@@ -345,7 +346,7 @@ Private Sub RenderSvgCounterSection(MaxW As Int, StartY As Int) As Int
 
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
-	DisableClipping(row)
+	B4XDaisyVariants.DisableClipping(row)
 	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
 
 	Dim iconSize As Int = Max(1dip, Round(B4XDaisyVariants.TailwindSizeToDip("42px", 42dip)))
@@ -416,17 +417,8 @@ Private Sub indicator_Click(Tag As Object)
 	#End If
 End Sub
 
-Private Sub DisableClipping(v As B4XView)
-	If v.IsInitialized = False Then Return
-	#If B4A
-	Try
-		Dim jo As JavaObject = v
-		jo.RunMethod("setClipChildren", Array(False))
-		jo.RunMethod("setClipToPadding", Array(False))
-	Catch
-	End Try
-	#Else
-	Dim ignore As Object = v
-	#End If
-End Sub
 
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub

@@ -5,10 +5,11 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 'B4XPageSkeleton.bas
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView 'ignore
 	Private xui As XUI 'ignore
-	Private mParent As B4XMainPage
+	'Private mParent As B4XMainPage
 	
 	Private divAvatar As B4XDaisyDivision
 	Private lblTitle As B4XDaisyText
@@ -169,8 +170,12 @@ Private Sub ToggleSkeleton(Active As Boolean)
 	End If
 End Sub
 
-Public Sub SetParent(Parent As B4XMainPage)
-	mParent = Parent
+'Public Sub SetParent(Parent As B4XMainPage)
+'	mParent = Parent
+'End Sub
+
+
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
-
-

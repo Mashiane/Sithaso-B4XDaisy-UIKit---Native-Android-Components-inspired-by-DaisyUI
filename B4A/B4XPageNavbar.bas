@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private xui As XUI
 	Private Root As B4XView
@@ -129,7 +130,7 @@ Private Sub AddNavbarIconsStartEnd
 	Dim b1 As Button
 	b1.Initialize("")
 	Dim xb1 As B4XView = b1
-	xb1.Text = "≡"
+	xb1.Text = "="
 	nb.AddViewToStart(b1, 44dip, 44dip)
 	
 	nb.AddTitleToCenter("Middle Title")
@@ -138,7 +139,7 @@ Private Sub AddNavbarIconsStartEnd
 	Dim b2 As Button
 	b2.Initialize("")
 	Dim xb2 As B4XView = b2
-	xb2.Text = "🔍"
+	xb2.Text = "??"
 	nb.AddViewToEnd(b2, 44dip, 44dip)
 	
 	currentY = currentY + 64dip + gap
@@ -172,7 +173,7 @@ Private Sub AddNavbarComplex
 	Dim b1 As Button
 	b1.Initialize("")
 	Dim xb1 As B4XView = b1
-	xb1.Text = "☰"
+	xb1.Text = "?"
 	nb.AddViewToStart(b1, 44dip, 44dip)
 	
 	' Center: Logo
@@ -247,4 +248,8 @@ Private Sub AddNavbarShadow(ShadowLevel As String)
 	nb.setRounded("md")
 	nb.AddTitleToStart("Shadow: " & ShadowLevel)
 	currentY = currentY + 64dip + gap
+End Sub
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

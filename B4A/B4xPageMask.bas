@@ -1,10 +1,11 @@
 ﻿B4A=true
-Group=Default Group\Pages
+Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -689,4 +690,8 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 End Sub
 
 Private Sub maskavatar_AvatarClick(Payload As Object)
+End Sub
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

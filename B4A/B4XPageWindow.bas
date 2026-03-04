@@ -43,6 +43,12 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	pnlContent.Height = currentY + 32dip
 End Sub
 
+
+Private Sub B4XPage_Appear
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub
+
+
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	If scvContent.IsInitialized = False Then Return
 	scvContent.SetLayoutAnimated(0, 0, 0, Width, Height)
@@ -130,12 +136,7 @@ Private Sub AddComposableWindow
 	badge.Rounded = "rounded-full"
 	badge.setHeight("8")
 
-	Dim indicator As B4XDaisyIndicator
-	indicator.Initialize(Me, "")
-	indicator.AddToParent(win.GetContentPanel, 132dip, 66dip, 128dip, 44dip)
-	indicator.Text = "Live"
-	indicator.Variant = "success"
-
+	
 	currentY = currentY + v.Height + gap
 End Sub
 

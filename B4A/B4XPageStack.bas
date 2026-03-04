@@ -5,11 +5,13 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 'B4XPageStack.bas
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
 	Private sv As ScrollView
 	Private StackEntries As List
+	Private AvatarLayers As List
 	Private mStackIntroRunning As Boolean = False
 End Sub
 
@@ -25,12 +27,14 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	sv.Initialize(0)
 	Root.AddView(sv, 0, 0, Root.Width, Root.Height)
 	StackEntries.Initialize
+	AvatarLayers.Initialize
 	
 	Dim top As Int = 10dip
 	top = CreateStackDemo(sv, top, "bottom") ' Default
 	top = CreateStackDemo(sv, top, "top")
 	top = CreateStackDemo(sv, top, "start")
 	top = CreateStackDemo(sv, top, "end")
+	top = CreateStackPhotosDemo(sv, top)
 	
 	sv.Panel.Height = top + 50dip
 End Sub
@@ -107,6 +111,7 @@ End Sub
 
 
 Private Sub B4XPage_Appear
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 	CallSubDelayed(Me, "AnimateStacksIn")
 End Sub
 
@@ -142,9 +147,76 @@ Private Sub AnimateStacksIn
 	mStackIntroRunning = False
 End Sub
 
+Private Sub CreateStackPhotosDemo(TargetSV As ScrollView, TopOffset As Int) As Int
+	Dim w As Int = B4XDaisyVariants.TailwindSizeToDip("w-48", 192dip)
+	Dim h As Int = B4XDaisyVariants.TailwindSizeToDip("h-64", 256dip)
+	
+	Dim lbl As Label
+	lbl.Initialize("")
+	lbl.Text = "Photos (direction: bottom)"
+	lbl.TextColor = xui.Color_Black
+	lbl.TextSize = 14
+	TargetSV.Panel.AddView(lbl, 20dip, TopOffset, 300dip, 30dip)
+	TopOffset = TopOffset + 30dip
+	
+	Dim photoStack As B4XDaisyStack
+	photoStack.Initialize(Me, "")
+	Dim stackView As B4XView = photoStack.AddToParent(TargetSV.Panel, 50dip, TopOffset, w, h)
+	photoStack.Direction = "bottom"
+	photoStack.setLayoutAnimationMs(0)
+	photoStack.setStepPrimary(18)
+	photoStack.setStepSecondary(8)
+	
+	AddPhotoLayer(TargetSV.Panel, photoStack, stackView, w, h, "photo-1559703248-dcaaec9fab78")
+	AddPhotoLayer(TargetSV.Panel, photoStack, stackView, w, h, "photo-1565098772267-60af42b81ef2")
+	AddPhotoLayer(TargetSV.Panel, photoStack, stackView, w, h, "photo-1572635148818-ef6fd45eb394")
+	
+	RefreshAvatarLayerSizes
+	StackEntries.Add(CreateMap("stack": photoStack, "stepPrimary": 18, "stepSecondary": 8, "animationMs": 220))
+	
+	Return TopOffset + h + 30dip
+End Sub
+
+Private Sub AddPhotoLayer(TargetSVPanel As B4XView, PStack As B4XDaisyStack, StackView As B4XView, StackWidth As Int, StackHeight As Int, BaseName As String)
+	Dim avatar As B4XDaisyAvatar
+	avatar.Initialize(Me, "")
+	Dim avatarView As B4XView = avatar.AddToParent(StackView, 0, 0, StackWidth, StackHeight)
+	avatar.SetImage(ResolvePhotoAsset(BaseName))
+	avatar.SetRoundedBox(True)
+	avatar.SetShowOnline(False)
+	avatar.SetShadow("none")
+	avatar.SetRingWidth(0)
+	avatar.SetRingOffset(0)
+	avatar.setWidth("100%")
+	avatar.setHeight("100%")
+	avatar.SetCenterOnParent(True)
+	PStack.AddLayer(avatarView)
+	AvatarLayers.Add(CreateMap("avatar": avatar, "view": avatarView))
+End Sub
+
+Private Sub RefreshAvatarLayerSizes
+	If AvatarLayers.IsInitialized = False Then Return
+	For Each entry As Map In AvatarLayers
+		Dim avatar As B4XDaisyAvatar = entry.Get("avatar")
+		Dim avatarView As B4XView = entry.Get("view")
+		avatar.ResizeToParent(avatarView)
+	Next
+End Sub
+
+Private Sub ResolvePhotoAsset(BaseName As String) As String
+	Dim name As String = BaseName.Trim
+	If name.Length = 0 Then Return "face21.jpg"
+	If File.Exists(File.DirAssets, name) Then Return name
+	If File.Exists(File.DirAssets, name & ".webp") Then Return name & ".webp"
+	If File.Exists(File.DirAssets, name & ".jpg") Then Return name & ".jpg"
+	If File.Exists(File.DirAssets, name & ".png") Then Return name & ".png"
+	Return "face21.jpg"
+End Sub
+
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
     If sv.IsInitialized Then
         sv.SetLayout(0, 0, Width, Height)
     End If
+    RefreshAvatarLayerSizes
 End Sub
 

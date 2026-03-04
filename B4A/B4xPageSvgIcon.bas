@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -248,7 +249,7 @@ End Sub
 Private Sub CreateCard(MaxW As Int, Top As Int, Height As Int) As B4XView
 	Dim card As B4XView = xui.CreatePanel("")
 	card.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
-	DisableClipping(card)
+	B4XDaisyVariants.DisableClipping(card)
 	pnlHost.AddView(card, PAGE_PAD, Top, MaxW, Height)
 	Return card
 End Sub
@@ -275,16 +276,6 @@ Private Sub indicator_Click(Tag As Object)
 	#End If
 End Sub
 
-Private Sub DisableClipping(v As B4XView)
-	If v.IsInitialized = False Then Return
-	#If B4A
-	Try
-		Dim jo As JavaObject = v
-		jo.RunMethod("setClipChildren", Array(False))
-		jo.RunMethod("setClipToPadding", Array(False))
-	Catch
-	End Try
-	#Else
-	Dim ignore As Object = v
-	#End If
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

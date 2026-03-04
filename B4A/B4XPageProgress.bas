@@ -5,10 +5,11 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
-	Private mParent As B4XMainPage
+	'Private mParent As B4XMainPage
 	
 	' Demo progress bars
 	Private pAnim As B4XDaisyProgress
@@ -174,6 +175,10 @@ Private Sub btnReset_Click
 	pAnim.SetValueAnimated(0, 500)
 End Sub
 
+Private Sub B4XPage_Disappear
+	If pAnim.IsInitialized Then pAnim.StopAnimation
+End Sub
+
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	If Root.GetView(0) Is ScrollView Then
 		Dim sv As ScrollView = Root.GetView(0)
@@ -182,3 +187,7 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	End If
 End Sub
 
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub

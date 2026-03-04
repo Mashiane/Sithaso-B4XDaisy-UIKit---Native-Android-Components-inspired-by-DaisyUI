@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	' Begin page-level variable declarations.
 	' Root page container provided by B4XPages.
@@ -44,8 +45,13 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 
 	' Build all sample definitions and layout once on page creation.
 	AlertItems.Initialize
-	CreateSamples
-	LayoutAlerts(Root.Width, Root.Height)
+End Sub
+
+Private Sub B4XPage_Appear
+	If AlertItems.Size = 0 Then
+		Wait For (CreateSamples) Complete (Done As Boolean)
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
@@ -55,7 +61,7 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	LayoutAlerts(Width, Height)
 End Sub
 
-Private Sub CreateSamples
+Private Sub CreateSamples As ResumableSub
 	' Rebuild from scratch each time this sub is called.
 	AlertItems.Clear
 	pnlHost.RemoveAllViews
@@ -112,6 +118,9 @@ Private Sub CreateSamples
 	For Each def As Map In defs
 		AddAlertSample(def)
 	Next
+	Sleep(0)
+	LayoutAlerts(Root.Width, Root.Height)
+	Return True
 End Sub
 
 Private Sub AddAlertSample(Def As Map)

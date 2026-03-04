@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	' Begin page-level variable declarations.
 	' Root page container provided by B4XPages.
@@ -271,4 +272,8 @@ Private Sub swap_Changed(State As String, Checked As Boolean)
 End Sub
 
 Private Sub swap_Click(State As String, Checked As Boolean)
+End Sub
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

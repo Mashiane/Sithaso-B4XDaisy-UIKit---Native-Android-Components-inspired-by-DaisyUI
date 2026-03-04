@@ -5,6 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -272,4 +273,8 @@ Private Sub divider_Click(Tag As Object)
 	If s.Length = 0 Then s = "divider"
 	ToastMessageShow("Clicked: " & s, False)
 	#End If
+End Sub
+
+Private Sub B4XPage_Appear
+    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

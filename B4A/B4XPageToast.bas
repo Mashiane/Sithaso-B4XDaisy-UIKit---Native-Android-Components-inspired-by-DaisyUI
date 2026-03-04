@@ -5,10 +5,11 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
-	Private mParent As B4XMainPage
+	'Private mParent As B4XMainPage
 	Private toast As B4XDaisyToast
 End Sub
 
@@ -106,8 +107,8 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 End Sub
 
 Private Sub B4XPage_Appear
-	' Clear any lingering toasts from previous visits
 	toast.Clear
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub CreateButton(Text As String, Tag As Object) As Button

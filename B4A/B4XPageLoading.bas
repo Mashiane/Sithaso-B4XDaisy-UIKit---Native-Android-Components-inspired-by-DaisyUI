@@ -5,12 +5,14 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
+#IgnoreWarnings:12
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
 	Private svHost As ScrollView
 	Private pnlHost As B4XView
 	Private SampleItems As List
+	Private LoadingComponents As List
 End Sub
 
 Public Sub Initialize As Object
@@ -28,8 +30,14 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	pnlHost.Color = xui.Color_Transparent
 
 	SampleItems.Initialize
-	CreateSamples
-	LayoutSamples(Root.Width, Root.Height)
+	LoadingComponents.Initialize
+End Sub
+
+Private Sub B4XPage_Appear
+	If SampleItems.Size = 0 Then
+		Wait For (CreateSamples) Complete  (Done As Boolean)
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
@@ -37,8 +45,15 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
 	LayoutSamples(Width, Height)
 End Sub
 
-Private Sub CreateSamples
+Private Sub B4XPage_Disappear
+	For Each loading As B4XDaisyLoading In LoadingComponents
+		loading.StopAnimation
+	Next
+End Sub
+
+Private Sub CreateSamples As ResumableSub
 	SampleItems.Clear
+	LoadingComponents.Clear
 	pnlHost.RemoveAllViews
 	
 	Dim styles() As String = Array As String("spinner", "dots", "ring", "ball", "bars", "infinity")
@@ -53,7 +68,13 @@ Private Sub CreateSamples
 			' Create a row for this size
 			AddVariantRow(style, size, variantNames)
 		Next
+		' Yield after each style (which contains 5 size rows)
+		Sleep(0)
 	Next
+	
+	' Final layout after all components are created
+	LayoutSamples(Root.Width, Root.Height)
+	Return true
 End Sub
 
 Private Sub AddHeader(Title As String)
@@ -147,6 +168,8 @@ Private Sub AddLoadingComponent(Parent As B4XView, Style As String, Size As Stri
 	loading.SetSize(Size)
 	loading.SetVariant(VariantName)
 	
+	LoadingComponents.Add(loading)
+	
 	Return Left + CompSize + 15dip ' Gap
 End Sub
 
@@ -199,3 +222,5 @@ Private Sub LayoutSamples(Width As Int, Height As Int)
 
 	svHost.Panel.Height = Max(Height, y + 50dip)
 End Sub
+
+
