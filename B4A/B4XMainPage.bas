@@ -49,6 +49,8 @@ Sub Class_Globals
 	Public CarouselPage As B4XPageCarousel
 	Public OverlayPage As B4XPageOverlay
 	Public CollapsePage As B4XPageCollapse
+	Public AccordionPage As B4XPageAccordion
+	Public CountdownPage As B4XPageCountdown
 	Public CanvasSpinner As B4XPageCanvasSpinner
 	Private AppOverlay As B4XDaisyOverlay
 	Private AppLoader As B4XDaisyCanvasSpinner
@@ -126,6 +128,8 @@ Sub ShowSplashScreen As ResumableSub
 	CarouselPage.Initialize
 	OverlayPage.Initialize
 	CollapsePage.Initialize
+	AccordionPage.Initialize
+	CountdownPage.Initialize
 	SkeletonPage.Initialize
 	StatPage.Initialize
 	DashboardPage.Initialize
@@ -165,6 +169,8 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Carousel", CarouselPage)
 	B4XPages.AddPage("Overlay", OverlayPage)
 	B4XPages.AddPage("Collapse", CollapsePage)
+	B4XPages.AddPage("Accordion", AccordionPage)
+	B4XPages.AddPage("Countdown", CountdownPage)
 	B4XPages.AddPage("CanvasSpinner", CanvasSpinner)
 	Return True
 End Sub

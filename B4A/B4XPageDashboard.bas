@@ -45,14 +45,17 @@ Private Sub CreateLauncherButtons As List
 	Dim apps As List
 	apps.Initialize
 
+	apps.Add(CreateMap("id":"accordion", "label":"Accordion", "imagePath":"accordion.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"avatar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"badge", "label":"Badge", "imagePath":"badge.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"button", "label":"Button", "imagePath":"button.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"cspinner", "label":"Canvas Spinner", "imagePath":"canvasspinner.jpeg", "svgPath":""))
 	apps.Add(CreateMap("id":"card", "label":"Card", "imagePath":"card.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"carousel", "label":"Carousel", "imagePath":"carousel.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"collapse", "label":"Collapse", "imagePath":"collapse.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"countdown", "label":"Countdown", "imagePath":"countdown.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
@@ -73,7 +76,6 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"cspinner", "label":"Canvas Spinner", "imagePath":"canvasspinner.jpeg", "svgPath":""))
 	NormalizeDashboardButtonImages(apps)
 	Return apps
 End Sub
@@ -153,6 +155,9 @@ End Sub
 
 Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 	Select Case ButtonId
+		Case "accordion"
+			NavigateFromMainPage("Accordion")
+			Return
 		Case "alert"
 			NavigateFromMainPage("Alert")
 			Return
@@ -176,6 +181,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "collapse"
 			NavigateFromMainPage("Collapse")
+			Return
+		Case "countdown"
+			NavigateFromMainPage("Countdown")
+			Return
+		Case "cspinner"
+			NavigateFromMainPage("CanvasSpinner")
 			Return
 		Case "divider"
 			NavigateFromMainPage("Divider")
@@ -236,9 +247,6 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "window"
 			NavigateFromMainPage("Window")
-			Return
-		Case "cspinner"
-			NavigateFromMainPage("CanvasSpinner")
 			Return
 	End Select
 	'#If B4A

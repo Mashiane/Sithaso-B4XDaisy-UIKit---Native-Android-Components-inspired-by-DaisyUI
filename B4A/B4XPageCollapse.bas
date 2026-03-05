@@ -13,7 +13,6 @@ Sub Class_Globals
     Private svHost As ScrollView
     Private pnlHost As B4XView
     Private PAGE_PAD As Int = 12dip
-	Private lstCollapses As List
 End Sub
 #End Region
 
@@ -50,7 +49,7 @@ End Sub
 Private Sub RenderExamples(Width As Int, Height As Int)
     If pnlHost.IsInitialized = False Then Return
     pnlHost.RemoveAllViews
-	lstCollapses.Initialize
+
 
     Dim maxW As Int = Max(220dip, Width - PAGE_PAD * 2)
     Dim y As Int = PAGE_PAD
@@ -172,7 +171,6 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c10.TitleVariant = "primary"
     c10.TitleIconName = "bell-solid.svg"
     AddBodyLabel(c10, "Primary-styled collapse with SVG icon.", maxW)
-	lstCollapses.Add(c10)
     y = y + titleH + gap
     ' #endregion
 
@@ -214,32 +212,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     y = y + titleH + gap
     ' #endregion
 	
-	' Store for relocation
-	lstCollapses.Add(c1)
-	lstCollapses.Add(c2)
-	lstCollapses.Add(c3)
-	lstCollapses.Add(c4)
-	lstCollapses.Add(c5)
-	lstCollapses.Add(c6)
-	lstCollapses.Add(c7)
-	lstCollapses.Add(c8)
-	lstCollapses.Add(c9)
-	lstCollapses.Add(c11)
-	lstCollapses.Add(c12)
-	lstCollapses.Add(c13)
-
-    RelocateCollapses
+    pnlHost.Height = Max(Root.Height, y + PAGE_PAD)
 End Sub
 
-Private Sub RelocateCollapses
-	Dim currentY As Int = PAGE_PAD
-	For i = 0 To pnlHost.NumberOfViews - 1
-		Dim v As B4XView = pnlHost.GetView(i)
-		v.SetLayoutAnimated(200, v.Left, currentY, v.Width, v.Height)
-		currentY = currentY + v.Height + 4dip 
-	Next
-	pnlHost.Height = Max(Root.Height, currentY + PAGE_PAD)
-End Sub
 
 ''' <summary>
 ''' Adds a plain body label into a collapse content container.
@@ -269,54 +244,8 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     Return Y + 28dip
 End Sub
 
-Private Sub collapse1_StateChanged (Open As Boolean)
-	Log("Collapse 1 State: " & Open)
-	RelocateCollapses
-End Sub
-
 Private Sub collapse1_Click (Tag As Object)
 	Log("Collapse 1 Clicked")
-End Sub
-
-' Add handlers for others to ensure smooth demo
-Sub collapse2_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse3_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse4_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse5_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse6_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse7_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse8_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse9_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-Sub collapse10_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-
-Sub collapse11_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-
-Sub collapse12_StateChanged(Open As Boolean) 
-	RelocateCollapses 
-End Sub
-
-Sub collapse13_StateChanged(Open As Boolean) 
-	RelocateCollapses 
 End Sub
 
 #End Region
