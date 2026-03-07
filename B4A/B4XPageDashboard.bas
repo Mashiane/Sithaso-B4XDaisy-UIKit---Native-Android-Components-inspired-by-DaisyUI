@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -73,6 +73,8 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"svg_icon", "label":"SVG", "imagePath":"", "svgPath":"bell-solid.svg"))
 	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"textrotate", "label":"Text Rotate", "imagePath":"text-rotate.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"timeline", "label":"Timeline", "imagePath":"timeline.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
@@ -238,6 +240,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "swap"
 			NavigateFromMainPage("Swap")
+			Return
+		Case "textrotate"
+			NavigateFromMainPage("TextRotate")
+			Return
+		Case "timeline"
+			NavigateFromMainPage("Timeline")
 			Return
 		Case "toast"
 			NavigateFromMainPage("Toast")

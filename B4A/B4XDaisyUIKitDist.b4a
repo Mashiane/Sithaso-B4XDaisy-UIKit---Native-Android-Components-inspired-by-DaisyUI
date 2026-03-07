@@ -1,4 +1,9 @@
 ﻿Build1=Default,com.sithaso.daisyuikit
+File513=doc_icon_C5767BA3.svg
+File512=doc_icon_B6905CC6.svg
+File511=doc_icon_AFE87EE6.svg
+File510=doc_icon_2953842E.svg
+File509=doc_icon_1F09328B.svg
 File1=1.jpg
 File10=2.png
 File100=chevron-left-solid-full.svg
@@ -1022,7 +1027,7 @@ Library3=core
 Library4=stringutils
 Library5=b4xdaisyuikit
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="35"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~'CreateResourceFromFile(Macro, Core.NetworkClearText) ' Comment this if using https protocol~\n~SetActivityAttribute(main, android:windowSoftInputMode, adjustResize|stateHidden)~\n~'SetActivityAttribute(Main, android:theme, "@style/MyAppTheme")~\n~'CreateResource(values, theme.xml,~\n~'<resources>~\n~'    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">~\n~'        <item name="colorPrimary">#213e45</item>~\n~'        <item name="colorPrimaryDark">#213e45</item>~\n~'        <item name="colorAccent">#a4c13c</item>~\n~'         <item name="android:windowBackground">@color/window</item>~\n~'    </style>~\n~'</resources>~\n~')~\n~'CreateResource(values, colors.xml,~\n~'<resources>~\n~'    <color name="window">#FF213E45</color>~\n~'</resources>~\n~')
-NumberOfFiles=508
+NumberOfFiles=513
 Module1=B4XMainPage
 Module2=B4XPageAccordion
 Module3=B4XPageAlert
@@ -1056,8 +1061,10 @@ Module30=B4XPageSwap
 Module31=B4XPageToast
 Module32=B4XPageTooltip
 Module33=B4XPageWindow
+Module34=B4XPageTextRotate
+Module35=B4XPageTimeline
 NumberOfLibraries=5
-NumberOfModules=33
+NumberOfModules=35
 LibraryFile=C:\b4a\libraries\B4XDaisyUIKit.b4xlib
 Version=13.4
 @EndOfDesignText@

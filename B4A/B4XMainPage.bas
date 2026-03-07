@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group
 ModulesStructureVersion=1
 Type=Class
@@ -52,6 +52,8 @@ Sub Class_Globals
 	Public AccordionPage As B4XPageAccordion
 	Public CountdownPage As B4XPageCountdown
 	Public CanvasSpinner As B4XPageCanvasSpinner
+	Public TextRotatePage As B4XPageTextRotate
+	Public TimelinePage As B4XPageTimeline
 	Private AppOverlay As B4XDaisyOverlay
 	Private AppLoader As B4XDaisyCanvasSpinner
 End Sub
@@ -139,6 +141,8 @@ Sub ShowSplashScreen As ResumableSub
 	WindowPage.Initialize
 	FieldSetPage.Initialize 
 	CanvasSpinner.Initialize
+	TextRotatePage.Initialize
+	TimelinePage.Initialize
 
 	B4XPages.AddPage("Stat", StatPage)
 	B4XPages.AddPage("Chat", ChatPage)
@@ -172,12 +176,14 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Accordion", AccordionPage)
 	B4XPages.AddPage("Countdown", CountdownPage)
 	B4XPages.AddPage("CanvasSpinner", CanvasSpinner)
+	B4XPages.AddPage("TextRotate", TextRotatePage)
+	B4XPages.AddPage("Timeline", TimelinePage)
 	Return True
 End Sub
 
 'Return True to close, False to cancel
 Private Sub B4XPage_CloseRequest As ResumableSub
-	Dim sf As Object = xui.Msgbox2Async("Are you sure you want to close the application?", "Close B4XDaisyUI Kit?", "Yes", "", "No", Null)
+	Dim sf As Object = xui.Msgbox2Async("Are you sure you want to close the application?", "Close B4XDaisy UI Kit?", "Yes", "", "No", Null)
 	Wait For (sf) Msgbox_Result (Result As Int)
 	If Result = xui.DialogResponse_Positive Then
 		PendingDashboardOnReopen = True

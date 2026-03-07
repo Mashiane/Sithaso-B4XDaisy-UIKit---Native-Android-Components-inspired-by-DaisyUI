@@ -265,8 +265,8 @@ Private Sub LayoutAlerts(Width As Int, Height As Int)
 		lblClass.SetLayoutAnimated(0, pad, y, maxW, labelH)
 		y = y + labelH + 4dip
 		' Place alert with computed preferred height and minimum configured height.
-		Dim computedAlertH As Int = Max(48dip, alert.GetPreferredHeight(aw))
-		Dim ah As Int = Max(item.Get("h"), computedAlertH)
+		alert.SizeToFit(aw)
+		Dim ah As Int = Max(item.Get("h"), Max(48dip, alertView.Height))
 		alertView.SetLayoutAnimated(0, pad, y, aw, ah)
 		' Notify component of its final size.
 		alert.Base_Resize(aw, ah)
