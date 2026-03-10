@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group
 ModulesStructureVersion=1
 Type=Class
@@ -51,15 +51,21 @@ Sub Class_Globals
 	Public CollapsePage As B4XPageCollapse
 	Public AccordionPage As B4XPageAccordion
 	Public CountdownPage As B4XPageCountdown
+	Public DiffPage As B4XPageDiff
 	Public CanvasSpinner As B4XPageCanvasSpinner
 	Public TextRotatePage As B4XPageTextRotate
 	Public TimelinePage As B4XPageTimeline
+	Public ListPage As B4XPageList
 	Private AppOverlay As B4XDaisyOverlay
 	Private AppLoader As B4XDaisyCanvasSpinner
 End Sub
 
 Public Sub Initialize
-	B4XPages.GetManager.LogEvents = True
+	#if debug
+		B4XPages.GetManager.LogEvents = True
+	#else
+		B4XPages.GetManager.LogEvents = False
+	#end if
 	B4XPages.GetManager.TransitionAnimationDuration = 0
 End Sub
 
@@ -132,6 +138,7 @@ Sub ShowSplashScreen As ResumableSub
 	CollapsePage.Initialize
 	AccordionPage.Initialize
 	CountdownPage.Initialize
+	DiffPage.Initialize
 	SkeletonPage.Initialize
 	StatPage.Initialize
 	DashboardPage.Initialize
@@ -143,6 +150,7 @@ Sub ShowSplashScreen As ResumableSub
 	CanvasSpinner.Initialize
 	TextRotatePage.Initialize
 	TimelinePage.Initialize
+	ListPage.Initialize
 
 	B4XPages.AddPage("Stat", StatPage)
 	B4XPages.AddPage("Chat", ChatPage)
@@ -150,6 +158,7 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Avatar", AvatarPage)
 	B4XPages.AddPage("Badge", BadgePage)
 	B4XPages.AddPage("Card", CardPage)
+	B4XPages.AddPage("Diff", DiffPage)
 	B4XPages.AddPage("Dashboard", DashboardPage)
 	B4XPages.AddPage("Skeleton", SkeletonPage)
 	B4XPages.AddPage("Hero", HeroPage)
@@ -178,6 +187,7 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("CanvasSpinner", CanvasSpinner)
 	B4XPages.AddPage("TextRotate", TextRotatePage)
 	B4XPages.AddPage("Timeline", TimelinePage)
+	B4XPages.AddPage("List", ListPage)
 	Return True
 End Sub
 

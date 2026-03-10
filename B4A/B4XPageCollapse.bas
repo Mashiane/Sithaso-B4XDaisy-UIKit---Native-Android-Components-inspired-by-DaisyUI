@@ -245,7 +245,6 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
 End Sub
 
 Private Sub collapse1_Click (Tag As Object)
-	Log("Collapse 1 Clicked")
 End Sub
 
 #End Region

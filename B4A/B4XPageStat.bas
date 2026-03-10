@@ -394,7 +394,6 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
 End Sub
 
 Private Sub component_Click(Tag As Object)
-    Log("Clicked: " & Tag)
 End Sub
 
 

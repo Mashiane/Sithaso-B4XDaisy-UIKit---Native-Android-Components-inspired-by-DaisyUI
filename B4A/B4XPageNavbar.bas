@@ -218,13 +218,10 @@ End Sub
 
 ' Event handlers for nb_int
 Private Sub nb_int_Opened
-	' Log used for verification in this specific task as requested
-	Log("Navbar Opened")
 	toaster.InfoWithDuration("Hamburger: Opened", 1000)
 End Sub
 
 Private Sub nb_int_Closed
-	Log("Navbar Closed")
 	toaster.InfoWithDuration("Hamburger: Closed", 1000)
 End Sub
 

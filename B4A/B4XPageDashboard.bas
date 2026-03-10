@@ -56,11 +56,13 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"collapse", "label":"Collapse", "imagePath":"collapse.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"countdown", "label":"Countdown", "imagePath":"countdown.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"diff", "label":"Diff", "imagePath":"diff.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"kbd", "label":"Kbd", "imagePath":"kbd.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"list", "label":"List", "imagePath":"list.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
@@ -190,6 +192,9 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "cspinner"
 			NavigateFromMainPage("CanvasSpinner")
 			Return
+		Case "diff"
+			NavigateFromMainPage("Diff")
+			Return
 		Case "divider"
 			NavigateFromMainPage("Divider")
 			Return
@@ -204,6 +209,9 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "kbd"
 			NavigateFromMainPage("Kbd")
+			Return
+		Case "list"
+			NavigateFromMainPage("List")
 			Return
 		Case "loading"
 			NavigateFromMainPage("Loading")

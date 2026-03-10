@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -105,6 +105,5 @@ Private Sub B4XPage_Appear
 End Sub
 
 Private Sub tr1_Click(Tag As Object)
-    Log("Clicked tr1")
 End Sub
 #End Region

@@ -391,7 +391,6 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
 End Sub
 
 Private Sub carousel_Click(Tag As Object)
-    Log("Carousel Clicked: " & Tag)
 End Sub
 
 
