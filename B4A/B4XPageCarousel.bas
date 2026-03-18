@@ -81,7 +81,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel1.AddItem(itm)
     Next
     carousel1.Refresh
-    currentY = currentY + carousel1.mBase.Height + 24dip
+    currentY = currentY + carousel1.GetComputedHeight + 24dip
     Sleep(0)
     ' #endregion
     
@@ -106,7 +106,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel2.AddItem(itm)
     Next
     carousel2.Refresh
-    currentY = currentY + carousel2.mBase.Height + 24dip
+    currentY = currentY + carousel2.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 3: Snap to end
@@ -130,7 +130,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel3.AddItem(itm)
     Next
     carousel3.Refresh
-    currentY = currentY + carousel3.mBase.Height + 24dip
+    currentY = currentY + carousel3.GetComputedHeight + 24dip
     Sleep(0)
     ' #endregion
 
@@ -156,7 +156,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel4.AddItem(itm)
     Next
     carousel4.Refresh
-    currentY = currentY + carousel4.mBase.Height + 24dip
+    currentY = currentY + carousel4.GetComputedHeight + 24dip
     ' #endregion
     
     ' #region Example 5: Vertical carousel
@@ -181,7 +181,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel5.AddItem(itm)
     Next
     carousel5.Refresh
-    currentY = currentY + carousel5.mBase.Height + 24dip
+    currentY = currentY + carousel5.GetComputedHeight + 24dip
     Sleep(0)
     ' #endregion
     
@@ -209,7 +209,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel6.AddItem(itm)
     Next
     carousel6.Refresh
-    currentY = currentY + carousel6.mBase.Height + 24dip
+    currentY = currentY + carousel6.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 7: Full-bleed carousel
@@ -237,7 +237,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel7.AddItem(itm)
     Next
     carousel7.Refresh
-    currentY = currentY + carousel7.mBase.Height + 24dip
+    currentY = currentY + carousel7.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 8: Carousel with indicator buttons
@@ -265,7 +265,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel8.AddItem(itm)
     Next
     carousel8.Refresh
-    currentY = currentY + carousel8.mBase.Height + 24dip
+    currentY = currentY + carousel8.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 9: Carousel with next/prev navigation buttons
@@ -289,7 +289,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel9.AddItem(itm)
     Next
     carousel9.Refresh
-    currentY = currentY + carousel9.mBase.Height + 24dip
+    currentY = currentY + carousel9.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 10: Carousel with both indicator + navigation buttons
@@ -313,7 +313,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel10.AddItem(itm)
     Next
     carousel10.Refresh
-    currentY = currentY + carousel10.mBase.Height + 24dip
+    currentY = currentY + carousel10.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 11: Horizontal auto-play carousel
@@ -339,7 +339,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel11.AddItem(itm11)
     Next
     carousel11.Refresh
-    currentY = currentY + carousel11.mBase.Height + 24dip
+    currentY = currentY + carousel11.GetComputedHeight + 24dip
     ' #endregion
 
     ' #region Example 12: Vertical auto-play carousel
@@ -365,11 +365,11 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         carousel12.AddItem(itm12)
     Next
     carousel12.Refresh
-    currentY = currentY + carousel12.mBase.Height + 24dip
+    currentY = currentY + carousel12.GetComputedHeight + 24dip
     ' #endregion
 
     pnlHost.Height = Max(Height, currentY + PAGE_PAD)
-    Return true
+    Return True
 End Sub
 
 Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
@@ -380,7 +380,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.setTextColor(xui.Color_RGB(30, 41, 59))
     title.TextSize = "text-lg"
     title.FontBold = True
-    Return Y + 48dip
+    Return Y + title.GetComputedHeight + 20dip
 End Sub
 #End Region
 
@@ -391,6 +391,7 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
 End Sub
 
 Private Sub carousel_Click(Tag As Object)
+    'Log("Carousel Clicked: " & Tag)
 End Sub
 
 

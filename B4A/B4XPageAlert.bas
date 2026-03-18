@@ -205,10 +205,9 @@ End Sub
 
 Private Sub AddAlertItem(Id As String, LabelView As B4XDaisyText, Alert As B4XDaisyAlert, AlertView As B4XView, DefaultW As Int, DefaultH As Int)
 	' Store layout metadata so LayoutAlerts can position all items consistently.
-	' Read live props so stored width/height reflect component logic.
 	Dim w As Int = 0
 	If DefaultW > 0 Then w = Max(24dip, Alert.getWidth)
-	Dim h As Int = Max(24dip, Alert.getHeight)
+	Dim h As Int = Max(24dip, DefaultH)
 	AlertItems.Add(CreateMap( _
 		"id": Id, _
 		"label": LabelView, _
@@ -217,20 +216,6 @@ Private Sub AddAlertItem(Id As String, LabelView As B4XDaisyText, Alert As B4XDa
 		"w": w, _
 		"h": h _
 	))
-End Sub
-
-Private Sub ResolveAlertSize(Props As Map, Key As String, DefaultSize As Int) As Int
-	' Defensive fallback path if props map is missing/invalid.
-	If Props.IsInitialized = False Then Return Max(24dip, DefaultSize)
-	If Props.ContainsKey(Key) = False Then Return Max(24dip, DefaultSize)
-	Dim value As Object = Props.Get(Key)
-	' Accept both numeric dip values and Tailwind/CSS size strings.
-	If IsNumber(value) Then Return Max(24dip, Round(value))
-	If value <> Null Then
-		Dim parsed As Float = B4XDaisyVariants.TailwindSizeToDip(value, DefaultSize)
-		Return Max(24dip, Round(parsed))
-	End If
-	Return Max(24dip, DefaultSize)
 End Sub
 
 Private Sub LayoutAlerts(Width As Int, Height As Int)
@@ -247,7 +232,6 @@ Private Sub LayoutAlerts(Width As Int, Height As Int)
 	For i = 0 To AlertItems.Size - 1
 		Dim item As Map = AlertItems.Get(i)
 		Dim itemId As String = item.GetDefault("id", "")
-		Dim xlbl As B4XView = item.Get("label")
 		Dim alert As B4XDaisyAlert = item.Get("alert")
 		Dim alertView As B4XView = item.Get("alert_view")
 		' Cap sample width so it never overflows page content area.

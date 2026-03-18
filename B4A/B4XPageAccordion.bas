@@ -46,64 +46,36 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     y = AddSectionTitle("Standard Accordion (Single Open)", y, maxW)
     Dim acc1 As B4XDaisyAccordion
     acc1.Initialize(Me, "acc1")
-    acc1.AddToParent(pnlHost, PAGE_PAD, y, maxW, 200dip)
+    acc1.GroupName = "standard-accordion"
     acc1.OpenOnlyOne = True
+    acc1.AddToParent(pnlHost, PAGE_PAD, y, maxW, 10dip)
     
-    ' Item 1
-    Dim col1 As B4XDaisyCollapse
-    col1.Initialize(Me, "col1")
-    col1.TitleText = "Click to open item 1"
-    col1.Icon = "arrow"
-    col1.setTag("item1")
-    acc1.AddItem(col1) ' automatically adds to accordion and positions
+    Dim c1a As B4XDaisyCollapse = acc1.AddItemBasic("item1", "arrow", "Click to open item 1")
+    AddContent(c1a, "This is the content for the first item. Opening it will close others.")
     
-    ' Item 1 Content
-    AddContent(col1, "This is the content for the first item. Opening it will close others.")
+    Dim c1b As B4XDaisyCollapse = acc1.AddItemBasic("item2", "arrow", "Click to open item 2")
+    AddContent(c1b, "This is the second item's content. It also belongs to the same accordion group.")
     
-    ' Item 2
-    Dim col2 As B4XDaisyCollapse
-    col2.Initialize(Me, "col2")
-    col2.TitleText = "Click to open item 2"
-    col2.Icon = "arrow"
-    col2.setTag("item2")
-    acc1.AddItem(col2)
-    
-    ' Item 2 Content
-    AddContent(col2, "This is the second item's content. It also belongs to the same accordion group.")
-    
-    y = y + acc1.mBase.Height + PAGE_PAD
+    y = y + acc1.GetComputedHeight + PAGE_PAD
     ' #endregion
 
     ' #region Example 2: Multiple Open Allowed
     y = AddSectionTitle("Accordion (Multiple Open Allowed)", y, maxW)
     Dim acc2 As B4XDaisyAccordion
     acc2.Initialize(Me, "acc2")
-    acc2.AddToParent(pnlHost, PAGE_PAD, y, maxW, 200dip)
+    acc2.GroupName = "multi-open-accordion"
     acc2.OpenOnlyOne = False
+    acc2.AddToParent(pnlHost, PAGE_PAD, y, maxW, 10dip)
     
-    ' Item 1
-    Dim col3 As B4XDaisyCollapse
-    col3.Initialize(Me, "col3")
-    col3.TitleText = "Item A (Independent)"
-    col3.Icon = "plus"
-    col3.setVariant("primary")
-    acc2.AddItem(col3)
+    Dim c2a As B4XDaisyCollapse = acc2.AddItemBasic("itemA", "plus", "Item A (Independent)")
+    acc2.SetItemVariant("itemA", "primary")
+    AddContent(c2a, "You can open multiple items here because OpenOnlyOne is False.")
     
-    ' Content A
-    AddContent(col3, "You can open multiple items here because OpenOnlyOne is False.")
+    Dim c2b As B4XDaisyCollapse = acc2.AddItemBasic("itemB", "plus", "Item B (Independent)")
+    acc2.SetItemVariant("itemB", "secondary")
+    AddContent(c2b, "Secondary item content. Feel free to open both!")
     
-    ' Item 2
-    Dim col4 As B4XDaisyCollapse
-    col4.Initialize(Me, "col4")
-    col4.TitleText = "Item B (Independent)"
-    col4.Icon = "plus"
-    col4.setVariant("secondary")
-    acc2.AddItem(col4)
-    
-    ' Content B
-    AddContent(col4, "Secondary item content. Feel free to open both!")
-    
-    y = y + acc2.mBase.Height + PAGE_PAD
+    y = y + acc2.GetComputedHeight + PAGE_PAD
     ' #endregion
 
     ' #region Example 3: Different Icon Positions (User Request)
@@ -120,7 +92,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     
     ' Content
     AddContent(col5, "Collapse with the arrow icon positioned on the left side.")
-    y = y + col5.mBase.Height + PAGE_PAD
+    y = y + col5.GetComputedHeight + PAGE_PAD
     
     ' Right side (default)
     Dim col6 As B4XDaisyCollapse
@@ -133,29 +105,23 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     
     ' Content
     AddContent(col6, "Collapse with the plus/minus icon on the right (default position).")
-    y = y + col6.mBase.Height + PAGE_PAD
+    y = y + col6.GetComputedHeight + PAGE_PAD
     ' #endregion
 
     ' #region Example 4: Join + Accordion
     y = AddSectionTitle("Join + Accordion Style", y, maxW)
-    ' This would typically be a set of collapses with no bottom/top margins
     Dim acc3 As B4XDaisyAccordion
     acc3.Initialize(Me, "acc3")
-    acc3.AddToParent(pnlHost, PAGE_PAD, y, maxW, 180dip)
-    
+    acc3.GroupName = "join-group"
+    acc3.setRounded("rounded-none")
+    acc3.SpaceY = 0
+    acc3.AddToParent(pnlHost, PAGE_PAD, y, maxW, 10dip)
+
     For i = 1 To 3
-        Dim c As B4XDaisyCollapse
-        c.Initialize(Me, "joined")
-        c.AddToParent(acc3.mBase, 0, (i-1)*50dip, maxW, 50dip)
-        c.TitleText = "Joined Item " & i
-        c.Icon = "arrow"
-        ' Rounded-none to simulate join effect
-        c.setRounded("rounded-none")
-        acc3.AddItem(c)
-        
-        AddContent(c, "Content for joined item " & i)
+        Dim c As B4XDaisyCollapse = acc3.AddItemBasic("joined" & i, "arrow", "Joined Item " & i)
+        AddContent(c, "Content for joined item " & i & ". This panel expands to fit its content automatically.")
     Next
-    y = y + 200dip
+    y = y + acc3.GetComputedHeight + PAGE_PAD
     ' #endregion
 
     pnlHost.Height = Max(Height, y + PAGE_PAD)
@@ -169,7 +135,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.TextColor = xui.Color_RGB(30, 41, 59)
     title.TextSize = 18
     title.FontBold = True
-    Return Y + 40dip
+    Return Y + title.GetComputedHeight + 8dip
 End Sub
 
 ''' <summary>
@@ -194,26 +160,6 @@ Private Sub B4XPage_Appear
     End If
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
-
-
-
-
-Private Sub GetAccordionForGroup(Name As String) As B4XDaisyAccordion
-    ' Helper to find accordion instance on the page by matching group name
-    For i = 0 To pnlHost.NumberOfViews - 1
-        Dim v As B4XView = pnlHost.GetView(i)
-        If v.Tag Is B4XDaisyAccordion Then
-            Dim acc As B4XDaisyAccordion = v.Tag
-            ' The accordion assigns group names like "group_" & tag
-            ' Check if the requested group name matches this accordion's tag
-            If Name = ("group_" & acc.getTag) Then
-                Return acc
-            End If
-        End If
-    Next
-    Return Null
-End Sub
-
 
 #End Region
 

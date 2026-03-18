@@ -220,31 +220,30 @@ End Sub
 ''' Adds a plain body label into a collapse content container.
 ''' </summary>
 Private Sub AddBodyLabel(Collapse As B4XDaisyCollapse, Text As String, MaxW As Int)
-    Dim lbl As Label
-    lbl.Initialize("")
+    Dim lbl As B4XDaisyText
+    lbl.Initialize(Me, "")
+    lbl.AddToParent(Collapse.ContentView, 0, 8dip, Collapse.ContentView.Width, 36dip)
     lbl.Text = Text
     lbl.TextSize = 14
-    ' Retrieve text color from the collapse content component (which now handles variant resolution)
     lbl.TextColor = Collapse.CollapseContent.TextColor
-    ' Use 0dip left because the CollapseContent container already provides the standard 16dip padding.
-    ' This ensures perfect vertical alignment with the title text.
-    Collapse.ContentView.AddView(lbl, 0, 8dip, Collapse.ContentView.Width, 36dip)
+    lbl.setAutoResize(False)
 End Sub
 
 ''' <summary>
 ''' Adds a bold section title label above each example block.
 ''' </summary>
 Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
-    Dim title As Label
-    title.Initialize("")
+    Dim title As B4XDaisyText
+    title.Initialize(Me, "")
+    title.AddToParent(pnlHost, PAGE_PAD, Y, Width, 24dip)
     title.Text = Text
     title.TextSize = 13
     title.TextColor = xui.Color_RGB(30, 41, 59)
-    pnlHost.AddView(title, PAGE_PAD, Y, Width, 24dip)
-    Return Y + 28dip
+    Return Y + title.GetComputedHeight + 4dip
 End Sub
 
 Private Sub collapse1_Click (Tag As Object)
+	'Log("Collapse 1 Clicked")
 End Sub
 
 #End Region

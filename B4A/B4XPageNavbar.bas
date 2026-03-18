@@ -87,14 +87,14 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 End Sub
 
 Private Sub AddTitle(Text As String)
-	Dim lbl As Label
-	lbl.Initialize("")
-	Dim xl As B4XView = lbl
-	xl.Text = Text
-	xl.Font = xui.CreateDefaultBoldFont(18)
-	xl.TextColor = xui.Color_DarkGray
-	pnlContent.AddView(xl, 20dip, currentY, Root.Width - 40dip, 30dip)
-	currentY = currentY + 40dip
+        Dim lbl As B4XDaisyText
+        lbl.Initialize(Me, "")
+        lbl.AddToParent(pnlContent, 20dip, currentY, Root.Width - 40dip, 30dip)
+        lbl.Text = Text
+        lbl.TextSize = 18
+        lbl.FontBold = True
+        lbl.TextColor = xui.Color_DarkGray
+        currentY = currentY + lbl.GetComputedHeight + 10dip
 End Sub
 
 Private Sub AddNavbarTitleOnly
@@ -111,12 +111,11 @@ Private Sub AddNavbarTitleAndIcon
 	Dim nbView As B4XView = nb.AddToParent(pnlContent, 10dip, currentY, Root.Width - 20dip, 64dip)
 	nb.AddTitleToStart("daisyUI")
 	
-	' Use a standard button for now or a glyph
-	Dim btn As Button
-	btn.Initialize("")
-	Dim xbtn As B4XView = btn
-	xbtn.Text = "MENU"
-	nb.AddViewToEnd(xbtn, 80dip, 40dip)
+	Dim btn As B4XDaisyButton
+	btn.Initialize(Me, "")
+	btn.Text = "MENU"
+	btn.AddToParent(pnlContent, -200dip, -200dip, 80dip, 40dip)
+	nb.AddViewToEnd(btn.mBase, 80dip, 40dip)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -126,21 +125,21 @@ Private Sub AddNavbarIconsStartEnd
 	nb.Initialize(Me, "nb3")
 	Dim nbView As B4XView = nb.AddToParent(pnlContent, 10dip, currentY, Root.Width - 20dip, 64dip)
 	
-	' Start icon (placeholder)
-	Dim b1 As Button
-	b1.Initialize("")
-	Dim xb1 As B4XView = b1
-	xb1.Text = "="
-	nb.AddViewToStart(b1, 44dip, 44dip)
+	Dim startIcon As B4XDaisySvgIcon
+	startIcon.Initialize(Me, "")
+	Dim startIconView As B4XView = startIcon.CreateView(24dip, 24dip)
+	startIcon.setSvgAsset("bars-solid.svg")
+	startIcon.setColor(xui.Color_Black)
+	nb.AddViewToStart(startIconView, 24dip, 24dip)
 	
 	nb.AddTitleToCenter("Middle Title")
 	
-	' End icon (placeholder)
-	Dim b2 As Button
-	b2.Initialize("")
-	Dim xb2 As B4XView = b2
-	xb2.Text = "??"
-	nb.AddViewToEnd(b2, 44dip, 44dip)
+	Dim endIcon As B4XDaisySvgIcon
+	endIcon.Initialize(Me, "")
+	Dim endIconView As B4XView = endIcon.CreateView(24dip, 24dip)
+	endIcon.setSvgAsset("ellipsis-solid.svg")
+	endIcon.setColor(xui.Color_Black)
+	nb.AddViewToEnd(endIconView, 24dip, 24dip)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -169,12 +168,12 @@ Private Sub AddNavbarComplex
 	nb.Initialize(Me, "nb_complex")
 	Dim nbView As B4XView = nb.AddToParent(pnlContent, 10dip, currentY, Root.Width - 20dip, 64dip)
 	
-	' Start: Burger
-	Dim b1 As Button
-	b1.Initialize("")
-	Dim xb1 As B4XView = b1
-	xb1.Text = "?"
-	nb.AddViewToStart(b1, 44dip, 44dip)
+	Dim complexIcon As B4XDaisySvgIcon
+	complexIcon.Initialize(Me, "")
+	Dim complexIconView As B4XView = complexIcon.CreateView(24dip, 24dip)
+	complexIcon.setSvgAsset("bars-solid.svg")
+	complexIcon.setColor(xui.Color_Black)
+	nb.AddViewToStart(complexIconView, 24dip, 24dip)
 	
 	' Center: Logo
 	nb.AddTitleToCenter("daisyUI")
@@ -218,10 +217,13 @@ End Sub
 
 ' Event handlers for nb_int
 Private Sub nb_int_Opened
+	' Log used for verification in this specific task as requested
+	'Log("Navbar Opened")
 	toaster.InfoWithDuration("Hamburger: Opened", 1000)
 End Sub
 
 Private Sub nb_int_Closed
+	'Log("Navbar Closed")
 	toaster.InfoWithDuration("Hamburger: Closed", 1000)
 End Sub
 

@@ -101,7 +101,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.TextColor = xui.Color_RGB(30, 41, 59)
     title.TextSize = 16
     title.FontBold = True
-    Return Y + 30dip
+    Return Y + title.GetComputedHeight + 2dip
 End Sub
 #End Region
 

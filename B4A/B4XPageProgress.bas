@@ -131,46 +131,46 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	pAnim.Value = 20
 	currentY = currentY + 60dip
 	
-	Dim btnStart As Button
-	btnStart.Initialize("btnStart")
+	Dim btnStart As B4XDaisyButton
+	btnStart.Initialize(Me, "btnStart")
 	btnStart.Text = "Animate to 85%"
-	content.AddView(btnStart, 20dip, currentY, 200dip, 40dip)
+	btnStart.AddToParent(content, 20dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
-	Dim btnAnimate10 As Button
-	btnAnimate10.Initialize("btnAnimate10")
+	Dim btnAnimate10 As B4XDaisyButton
+	btnAnimate10.Initialize(Me, "btnAnimate10")
 	btnAnimate10.Text = "Animate to 10%"
-	content.AddView(btnAnimate10, 20dip, currentY, 200dip, 40dip)
+	btnAnimate10.AddToParent(content, 20dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
-	Dim btnTimer As Button
-	btnTimer.Initialize("btnTimer")
+	Dim btnTimer As B4XDaisyButton
+	btnTimer.Initialize(Me, "btnTimer")
 	btnTimer.Text = "Start 5s Countdown"
-	content.AddView(btnTimer, 20dip, currentY, 200dip, 40dip)
+	btnTimer.AddToParent(content, 20dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
-	Dim btnReset As Button
-	btnReset.Initialize("btnReset")
+	Dim btnReset As B4XDaisyButton
+	btnReset.Initialize(Me, "btnReset")
 	btnReset.Text = "Reset (Max 100)"
-	content.AddView(btnReset, 20dip, currentY, 200dip, 40dip)
+	btnReset.AddToParent(content, 20dip, currentY, 200dip, 40dip)
 	currentY = currentY + 80dip
 
 	sv.Panel.Height = currentY + 100dip
 End Sub
 
-Private Sub btnStart_Click
+Private Sub btnStart_Click(Tag As Object)
 	pAnim.SetValueAnimated(85, 3000)
 End Sub
 
-Private Sub btnAnimate10_Click
+Private Sub btnAnimate10_Click(Tag As Object)
 	pAnim.SetValueAnimated(10, 2000)
 End Sub
 
-Private Sub btnTimer_Click
+Private Sub btnTimer_Click(Tag As Object)
 	pAnim.StartTimer(5000)
 End Sub
 
-Private Sub btnReset_Click
+Private Sub btnReset_Click(Tag As Object)
 	pAnim.setMaxValue(100)
 	pAnim.SetValueAnimated(0, 500)
 End Sub

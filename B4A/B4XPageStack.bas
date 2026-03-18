@@ -43,13 +43,14 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	Dim w As Int = B4XDaisyVariants.TailwindSizeToDip("32", 128dip)
 	Dim h As Int = B4XDaisyVariants.TailwindSizeToDip("20", 80dip)
 	
-	Dim lbl As Label
-	lbl.Initialize("")
+	Dim lbl As B4XDaisyText
+	lbl.Initialize(Me, "")
+	lbl.AddToParent(TargetSV.Panel, 20dip, TopOffset, 200dip, 30dip)
 	lbl.Text = "Direction: " & Direction.ToUpperCase
 	lbl.TextColor = xui.Color_Black
 	lbl.TextSize = 14
-	TargetSV.Panel.AddView(lbl, 20dip, TopOffset, 200dip, 30dip)
-	TopOffset = TopOffset + 30dip
+	lbl.setAutoResize(False)
+	TopOffset = TopOffset + lbl.GetComputedHeight
 	
 	Dim stack As B4XDaisyStack
 	stack.Initialize(Me, "")
@@ -151,13 +152,14 @@ Private Sub CreateStackPhotosDemo(TargetSV As ScrollView, TopOffset As Int) As I
 	Dim w As Int = B4XDaisyVariants.TailwindSizeToDip("w-48", 192dip)
 	Dim h As Int = B4XDaisyVariants.TailwindSizeToDip("h-64", 256dip)
 	
-	Dim lbl As Label
-	lbl.Initialize("")
+	Dim lbl As B4XDaisyText
+	lbl.Initialize(Me, "")
+	lbl.AddToParent(TargetSV.Panel, 20dip, TopOffset, 300dip, 30dip)
 	lbl.Text = "Photos (direction: bottom)"
 	lbl.TextColor = xui.Color_Black
 	lbl.TextSize = 14
-	TargetSV.Panel.AddView(lbl, 20dip, TopOffset, 300dip, 30dip)
-	TopOffset = TopOffset + 30dip
+	lbl.setAutoResize(False)
+	TopOffset = TopOffset + lbl.GetComputedHeight
 	
 	Dim photoStack As B4XDaisyStack
 	photoStack.Initialize(Me, "")

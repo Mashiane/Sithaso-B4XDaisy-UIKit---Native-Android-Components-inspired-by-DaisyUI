@@ -30,7 +30,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
     overlay.Visible = False ' start hidden
 
     spinner.Initialize(Me, "spinner")
-    spinner.AttachTo(overlay.mBase) ' attach into overlay surface
+    spinner.AttachTo(overlay.GetHostView) ' attach into overlay surface
     ' make sure the spinner has the proper size/drawing immediately
     spinner.Resize(Root.Width, Root.Height)
     spinner.Hide ' not animating until the overlay is shown

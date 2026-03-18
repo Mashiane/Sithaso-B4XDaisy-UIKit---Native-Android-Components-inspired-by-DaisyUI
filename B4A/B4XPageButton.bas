@@ -595,14 +595,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 End Sub
 
 Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
-    Dim titleLbl As Label
-    titleLbl.Initialize("")
+    Dim titleLbl As B4XDaisyText
+    titleLbl.Initialize(Me, "")
+    titleLbl.AddToParent(pnlHost, PAGE_PAD, Y, Width, 24dip)
     titleLbl.Text = Text
     titleLbl.TextColor = xui.Color_RGB(30, 41, 59)
     titleLbl.TextSize = 16
-    titleLbl.Typeface = Typeface.DEFAULT_BOLD
-    pnlHost.AddView(titleLbl, PAGE_PAD, Y, Width, 24dip)
-    Return Y + 26dip
+    titleLbl.FontBold = True
+    Return Y + titleLbl.GetComputedHeight + 2dip
 End Sub
 
 ' /**

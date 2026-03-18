@@ -53,14 +53,14 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 End Sub
 
 Private Sub AddTitle(Text As String)
-    Dim lbl As Label
-    lbl.Initialize("")
-    Dim xl As B4XView = lbl
-    xl.Text = Text
-    xl.Font = xui.CreateDefaultBoldFont(18)
-    xl.TextColor = xui.Color_DarkGray
-    pnlContent.AddView(xl, 12dip, currentY, Root.Width - 24dip, 28dip)
-    currentY = currentY + 34dip
+    Dim lbl As B4XDaisyText
+    lbl.Initialize(Me, "")
+    lbl.AddToParent(pnlContent, 12dip, currentY, Root.Width - 24dip, 28dip)
+    lbl.Text = Text
+    lbl.TextSize = 18
+    lbl.FontBold = True
+    lbl.TextColor = xui.Color_DarkGray
+    currentY = currentY + lbl.GetComputedHeight + 6dip
 End Sub
 
 Private Sub AddParityFieldset

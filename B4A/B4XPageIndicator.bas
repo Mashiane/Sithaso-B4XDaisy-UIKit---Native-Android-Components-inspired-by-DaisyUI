@@ -60,7 +60,7 @@ Private Sub RenderSidesSection(MaxW As Int, StartY As Int) As Int
 	pnlHost.AddView(titleLbl, PAGE_PAD, y, MaxW, 20dip)
 	y = y + 22dip
 
-	Dim noteLbl As B4XView = CreateSectionLabel("Base uses Daisy div style: bg-base-300 grid h-32 w-32 place-items-center", 11, xui.Color_RGB(100, 116, 139), False)
+	Dim noteLbl As B4XView = CreateSectionLabel("Base uses Daisy div style: bg-neutral grid h-32 w-32 place-items-center", 11, xui.Color_RGB(100, 116, 139), False)
 	pnlHost.AddView(noteLbl, PAGE_PAD, y, MaxW, 16dip)
 	y = y + 18dip
 
@@ -82,7 +82,7 @@ Private Sub RenderSidesSection(MaxW As Int, StartY As Int) As Int
 	baseDiv.setRoundedBox(True)
 	baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
-	baseDiv.setBackgroundColorVariant("bg-base-300")
+	baseDiv.setBackgroundColorVariant("bg-neutral")
 	baseDiv.setTextColorVariant("text-neutral-content")
 	
 	Dim placements As List
@@ -144,7 +144,7 @@ Private Sub RenderNoTextSidesSection(MaxW As Int, StartY As Int) As Int
 	baseDiv.setRoundedBox(True)
 	baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
-	baseDiv.setBackgroundColorVariant("bg-base-300")
+	baseDiv.setBackgroundColorVariant("bg-neutral")
 	baseDiv.setTextColorVariant("text-neutral-content")
 
 	Dim variants As List
@@ -225,7 +225,7 @@ Private Sub RenderVariantSection(MaxW As Int, StartY As Int) As Int
 		baseDiv.setRoundedBox(True)
 		baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
-		baseDiv.setBackgroundColorVariant("bg-base-300")
+		baseDiv.setBackgroundColorVariant("bg-neutral")
 		baseDiv.setTextColorVariant("text-neutral-content")
 
 		Dim ind As B4XDaisyIndicator
@@ -311,7 +311,7 @@ Private Sub RenderCountIndicatorSection(MaxW As Int, StartY As Int) As Int
 	baseDiv.setRoundedBox(True)
 	baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
-	baseDiv.setBackgroundColorVariant("bg-base-300")
+	baseDiv.setBackgroundColorVariant("bg-neutral")
 	baseDiv.setTextColorVariant("text-neutral-content")
 
 	Dim countInd As B4XDaisyIndicator

@@ -17,10 +17,10 @@ Sub Class_Globals
     Private PAGE_PAD As Int = 12dip
     ' Persistent full-screen overlay instance (shown/hidden on demand)
     Private mFsOverlay As B4XDaisyOverlay
-    Private mFsDismissLbl As Label
+    Private mFsDismissLbl As B4XDaisyText
     ' Example 8: white full-screen overlay
     Private mWhiteOverlay As B4XDaisyOverlay
-    Private mWhiteDismissLbl As Label
+    Private mWhiteDismissLbl As B4XDaisyText
 End Sub
 
 Public Sub Initialize As Object
@@ -48,12 +48,14 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     mFsOverlay.Opacity = 0.9
     mFsOverlay.CloseOnClick = True
     mFsOverlay.AttachTo(Root)
-    mFsDismissLbl.Initialize("")
+    mFsDismissLbl.Initialize(Me, "")
+    mFsDismissLbl.AddToParent(mFsOverlay.mBase, 0, 0, mFsOverlay.mBase.Width, mFsOverlay.mBase.Height)
     mFsDismissLbl.Text = "Tap anywhere to dismiss"
-    mFsDismissLbl.TextColor = xui.Color_White
+    mFsDismissLbl.setTextColor(xui.Color_White)
     mFsDismissLbl.TextSize = 16
-    mFsDismissLbl.Gravity = Gravity.CENTER
-    mFsOverlay.mBase.AddView(mFsDismissLbl, 0, 0, mFsOverlay.mBase.Width, mFsOverlay.mBase.Height)
+    mFsDismissLbl.setHAlign("CENTER")
+    mFsDismissLbl.setVAlign("CENTER")
+    mFsDismissLbl.setAutoResize(False)
 
     ' Build the white full-screen overlay once, hidden, ready for Example 8.
     mWhiteOverlay.Initialize(Me, "mWhiteOverlay")
@@ -61,12 +63,14 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     mWhiteOverlay.Opacity = 0.9
     mWhiteOverlay.CloseOnClick = True
     mWhiteOverlay.AttachTo(Root)
-    mWhiteDismissLbl.Initialize("")
+    mWhiteDismissLbl.Initialize(Me, "")
+    mWhiteDismissLbl.AddToParent(mWhiteOverlay.mBase, 0, 0, mWhiteOverlay.mBase.Width, mWhiteOverlay.mBase.Height)
     mWhiteDismissLbl.Text = "Tap anywhere to dismiss"
-    mWhiteDismissLbl.TextColor = xui.Color_RGB(30, 41, 59)
+    mWhiteDismissLbl.setTextColor(xui.Color_RGB(30, 41, 59))
     mWhiteDismissLbl.TextSize = 16
-    mWhiteDismissLbl.Gravity = Gravity.CENTER
-    mWhiteOverlay.mBase.AddView(mWhiteDismissLbl, 0, 0, mWhiteOverlay.mBase.Width, mWhiteOverlay.mBase.Height)
+    mWhiteDismissLbl.setHAlign("CENTER")
+    mWhiteDismissLbl.setVAlign("CENTER")
+    mWhiteDismissLbl.setAutoResize(False)
 End Sub
 
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
@@ -75,11 +79,13 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
     ' Keep the full-screen overlay covering the whole page after resize.
     If mFsOverlay.IsAttached Then
         mFsOverlay.Resize(Width, Height)
-        mFsDismissLbl.SetLayoutAnimated(0, 0, 0, Width, Height)
+        Dim fsDismissView As B4XView = mFsDismissLbl.View
+        fsDismissView.SetLayoutAnimated(0, 0, 0, Width, Height)
     End If
     If mWhiteOverlay.IsAttached Then
         mWhiteOverlay.Resize(Width, Height)
-        mWhiteDismissLbl.SetLayoutAnimated(0, 0, 0, Width, Height)
+        Dim whiteDismissView As B4XView = mWhiteDismissLbl.View
+        whiteDismissView.SetLayoutAnimated(0, 0, 0, Width, Height)
     End If
 End Sub
 
@@ -106,12 +112,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     pnlHost.AddView(base1, PAGE_PAD, currentY, maxW, 120dip)
 
     ' Background label � sits beneath the overlay (top of the panel)
-    Dim lbl1bg As Label
-    lbl1bg.Initialize("")
+    Dim lbl1bg As B4XDaisyText
+    lbl1bg.Initialize(Me, "")
+    lbl1bg.AddToParent(base1, 0, 0, maxW, 56dip)
     lbl1bg.Text = "Background content (below overlay)"
-    lbl1bg.TextColor = xui.Color_White
-    lbl1bg.Gravity = Gravity.CENTER
-    base1.AddView(lbl1bg, 0, 0, maxW, 56dip)
+    lbl1bg.setTextColor(xui.Color_White)
+    lbl1bg.setHAlign("CENTER")
+    lbl1bg.setVAlign("CENTER")
+    lbl1bg.setAutoResize(False)
 
     Dim ov1 As B4XDaisyOverlay
     ov1.Initialize(Me, "ov1")
@@ -121,12 +129,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ov1.Visible = True
 
     ' Foreground label � added after AttachTo so it renders above the overlay
-    Dim lbl1fg As Label
-    lbl1fg.Initialize("")
+    Dim lbl1fg As B4XDaisyText
+    lbl1fg.Initialize(Me, "")
+    lbl1fg.AddToParent(base1, 0, 64dip, maxW, 56dip)
     lbl1fg.Text = "This text is above the overlay"
-    lbl1fg.TextColor = xui.Color_White
-    lbl1fg.Gravity = Gravity.CENTER
-    base1.AddView(lbl1fg, 0, 64dip, maxW, 56dip)
+    lbl1fg.setTextColor(xui.Color_White)
+    lbl1fg.setHAlign("CENTER")
+    lbl1fg.setVAlign("CENTER")
+    lbl1fg.setAutoResize(False)
 
     currentY = currentY + 120dip + 20dip
 
@@ -141,12 +151,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     base2.Color = xui.Color_RGB(209, 213, 219)    ' light grey card background
     pnlHost.AddView(base2, PAGE_PAD, currentY, maxW, 100dip)
 
-    Dim lbl2bg As Label
-    lbl2bg.Initialize("")
+    Dim lbl2bg As B4XDaisyText
+    lbl2bg.Initialize(Me, "")
+    lbl2bg.AddToParent(base2, 0, 0, maxW, 100dip)
     lbl2bg.Text = "Card content beneath tint"
-    lbl2bg.TextColor = xui.Color_RGB(31, 41, 55)
-    lbl2bg.Gravity = Gravity.CENTER
-    base2.AddView(lbl2bg, 0, 0, maxW, 100dip)
+    lbl2bg.setTextColor(xui.Color_RGB(31, 41, 55))
+    lbl2bg.setHAlign("CENTER")
+    lbl2bg.setVAlign("CENTER")
+    lbl2bg.setAutoResize(False)
 
     Dim ov2 As B4XDaisyOverlay
     ov2.Initialize(Me, "ov2")
@@ -169,12 +181,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     base3.SetColorAndBorder(xui.Color_RGB(16, 185, 129), 0, xui.Color_Transparent, 20dip)
     pnlHost.AddView(base3, PAGE_PAD, currentY, maxW, 120dip)
 
-    Dim lbl3bg As Label
-    lbl3bg.Initialize("")
+    Dim lbl3bg As B4XDaisyText
+    lbl3bg.Initialize(Me, "")
+    lbl3bg.AddToParent(base3, 0, 0, maxW, 56dip)
     lbl3bg.Text = "Rounded card (below overlay)"
-    lbl3bg.TextColor = xui.Color_White
-    lbl3bg.Gravity = Gravity.CENTER
-    base3.AddView(lbl3bg, 0, 0, maxW, 56dip)
+    lbl3bg.setTextColor(xui.Color_White)
+    lbl3bg.setHAlign("CENTER")
+    lbl3bg.setVAlign("CENTER")
+    lbl3bg.setAutoResize(False)
 
     Dim ov3 As B4XDaisyOverlay
     ov3.Initialize(Me, "ov3")
@@ -184,13 +198,15 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ov3.AttachTo(base3)
     ov3.Visible = True
 
-    Dim lbl3fg As Label
-    lbl3fg.Initialize("")
+    Dim lbl3fg As B4XDaisyText
+    lbl3fg.Initialize(Me, "")
+    lbl3fg.AddToParent(base3, 0, 64dip, maxW, 56dip)
     lbl3fg.Text = "Overlay clips to rounded-xl"
-    lbl3fg.TextColor = xui.Color_White
+    lbl3fg.setTextColor(xui.Color_White)
     lbl3fg.TextSize = 12
-    lbl3fg.Gravity = Gravity.CENTER
-    base3.AddView(lbl3fg, 0, 64dip, maxW, 56dip)
+    lbl3fg.setHAlign("CENTER")
+    lbl3fg.setVAlign("CENTER")
+    lbl3fg.setAutoResize(False)
 
     currentY = currentY + 120dip + 20dip
 
@@ -207,12 +223,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     pnlHost.AddView(base4, PAGE_PAD, currentY, maxW, 120dip)
 
     ' Interactive button underneath the overlay
-    Dim btn4 As Button
-    btn4.Initialize("btn4")
+    Dim btn4 As B4XDaisyButton
+    btn4.Initialize(Me, "btn4")
     btn4.Text = "Tap me (touch passes through overlay)"
-    btn4.TextColor = xui.Color_White
-    btn4.Color = xui.Color_RGB(124, 58, 237)
-    base4.AddView(btn4, 8dip, (120dip - 44dip) / 2, maxW - 16dip, 44dip)
+    btn4.Variant = "secondary"
+    btn4.AddToParent(base4, 8dip, (120dip - 44dip) / 2, maxW - 16dip, 44dip)
 
     Dim ov4 As B4XDaisyOverlay
     ov4.Initialize(Me, "ov4")
@@ -235,12 +250,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     base5.Color = xui.Color_RGB(15, 23, 42)    ' dark navy background
     pnlHost.AddView(base5, PAGE_PAD, currentY, maxW, 100dip)
 
-    Dim lbl5bg As Label
-    lbl5bg.Initialize("")
+    Dim lbl5bg As B4XDaisyText
+    lbl5bg.Initialize(Me, "")
+    lbl5bg.AddToParent(base5, 0, 0, maxW, 48dip)
     lbl5bg.Text = "Dark navy (below overlay)"
-    lbl5bg.TextColor = xui.Color_RGB(148, 163, 184)
-    lbl5bg.Gravity = Gravity.CENTER
-    base5.AddView(lbl5bg, 0, 0, maxW, 48dip)
+    lbl5bg.setTextColor(xui.Color_RGB(148, 163, 184))
+    lbl5bg.setHAlign("CENTER")
+    lbl5bg.setVAlign("CENTER")
+    lbl5bg.setAutoResize(False)
 
     Dim ov5 As B4XDaisyOverlay
     ov5.Initialize(Me, "ov5")
@@ -249,12 +266,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ov5.AttachTo(base5)
     ov5.Visible = True
 
-    Dim lbl5fg As Label
-    lbl5fg.Initialize("")
+    Dim lbl5fg As B4XDaisyText
+    lbl5fg.Initialize(Me, "")
+    lbl5fg.AddToParent(base5, 0, 52dip, maxW, 48dip)
     lbl5fg.Text = "Frosted-glass tint (above)"
-    lbl5fg.TextColor = xui.Color_White
-    lbl5fg.Gravity = Gravity.CENTER
-    base5.AddView(lbl5fg, 0, 52dip, maxW, 48dip)
+    lbl5fg.setTextColor(xui.Color_White)
+    lbl5fg.setHAlign("CENTER")
+    lbl5fg.setVAlign("CENTER")
+    lbl5fg.setAutoResize(False)
 
     currentY = currentY + 100dip + 20dip
 
@@ -270,12 +289,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     base6.Color = xui.Color_RGB(249, 115, 22)    ' orange panel
     pnlHost.AddView(base6, PAGE_PAD, currentY, maxW, 130dip)
 
-    Dim lbl6bg As Label
-    lbl6bg.Initialize("")
+    Dim lbl6bg As B4XDaisyText
+    lbl6bg.Initialize(Me, "")
+    lbl6bg.AddToParent(base6, 0, 12dip, maxW, 60dip)
     lbl6bg.Text = "Image / content area"
-    lbl6bg.TextColor = xui.Color_White
-    lbl6bg.Gravity = Bit.Or(Gravity.CENTER_HORIZONTAL, Gravity.TOP)
-    base6.AddView(lbl6bg, 0, 12dip, maxW, 60dip)
+    lbl6bg.setTextColor(xui.Color_White)
+    lbl6bg.setHAlign("CENTER")
+    lbl6bg.setVAlign("TOP")
+    lbl6bg.setAutoResize(False)
 
     ' Overlay covers only the bottom 44dip � caption bar
     Dim ov6 As B4XDaisyOverlay
@@ -285,13 +306,15 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ov6.AddToParent(base6, 0, 86dip, maxW, 44dip)
     ov6.Visible = True
 
-    Dim lbl6caption As Label
-    lbl6caption.Initialize("")
+    Dim lbl6caption As B4XDaisyText
+    lbl6caption.Initialize(Me, "")
+    lbl6caption.AddToParent(base6, 0, 86dip, maxW, 44dip)
     lbl6caption.Text = "Caption overlay bar"
-    lbl6caption.TextColor = xui.Color_White
+    lbl6caption.setTextColor(xui.Color_White)
     lbl6caption.TextSize = 12
-    lbl6caption.Gravity = Gravity.CENTER
-    base6.AddView(lbl6caption, 0, 86dip, maxW, 44dip)
+    lbl6caption.setHAlign("CENTER")
+    lbl6caption.setVAlign("CENTER")
+    lbl6caption.setAutoResize(False)
 
     currentY = currentY + 130dip + 20dip
 
@@ -334,7 +357,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.setTextColor(xui.Color_RGB(30, 41, 59))
     title.TextSize = "text-lg"
     title.FontBold = True
-    Return Y + 48dip
+    Return Y + title.GetComputedHeight + 20dip
 End Sub
 
 Private Sub btn4_Click

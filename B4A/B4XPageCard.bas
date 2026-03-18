@@ -267,36 +267,27 @@ Private Sub SetCardContent(Card As B4XDaisyCard, Title As String, BodyText As St
 	Dim body As B4XView = Card.CardBody
 	body.RemoveAllViews
 	If BodyText <> Null And BodyText.Trim.Length > 0 Then
-		Dim lbl As Label
-		lbl.Initialize("")
-		#If B4A
-		lbl.SingleLine = False
-		#End If
-		Dim xl As B4XView = lbl
-		xl.Text = BodyText
-		xl.TextSize = 14
-		xl.TextColor = xui.Color_RGB(51, 65, 85)
-		xl.SetTextAlignment("TOP", "LEFT")
+		Dim bodyTxt As B4XDaisyText
+		bodyTxt.Initialize(Me, "")
 		Dim bodyW As Int = Max(1dip, body.Width)
-		body.AddView(xl, 0, 0, bodyW, 1dip)
-		Dim tu As StringUtils
-		Dim bodyH As Int = Max(20dip, tu.MeasureMultilineTextHeight(lbl, BodyText))
-		xl.SetLayoutAnimated(0, 0, 0, bodyW, bodyH)
+		bodyTxt.setText(BodyText)
+		bodyTxt.setTextSize(14)
+		bodyTxt.setTextColor(xui.Color_RGB(51, 65, 85))
+		bodyTxt.SetTextAlignment("TOP", "LEFT")
+		bodyTxt.setAutoResize(True)
+		bodyTxt.AddToParent(body, 0, 0, bodyW, 20dip)
 	End If
 
 	Dim actions As B4XView = Card.CardActions
 	actions.RemoveAllViews
 	If ActionText <> Null And ActionText.Trim.Length > 0 Then
-		Dim actionBadge As B4XDaisyBadge
-		actionBadge.Initialize(Me, "")
-		Dim badgeView As B4XView = actionBadge.AddToParent(actions, 0, 0, 0, 0)
-		actionBadge.Size = "sm"
-		actionBadge.Variant = "primary"
-		actionBadge.BadgeStyle = "outline"
-		actionBadge.Text = ActionText
-		If badgeView.Width > 0 And badgeView.Height > 0 Then
-			badgeView.SetLayoutAnimated(0, 0, 0, badgeView.Width, badgeView.Height)
-		End If
+		Dim actionBtn As B4XDaisyButton
+		actionBtn.Initialize(Me, "")
+		actionBtn.Size = "sm"
+		actionBtn.Variant = "primary"
+		actionBtn.Style = "outline"
+		actionBtn.Text = ActionText
+		actionBtn.AddToParent(actions, 0, 0, 0, 0)
 	End If
 
 	If Card.mBase.IsInitialized Then Card.Base_Resize(Card.mBase.Width, Card.mBase.Height)
@@ -337,15 +328,14 @@ Private Sub AddTitleBadges(Card As B4XDaisyCard)
 End Sub
 
 Private Sub AddSectionTitle(Text As String)
-	Dim lbl As Label
-	lbl.Initialize("")
-	Dim xl As B4XView = lbl
-	xl.Text = Text
-	xl.TextColor = xui.Color_RGB(30, 41, 59)
-	xl.Font = xui.CreateDefaultBoldFont(14)
-	xl.SetTextAlignment("CENTER", "LEFT")
-	pnlHost.AddView(xl, PAGE_PAD, currentY, Root.Width - (PAGE_PAD * 2), 20dip)
-	currentY = currentY + 24dip
+        Dim lbl As B4XDaisyText
+        lbl.Initialize(Me, "")
+        lbl.AddToParent(pnlHost, PAGE_PAD, currentY, Root.Width - (PAGE_PAD * 2), 20dip)
+        lbl.Text = Text
+        lbl.TextColor = xui.Color_RGB(30, 41, 59)
+        lbl.TextSize = 14
+        lbl.FontBold = True
+        currentY = currentY + lbl.GetComputedHeight + 4dip
 End Sub
 
 Private Sub card_Click(Tag As Object)

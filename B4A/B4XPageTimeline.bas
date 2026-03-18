@@ -139,6 +139,29 @@ Next
     tl6.AddItemBox("tl6_5", "Apple Watch", "", False, False)
     y = y + 220dip
 
+    ' ====== 7. Compact left-aligned (no start text, boxes fill width) ======
+    y = AddSectionTitle("7. Compact Left-Aligned (no start text)", y, maxW)
+    Dim tl7 As B4XDaisyTimeline
+    tl7.Initialize(Me, "tl7")
+    tl7.Orientation = "vertical"
+    tl7.setCompact(True)
+    tl7.setSnapIcon(True)
+    tl7.AddToParent(pnlHost, PAGE_PAD, y, maxW, 300dip)
+    tl7.AddItemBox("tl7_1", "", "Brainstorm and research the project scope", False, True)
+    tl7.AddItemBox("tl7_2", "", "Design wireframes and get stakeholder sign-off", False, True)
+    tl7.AddItemBox("tl7_3", "", "Build the core features and run integration tests", False, True)
+    tl7.AddItemBox("tl7_4", "", "Deploy to staging and collect feedback", False, True)
+    tl7.AddItemBox("tl7_5", "", "Launch to production", False, True)
+    tl7.SetItemVariant("tl7_1", "primary")
+    tl7.SetItemVariant("tl7_2", "secondary")
+    tl7.SetItemVariant("tl7_3", "accent")
+    tl7.SetItemVariant("tl7_4", "info")
+    tl7.SetItemVariant("tl7_5", "success")
+    tl7.SetItemDone("tl7_1", True)
+    tl7.SetItemDone("tl7_2", True)
+    tl7.SetItemDone("tl7_3", True)
+    y = y + 320dip
+
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
@@ -153,7 +176,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.TextColor = xui.Color_RGB(30, 41, 59)
     title.TextSize = 14
     title.FontBold = True
-    Return Y + 32dip
+    Return Y + title.GetComputedHeight + 4dip
 End Sub
 #End Region
 

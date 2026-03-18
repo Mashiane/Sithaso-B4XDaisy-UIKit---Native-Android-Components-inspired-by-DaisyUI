@@ -256,13 +256,15 @@ Private Sub AddKeyboardRow(Y As Int, CenterX As Int, Keys() As String) As Int
 End Sub
 
 Private Sub AddPlusLabel(X As Int, Y As Int, Width As Int, Height As Int)
-    Dim plusLbl As Label
-    plusLbl.Initialize("")
+    Dim plusLbl As B4XDaisyText
+    plusLbl.Initialize(Me, "")
+    plusLbl.AddToParent(pnlHost, X, Y, Width, Height)
     plusLbl.Text = "+"
-    plusLbl.TextColor = xui.Color_RGB(63, 64, 77)
+    plusLbl.setTextColor(xui.Color_RGB(63, 64, 77))
     plusLbl.TextSize = 16
-    plusLbl.Gravity = Gravity.CENTER
-    pnlHost.AddView(plusLbl, X, Y, Width, Height)
+    plusLbl.setHAlign("CENTER")
+    plusLbl.setVAlign("CENTER")
+    plusLbl.setAutoResize(False)
 End Sub
 
 Private Sub AddKbd(Text As String, Size As String, Left As Int, Top As Int, Width As Int, Height As Int, Tag As String) As B4XDaisyKbd

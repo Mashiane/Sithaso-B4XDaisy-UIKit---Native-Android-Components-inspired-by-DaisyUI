@@ -56,14 +56,14 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 End Sub
 
 Private Sub AddTitle(Text As String)
-	Dim lbl As Label
-	lbl.Initialize("")
-	Dim xlbl As B4XView = lbl
-	xlbl.Text = Text
-	xlbl.Font = xui.CreateDefaultBoldFont(18)
-	xlbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
-	pnlContent.AddView(xlbl, 12dip, currentY, Root.Width - 24dip, 28dip)
-	currentY = currentY + 34dip
+	Dim lbl As B4XDaisyText
+	lbl.Initialize(Me, "")
+	lbl.AddToParent(pnlContent, 12dip, currentY, Root.Width - 24dip, 28dip)
+	lbl.Text = Text
+	lbl.TextSize = 18
+	lbl.FontBold = True
+	lbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
+	currentY = currentY + lbl.GetComputedHeight + 6dip
 End Sub
 
 Private Sub AddSimpleWindow
@@ -75,20 +75,17 @@ Private Sub AddSimpleWindow
 	If boxW < Root.Width - 24dip Then left = (Root.Width - boxW) / 2
 
 	Dim v As B4XView = win.AddToParent(pnlContent, left, currentY, boxW, 230dip)
-	win.setBackgroundColor("bg-base-100")
-	win.setBorderColor("border-base-300")
-	win.setBorderSize(1)
-	win.setContentPadding(12)
-	win.setHeaderHeight(24)
+	win.setContentPadding("p-3")
 
-	Dim lbl As Label
-	lbl.Initialize("")
-	Dim xLbl As B4XView = lbl
-	xLbl.Text = "Hello!"
-	xLbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)
-	xLbl.Font = xui.CreateDefaultFont(30)
-	xLbl.SetTextAlignment("CENTER", "CENTER")
-	win.AddContentView(xLbl, 0, 0, win.GetContentPanel.Width, win.GetContentPanel.Height)
+	Dim lbl As B4XDaisyText
+	lbl.Initialize(Me, "")
+	lbl.AddToParent(win.Content, 0, 0, win.ContentWidth, win.ContentHeight)
+	lbl.Text = "Hello!"
+	lbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)
+	lbl.TextSize = 30
+	lbl.HAlign = "CENTER"
+	lbl.VAlign = "CENTER"
+	win.RefreshContent
 
 	currentY = currentY + v.Height + gap
 End Sub
@@ -102,41 +99,40 @@ Private Sub AddComposableWindow
 	If boxW < Root.Width - 24dip Then left = (Root.Width - boxW) / 2
 
 	Dim v As B4XView = win.AddToParent(pnlContent, left, currentY, boxW, 260dip)
-	win.setBackgroundColor("bg-base-100")
-	win.setBorderColor("border-base-300")
-	win.setBorderSize(1)
-	win.setContentPadding(12)
-	win.setHeaderHeight(24)
+	win.setContentPadding("p-3")
+
+	Dim contentY As Int = 0
+	Dim itemGap As Int = 6dip
 
 	Dim titleLbl As B4XDaisyText
 	titleLbl.Initialize(Me, "")
-	titleLbl.AddToParent(win.GetContentPanel, 0, 0, win.GetContentPanel.Width, 32dip)
+	titleLbl.AddToParent(win.Content, 0, contentY, win.ContentWidth, 32dip)
 	titleLbl.Text = "Drop any component here"
 	titleLbl.FontBold = True
 	titleLbl.HAlign = "LEFT"
 	titleLbl.VAlign = "CENTER"
 	titleLbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
-	titleLbl.BackgroundColor = xui.Color_Transparent
+	contentY = contentY + titleLbl.GetComputedHeight + itemGap
 
 	Dim note As B4XDaisyText
 	note.Initialize(Me, "")
-	note.AddToParent(win.GetContentPanel, 0, 34dip, win.GetContentPanel.Width, 28dip)
+	note.AddToParent(win.Content, 0, contentY, win.ContentWidth, 28dip)
 	note.Text = "This content area is plain and composable."
 	note.TextSize = "text-sm"
 	note.HAlign = "LEFT"
 	note.TextColor = B4XDaisyVariants.SetAlpha(B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray), 170)
-	note.BackgroundColor = xui.Color_Transparent
+	contentY = contentY + note.GetComputedHeight + itemGap
 
 	Dim badge As B4XDaisyBadge
 	badge.Initialize(Me, "")
-	badge.AddToParent(win.GetContentPanel, 0, 72dip, 120dip, 32dip)
+	badge.AddToParent(win.Content, 0, contentY, Min(120dip, win.ContentWidth), 32dip)
 	badge.Text = "B4XDaisyBadge"
 	badge.Variant = "primary"
 	badge.Style = "solid"
 	badge.Rounded = "rounded-full"
 	badge.setHeight("8")
+	win.RefreshContent
 
-	
 	currentY = currentY + v.Height + gap
 End Sub
 
@@ -149,44 +145,20 @@ Private Sub AddBrowserWindow
 	If boxW < Root.Width - 24dip Then left = (Root.Width - boxW) / 2
 
 	Dim v As B4XView = win.AddToParent(pnlContent, left, currentY, boxW, 240dip)
-	win.setBackgroundColor("bg-base-100")
-	win.setBorderColor("border-base-300")
-	win.setBorderSize(1)
-	win.setContentPadding(12)
+	win.setContentPadding("p-3")
 	win.setHeaderHeight(30)
 	win.setShowControls(True)
+	win.setToolBarTitle("https://daisyui.com")
 
-	Dim headerSlot As B4XView = win.GetHeaderPanel
-	Dim barW As Int = Min(Max(140dip, headerSlot.Width - 20dip), 280dip)
-	Dim barH As Int = Max(18dip, headerSlot.Height - 4dip)
-	Dim barLeft As Int = Max(0, (headerSlot.Width - barW) / 2)
-	Dim barTop As Int = Max(0, (headerSlot.Height - barH) / 2)
-
-	Dim pAddress As Panel
-	pAddress.Initialize("")
-	Dim addressBar As B4XView = pAddress
-	addressBar.Color = B4XDaisyVariants.GetTokenColor("--color-base-100", xui.Color_White)
-	addressBar.SetColorAndBorder(addressBar.Color, 1dip, B4XDaisyVariants.GetTokenColor("--color-base-300", xui.Color_RGB(220, 220, 224)), 4dip)
-
-	Dim lblUrl As Label
-	lblUrl.Initialize("")
-	Dim xUrl As B4XView = lblUrl
-	xUrl.Text = "https://daisyui.com"
-	xUrl.Font = xui.CreateDefaultFont(12)
-	xUrl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
-	xUrl.SetTextAlignment("CENTER", "LEFT")
-	addressBar.AddView(xUrl, 10dip, 0, Max(0, barW - 20dip), barH)
-
-	win.AddHeaderView(addressBar, barLeft, barTop, barW, barH)
-
-	Dim lbl As Label
-	lbl.Initialize("")
-	Dim xLbl As B4XView = lbl
-	xLbl.Text = "Hello!"
-	xLbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)
-	xLbl.Font = xui.CreateDefaultFont(28)
-	xLbl.SetTextAlignment("CENTER", "CENTER")
-	win.AddContentView(xLbl, 0, 0, win.GetContentPanel.Width, win.GetContentPanel.Height)
+	Dim lbl As B4XDaisyText
+	lbl.Initialize(Me, "")
+	lbl.AddToParent(win.Content, 0, 0, win.ContentWidth, win.ContentHeight)
+	lbl.Text = "Hello!"
+	lbl.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_Black)
+	lbl.TextSize = 28
+	lbl.HAlign = "CENTER"
+	lbl.VAlign = "CENTER"
+	win.RefreshContent
 
 	currentY = currentY + v.Height + gap
 End Sub
@@ -205,55 +177,34 @@ Private Sub AddShadowShowcase
 		win.Initialize(Me, "win_shadow")
 
 		Dim v As B4XView = win.AddToParent(pnlContent, left, currentY, boxW, 140dip)
-		win.setBackgroundColor("bg-base-100")
-		win.setBorderColor("border-base-300")
-		win.setBorderSize(1)
-		win.setContentPadding(12)
+		win.setContentPadding("p-3")
 		win.setHeaderHeight(24)
 		win.setShadow(shadowValue)
 
-		Dim lblName As Label
-		lblName.Initialize("")
-		Dim xName As B4XView = lblName
-		xName.Text = "shadow-" & shadowValue
-		xName.Font = xui.CreateDefaultBoldFont(18)
-		xName.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
-		xName.SetTextAlignment("LEFT", "CENTER")
-		win.AddContentView(xName, 0, 0, win.GetContentPanel.Width, 28dip)
+		Dim contentY As Int = 0
+		Dim itemGap As Int = 6dip
 
-		Dim lblDesc As Label
-		lblDesc.Initialize("")
-		Dim xDesc As B4XView = lblDesc
-		xDesc.Text = "Use this elevation when visual hierarchy needs " & shadowValue & " depth."
-		xDesc.Font = xui.CreateDefaultFont(13)
-		xDesc.TextColor = B4XDaisyVariants.SetAlpha(B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray), 180)
-		xDesc.SetTextAlignment("LEFT", "TOP")
-		win.AddContentView(xDesc, 0, 34dip, win.GetContentPanel.Width, 56dip)
+		Dim lblName As B4XDaisyText
+		lblName.Initialize(Me, "")
+		lblName.AddToParent(win.Content, 0, contentY, win.ContentWidth, 28dip)
+		lblName.Text = "shadow-" & shadowValue
+		lblName.TextSize = 18
+		lblName.FontBold = True
+		lblName.TextColor = B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray)
+		lblName.HAlign = "LEFT"
+		lblName.VAlign = "CENTER"
+		contentY = contentY + lblName.GetComputedHeight + itemGap
+
+		Dim lblDesc As B4XDaisyText
+		lblDesc.Initialize(Me, "")
+		lblDesc.AddToParent(win.Content, 0, contentY, win.ContentWidth, 56dip)
+		lblDesc.Text = "Use this elevation when visual hierarchy needs " & shadowValue & " depth."
+		lblDesc.TextSize = 13
+		lblDesc.TextColor = B4XDaisyVariants.SetAlpha(B4XDaisyVariants.GetTokenColor("--color-base-content", xui.Color_DarkGray), 180)
+		lblDesc.HAlign = "LEFT"
+		lblDesc.VAlign = "TOP"
+		win.RefreshContent
 
 		currentY = currentY + v.Height + 14dip
 	Next
-End Sub
-
-Private Sub win_simple_ControlClick(Index As Int)
-	#If B4A
-	ToastMessageShow("Window control " & Index, False)
-	#End If
-End Sub
-
-Private Sub win_composable_ControlClick(Index As Int)
-	#If B4A
-	ToastMessageShow("Window control " & Index, False)
-	#End If
-End Sub
-
-Private Sub win_browser_ControlClick(Index As Int)
-	#If B4A
-	ToastMessageShow("Browser control " & Index, False)
-	#End If
-End Sub
-
-Private Sub win_shadow_ControlClick(Index As Int)
-	#If B4A
-	ToastMessageShow("Shadow demo control " & Index, False)
-	#End If
 End Sub

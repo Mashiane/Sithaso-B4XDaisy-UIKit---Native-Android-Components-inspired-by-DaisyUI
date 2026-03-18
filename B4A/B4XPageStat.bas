@@ -67,13 +67,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #region Example 1: Stat (Basic) � single item, horizontal
     ''' Demonstrates the minimal stat: one item with title, value and description.
     currentY = AddSectionTitle("Stat (Basic)", currentY, maxW)
-    Dim sv1 As HorizontalScrollView
-    sv1.Initialize(0, "")
-    pnlHost.AddView(sv1, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats1 As B4XDaisyStat
     stats1.Initialize(Me, "")
-    stats1.AddToParent(sv1.Panel, 0, 0, 1dip, 1dip)
+    stats1.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     Dim item1 As B4XDaisyStatItem
     item1.Initialize(Me, "component")
@@ -83,10 +79,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     stats1.AddItem(item1)
     stats1.Refresh
     
-    sv1.Panel.Width = Max(stats1.ContentWidth, maxW)
-    Dim h1 As Int = stats1.ContentHeight
-    sv1.Width = maxW : sv1.Height = h1
-    currentY = currentY + h1 + 12dip
+    item1.LogLabelWidths("Example 1: item1")
+    
+    currentY = currentY + stats1.ContentHeight + 12dip
     Sleep(0)
     ' #endregion
     
@@ -95,13 +90,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ''' content is typically wider than the screen, so the HorizontalScrollView allows
     ''' the user to scroll right � matching the CSS overflow-x-auto on .stats.
     currentY = AddSectionTitle("Stat with icons or image", currentY, maxW)
-    Dim sv2 As HorizontalScrollView
-    sv2.Initialize(0, "")
-    pnlHost.AddView(sv2, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats2 As B4XDaisyStat
     stats2.Initialize(Me, "")
-    stats2.AddToParent(sv2.Panel, 0, 0, 1dip, 1dip)
+    stats2.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     ''' Item 1: heart icon + Total Likes metric.
     Dim item2_1 As B4XDaisyStatItem
@@ -138,10 +129,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats2.Refresh
     
-    sv2.Panel.Width = Max(stats2.ContentWidth, maxW)
-    Dim h2 As Int = stats2.ContentHeight
-    sv2.Width = maxW : sv2.Height = h2
-    currentY = currentY + h2 + 12dip
+    currentY = currentY + stats2.ContentHeight + 12dip
     Sleep(0)
     ' #endregion
     
@@ -149,13 +137,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ''' Demonstrates CenterItems=True: title, value and description are all centred
     ''' inside each stat cell.
     currentY = AddSectionTitle("Centered items", currentY, maxW)
-    Dim sv3 As HorizontalScrollView
-    sv3.Initialize(0, "")
-    pnlHost.AddView(sv3, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats3 As B4XDaisyStat
     stats3.Initialize(Me, "")
-    stats3.AddToParent(sv3.Panel, 0, 0, 1dip, 1dip)
+    stats3.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     Dim item3_1 As B4XDaisyStatItem
     item3_1.Initialize(Me, "component")
@@ -170,15 +154,20 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item3_2.CenterItems = True
     item3_2.Title = "Users"
     item3_2.Value = "4,200"
-    item3_2.Description = "?? 40 (2%)"
+    item3_2.Description = Chr(8599) & " 40 (2%)"
     stats3.AddItem(item3_2)
+    
+    Dim item3_3 As B4XDaisyStatItem
+    item3_3.Initialize(Me, "component")
+    item3_3.CenterItems = True
+    item3_3.Title = "New Registers"
+    item3_3.Value = "1,200"
+    item3_3.Description = Chr(8600) & " 90 (14%)"
+    stats3.AddItem(item3_3)
     
     stats3.Refresh
     
-    sv3.Panel.Width = Max(stats3.ContentWidth, maxW)
-    Dim h3 As Int = stats3.ContentHeight
-    sv3.Width = maxW : sv3.Height = h3
-    currentY = currentY + h3 + 12dip
+    currentY = currentY + stats3.ContentHeight + 12dip
     ' #endregion
     
     ' #region Example 4: Vertical � stats stacked top-to-bottom with bottom-edge separators
@@ -201,8 +190,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item4_2.Initialize(Me, "component")
     item4_2.Title = "New Users"
     item4_2.Value = "4,200"
-    item4_2.Description = "?? 400 (22%)"
+    item4_2.Description = Chr(8599) & " 400 (22%)"
     stats4.AddItem(item4_2)
+    
+    Dim item4_3 As B4XDaisyStatItem
+    item4_3.Initialize(Me, "component")
+    item4_3.Title = "New Registers"
+    item4_3.Value = "1,200"
+    item4_3.Description = Chr(8600) & " 90 (14%)"
+    stats4.AddItem(item4_3)
     
     stats4.Refresh
     
@@ -214,13 +210,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ''' Demonstrates Variant property: background color + all text become the variant's
     ''' content color. ValueColor can still override just the value label independently.
     currentY = AddSectionTitle("Colored variants", currentY, maxW)
-    Dim sv4b As HorizontalScrollView
-    sv4b.Initialize(0, "")
-    pnlHost.AddView(sv4b, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats4b As B4XDaisyStat
     stats4b.Initialize(Me, "")
-    stats4b.AddToParent(sv4b.Panel, 0, 0, 1dip, 1dip)
+    stats4b.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     ''' Item 1: Primary variant � bg + all text colored.
     Dim item4b_1 As B4XDaisyStatItem
@@ -251,23 +243,16 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats4b.Refresh
     
-    sv4b.Panel.Width = Max(stats4b.ContentWidth, maxW)
-    Dim h4b As Int = stats4b.ContentHeight
-    sv4b.Width = maxW : sv4b.Height = h4b
-    currentY = currentY + h4b + 12dip
+    currentY = currentY + stats4b.ContentHeight + 12dip
     Sleep(0)
     ' #endregion
     
     ' #region Example 5: With action button
     ''' Demonstrates stat-actions slot: an Add funds button appears below the value.
     currentY = AddSectionTitle("With action button", currentY, maxW)
-    Dim sv5 As HorizontalScrollView
-    sv5.Initialize(0, "")
-    pnlHost.AddView(sv5, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats5 As B4XDaisyStat
     stats5.Initialize(Me, "")
-    stats5.AddToParent(sv5.Panel, 0, 0, 1dip, 1dip)
+    stats5.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     Dim item5_1 As B4XDaisyStatItem
     item5_1.Initialize(Me, "component")
@@ -283,22 +268,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats5.Refresh
     
-    sv5.Panel.Width = Max(stats5.ContentWidth, maxW)
-    Dim h5 As Int = stats5.ContentHeight
-    sv5.Width = maxW : sv5.Height = h5
-    currentY = currentY + h5 + 12dip
+    currentY = currentY + stats5.ContentHeight + 12dip
     ' #endregion
     
     ' #region Example 6: With radial progress figure
     ''' Demonstrates stat-figure slot with a B4XDaisyRadialProgress as the figure icon.
     currentY = AddSectionTitle("With radial progress", currentY, maxW)
-    Dim sv6 As HorizontalScrollView
-    sv6.Initialize(0, "")
-    pnlHost.AddView(sv6, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats6 As B4XDaisyStat
     stats6.Initialize(Me, "")
-    stats6.AddToParent(sv6.Panel, 0, 0, 1dip, 1dip)
+    stats6.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     Dim item6_1 As B4XDaisyStatItem
     item6_1.Initialize(Me, "component")
@@ -324,22 +302,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats6.Refresh
     
-    sv6.Panel.Width = Max(stats6.ContentWidth, maxW)
-    Dim h6 As Int = stats6.ContentHeight
-    sv6.Width = maxW : sv6.Height = h6
-    currentY = currentY + h6 + 12dip
+    currentY = currentY + stats6.ContentHeight + 12dip
     ' #endregion
     
     ' #region Example 7: With avatar figure
     ''' Demonstrates stat-figure slot with a B4XDaisyAvatar as the figure image.
     currentY = AddSectionTitle("With avatar figure", currentY, maxW)
-    Dim sv7 As HorizontalScrollView
-    sv7.Initialize(0, "")
-    pnlHost.AddView(sv7, PAGE_PAD, currentY, maxW, 80dip)
-    
     Dim stats7 As B4XDaisyStat
     stats7.Initialize(Me, "")
-    stats7.AddToParent(sv7.Panel, 0, 0, 1dip, 1dip)
+    stats7.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     ''' Item 1: Avatar image + user stats.
     Dim item7_1 As B4XDaisyStatItem
@@ -364,10 +335,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats7.Refresh
     
-    sv7.Panel.Width = Max(stats7.ContentWidth, maxW)
-    Dim h7 As Int = stats7.ContentHeight
-    sv7.Width = maxW : sv7.Height = h7
-    currentY = currentY + h7 + 12dip
+    currentY = currentY + stats7.ContentHeight + 12dip
     ' #endregion
 
     pnlHost.Height = Max(Height, currentY + PAGE_PAD)
@@ -383,17 +351,19 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.setTextColor(xui.Color_RGB(30, 41, 59))
     title.TextSize = "text-lg"
     title.FontBold = True
-    Return Y + 48dip
+    Return Y + title.GetComputedHeight + 20dip
 End Sub
+
 #End Region
 
 #Region Base Events
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
     If svHost.IsInitialized Then svHost.SetLayoutAnimated(0, 0, 0, Width, Height)
-    RenderExamples(Width, Height)
+    Wait For (RenderExamples(Width, Height)) Complete (Done As Boolean)
 End Sub
 
 Private Sub component_Click(Tag As Object)
+    'Log("Clicked: " & Tag)
 End Sub
 
 

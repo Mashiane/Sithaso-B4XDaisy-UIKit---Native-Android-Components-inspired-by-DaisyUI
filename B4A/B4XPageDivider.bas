@@ -181,7 +181,7 @@ Private Sub AddDemoCard(Parent As B4XView, Left As Int, Top As Int, Width As Int
 	baseDiv.RoundedBox = True
 	baseDiv.Text = Text
 	baseDiv.setTextSize(DIVIDER_TEXT_SIZE)
-	baseDiv.BackgroundColorVariant = "bg-base-300"
+	baseDiv.BackgroundColorVariant = "bg-neutral"
 	baseDiv.TextColorVariant = "text-neutral-content"
 End Sub
 

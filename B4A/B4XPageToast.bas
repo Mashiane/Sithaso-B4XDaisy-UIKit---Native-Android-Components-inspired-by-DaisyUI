@@ -58,18 +58,18 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	lblEx1.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
-	Dim btnBottomEnd As Button = CreateButton("Bottom End", "bottom_end")
-	content.AddView(btnBottomEnd, 10dip, currentY, 140dip, 40dip)
+	Dim btnBottomEnd As B4XDaisyButton = CreateButton("Bottom End", "bottom_end")
+	btnBottomEnd.AddToParent(content, 10dip, currentY, 140dip, 40dip)
 	
-	Dim btnTopStart As Button = CreateButton("Top Start", "top_start")
-	content.AddView(btnTopStart, 160dip, currentY, 140dip, 40dip)
+	Dim btnTopStart As B4XDaisyButton = CreateButton("Top Start", "top_start")
+	btnTopStart.AddToParent(content, 160dip, currentY, 140dip, 40dip)
 	currentY = currentY + 50dip
 
-	Dim btnBottomStart As Button = CreateButton("Bottom Start", "bottom_start")
-	content.AddView(btnBottomStart, 10dip, currentY, 140dip, 40dip)
+	Dim btnBottomStart As B4XDaisyButton = CreateButton("Bottom Start", "bottom_start")
+	btnBottomStart.AddToParent(content, 10dip, currentY, 140dip, 40dip)
 	
-	Dim btnTopEnd As Button = CreateButton("Top End", "top_end")
-	content.AddView(btnTopEnd, 160dip, currentY, 140dip, 40dip)
+	Dim btnTopEnd As B4XDaisyButton = CreateButton("Top End", "top_end")
+	btnTopEnd.AddToParent(content, 160dip, currentY, 140dip, 40dip)
 	currentY = currentY + 60dip
 
 	'--- Example 2: Timed Notifications ---
@@ -80,11 +80,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	lblEx2.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
-	Dim btnTimedSuccess As Button = CreateButton("Timed Success", "timed_success")
-	content.AddView(btnTimedSuccess, 10dip, currentY, 140dip, 40dip)
+	Dim btnTimedSuccess As B4XDaisyButton = CreateButton("Timed Success", "timed_success")
+	btnTimedSuccess.AddToParent(content, 10dip, currentY, 140dip, 40dip)
 	
-	Dim btnTimedError As Button = CreateButton("Timed Error", "timed_error")
-	content.AddView(btnTimedError, 160dip, currentY, 140dip, 40dip)
+	Dim btnTimedError As B4XDaisyButton = CreateButton("Timed Error", "timed_error")
+	btnTimedError.AddToParent(content, 160dip, currentY, 140dip, 40dip)
 	currentY = currentY + 60dip
 
 	'--- Example 3: Stacked ---
@@ -95,11 +95,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	lblEx3.TextSize = "text-sm"
 	currentY = currentY + 40dip
 
-	Dim btnStackInfo As Button = CreateButton("Add Info Stack", "stack_info")
-	content.AddView(btnStackInfo, 10dip, currentY, 140dip, 40dip)
+	Dim btnStackInfo As B4XDaisyButton = CreateButton("Add Info Stack", "stack_info")
+	btnStackInfo.AddToParent(content, 10dip, currentY, 140dip, 40dip)
 	
-	Dim btnClearAll As Button = CreateButton("Clear All", "clear_all")
-	content.AddView(btnClearAll, 160dip, currentY, 140dip, 40dip)
+	Dim btnClearAll As B4XDaisyButton = CreateButton("Clear All", "clear_all")
+	btnClearAll.AddToParent(content, 160dip, currentY, 140dip, 40dip)
 	currentY = currentY + 60dip
 
 	' Initial visible toast
@@ -111,19 +111,16 @@ Private Sub B4XPage_Appear
 	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
-Private Sub CreateButton(Text As String, Tag As Object) As Button
-	Dim b As Button
-	b.Initialize("ExampleClick")
+Private Sub CreateButton(Text As String, Tag As Object) As B4XDaisyButton
+	Dim b As B4XDaisyButton
+	b.Initialize(Me, "ExampleClick")
 	b.Text = Text
 	b.Tag = Tag
 	Return b
 End Sub
 
-Private Sub ExampleClick_Click
-	Dim b As Button = Sender
-	Dim tag As String = b.Tag
-	
-	Select Case tag
+Private Sub ExampleClick_Click(Tag As Object)
+	Select Case Tag
 		Case "bottom_end"
 			toast.SetPosition("end", "bottom")
 			toast.Info("Bottom End Notification")

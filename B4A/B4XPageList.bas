@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -30,6 +30,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
     pnlHost = svHost.Panel
     pnlHost.Color = xui.Color_Transparent
+    
 
     RenderExamples(Root.Width, Root.Height)
 End Sub
@@ -293,7 +294,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     title.TextColor = xui.Color_RGB(30, 41, 59)
     title.TextSize = 16
     title.FontBold = True
-    Return Y + 32dip
+    Return Y + title.GetComputedHeight + 2dip
 End Sub
 
 Private Sub list1_ItemClick(Index As Int, Tag As Object)

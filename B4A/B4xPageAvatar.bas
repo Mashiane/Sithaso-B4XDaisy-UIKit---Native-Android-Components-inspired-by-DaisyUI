@@ -1187,6 +1187,7 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 End Sub
 
 Private Sub avatar_AvatarClick(Payload As Object)
+	'Log("Avatar page click: " & Payload)
 End Sub
 
 

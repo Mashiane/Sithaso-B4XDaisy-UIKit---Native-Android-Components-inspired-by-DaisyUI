@@ -225,28 +225,28 @@ Private Sub CreateSamples(content As B4XView) As ResumableSub
 	currentY = currentY + 100dip
 	
 	' Add animation control buttons
-	Dim btnStart As Button
-	btnStart.Initialize("btnStart")
+	Dim btnStart As B4XDaisyButton
+	btnStart.Initialize(Me, "btnStart")
 	btnStart.Text = "Animate to 85%"
-	content.AddView(btnStart, 10dip, currentY, 200dip, 40dip)
+	btnStart.AddToParent(content, 10dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
-	Dim btnAnimate10 As Button
-	btnAnimate10.Initialize("btnAnimate10")
+	Dim btnAnimate10 As B4XDaisyButton
+	btnAnimate10.Initialize(Me, "btnAnimate10")
 	btnAnimate10.Text = "Animate to 10%"
-	content.AddView(btnAnimate10, 10dip, currentY, 200dip, 40dip)
+	btnAnimate10.AddToParent(content, 10dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
-	Dim btnTimer As Button
-	btnTimer.Initialize("btnTimer")
+	Dim btnTimer As B4XDaisyButton
+	btnTimer.Initialize(Me, "btnTimer")
 	btnTimer.Text = "Start 5s Countdown"
-	content.AddView(btnTimer, 10dip, currentY, 200dip, 40dip)
+	btnTimer.AddToParent(content, 10dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
-	Dim btnReset As Button
-	btnReset.Initialize("btnReset")
+	Dim btnReset As B4XDaisyButton
+	btnReset.Initialize(Me, "btnReset")
 	btnReset.Text = "Reset (Max 100)"
-	content.AddView(btnReset, 10dip, currentY, 200dip, 40dip)
+	btnReset.AddToParent(content, 10dip, currentY, 200dip, 40dip)
 	currentY = currentY + 50dip
 	
 	content.Height = currentY + 50dip
@@ -260,19 +260,19 @@ End Sub
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
 End Sub
 
-Private Sub btnStart_Click
+Private Sub btnStart_Click(Tag As Object)
 	animatedRadial.SetValueAnimated(85, 3000)
 End Sub
 
-Private Sub btnAnimate10_Click
+Private Sub btnAnimate10_Click(Tag As Object)
 	animatedRadial.SetValueAnimated(10, 2000)
 End Sub
 
-Private Sub btnTimer_Click
+Private Sub btnTimer_Click(Tag As Object)
 	animatedRadial.StartTimer(5000)
 End Sub
 
-Private Sub btnReset_Click
+Private Sub btnReset_Click(Tag As Object)
 	animatedRadial.setMaxValue(100)
 	animatedRadial.setPrefix("$")
 	animatedRadial.setSuffix("K")

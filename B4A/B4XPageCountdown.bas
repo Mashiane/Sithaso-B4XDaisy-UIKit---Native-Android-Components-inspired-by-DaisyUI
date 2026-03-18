@@ -235,14 +235,13 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 End Sub
 
 Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
-    Dim l As Label
-    l.Initialize("")
-    Dim x As B4XView = l
-    pnlHost.AddView(x, PAGE_PAD, Y, Width, 30dip)
-    x.Text = Text
-    x.TextColor = xui.Color_RGB(30, 41, 59)
-    x.TextSize = 18
-    Return Y + 40dip
+    Dim l As B4XDaisyText
+    l.Initialize(Me, "")
+    l.AddToParent(pnlHost, PAGE_PAD, Y, Width, 30dip)
+    l.Text = Text
+    l.TextColor = xui.Color_RGB(30, 41, 59)
+    l.TextSize = 18
+    Return Y + l.GetComputedHeight + 10dip
 End Sub
 
 Private Sub timer1_Tick

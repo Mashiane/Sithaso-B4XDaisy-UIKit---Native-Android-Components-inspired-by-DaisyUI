@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -58,13 +58,24 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"countdown", "label":"Countdown", "imagePath":"countdown.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"diff", "label":"Diff", "imagePath":"diff.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"dropdown", "label":"Dropdown", "imagePath":"dropdown.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"fab", "label":"Fab", "imagePath":"fab.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"fab_basic", "label":"Fab Basic", "imagePath":"fab.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"fab_flower", "label":"Fab Flower", "imagePath":"fab.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"fab_navbar", "label":"Fab Navbar", "imagePath":"navbar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"hover3d", "label":"Hover3d", "imagePath":"hover-3d.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"kbd", "label":"Kbd", "imagePath":"kbd.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"link", "label":"Link", "imagePath":"link.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"list", "label":"List", "imagePath":"list.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"menu", "label":"Menu", "imagePath":"menu.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"menu_runtime2", "label":"Menu Level", "imagePath":"menu.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"menu_runtime", "label":"Menu Runtime", "imagePath":"menu.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"modal", "label":"Modal", "imagePath":"modal.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"overlay", "label":"Overlay", "imagePath":"", "svgPath":"eye-solid.svg"))
 	apps.Add(CreateMap("id":"progress", "label":"Progress", "imagePath":"progress.webp", "svgPath":""))
@@ -198,17 +209,38 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "divider"
 			NavigateFromMainPage("Divider")
 			Return
+		Case "dropdown"
+			NavigateFromMainPage("Dropdown")
+			Return
+		Case "fab"
+			NavigateFromMainPage("Fab")
+			Return
+		Case "fab_basic"
+			NavigateFromMainPage("Fab Basic")
+			Return
+		Case "fab_flower"
+			NavigateFromMainPage("Fab Flower")
+			Return
+		Case "fab_navbar"
+			NavigateFromMainPage("Fab Navbar")
+			Return
 		Case "fieldset"
 			NavigateFromMainPage("FieldSet")
 			Return
 		Case "hero"
 			NavigateFromMainPage("Hero")
 			Return
+		Case "hover3d"
+			NavigateFromMainPage("Hover3d")
+			Return
 		Case "indicator"
 			NavigateFromMainPage("Indicator")
 			Return
 		Case "kbd"
 			NavigateFromMainPage("Kbd")
+			Return
+		Case "link"
+			NavigateFromMainPage("Link")
 			Return
 		Case "list"
 			NavigateFromMainPage("List")
@@ -218,6 +250,18 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "mask"
 			NavigateFromMainPage("Mask")
+			Return
+		Case "menu"
+			NavigateFromMainPage("Menu")
+			Return
+		Case "menu_runtime"
+			NavigateFromMainPage("Menu Runtime")
+			Return
+		Case "menu_runtime2"
+			NavigateFromMainPage("Menu Runtime 2")
+			Return
+		Case "modal"
+			NavigateFromMainPage("Modal")
 			Return
 		Case "navbar"
 			NavigateFromMainPage("Navbar")

@@ -52,12 +52,23 @@ Sub Class_Globals
 	Public AccordionPage As B4XPageAccordion
 	Public CountdownPage As B4XPageCountdown
 	Public DiffPage As B4XPageDiff
+	Public ListPage As B4XPageList
 	Public CanvasSpinner As B4XPageCanvasSpinner
 	Public TextRotatePage As B4XPageTextRotate
 	Public TimelinePage As B4XPageTimeline
-	Public ListPage As B4XPageList
+	Public Hover3dPage As B4XPageHover3d
 	Private AppOverlay As B4XDaisyOverlay
 	Private AppLoader As B4XDaisyCanvasSpinner
+	Public FabPage As B4XPageFab
+	Public FabBasicPage As B4XPageFabBasic
+	Public FabNavbarPage As B4XPageFabNavbar
+	Public FabFlowerPage As B4XPageFabFlower
+	Public MenuPage As B4XPageMenu
+	Public MenuRuntimePage As B4XPageMenuRuntime
+	Public MenuRuntime2Page As B4XPageMenuRuntime2
+	Public DropdownPage As B4XPageDropdown
+	Public ModalPage As B4XPageModal
+	Public LinkPage As B4XPageLink
 End Sub
 
 Public Sub Initialize
@@ -88,7 +99,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 		AppOverlay.Visible = False
 		
 		AppLoader.Initialize(Me, "AppLoader")
-		AppLoader.AttachTo(AppOverlay.mBase)
+		AppLoader.AttachTo(AppOverlay.GetHostView)
 		AppLoader.Hide
 	End If
 	
@@ -139,8 +150,19 @@ Sub ShowSplashScreen As ResumableSub
 	AccordionPage.Initialize
 	CountdownPage.Initialize
 	DiffPage.Initialize
+	ListPage.Initialize
 	SkeletonPage.Initialize
 	StatPage.Initialize
+	FabPage.Initialize
+	FabBasicPage.Initialize
+	FabNavbarPage.Initialize
+	FabFlowerPage.Initialize
+	MenuPage.Initialize
+	MenuRuntimePage.Initialize
+	MenuRuntime2Page.Initialize
+	DropdownPage.Initialize
+	ModalPage.Initialize
+	LinkPage.Initialize
 	DashboardPage.Initialize
 	ToastPage.Initialize
 	TooltipPage.Initialize
@@ -150,7 +172,7 @@ Sub ShowSplashScreen As ResumableSub
 	CanvasSpinner.Initialize
 	TextRotatePage.Initialize
 	TimelinePage.Initialize
-	ListPage.Initialize
+	Hover3dPage.Initialize
 
 	B4XPages.AddPage("Stat", StatPage)
 	B4XPages.AddPage("Chat", ChatPage)
@@ -158,7 +180,18 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Avatar", AvatarPage)
 	B4XPages.AddPage("Badge", BadgePage)
 	B4XPages.AddPage("Card", CardPage)
+	B4XPages.AddPage("Link", LinkPage)
+	B4XPages.AddPage("Modal", ModalPage)
+	B4XPages.AddPage("Dropdown", DropdownPage)
+	B4XPages.AddPage("Menu", MenuPage)
+	B4XPages.AddPage("Menu Runtime", MenuRuntimePage)
+	B4XPages.AddPage("Menu Runtime 2", MenuRuntime2Page)
+	B4XPages.AddPage("Fab", FabPage)
+	B4XPages.AddPage("Fab Basic", FabBasicPage)
+	B4XPages.AddPage("Fab Navbar", FabNavbarPage)
+	B4XPages.AddPage("Fab Flower", FabFlowerPage)
 	B4XPages.AddPage("Diff", DiffPage)
+	B4XPages.AddPage("List", ListPage)
 	B4XPages.AddPage("Dashboard", DashboardPage)
 	B4XPages.AddPage("Skeleton", SkeletonPage)
 	B4XPages.AddPage("Hero", HeroPage)
@@ -187,7 +220,7 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("CanvasSpinner", CanvasSpinner)
 	B4XPages.AddPage("TextRotate", TextRotatePage)
 	B4XPages.AddPage("Timeline", TimelinePage)
-	B4XPages.AddPage("List", ListPage)
+	B4XPages.AddPage("Hover3d", Hover3dPage)
 	Return True
 End Sub
 
@@ -233,4 +266,3 @@ Private Sub Page_Ready
 	AppLoader.Hide
 	AppOverlay.Close
 End Sub
-
