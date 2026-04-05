@@ -1,4 +1,4 @@
-﻿# Changelog - v0.60
+﻿upd# Changelog - v0.60
 
 Generated on: 2026-04-05
 
