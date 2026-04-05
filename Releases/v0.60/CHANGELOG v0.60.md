@@ -1,6 +1,6 @@
 ﻿# Changelog - v0.60
 
-Generated on: 2026-04-04
+Generated on: 2026-04-05
 
 Compare: v0.50 -> v0.60
 
