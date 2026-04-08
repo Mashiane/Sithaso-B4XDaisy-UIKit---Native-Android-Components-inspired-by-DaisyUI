@@ -1,6 +1,6 @@
 ﻿# Changelog - v0.60
 
-Generated on: 2026-04-05
+Generated on: 2026-04-08
 
 Compare: v0.50 -> v0.60
 
@@ -11,7 +11,7 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 ## Summary
 
 - New components: 5
-- Modified components: 6
+- Modified components: 20
 - Removed components: 0
 
 ## New Files
@@ -24,10 +24,24 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Modified Files
 
+- B4XDaisyAlert.bas
+- B4XDaisyAvatar.bas
+- B4XDaisyBoxModel.bas
+- B4XDaisyButton.bas
+- B4XDaisyCard.bas
+- B4XDaisyCardActions.bas
+- B4XDaisyCardTitle.bas
+- B4XDaisyCollapse.bas
 - B4XDaisyDiff.bas
+- B4XDaisyDropdown.bas
+- B4XDaisyLoading.bas
 - B4XDaisyMenu.bas
 - B4XDaisyModal.bas
+- B4XDaisyProgress.bas
+- B4XDaisyRadialProgress.bas
+- B4XDaisyStat.bas
 - B4XDaisyText.bas
+- B4XDaisyTooltip.bas
 - B4XDaisyVariants.bas
 - YogaContainer.bas
 

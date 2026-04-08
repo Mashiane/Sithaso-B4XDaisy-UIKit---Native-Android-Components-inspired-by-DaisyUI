@@ -95,9 +95,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     btnM5Close.Tag = "m5_close"
     btnM5Close.Text = "Close"
     btnM5Close.Size = "md"
-    btnM5Close.AddToParent(m5.getActionsContainer, 0, 0, 100dip, 40dip)
+    btnM5Close.Variant = "primary"
+    m5.AddAction(btnM5Close)
     m5.Refresh
-    
+
     Dim btn5 As B4XDaisyButton
     btn5.Initialize(Me, "btn5")
     btn5.AddToParent(pnlHost, 20dip, y, 140dip, 40dip)
@@ -114,9 +115,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     btnM7Dismiss.Tag = "m7_close"
     btnM7Dismiss.Text = "Dismiss"
     btnM7Dismiss.Size = "md"
-    btnM7Dismiss.AddToParent(m7.getActionsContainer, 0, 0, 100dip, 40dip)
+    btnM7Dismiss.Variant = "primary"
+    m7.AddAction(btnM7Dismiss)
     m7.Refresh
-    
+
     Dim btn7 As B4XDaisyButton
     btn7.Initialize(Me, "btn7")
     btn7.AddToParent(pnlHost, 20dip, y, 150dip, 40dip)
@@ -293,7 +295,8 @@ Private Sub AddActionButton(m As B4XDaisyModal, Text As String, ItemTag As Strin
     btn.Tag = ItemTag
     btn.Text = Text
     btn.Size = "sm"
-    btn.AddToParent(m.getActionsContainer, 0, 0, 80dip, 32dip)
+    btn.Variant = "primary"
+    m.AddAction(btn)
     m.Refresh
 End Sub
 

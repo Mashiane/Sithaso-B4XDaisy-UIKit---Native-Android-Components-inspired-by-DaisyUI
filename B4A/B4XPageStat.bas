@@ -64,13 +64,14 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim currentY As Int = PAGE_PAD
     
-    ' #region Example 1: Stat (Basic) � single item, horizontal
+    ' #region Example 1: Stat (Basic) - single item, horizontal
     ''' Demonstrates the minimal stat: one item with title, value and description.
-    currentY = AddSectionTitle("Stat (Basic)", currentY, maxW)
+    ''' CSS: .stats = inline-grid (content-width, not full-width).
+    currentY = AddSectionTitle("1. Stat (Basic)", currentY, maxW)
     Dim stats1 As B4XDaisyStat
     stats1.Initialize(Me, "")
     stats1.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
-    
+
     Dim item1 As B4XDaisyStatItem
     item1.Initialize(Me, "component")
     item1.Title = "Total Page Views"
@@ -78,7 +79,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item1.Description = "21% more than last month"
     stats1.AddItem(item1)
     stats1.Refresh
-    
+    ' Shrink-wrap to measured content width (inline-grid fit-content)
+    If stats1.ContentWidth > 0 Then stats1.SetLayoutAnimated(0, PAGE_PAD, currentY, stats1.ContentWidth, stats1.ContentHeight)
+
     item1.LogLabelWidths("Example 1: item1")
     
     currentY = currentY + stats1.ContentHeight + 12dip
@@ -89,7 +92,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ''' Demonstrates stat-figure slot with three horizontally laid-out items. The combined
     ''' content is typically wider than the screen, so the HorizontalScrollView allows
     ''' the user to scroll right � matching the CSS overflow-x-auto on .stats.
-    currentY = AddSectionTitle("Stat with icons or image", currentY, maxW)
+    currentY = AddSectionTitle("2. Stat with icons or image", currentY, maxW)
     Dim stats2 As B4XDaisyStat
     stats2.Initialize(Me, "")
     stats2.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
@@ -136,7 +139,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #region Example 3: Centered items � two items with center-aligned content
     ''' Demonstrates CenterItems=True: title, value and description are all centred
     ''' inside each stat cell.
-    currentY = AddSectionTitle("Centered items", currentY, maxW)
+    currentY = AddSectionTitle("3. Centered items", currentY, maxW)
     Dim stats3 As B4XDaisyStat
     stats3.Initialize(Me, "")
     stats3.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
@@ -173,7 +176,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #region Example 4: Vertical � stats stacked top-to-bottom with bottom-edge separators
     ''' Demonstrates stats-vertical: items flow in a column. Each item (except the last)
     ''' shows a dashed bottom border (border-block-end) per CSS.
-    currentY = AddSectionTitle("Vertical", currentY, maxW)
+    currentY = AddSectionTitle("4. Vertical", currentY, maxW)
     Dim stats4 As B4XDaisyStat
     stats4.Initialize(Me, "")
     stats4.Orientation = "vertical"
@@ -209,7 +212,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #region Example 4b: Colored variants � Variant sets bg + text, ValueColor overrides value text
     ''' Demonstrates Variant property: background color + all text become the variant's
     ''' content color. ValueColor can still override just the value label independently.
-    currentY = AddSectionTitle("Colored variants", currentY, maxW)
+    currentY = AddSectionTitle("5. Colored variants", currentY, maxW)
     Dim stats4b As B4XDaisyStat
     stats4b.Initialize(Me, "")
     stats4b.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
@@ -249,7 +252,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     ' #region Example 5: With action button
     ''' Demonstrates stat-actions slot: an Add funds button appears below the value.
-    currentY = AddSectionTitle("With action button", currentY, maxW)
+    currentY = AddSectionTitle("6. With action button", currentY, maxW)
     Dim stats5 As B4XDaisyStat
     stats5.Initialize(Me, "")
     stats5.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
@@ -273,11 +276,11 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     ' #region Example 6: With radial progress figure
     ''' Demonstrates stat-figure slot with a B4XDaisyRadialProgress as the figure icon.
-    currentY = AddSectionTitle("With radial progress", currentY, maxW)
+    currentY = AddSectionTitle("7. With radial progress", currentY, maxW)
     Dim stats6 As B4XDaisyStat
     stats6.Initialize(Me, "")
     stats6.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
-    
+
     Dim item6_1 As B4XDaisyStatItem
     item6_1.Initialize(Me, "component")
     item6_1.Title = "Tasks Done"
@@ -288,7 +291,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item6_1.FigureSource = "86"
     item6_1.FigureColor = "primary"
     stats6.AddItem(item6_1)
-    
+
     Dim item6_2 As B4XDaisyStatItem
     item6_2.Initialize(Me, "component")
     item6_2.Title = "Downloads"
@@ -299,15 +302,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item6_2.FigureSource = "62"
     item6_2.FigureColor = "secondary"
     stats6.AddItem(item6_2)
-    
+
     stats6.Refresh
-    
+
     currentY = currentY + stats6.ContentHeight + 12dip
     ' #endregion
     
     ' #region Example 7: With avatar figure
     ''' Demonstrates stat-figure slot with a B4XDaisyAvatar as the figure image.
-    currentY = AddSectionTitle("With avatar figure", currentY, maxW)
+    currentY = AddSectionTitle("8. With avatar figure", currentY, maxW)
     Dim stats7 As B4XDaisyStat
     stats7.Initialize(Me, "")
     stats7.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
