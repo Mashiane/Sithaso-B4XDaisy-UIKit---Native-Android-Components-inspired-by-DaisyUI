@@ -1,8 +1,8 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
-Version=13.4
+Version=2.00
 @EndOfDesignText@
 
 #Region Variables
@@ -13,6 +13,10 @@ Sub Class_Globals
     Private pnlHost As B4XView
     Private PAGE_PAD As Int = 12dip
     Private SECTION_GAP As Int = 16dip
+    Private List1 As B4XDaisyList
+    Private List2 As B4XDaisyList
+    Private List3 As B4XDaisyList
+    Private List4 As B4XDaisyList
 End Sub
 #End Region
 
@@ -25,306 +29,426 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = xui.Color_RGB(245, 247, 250)
     B4XPages.SetTitle(Me, "List")
-
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
     pnlHost = svHost.Panel
     pnlHost.Color = xui.Color_Transparent
-    
-
     RenderExamples(Root.Width, Root.Height)
 End Sub
 #End Region
 
 #Region Rendering
 Private Sub RenderExamples(Width As Int, Height As Int)
+    If pnlHost = Null Then Return
     If pnlHost.IsInitialized = False Then Return
-
     pnlHost.RemoveAllViews
-
+    Dim currentY As Int = PAGE_PAD
     Dim maxW As Int = Width - (PAGE_PAD * 2)
     maxW = Max(240dip, maxW)
     maxW = Min(560dip, maxW)
 
-    Dim y As Int = PAGE_PAD
+    ' === DaisyUI: List (2 columns, second column grows - default) ===
+    currentY = AddSectionTitle("List (2nd column grows - default)", currentY, maxW)
+    List1.Clear
+    List1.Initialize(Me, "List1")
+    List1.Rounded = "rounded-box"
+    List1.Shadow = "shadow-md"
+    List1.BackgroundColor = "base-100"
+    List1.Padding = 0
+    List1.RowPadding = 16dip
+    List1.Divider = True
+    List1.DividerColor = "base-content/5"
+    List1.RowHeight = 72dip
+    List1.AutoHeight = True
+    List1.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 320dip)
+    List1.AddHeader("Most played songs this week")
+    List1.AddRowData(CreateMap("Tag": "row1", "_height": 72, "title": "Dio Lupa", "subtitle": "Remaining Reason", "avatar": "face_3.jpg", "rowType": "song"))
+    List1.AddRowData(CreateMap("Tag": "row2", "_height": 72, "title": "Ellie Beilish", "subtitle": "Bears of a fever", "avatar": "face_13.jpg", "rowType": "song"))
+    List1.AddRowData(CreateMap("Tag": "row3", "_height": 72, "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "rowType": "song"))
+    currentY = currentY + List1.getHeight + SECTION_GAP
 
-    y = AddSectionTitle("List (second column grows - default)", y, maxW)
-    y = CreateExample1(maxW, y)
+    ' === DaisyUI: List (3 columns, 3rd column grows) ===
+    currentY = AddSectionTitle("List (3rd column grows)", currentY, maxW)
+    List2.Clear
+    List2.Initialize(Me, "List2")
+    List2.Rounded = "rounded-box"
+    List2.Shadow = "shadow-md"
+    List2.BackgroundColor = "base-100"
+    List2.Padding = 0
+    List2.RowPadding = 16dip
+    List2.Divider = True
+    List2.DividerColor = "base-content/5"
+    List2.RowHeight = 72dip
+    List2.AutoHeight = True
+    List2.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 320dip)
+    List2.AddHeader("Most played songs this week")
+    List2.AddRowData(CreateMap("Tag": "rank1", "_height": 72, "number": "01", "title": "Dio Lupa", "subtitle": "Remaining Reason", "avatar": "face_3.jpg", "rowType": "ranked_song"))
+    List2.AddRowData(CreateMap("Tag": "rank2", "_height": 72, "number": "02", "title": "Ellie Beilish", "subtitle": "Bears of a fever", "avatar": "face_13.jpg", "rowType": "ranked_song"))
+    List2.AddRowData(CreateMap("Tag": "rank3", "_height": 72, "number": "03", "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "rowType": "ranked_song"))
+    currentY = currentY + List2.getHeight + SECTION_GAP
 
-    y = AddSectionTitle("List (third column grows)", y, maxW)
-    y = CreateExample2(maxW, y)
+    ' === DaisyUI: List (3 columns, 3rd column wraps to next row) ===
+    currentY = AddSectionTitle("List (3rd column wraps)", currentY, maxW)
+    List3.Clear
+    List3.Initialize(Me, "List3")
+    List3.Rounded = "rounded-box"
+    List3.Shadow = "shadow-md"
+    List3.BackgroundColor = "base-100"
+    List3.Padding = 0
+    List3.RowPadding = 16dip
+    List3.Divider = True
+    List3.DividerColor = "base-content/5"
+    List3.RowHeight = 90dip
+    List3.AutoHeight = True
+    List3.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 400dip)
+    List3.AddHeader("Most played songs this week")
+    List3.AddRowData(CreateMap("Tag": "wrap1", "_height": 100, "title": "Dio Lupa", "subtitle": "Remaining Reason", "avatar": "face_3.jpg", "wrapText": "Remaining Reason became an instant hit, praised for its haunting sound and emotional depth.", "rowType": "wrapped_song"))
+    List3.AddRowData(CreateMap("Tag": "wrap2", "_height": 100, "title": "Ellie Beilish", "subtitle": "Bears of a fever", "avatar": "face_13.jpg", "wrapText": "Bears of a Fever captivated audiences with its intense energy and mysterious lyrics.", "rowType": "wrapped_song"))
+    List3.AddRowData(CreateMap("Tag": "wrap3", "_height": 100, "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "wrapText": "Cappuccino quickly gained attention for its smooth melody and relatable themes.", "rowType": "wrapped_song"))
+    currentY = currentY + List3.getHeight + SECTION_GAP
 
-    y = AddSectionTitle("List (third column wraps to next row)", y, maxW)
-    y = CreateExample3(maxW, y)
+    ' === DaisyUI: List (no header, clickable icon buttons) ===
+    currentY = AddSectionTitle("Custom: List (no header, soft icon buttons)", currentY, maxW)
+    List4.Clear
+    List4.Initialize(Me, "List4")
+    List4.Rounded = "rounded-box"
+    List4.Shadow = "shadow-md"
+    List4.BackgroundColor = "base-100"
+    List4.Padding = 0
+    List4.RowPadding = 16dip
+    List4.Divider = True
+    List4.DividerColor = "base-content/5"
+    List4.RowHeight = 72dip
+    List4.AutoHeight = True
+    List4.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 320dip)
+    List4.AddRowData(CreateMap("Tag": "nh1", "_height": 72, "title": "Dio Lupa", "subtitle": "Remaining Reason", "avatar": "face_3.jpg", "rowType": "noheader_song"))
+    List4.AddRowData(CreateMap("Tag": "nh2", "_height": 72, "title": "Ellie Beilish", "subtitle": "Bears of a fever", "avatar": "face_13.jpg", "rowType": "noheader_song"))
+    List4.AddRowData(CreateMap("Tag": "nh3", "_height": 72, "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "rowType": "noheader_song"))
+    currentY = currentY + List4.getHeight + SECTION_GAP
 
-    pnlHost.Height = Max(Height, y + PAGE_PAD)
-End Sub
-
-Private Sub ConfigureList(Target As B4XDaisyList)
-    Target.BackgroundColor = "base-100"
-    Target.Shadow = "shadow-md"
-    Target.RoundedBox = True
-    Target.Padding = 0
-    Target.RowPadding = 16dip
-    Target.RowGap = 16dip
-    Target.Divider = True
-    Target.DividerColor = "base-content/5"
-    Target.setHeight("auto")
-End Sub
-
-Private Sub CreateExample1(maxW As Int, y As Int) As Int
-    Dim list1 As B4XDaisyList
-    list1.Initialize(Me, "list1")
-
-    list1.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
-    ConfigureList(list1)
-
-    AddListHeaderRow(list1, "Most played songs this week", maxW)
-
-    AddSongRow(list1, "Dio Lupa", "Remaining Reason", "1@94.webp", "", "", True, "row1")
-    AddSongRow(list1, "Ellie Beilish", "Bears of a fever", "4@94.webp", "", "", True, "row2")
-    AddSongRow(list1, "Sabrino Gardener", "Cappuccino", "3@94.webp", "", "", True, "row3")
-
-    Dim listH As Int = list1.getHeight
-    Return y + listH + SECTION_GAP
-End Sub
-
-Private Sub CreateExample2(maxW As Int, y As Int) As Int
-    Dim list2 As B4XDaisyList
-    list2.Initialize(Me, "list2")
-
-    list2.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
-    ConfigureList(list2)
-
-    AddListHeaderRow(list2, "Most played songs this week", maxW)
-
-    AddSongRow(list2, "Dio Lupa", "Remaining Reason", "1@94.webp", "01", "", False, "row1")
-    AddSongRow(list2, "Ellie Beilish", "Bears of a fever", "4@94.webp", "02", "", False, "row2")
-    AddSongRow(list2, "Sabrino Gardener", "Cappuccino", "3@94.webp", "03", "", False, "row3")
-
-    Dim listH As Int = list2.getHeight
-    Return y + listH + SECTION_GAP
-End Sub
-
-Private Sub CreateExample3(maxW As Int, y As Int) As Int
-    Dim list3 As B4XDaisyList
-    list3.Initialize(Me, "list3")
-
-    list3.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
-    ConfigureList(list3)
-
-    AddListHeaderRow(list3, "Most played songs this week", maxW)
-
-    AddSongRow(list3, "Dio Lupa", "Remaining Reason", "1@94.webp", "", """Remaining Reason"" became an instant hit, praised for its haunting sound and emotional depth. A viral performance brought it widespread recognition, making it one of Dio Lupa''s most iconic tracks.", True, "row1")
-    AddSongRow(list3, "Ellie Beilish", "Bears of a fever", "4@94.webp", "", """Bears of a Fever"" captivated audiences with its intense energy and mysterious lyrics. Its popularity skyrocketed after fans shared it widely online, earning Ellie critical acclaim.", True, "row2")
-    AddSongRow(list3, "Sabrino Gardener", "Cappuccino", "3@94.webp", "", """Cappuccino"" quickly gained attention for its smooth melody and relatable themes. The song''s success propelled Sabrino into the spotlight, solidifying their status as a rising star.", True, "row3")
-
-    Dim listH As Int = list3.getHeight
-    Return y + listH + SECTION_GAP
-End Sub
-
-Private Sub AddListHeaderRow(Target As B4XDaisyList, HeaderText As String, Width As Int)
-    Dim headerItems As List
-    headerItems.Initialize
-
-    Dim headerView As B4XView = CreateHeaderView(HeaderText, Width - 32dip)
-    headerItems.Add(CreateMap("view": headerView, "grow": True))
-
-    Dim data As Map = CreateMap("items": headerItems, "height": 28dip, "Tag": "header")
-    Target.AddRow(data)
-End Sub
-
-Private Sub AddSongRow(Target As B4XDaisyList, Artist As String, Subtitle As String, AvatarImage As String, NumberText As String, WrapText As String, IncludeHeart As Boolean, RowTag As String)
-    Dim items As List
-    items.Initialize
-
-    If NumberText <> "" Then
-        Dim numberView As B4XView = CreateNumberView(NumberText)
-        items.Add(CreateMap("view": numberView, "grow": False, "width": 44dip, "height": 40dip))
-    End If
-
-    Dim avatarView As B4XView = CreateAvatarView(AvatarImage)
-    items.Add(CreateMap("view": avatarView, "grow": False, "width": 40dip, "height": 40dip))
-
-    Dim titleView As B4XView = CreateSongTitleView(Artist, Subtitle, 220dip)
-    items.Add(CreateMap("view": titleView, "grow": True, "height": 36dip))
-
-    If WrapText <> "" Then
-        Dim wrapView As B4XView = CreateWrapDescriptionView(WrapText, 320dip)
-        Dim wrapHeight As Int = Max(70dip, wrapView.Height)
-        items.Add(CreateMap("view": wrapView, "grow": False, "wrap": True, "height": wrapHeight))
-    End If
-
-    Dim playView As B4XView = CreateActionIconButton(False)
-    items.Add(CreateMap("view": playView, "grow": False, "width": 40dip, "height": 40dip))
-
-    If IncludeHeart Then
-        Dim heartView As B4XView = CreateActionIconButton(True)
-        items.Add(CreateMap("view": heartView, "grow": False, "width": 40dip, "height": 40dip))
-    End If
-
-    Dim rowHeight As Int = 72dip
-    If WrapText <> "" Then rowHeight = 0
-
-    Dim rowData As Map = CreateMap("items": items, "height": rowHeight, "Tag": RowTag)
-    Target.AddRow(rowData)
-End Sub
-
-Private Sub CreateHeaderView(Text As String, Width As Int) As B4XView
-    Return CreateDaisyTextView(Text, Width, 16dip, 11, xui.Color_ARGB(160, 0, 0, 0), False, True, False)
-End Sub
-
-Private Sub CreateSongTitleView(Artist As String, Subtitle As String, Width As Int) As B4XView
-    Dim p As B4XView = xui.CreatePanel("")
-    p.SetLayoutAnimated(0, 0, 0, Width, 36dip)
-    p.Color = xui.Color_Transparent
-
-    Dim nameView As B4XView = CreateDaisyTextView(Artist, Width, 20dip, 16, xui.Color_RGB(17, 24, 39), False, True, False)
-    p.AddView(nameView, 0, 0, Width, 20dip)
-
-    Dim subView As B4XView = CreateDaisyTextView(Subtitle, Width, 16dip, 11, xui.Color_ARGB(160, 0, 0, 0), False, True, True)
-    p.AddView(subView, 0, 20dip, Width, 16dip)
-
-    Return p
-End Sub
-
-Private Sub CreateWrapDescriptionView(Text As String, Width As Int) As B4XView
-    Dim txt As B4XDaisyText
-    txt.Initialize(Me, "")
-    Dim v As B4XView = txt.CreateView(Width, 1dip)
-    txt.Text = Text
-    txt.TextSize = 11
-    txt.TextColor = xui.Color_RGB(31, 41, 55)
-    txt.SingleLine = False
-
-    Dim prefH As Int = Max(86dip, txt.GetPreferredHeight(Width) + 20dip)
-    v.SetLayoutAnimated(0, 0, 0, Width, prefH)
-    txt.Base_Resize(Width, prefH)
-    Return v
-End Sub
-
-Private Sub CreateDaisyTextView(Text As String, Width As Int, Height As Int, TextSize As Object, TextColor As Int, Bold As Boolean, SingleLine As Boolean, Uppercase As Boolean) As B4XView
-    Dim t As B4XDaisyText
-    t.Initialize(Me, "")
-    Dim v As B4XView = t.CreateView(Max(1dip, Width), Max(1dip, Height))
-
-    Dim content As String = Text
-    If Uppercase Then content = content.ToUpperCase
-
-    t.Text = content
-    t.TextSize = TextSize
-    t.TextColor = TextColor
-    t.FontBold = Bold
-    t.SingleLine = SingleLine
-
-    Return v
-End Sub
-Private Sub CreateAvatarView(ImageName As String) As B4XView
-    Dim avatar As B4XDaisyAvatar
-    avatar.Initialize(Me, "")
-    Dim v As B4XView = avatar.CreateView(40dip, 40dip)
-    avatar.AvatarSize = "40px"
-    avatar.RoundedBox = True
-    avatar.Image = ImageName
-    Return v
-End Sub
-
-Private Sub CreateActionIconButton(IsHeart As Boolean) As B4XView
-    Dim p As Panel
-    p.Initialize("")
-    Dim host As B4XView = p
-    host.SetLayoutAnimated(0, 0, 0, 40dip, 40dip)
-    host.Color = xui.Color_Transparent
-
-    Dim iconView As B4XView
-    If IsHeart Then
-        iconView = CreateHeartOutlineIconView
-    Else
-        iconView = CreatePlayOutlineIconView
-    End If
-    host.AddView(iconView, 10dip, 10dip, 20dip, 20dip)
-    Return host
-End Sub
-
-Private Sub CreatePlayOutlineIconView As B4XView
-    Dim icon As B4XDaisySvgIcon
-    icon.Initialize(Me, "")
-    Dim v As B4XView = icon.CreateView(20dip, 20dip)
-    icon.Size = "20px"
-    icon.Color = xui.Color_ARGB(170, 0, 0, 0)
-    icon.SvgContent = "<svg xmlns=""http://www.w3.org/2000/svg"" viewBox=""0 0 24 24""><g stroke-linejoin=""round"" stroke-linecap=""round"" stroke-width=""2"" fill=""none"" stroke=""currentColor""><path d=""M6 3L20 12 6 21 6 3z""></path></g></svg>"
-    Return v
-End Sub
-
-Private Sub CreateHeartOutlineIconView As B4XView
-    Dim icon As B4XDaisySvgIcon
-    icon.Initialize(Me, "")
-    Dim v As B4XView = icon.CreateView(20dip, 20dip)
-    icon.Size = "20px"
-    icon.Color = xui.Color_ARGB(170, 0, 0, 0)
-    icon.SvgContent = "<svg xmlns=""http://www.w3.org/2000/svg"" viewBox=""0 0 24 24""><g stroke-linejoin=""round"" stroke-linecap=""round"" stroke-width=""2"" fill=""none"" stroke=""currentColor""><path d=""M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z""></path></g></svg>"
-    Return v
-End Sub
-
-Private Sub CreateIconView(AssetName As String) As B4XView
-    Dim icon As B4XDaisySvgIcon
-    icon.Initialize(Me, "")
-    Dim v As B4XView = icon.CreateView(20dip, 20dip)
-    icon.Size = "20px"
-    icon.Color = xui.Color_ARGB(170, 0, 0, 0)
-    icon.SvgAsset = AssetName
-    Return v
-End Sub
-
-Private Sub CreateNumberView(NumberText As String) As B4XView
-    Dim txt As B4XDaisyText
-    txt.Initialize(Me, "")
-    Dim v As B4XView = txt.CreateView(44dip, 40dip)
-    txt.Text = NumberText
-    txt.TextSize = 30
-    txt.TextColor = xui.Color_ARGB(80, 0, 0, 0)
-    Return v
-End Sub
-
-Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
-    Dim title As B4XDaisyText
-    title.Initialize(Me, "")
-    title.AddToParent(pnlHost, PAGE_PAD, Y, Width, 30dip)
-    title.Text = Text
-    title.TextColor = xui.Color_RGB(30, 41, 59)
-    title.TextSize = 16
-    title.FontBold = True
-    Return Y + title.GetComputedHeight + 2dip
-End Sub
-
-Private Sub list1_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List1 Item Clicked: " & Index & " " & Tag, False)
-End Sub
-
-Private Sub list1_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List1 Item Long Clicked: " & Index & " " & Tag, False)
-End Sub
-
-Private Sub list2_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List2 Item Clicked: " & Index & " " & Tag, False)
-End Sub
-
-Private Sub list2_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List2 Item Long Clicked: " & Index & " " & Tag, False)
-End Sub
-
-Private Sub list3_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List3 Item Clicked: " & Index & " " & Tag, False)
-End Sub
-
-Private Sub list3_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List3 Item Long Clicked: " & Index & " " & Tag, False)
+    pnlHost.Height = Max(Height, currentY + PAGE_PAD)
 End Sub
 #End Region
 
-#Region Base Events
+#Region RowContent
+Private Sub List1_CreateRowContent(Index As Int)
+    Dim Panel As B4XView = List1.GetCurrentRowPanel
+    Dim Data As Map = List1.GetCurrentRowData
+    If Panel = Null Or Panel.IsInitialized = False Or Data = Null Or Data.IsInitialized = False Then Return
+    Dim isHeader As Boolean = Data.GetDefault("_header", False)
+    If isHeader Then
+        CreateHeaderRow(Panel, Data)
+        Return
+    End If
+    Dim rowType As String = Data.GetDefault("rowType", "song")
+    If rowType = "song" Then CreateSongRow(Panel, Data, True)
+End Sub
+
+Private Sub List2_CreateRowContent(Index As Int)
+    Dim Panel As B4XView = List2.GetCurrentRowPanel
+    Dim Data As Map = List2.GetCurrentRowData
+    If Panel = Null Or Panel.IsInitialized = False Or Data = Null Or Data.IsInitialized = False Then Return
+    Dim isHeader As Boolean = Data.GetDefault("_header", False)
+    If isHeader Then
+        CreateHeaderRow(Panel, Data)
+        Return
+    End If
+    Dim rowType As String = Data.GetDefault("rowType", "ranked_song")
+    If rowType = "ranked_song" Then CreateRankedSongRow(Panel, Data)
+End Sub
+
+Private Sub List3_CreateRowContent(Index As Int)
+    Dim Panel As B4XView = List3.GetCurrentRowPanel
+    Dim Data As Map = List3.GetCurrentRowData
+    If Panel = Null Or Panel.IsInitialized = False Or Data = Null Or Data.IsInitialized = False Then Return
+    Dim isHeader As Boolean = Data.GetDefault("_header", False)
+    If isHeader Then
+        CreateHeaderRow(Panel, Data)
+        Return
+    End If
+    Dim rowType As String = Data.GetDefault("rowType", "wrapped_song")
+    If rowType = "wrapped_song" Then CreateWrappedSongRow(Panel, Data)
+End Sub
+
+Private Sub List4_CreateRowContent(Index As Int)
+    Dim Panel As B4XView = List4.GetCurrentRowPanel
+    Dim Data As Map = List4.GetCurrentRowData
+    If Panel = Null Or Panel.IsInitialized = False Or Data = Null Or Data.IsInitialized = False Then Return
+    Dim rowType As String = Data.GetDefault("rowType", "noheader_song")
+    If rowType = "noheader_song" Then CreateNoHeaderSongRow(Panel, Data)
+End Sub
+#End Region
+
+#Region RowBuilders
+Private Sub CreateHeaderRow(Panel As B4XView, Data As Map)
+    Dim w As Int = Panel.Width
+    Dim h As Int = Panel.Height
+    Dim title As String = Data.GetDefault("title", "")
+    Dim txtHeader As B4XDaisyText
+    txtHeader.Initialize(Me, "")
+    txtHeader.AddToParent(Panel, 16dip, 0, Max(1dip, w - 32dip), h)
+    txtHeader.Text = title
+    txtHeader.TextSize = 11
+    txtHeader.TextColor = xui.Color_ARGB(160, 0, 0, 0)
+    txtHeader.UpperCase = True
+    txtHeader.VAlign = "CENTER"
+    txtHeader.HAlign = "LEFT"
+    txtHeader.SingleLine = True
+End Sub
+
+Private Sub CreateSongRow(Panel As B4XView, Data As Map, ShowHeart As Boolean)
+    Dim w As Int = Panel.Width
+    Dim h As Int = Panel.Height
+    Dim av As B4XDaisyAvatar
+    av.Initialize(Me, "")
+    av.AddToParent(Panel, 8dip, (h - 48dip) / 2, 48dip, 48dip)
+    av.RoundedBox = True
+    av.AvatarSize = "size-10"
+    av.Image = Data.GetDefault("avatar", "face_3.jpg")
+    Dim btnSize As Int = 40dip
+    Dim rightMargin As Int = btnSize + 8dip
+    If ShowHeart Then rightMargin = rightMargin + btnSize + 4dip
+    Dim textLeft As Int = 64dip
+    Dim textW As Int = Max(1dip, w - textLeft - rightMargin)
+    Dim txtTitle As B4XDaisyText
+    txtTitle.Initialize(Me, "")
+    txtTitle.AddToParent(Panel, textLeft, 10dip, textW, 24dip)
+    txtTitle.Text = Data.GetDefault("title", "")
+    txtTitle.TextSize = 15
+    txtTitle.TextColor = xui.Color_RGB(17, 24, 39)
+    txtTitle.FontBold = True
+    txtTitle.SingleLine = True
+    Dim txtSub As B4XDaisyText
+    txtSub.Initialize(Me, "")
+    txtSub.AddToParent(Panel, textLeft, 34dip, textW, 20dip)
+    txtSub.Text = Data.GetDefault("subtitle", "")
+    txtSub.TextSize = 11
+    txtSub.TextColor = xui.Color_ARGB(160, 0, 0, 0)
+    txtSub.UpperCase = True
+    txtSub.FontBold = True
+    txtSub.SingleLine = True
+    Dim btnPlay As B4XDaisyIconButton
+    btnPlay.Initialize(Me, "iconplay")
+    btnPlay.setVariant("default")
+    btnPlay.setStyle("ghost")
+    btnPlay.setSize("md")
+    btnPlay.setShape("square")
+    btnPlay.setIconAsset("play-solid.svg")
+    btnPlay.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+    btnPlay.setTag(Data.GetDefault("Tag", ""))
+    btnPlay.AddToParent(Panel, w - rightMargin + 4dip, (h - btnSize) / 2, btnSize, btnSize)
+    If ShowHeart Then
+        Dim btnHeart As B4XDaisyIconButton
+        btnHeart.Initialize(Me, "iconheart")
+        btnHeart.setVariant("default")
+        btnHeart.setStyle("ghost")
+        btnHeart.setSize("md")
+        btnHeart.setShape("square")
+        btnHeart.setIconAsset("heart-solid.svg")
+        btnHeart.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+        btnHeart.setTag(CreateMap("IsRed": False, "DataTag": Data.GetDefault("Tag", "")))
+        btnHeart.AddToParent(Panel, w - rightMargin + btnSize + 8dip, (h - btnSize) / 2, btnSize, btnSize)
+    End If
+    av.setClickable(False)
+    txtTitle.setClickable(False)
+    txtSub.setClickable(False)
+End Sub
+
+Private Sub iconHeart_Click(Tag As Object)
+    Dim btn As B4XDaisyIconButton = Sender
+    If Tag Is Map Then
+        Dim props As Map = Tag
+        Dim isRed As Boolean = props.GetDefault("IsRed", False)
+        If isRed Then
+            btn.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+            btn.setVariant("default")
+            props.Put("IsRed", False)
+        Else
+            btn.setIconColor(xui.Color_Red)
+            btn.setVariant("error")
+            props.Put("IsRed", True)
+        End If
+    End If
+End Sub
+
+Private Sub iconplay_Click(Tag As Object)
+    ToastMessageShow("Play: " & Tag, False)
+End Sub
+
+Private Sub CreateRankedSongRow(Panel As B4XView, Data As Map)
+    Dim w As Int = Panel.Width
+    Dim h As Int = Panel.Height
+    Dim txtNum As B4XDaisyText
+    txtNum.Initialize(Me, "")
+    txtNum.AddToParent(Panel, 4dip, 4dip, 48dip, h - 8dip)
+    txtNum.Text = Data.GetDefault("number", "01")
+    txtNum.TextSize = 36
+    txtNum.TextColor = xui.Color_ARGB(77, 0, 0, 0)
+    txtNum.FontBold = False
+    txtNum.SingleLine = True
+    Dim av As B4XDaisyAvatar
+    av.Initialize(Me, "")
+    av.AddToParent(Panel, 52dip, (h - 48dip) / 2, 48dip, 48dip)
+    av.RoundedBox = True
+    av.AvatarSize = "size-10"
+    av.Image = Data.GetDefault("avatar", "face_3.jpg")
+    Dim btnSize As Int = 40dip
+    Dim textLeft As Int = 104dip
+    Dim textW As Int = Max(1dip, w - textLeft - btnSize - 12dip)
+    Dim txtTitle As B4XDaisyText
+    txtTitle.Initialize(Me, "")
+    txtTitle.AddToParent(Panel, textLeft, 10dip, textW, 24dip)
+    txtTitle.Text = Data.GetDefault("title", "")
+    txtTitle.TextSize = 15
+    txtTitle.TextColor = xui.Color_RGB(17, 24, 39)
+    txtTitle.FontBold = True
+    txtTitle.SingleLine = True
+    Dim txtSub As B4XDaisyText
+    txtSub.Initialize(Me, "")
+    txtSub.AddToParent(Panel, textLeft, 34dip, textW, 20dip)
+    txtSub.Text = Data.GetDefault("subtitle", "")
+    txtSub.TextSize = 11
+    txtSub.TextColor = xui.Color_ARGB(160, 0, 0, 0)
+    txtSub.UpperCase = True
+    txtSub.FontBold = True
+    txtSub.SingleLine = True
+    Dim btnPlay As B4XDaisyIconButton
+    btnPlay.Initialize(Me, "iconplay")
+    btnPlay.setVariant("default")
+    btnPlay.setStyle("ghost")
+    btnPlay.setSize("md")
+    btnPlay.setShape("square")
+    btnPlay.setIconAsset("play-solid.svg")
+    btnPlay.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+    btnPlay.setTag(Data.GetDefault("Tag", ""))
+    btnPlay.AddToParent(Panel, w - btnSize - 8dip, (h - btnSize) / 2, btnSize, btnSize)
+    txtNum.setClickable(False)
+    av.setClickable(False)
+    txtTitle.setClickable(False)
+    txtSub.setClickable(False)
+End Sub
+
+Private Sub CreateWrappedSongRow(Panel As B4XView, Data As Map)
+    Dim w As Int = Panel.Width
+    Dim h As Int = Panel.Height
+    Dim av As B4XDaisyAvatar
+    av.Initialize(Me, "")
+    av.AddToParent(Panel, 8dip, 8dip, 48dip, 48dip)
+    av.RoundedBox = True
+    av.AvatarSize = "size-10"
+    av.Image = Data.GetDefault("avatar", "face_3.jpg")
+    Dim btnSize As Int = 40dip
+    Dim textLeft As Int = 64dip
+    Dim textW As Int = Max(1dip, w - textLeft - btnSize * 2 - 16dip)
+    Dim txtTitle As B4XDaisyText
+    txtTitle.Initialize(Me, "")
+    txtTitle.AddToParent(Panel, textLeft, 4dip, textW, 22dip)
+    txtTitle.Text = Data.GetDefault("title", "")
+    txtTitle.TextSize = 15
+    txtTitle.TextColor = xui.Color_RGB(17, 24, 39)
+    txtTitle.FontBold = True
+    txtTitle.SingleLine = True
+    Dim txtSub As B4XDaisyText
+    txtSub.Initialize(Me, "")
+    txtSub.AddToParent(Panel, textLeft, 26dip, textW, 16dip)
+    txtSub.Text = Data.GetDefault("subtitle", "")
+    txtSub.TextSize = 11
+    txtSub.TextColor = xui.Color_ARGB(160, 0, 0, 0)
+    txtSub.UpperCase = True
+    txtSub.FontBold = True
+    txtSub.SingleLine = True
+    Dim wrapTop As Int = 50dip
+    Dim wrapW As Int = Max(1dip, w - 32dip)
+    Dim txtWrap As B4XDaisyText
+    txtWrap.Initialize(Me, "")
+    txtWrap.AddToParent(Panel, 16dip, wrapTop, wrapW, Max(1dip, h - wrapTop - 4dip))
+    txtWrap.Text = Data.GetDefault("wrapText", "")
+    txtWrap.TextSize = 11
+    txtWrap.TextColor = xui.Color_ARGB(140, 0, 0, 0)
+    txtWrap.SingleLine = False
+    Dim btnPlay As B4XDaisyIconButton
+    btnPlay.Initialize(Me, "iconplay")
+    btnPlay.setVariant("default")
+    btnPlay.setStyle("ghost")
+    btnPlay.setSize("md")
+    btnPlay.setShape("square")
+    btnPlay.setIconAsset("play-solid.svg")
+    btnPlay.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+    btnPlay.setTag(Data.GetDefault("Tag", ""))
+    btnPlay.AddToParent(Panel, w - btnSize * 2 - 12dip, 12dip, btnSize, btnSize)
+    Dim btnHeart As B4XDaisyIconButton
+    btnHeart.Initialize(Me, "iconheart")
+    btnHeart.setVariant("default")
+    btnHeart.setStyle("ghost")
+    btnHeart.setSize("md")
+    btnHeart.setShape("square")
+    btnHeart.setIconAsset("heart-solid.svg")
+    btnHeart.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+    btnHeart.setTag(CreateMap("IsRed": False, "DataTag": Data.GetDefault("Tag", "")))
+    btnHeart.AddToParent(Panel, w - btnSize - 8dip, 12dip, btnSize, btnSize)
+    av.setClickable(False)
+    txtTitle.setClickable(False)
+    txtSub.setClickable(False)
+    txtWrap.setClickable(False)
+End Sub
+
+Private Sub CreateNoHeaderSongRow(Panel As B4XView, Data As Map)
+    Dim w As Int = Panel.Width
+    Dim h As Int = Panel.Height
+    Dim av As B4XDaisyAvatar
+    av.Initialize(Me, "")
+    av.AddToParent(Panel, 8dip, (h - 48dip) / 2, 48dip, 48dip)
+    av.RoundedBox = True
+    av.AvatarSize = "size-10"
+    av.Image = Data.GetDefault("avatar", "face_3.jpg")
+    Dim btnSize As Int = 40dip
+    Dim rightMargin As Int = btnSize * 2 + 12dip
+    Dim textLeft As Int = 64dip
+    Dim textW As Int = Max(1dip, w - textLeft - rightMargin)
+    Dim txtTitle As B4XDaisyText
+    txtTitle.Initialize(Me, "")
+    txtTitle.AddToParent(Panel, textLeft, 10dip, textW, 24dip)
+    txtTitle.Text = Data.GetDefault("title", "")
+    txtTitle.TextSize = 15
+    txtTitle.TextColor = xui.Color_RGB(17, 24, 39)
+    txtTitle.FontBold = True
+    txtTitle.SingleLine = True
+    Dim txtSub As B4XDaisyText
+    txtSub.Initialize(Me, "")
+    txtSub.AddToParent(Panel, textLeft, 34dip, textW, 20dip)
+    txtSub.Text = Data.GetDefault("subtitle", "")
+    txtSub.TextSize = 11
+    txtSub.TextColor = xui.Color_ARGB(160, 0, 0, 0)
+    txtSub.UpperCase = True
+    txtSub.FontBold = True
+    txtSub.SingleLine = True
+    Dim btnPlay As B4XDaisyIconButton
+    btnPlay.Initialize(Me, "nhplay")
+    btnPlay.setVariant("primary")
+    btnPlay.setStyle("soft")
+    btnPlay.setSize("md")
+    btnPlay.setShape("circle")
+    btnPlay.setIconAsset("play-solid.svg")
+    btnPlay.setTag(Data.GetDefault("Tag", ""))
+    btnPlay.AddToParent(Panel, w - rightMargin, (h - btnSize) / 2, btnSize, btnSize)
+    Dim btnHeart As B4XDaisyIconButton
+    btnHeart.Initialize(Me, "nhheart")
+    btnHeart.setVariant("error")
+    btnHeart.setStyle("soft")
+    btnHeart.setSize("md")
+    btnHeart.setShape("circle")
+    btnHeart.setIconAsset("heart-solid.svg")
+    btnHeart.setTag(CreateMap("IsRed": False, "DataTag": Data.GetDefault("Tag", "")))
+    btnHeart.AddToParent(Panel, w - rightMargin + btnSize + 4dip, (h - btnSize) / 2, btnSize, btnSize)
+    av.setClickable(False)
+    txtTitle.setClickable(False)
+    txtSub.setClickable(False)
+End Sub
+#End Region
+
+#Region BaseEvents
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
-    If svHost.IsInitialized Then svHost.SetLayoutAnimated(0, 0, 0, Width, Height)
+    If svHost <> Null And svHost.IsInitialized Then svHost.SetLayoutAnimated(0, 0, 0, Width, Height)
     RenderExamples(Width, Height)
 End Sub
 
@@ -333,9 +457,70 @@ Private Sub B4XPage_Appear
 End Sub
 #End Region
 
+#Region Helpers
+Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
+    Dim title As B4XDaisyText
+    title.Initialize(Me, "")
+    title.AddToParent(pnlHost, PAGE_PAD, Y, Width, 28dip)
+    title.Text = Text
+    title.TextColor = xui.Color_RGB(30, 41, 59)
+    title.TextSize = 16
+    title.FontBold = True
+    Return Y + title.GetComputedHeight + 2dip
+End Sub
 
+Private Sub List1_ItemClick(Index As Int, Tag As Object)
+    ToastMessageShow("List1 Clicked: " & Index & " Tag=" & Tag, False)
+End Sub
 
+Private Sub List1_ItemLongClick(Index As Int, Tag As Object)
+    ToastMessageShow("List1 Long: " & Index, False)
+End Sub
 
+Private Sub List2_ItemClick(Index As Int, Tag As Object)
+    ToastMessageShow("List2 Clicked: " & Index & " Tag=" & Tag, False)
+End Sub
 
+Private Sub List2_ItemLongClick(Index As Int, Tag As Object)
+    ToastMessageShow("List2 Long: " & Index, False)
+End Sub
 
+Private Sub List3_ItemClick(Index As Int, Tag As Object)
+    ToastMessageShow("List3 Clicked: " & Index & " Tag=" & Tag, False)
+End Sub
 
+Private Sub List3_ItemLongClick(Index As Int, Tag As Object)
+    ToastMessageShow("List3 Long: " & Index, False)
+End Sub
+
+Private Sub List4_ItemClick(Index As Int, Tag As Object)
+    ToastMessageShow("List4 Clicked: " & Index & " Tag=" & Tag, False)
+End Sub
+
+Private Sub List4_ItemLongClick(Index As Int, Tag As Object)
+    ToastMessageShow("List4 Long: " & Index, False)
+End Sub
+
+Private Sub nhplay_Click(Tag As Object)
+    ToastMessageShow("Play: " & Tag, False)
+End Sub
+
+Private Sub nhheart_Click(Tag As Object)
+    Dim btn As B4XDaisyIconButton = Sender
+    If Tag Is Map Then
+        Dim props As Map = Tag
+        Dim isRed As Boolean = props.GetDefault("IsRed", False)
+        If isRed Then
+            btn.setIconColor(xui.Color_ARGB(170, 0, 0, 0))
+            btn.setVariant("default")
+            btn.setStyle("ghost")
+            props.Put("IsRed", False)
+        Else
+            btn.setIconColor(xui.Color_Red)
+            btn.setVariant("error")
+            btn.setStyle("soft")
+            props.Put("IsRed", True)
+        End If
+    End If
+End Sub
+#End Region

@@ -385,7 +385,7 @@ Private Sub AddSectionNote(Text As String, Y As Int, Width As Int) As Int
 End Sub
 
 Private Sub dropdown_Click(Tag As Object)
-    Log("B4XDaisyDropdown.Click=" & Tag)
+    ' Log("B4XDaisyDropdown.Click=" & Tag)
 End Sub
 
 Private Sub dropdown_ItemClick(Tag As Object, Text As String)

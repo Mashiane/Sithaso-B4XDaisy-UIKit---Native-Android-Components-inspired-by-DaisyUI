@@ -55,6 +55,8 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"card", "label":"Card", "imagePath":"card.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"carousel", "label":"Carousel", "imagePath":"carousel.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"checkbox", "label":"Checkbox", "imagePath":"checkbox.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"checkbox-group", "label":"Checkbox Group", "imagePath":"checkbox.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"collapse", "label":"Collapse", "imagePath":"collapse.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"countdown", "label":"Countdown", "imagePath":"countdown.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"diff", "label":"Diff", "imagePath":"diff.webp", "svgPath":""))
@@ -68,10 +70,14 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hover3d", "label":"Hover3d", "imagePath":"hover-3d.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"iconbutton", "label":"Icon Button", "imagePath":"", "svgPath":"heart-solid.svg"))
 	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"input", "label":"Input", "imagePath":"input.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"kbd", "label":"Kbd", "imagePath":"kbd.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"label", "label":"Label", "imagePath":"label.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"link", "label":"Link", "imagePath":"link.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"list", "label":"List", "imagePath":"list.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"list1k", "label":"List 1K", "imagePath":"list.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"menu", "label":"Menu", "imagePath":"menu.webp", "svgPath":""))
@@ -83,6 +89,11 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"pagination", "label":"Pagination", "imagePath":"pagination.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"progress", "label":"Progress", "imagePath":"progress.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"radialprogress", "label":"Radial Progress", "imagePath":"radial-progress.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"radio", "label":"Radio", "imagePath":"radio.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"radio-group", "label":"Radio Group", "imagePath":"radio.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"range", "label":"Range", "imagePath":"range.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"rating", "label":"Rating", "imagePath":"rating.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"select", "label":"Select", "imagePath":"select.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"stat", "label":"Stat", "imagePath":"stat.webp", "svgPath":""))
@@ -92,8 +103,11 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tab", "label":"Tab", "imagePath":"tab.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"textrotate", "label":"Text Rotate", "imagePath":"text-rotate.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"textarea", "label":"Textarea", "imagePath":"textarea.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"timeline", "label":"Timeline", "imagePath":"timeline.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"toggle", "label":"Toggle", "imagePath":"toggle.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"toggle-group", "label":"Toggle Group", "imagePath":"toggle.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
 	NormalizeDashboardButtonImages(apps)
@@ -202,6 +216,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "chat"
 			NavigateFromMainPage("Chat")
 			Return
+		Case "checkbox"
+			NavigateFromMainPage("Checkbox")
+			Return
+		Case "checkbox-group"
+			NavigateFromMainPage("Checkbox Group")
+			Return
 		Case "collapse"
 			NavigateFromMainPage("Collapse")
 			Return
@@ -243,18 +263,29 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "hover3d"
 			NavigateFromMainPage("Hover3d")
+		Case "iconbutton"
+			NavigateFromMainPage("Icon Button")
 			Return
 		Case "indicator"
 			NavigateFromMainPage("Indicator")
 			Return
+		Case "input"
+			NavigateFromMainPage("Input")
+			Return
 		Case "kbd"
 			NavigateFromMainPage("Kbd")
+			Return
+		Case "label"
+			NavigateFromMainPage("Label")
 			Return
 		Case "link"
 			NavigateFromMainPage("Link")
 			Return
 		Case "list"
 			NavigateFromMainPage("List")
+			Return
+Case "list1k"
+			NavigateFromMainPage("List 1K")
 			Return
 		Case "loading"
 			NavigateFromMainPage("Loading")
@@ -289,6 +320,21 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "radialprogress"
 			NavigateFromMainPage("Radial Progress")
 			Return
+		Case "radio"
+			NavigateFromMainPage("Radio")
+			Return
+		Case "radio-group"
+			NavigateFromMainPage("Radio Group")
+			Return
+		Case "range"
+			NavigateFromMainPage("Range")
+			Return
+		Case "rating"
+			NavigateFromMainPage("Rating")
+			Return
+		Case "select"
+			NavigateFromMainPage("Select")
+			Return
 		Case "skeleton"
 			NavigateFromMainPage("Skeleton")
 			Return
@@ -313,6 +359,9 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "tab"
 			NavigateFromMainPage("Tab")
 			Return
+		Case "textarea"
+			NavigateFromMainPage("Textarea")
+			Return
 		Case "textrotate"
 			NavigateFromMainPage("TextRotate")
 			Return
@@ -321,6 +370,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 			Return
 		Case "toast"
 			NavigateFromMainPage("Toast")
+			Return
+		Case "toggle"
+			NavigateFromMainPage("Toggle")
+			Return
+		Case "toggle-group"
+			NavigateFromMainPage("Toggle Group")
 			Return
 		Case "tooltip"
 			NavigateFromMainPage("Tooltip")
@@ -340,7 +395,7 @@ Private Sub NavigateFromMainPage(PageId As String)
 	Try
 		B4XPages.MainPage.ShowPageWithLoader(target)
 	Catch
-		Log("ERROR: NavigateFromMainPage crashed: " & LastException.Message)
+		Log("ERROR: NavigateFromMainPage crashed for '" & target & "': " & LastException.Message)
 		ToastMessageShow("Navigation error: " & LastException.Message, True)
 	End Try
 End Sub

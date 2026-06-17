@@ -369,7 +369,7 @@ Private Sub AddSectionNote(Text As String, Y As Int, Width As Int) As Int
 End Sub
 
 Private Sub menu_Click(Tag As Object)
-    Log("B4XDaisyMenu.Click=" & Tag)
+    ' Log("B4XDaisyMenu.Click=" & Tag)
 End Sub
 
 Private Sub menu_ItemClick(Tag As Object, Text As String)

@@ -360,7 +360,7 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     Return Y + title.GetComputedHeight + 20dip
 End Sub
 
-Private Sub btn4_Click
+Private Sub btn4_Click (Tag As Object)
     xui.MsgboxAsync("The button below the overlay was tapped! Touches passed through.", "PassThrough works")
 End Sub
 

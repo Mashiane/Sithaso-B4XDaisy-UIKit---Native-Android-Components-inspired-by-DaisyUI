@@ -64,12 +64,11 @@ Private Sub BuildPage
     End If
 
     If fab.IsInitialized = False Then
-        fab.Initialize(Me, "fabnav")
+        ' Use AddFabToEnd to create an anchored FAB on the navbar end slot.
+        ' OverlayHost=Root is critical: the FAB overlay must live on Root
+        ' (not inside ScrollView/pnlContent) to render beyond scroll bounds.
+        fab = Navbar.AddFabToEnd("fabnav", Root, 56dip)
         fab.Tag = "navbar-fab"
-        fab.PlacementMode = "anchored"
-        fab.Direction = "bottom"
-        fab.AnchorAlignment = "end"
-        fab.OnEdge = True
         fab.TriggerText = ""
         fab.TriggerIconName = "plus-solid.svg"
         fab.TriggerVariant = "secondary"
@@ -80,9 +79,6 @@ Private Sub BuildPage
         fab.AddAction("camera", "neutral", "camera-solid.svg")
         fab.AddAction("duplicate", "accent", "copy-solid.svg")
         fab.AddAction("share", "info", "upload-solid.svg")
-        fab.AnchorView = Navbar.GetEndPanel
-        fab.OverlayHost = Root
-        fab.AddToParent(Root, 0, 0, 56dip, 56dip)
     End If
 End Sub
 
@@ -111,6 +107,12 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
 End Sub
 
 Private Sub B4XPage_Appear
+    ' Re-anchor FAB using current screen coordinates, then bring to front.
+    ' Refresh repositions the trigger via getLocationOnScreen (scroll-aware).
+    If fab.IsInitialized Then
+        fab.Refresh
+        fab.BringToFront
+    End If
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 #End Region

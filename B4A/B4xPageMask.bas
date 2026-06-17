@@ -1,5 +1,5 @@
-﻿B4A=true
-Group=Default Group\DaisyUIKit
+B4A=true
+Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
 Version=13.4
@@ -689,7 +689,7 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 	Next
 End Sub
 
-Private Sub maskavatar_AvatarClick(Payload As Object)
+Private Sub maskavatar_Click
 End Sub
 
 Private Sub B4XPage_Appear

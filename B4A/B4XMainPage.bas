@@ -5,16 +5,17 @@ Type=Class
 Version=9.85
 @EndOfDesignText@
 #Region Shared Files
-'#CustomBuildAction: folders ready, %WINDIR%\System32\Robocopy.exe,"..\..\Shared Files" "..\Files"
-'Ctrl + click to sync files: ide://run?file=%WINDIR%\System32\Robocopy.exe&args=..\..\Shared+Files&args=..\Files&FilesSync=True
+	'#CustomBuildAction: folders ready, %WINDIR%\System32\Robocopy.exe,"..\..\Shared Files" "..\Files"
+	'Ctrl + click to sync files: ide://run?file=%WINDIR%\System32\Robocopy.exe&args=..\..\Shared+Files&args=..\Files&FilesSync=True
 #End Region
-' LibDownloader: ide://run?file=%JAVABIN%\java.exe&Args=-jar&Args=%ADDITIONAL%\..\B4X\libget-non-ui.jar&Args=%PROJECT%&Args=true
-' Export as zip: ide://run?File=%B4X%\Zipper.jar&Args=%PROJECT_NAME%.zip
+'LibDownloader: ide://run?file=%JAVABIN%\java.exe&Args=-jar&Args=%ADDITIONAL%\..\B4X\libget-non-ui.jar&Args=%PROJECT%&Args=true
+'Export as zip: ide://run?File=%B4X%\Zipper.jar&Args=%PROJECT_NAME%.zip
 
 'https://github.com/users/Mashiane/projects/1
 'https://www.b4x.com/android/forum/threads/b4x-b4a-b4xdaisy-ui-kit-native-components-inspired-by-daisyui-tailwind.170352/
 
 #IgnoreWarnings:12
+
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -53,6 +54,7 @@ Sub Class_Globals
 	Public CountdownPage As B4XPageCountdown
 	Public DiffPage As B4XPageDiff
 	Public ListPage As B4XPageList
+	Public List1KPage As B4XPageList1K
 	Public CanvasSpinner As B4XPageCanvasSpinner
 	Public TextRotatePage As B4XPageTextRotate
 	Public TimelinePage As B4XPageTimeline
@@ -74,6 +76,19 @@ Sub Class_Globals
 	Public PaginationPage As B4XPagePagination
 	Public StepsPage As B4XPageSteps
 	Public TabPage As B4XPageTab
+	Public LabelPage As B4XPageLabel
+	Public InputPage As B4XPageInput
+	Public CheckboxPage As B4XPageCheckbox
+	Public RadioPage As B4XPageRadio
+	Public TogglePage As B4XPageToggle
+	Public RangePage As B4XPageRange
+	Public RatingPage As B4XPageRating
+	Public TextareaPage As B4XPageTextarea
+	Public SelectPage As B4XPageSelect
+	Public RadioGroupPage As B4XPageRadioGroup
+	Public CheckboxGroupPage As B4XPageCheckboxGroup
+	Public ToggleGroupPage As B4XPageToggleGroup
+	Public IconButtonPage As B4XPageIconButton
 End Sub
 
 Public Sub Initialize
@@ -82,7 +97,7 @@ Public Sub Initialize
 End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
-	Root = Root1	
+	Root = Root1
 	PendingDashboardOnReopen = False
 	'show the splash screen
 	Root.LoadLayout("Splash")
@@ -90,23 +105,24 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Sleep(0)
 	'load the other pages
 	Wait For (ShowSplashScreen) Complete (Unused As Boolean)
-	
-	' Initialize global loader after initial layout is loaded - avoids interference
+
+	'Initialize global loader after initial layout is loaded - avoids interference
 	AppOverlay.Initialize(Me, "AppOverlay")
 	AppOverlay.OverlayColor = xui.Color_White
 	AppOverlay.Opacity = 0
 	If Root.Parent.IsInitialized Then
 		AppOverlay.AttachTo(Root.Parent)
 		AppOverlay.Visible = False
-		
+
 		AppLoader.Initialize(Me, "AppLoader")
 		AppLoader.AttachTo(AppOverlay.GetHostView)
 		AppLoader.Hide
 	End If
-	
-	
-'	Root.RemoveAllViews
+
+
+	'Root.RemoveAllViews
 	B4XPages.SetTitle(Me, "B4XDaisy UIKit")
+	'DEBUG: show Input page directly to reproduce layout issues faster
 	B4XPages.ShowPage("Dashboard")
 End Sub
 
@@ -124,8 +140,8 @@ End Sub
 
 Sub ShowSplashScreen As ResumableSub
 	#If B4i
-	Main.NavControl.NavigationBarVisible = False
-	#End If	
+		Main.NavControl.NavigationBarVisible = False
+	#End If
 	'
 	ChatPage.Initialize
 	AlertPage.Initialize
@@ -152,6 +168,7 @@ Sub ShowSplashScreen As ResumableSub
 	CountdownPage.Initialize
 	DiffPage.Initialize
 	ListPage.Initialize
+	List1KPage.Initialize
 	SkeletonPage.Initialize
 	StatPage.Initialize
 	FabPage.Initialize
@@ -169,23 +186,48 @@ Sub ShowSplashScreen As ResumableSub
 	PaginationPage.Initialize
 	StepsPage.Initialize
 	TabPage.Initialize
+	LabelPage.Initialize
+	InputPage.Initialize
+	CheckboxPage.Initialize
+	RadioPage.Initialize
+	TogglePage.Initialize
+	RangePage.Initialize
+	RatingPage.Initialize
+	TextareaPage.Initialize
+	SelectPage.Initialize
+	RadioGroupPage.Initialize
+	CheckboxGroupPage.Initialize
+	ToggleGroupPage.Initialize
+	IconButtonPage.Initialize
 	DashboardPage.Initialize
 	ToastPage.Initialize
 	TooltipPage.Initialize
 	NavbarPage.Initialize
 	WindowPage.Initialize
-	FieldSetPage.Initialize 
+	FieldSetPage.Initialize
 	CanvasSpinner.Initialize
 	TextRotatePage.Initialize
 	TimelinePage.Initialize
 	Hover3dPage.Initialize
-	
+
 	B4XPages.AddPage("Stat", StatPage)
 	B4XPages.AddPage("Chat", ChatPage)
 	B4XPages.AddPage("Alert", AlertPage)
 	B4XPages.AddPage("Avatar", AvatarPage)
 	B4XPages.AddPage("Badge", BadgePage)
 	B4XPages.AddPage("Card", CardPage)
+	B4XPages.AddPage("Checkbox Group", CheckboxGroupPage)
+	B4XPages.AddPage("Toggle Group", ToggleGroupPage)
+	B4XPages.AddPage("Radio Group", RadioGroupPage)
+	B4XPages.AddPage("Select", SelectPage)
+	B4XPages.AddPage("Rating", RatingPage)
+	B4XPages.AddPage("Textarea", TextareaPage)
+	B4XPages.AddPage("Range", RangePage)
+	B4XPages.AddPage("Toggle", TogglePage)
+	B4XPages.AddPage("Radio", RadioPage)
+	B4XPages.AddPage("Checkbox", CheckboxPage)
+	B4XPages.AddPage("Input", InputPage)
+	B4XPages.AddPage("Label", LabelPage)
 	B4XPages.AddPage("Tab", TabPage)
 	B4XPages.AddPage("Steps", StepsPage)
 	B4XPages.AddPage("Dock", DockPage)
@@ -203,6 +245,7 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Fab Flower", FabFlowerPage)
 	B4XPages.AddPage("Diff", DiffPage)
 	B4XPages.AddPage("List", ListPage)
+	B4XPages.AddPage("List 1K", List1KPage)
 	B4XPages.AddPage("Dashboard", DashboardPage)
 	B4XPages.AddPage("Skeleton", SkeletonPage)
 	B4XPages.AddPage("Hero", HeroPage)
@@ -232,10 +275,12 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("TextRotate", TextRotatePage)
 	B4XPages.AddPage("Timeline", TimelinePage)
 	B4XPages.AddPage("Hover3d", Hover3dPage)
+	B4XPages.AddPage("Icon Button", IconButtonPage)
 	Return True
 End Sub
 
 'Return True to close, False to cancel
+
 Private Sub B4XPage_CloseRequest As ResumableSub
 	Dim sf As Object = xui.Msgbox2Async("Are you sure you want to close the application?", "Close B4XDaisy UI Kit?", "Yes", "", "No", Null)
 	Wait For (sf) Msgbox_Result (Result As Int)
@@ -247,10 +292,11 @@ Private Sub B4XPage_CloseRequest As ResumableSub
 	Return False
 End Sub
 
-' /**
-'  * Shows the page loader, waits a bit, and then shows the target page.
-'  */
-public Sub ShowPageWithLoader(PageId As String)
+'/**
+'* Shows the page loader, waits a bit, and then shows the target page.
+'*/
+
+Public Sub ShowPageWithLoader(PageId As String)
 	Try
 		AppOverlay.Open
 		AppLoader.Show
@@ -263,7 +309,14 @@ public Sub ShowPageWithLoader(PageId As String)
 		AppLoader.Show
 		Sleep(0)
 	Catch
-		Log("ERROR: ShowPageWithLoader crashed: " & LastException.Message)
+		Log("ERROR: ShowPageWithLoader crashed for page '" & PageId & "': " & LastException.Message)
+		#If B4A
+		Dim jo As JavaObject = LastException
+		jo.RunMethod("printStackTrace", Null)
+		#End If
+			ToastMessageShow("Error loading " & PageId & ": " & LastException.Message, True)
+			AppLoader.Hide
+			AppOverlay.Close
 	End Try
 End Sub
 

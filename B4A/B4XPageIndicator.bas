@@ -378,6 +378,77 @@ Private Sub RenderSvgCounterSection(MaxW As Int, StartY As Int) As Int
 	Return y
 End Sub
 
+
+Private Sub RenderCapExamplesSection(MaxW As Int, StartY As Int) As Int
+	Dim y As Int = StartY
+	Dim titleLbl As B4XView = CreateSectionLabel("Counter cap (99+) examples", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleLbl, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+
+	Dim noteLbl As B4XView = CreateSectionLabel("Counter mode: values 1-99 show number, >= 100 shows 99+. CapValue = 0 disables.", 11, xui.Color_RGB(100, 116, 139), False)
+	pnlHost.AddView(noteLbl, PAGE_PAD, y, MaxW, 16dip)
+	y = y + 18dip
+
+	Dim row As B4XView = xui.CreatePanel("")
+	row.Color = xui.Color_Transparent
+	B4XDaisyVariants.DisableClipping(row)
+	pnlHost.AddView(row, PAGE_PAD, y, MaxW, 1dip)
+
+	Dim boxSize As Int = B4XDaisyVariants.TailwindSizeToDip("32", 128dip)
+	Dim gapX As Int = 18dip
+	Dim gapY As Int = 14dip
+	Dim cols As Int = Max(1, Floor(MaxW / (boxSize + gapX)))
+	Dim colW As Int = Max(boxSize, MaxW / cols)
+	Dim left As Int = 0
+	Dim top As Int = 22dip
+
+	Dim examples As List
+	examples.Initialize
+	examples.Add(CreateMap("text":"1", "variant":"primary", "label":"1"))
+	examples.Add(CreateMap("text":"42", "variant":"secondary", "label":"42"))
+	examples.Add(CreateMap("text":"99", "variant":"accent", "label":"99"))
+	examples.Add(CreateMap("text":"100", "variant":"error", "label":"100>99+"))
+	examples.Add(CreateMap("text":"999", "variant":"warning", "label":"999>99+"))
+	examples.Add(CreateMap("text":"1500", "variant":"info", "label":"1500>99+"))
+
+	For i = 0 To examples.Size - 1
+		Dim ex As Map = examples.Get(i)
+		Dim exLeft As Int = left + (i Mod cols) * colW
+		Dim exTop As Int = top + Floor(i / cols) * (boxSize + gapY + 18dip)
+
+		Dim baseDiv As B4XDaisyDivision
+		baseDiv.Initialize(Me, "")
+		Dim baseView As B4XView = baseDiv.AddToParent(row, exLeft, exTop, boxSize, boxSize)
+		baseDiv.setWidth("32")
+		baseDiv.setHeight("32")
+		baseDiv.setPlaceContentCenter(True)
+		baseDiv.setRoundedBox(True)
+		baseDiv.setText(ex.GetDefault("label", ""))
+		baseDiv.setTextSize("text-xs")
+		baseDiv.setBackgroundColorVariant("bg-neutral")
+		baseDiv.setTextColorVariant("text-neutral-content")
+
+		Dim ind As B4XDaisyIndicator
+		ind.Initialize(Me, "indicator")
+		ind.setTag("cap-" & ex.GetDefault("label", ""))
+		ind.setCounter(True)
+		ind.setText(ex.GetDefault("text", "0"))
+		ind.setVariant(ex.GetDefault("variant", "primary"))
+		ind.setRounded("rounded-full")
+		ind.setSize("sm")
+		ind.setHorizontalPlacement("end")
+		ind.setVerticalPlacement("top")
+		ind.AddToParent(row, exLeft, exTop, boxSize, boxSize)
+		ind.AttachToTarget(baseView)
+	Next
+
+	Dim rows As Int = Max(1, (examples.Size + cols - 1) / cols)
+	Dim rowH As Int = top + (rows * boxSize) + ((rows - 1) * (gapY + 18dip)) + 30dip
+	row.SetLayoutAnimated(0, PAGE_PAD, y, MaxW, rowH)
+	y = y + rowH + 14dip
+	Return y
+End Sub
+
 Private Sub StartCounterDemoLoop(Indicator As B4XDaisyIndicator)
 	mCounterDemoToken = mCounterDemoToken + 1
 	Dim token As Int = mCounterDemoToken

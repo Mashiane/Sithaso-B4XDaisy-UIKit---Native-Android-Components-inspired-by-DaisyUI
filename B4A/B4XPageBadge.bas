@@ -188,6 +188,18 @@ Private Sub BuildExampleDefinitions
 	emptyItems.Add(BadgeItem("", "sm", "primary", "solid", "", False))
 	emptyItems.Add(BadgeItem("", "xs", "primary", "solid", "", False))
 	ExampleDefs.Add(CreateMap("title":"Empty badge", "items": emptyItems))
+	Dim capItems As List
+	capItems.Initialize
+	capItems.Add(BadgeItem("5", "md", "none", "solid", "", False))
+	capItems.Add(BadgeItem("42", "md", "primary", "solid", "", False))
+	capItems.Add(BadgeItem("99", "md", "secondary", "solid", "", False))
+	capItems.Add(BadgeItem("100", "md", "accent", "solid", "", False))
+	capItems.Add(BadgeItem("999", "md", "error", "solid", "", False))
+	Dim capCustom As Map = BadgeItem("1500", "md", "info", "solid", "", False)
+	capCustom.Put("cap_value", 999)
+	capItems.Add(capCustom)
+	ExampleDefs.Add(CreateMap("title":"Badge value cap (99+)", "note":"Numeric values >= 100 display as 99+. Set CapValue to 0 to disable or to a custom threshold.", "items": capItems))
+
 
 	Dim iconItems As List
 	iconItems.Initialize
@@ -425,6 +437,7 @@ Private Sub ApplyBadgeItem(Badge As B4XDaisyBadge, Item As Map, TagId As String)
 
 	Dim isClosable As Boolean = Item.GetDefault("closable", False)
 	Badge.setClosable(isClosable)
+	If Item.ContainsKey("cap_value") Then Badge.setCapValue(Item.Get("cap_value"))
 End Sub
 
 Private Sub RenderHeadingExamples(MaxW As Int, StartY As Int) As Int

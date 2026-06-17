@@ -226,7 +226,7 @@ Private Sub ShowStatus(Text As String)
 End Sub
 
 Private Sub menu_Click(Tag As Object)
-    Log("menu_Click tag=" & Tag)
+    ' Log("menu_Click tag=" & Tag)
 End Sub
 
 Private Sub menu_ItemClick(Tag As Object, Text As String)

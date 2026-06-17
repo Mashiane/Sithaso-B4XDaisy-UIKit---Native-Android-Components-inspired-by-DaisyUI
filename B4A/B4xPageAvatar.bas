@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -1186,8 +1186,8 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 	svHost.Panel.Height = Max(Height, currentY)
 End Sub
 
-Private Sub avatar_AvatarClick(Payload As Object)
-	'Log("Avatar page click: " & Payload)
+Private Sub avatar_Click
+	'Log("Avatar page click")
 End Sub
 
 
