@@ -182,6 +182,45 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Next
     currentY = LayoutRow(row7, currentY, maxW, 8dip)
 
+    ' === Custom Sizes (new CustomSize property) ===
+    ' CustomSize (dip) overrides the Size token. The button renders at
+    ' CustomSize x CustomSize, and the icon auto-scales to ~40% of that
+    ' size (clamped to a 12dip minimum), so both button and icon grow.
+    currentY = AddSectionTitle("Custom Sizes - Square (icon scales with button)", currentY, maxW)
+    Dim row7b As List
+    row7b.Initialize
+    For Each cs As Int In Array As Int(24, 36, 48, 64, 80)
+        Dim btn As B4XDaisyIconButton
+        btn.Initialize(Me, "ib")
+        btn.setVariant("primary")
+        btn.setStyle("solid")
+        btn.setCustomSize(cs)
+        btn.setShape("square")
+        btn.setTag("custom-square-" & cs)
+        btn.setIconAsset("heart-solid.svg")
+        btn.AddToParent(pnlHost, 0, 0, 0, 0)
+        row7b.Add(btn.getView)
+    Next
+    currentY = LayoutRow(row7b, currentY, maxW, 8dip)
+
+    ' === Custom Sizes - Circle (shape preserved) ===
+    currentY = AddSectionTitle("Custom Sizes - Circle (shape preserved)", currentY, maxW)
+    Dim row7c As List
+    row7c.Initialize
+    For Each cs As Int In Array As Int(24, 36, 48, 64, 80)
+        Dim btn As B4XDaisyIconButton
+        btn.Initialize(Me, "ib")
+        btn.setVariant("secondary")
+        btn.setStyle("solid")
+        btn.setCustomSize(cs)
+        btn.setShape("circle")
+        btn.setTag("custom-circle-" & cs)
+        btn.setIconAsset("heart-solid.svg")
+        btn.AddToParent(pnlHost, 0, 0, 0, 0)
+        row7c.Add(btn.getView)
+    Next
+    currentY = LayoutRow(row7c, currentY, maxW, 8dip)
+
     ' === Active State ===
     currentY = AddSectionTitle("Active State", currentY, maxW)
     Dim row8 As List

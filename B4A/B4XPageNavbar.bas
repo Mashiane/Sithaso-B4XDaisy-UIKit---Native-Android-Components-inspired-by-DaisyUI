@@ -1,4 +1,4 @@
-B4A=true
+ï»¿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -148,7 +148,7 @@ End Sub
 ' =======================================================
 ' AddNavbarTitleOnly
 ' Demonstrates a basic Navbar with a title only.
-' Also shows a fixed FAB (bottom-end) on Root — the simplest
+' Also shows a fixed FAB (bottom-end) on Root ï¿½ the simplest
 ' way to pair a FAB with a Navbar page. The FAB uses fixed
 ' placement so it always sits at the screen corner, independent
 ' of the ScrollView content position.

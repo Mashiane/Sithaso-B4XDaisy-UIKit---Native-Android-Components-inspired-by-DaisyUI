@@ -689,7 +689,7 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 	Next
 End Sub
 
-Private Sub maskavatar_Click
+Private Sub maskavatar_Click (Tag As Object)
 End Sub
 
 Private Sub B4XPage_Appear

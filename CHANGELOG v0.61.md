@@ -1,6 +1,6 @@
 ﻿# Changelog - v0.61
 
-Generated on: 2026-06-17
+Generated on: 2026-06-18
 
 Compare: v0.60 -> v0.61
 
@@ -11,7 +11,7 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 ## Summary
 
 - New components: 12
-- Modified components: 24
+- Modified components: 32
 - Removed components: 0
 
 ## New Files
@@ -31,24 +31,32 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Modified Files
 
+- B4XDaisyAlert.bas
 - B4XDaisyApp.bas
 - B4XDaisyAvatar.bas
 - B4XDaisyBadge.bas
 - B4XDaisyBadgeGroupSelect.bas
+- B4XDaisyBreadcrumbs.bas
 - B4XDaisyButton.bas
 - B4XDaisyCanvasSpinner.bas
 - B4XDaisyCarouselItem.bas
+- B4XDaisyCollapse.bas
+- B4XDaisyDock.bas
 - B4XDaisyDropdown.bas
 - B4XDaisyFab.bas
 - B4XDaisyIndicator.bas
 - B4XDaisyList.bas
 - B4XDaisyLoading.bas
+- B4XDaisyMenu.bas
 - B4XDaisyNavbar.bas
 - B4XDaisyOverlay.bas
 - B4XDaisyStat.bas
 - B4XDaisyStatItem.bas
 - B4XDaisyStatus.bas
+- B4XDaisySteps.bas
 - B4XDaisySvgIcon.bas
+- B4XDaisySwap.bas
+- B4XDaisyTab.bas
 - B4XDaisyText.bas
 - B4XDaisyVariants.bas
 - YogaContainer.bas

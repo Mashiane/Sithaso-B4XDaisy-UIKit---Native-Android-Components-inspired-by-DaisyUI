@@ -1186,7 +1186,7 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 	svHost.Panel.Height = Max(Height, currentY)
 End Sub
 
-Private Sub avatar_Click
+Private Sub avatar_Click (Tag As Object)
 	'Log("Avatar page click")
 End Sub
 
