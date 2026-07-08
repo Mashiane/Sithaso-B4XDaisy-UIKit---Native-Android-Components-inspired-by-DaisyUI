@@ -4,8 +4,8 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings:12
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -14,6 +14,7 @@ Sub Class_Globals
 	Private PAGE_PAD As Int = 12dip
 	Private SECTION_GAP As Int = 16dip
 	Private currentY As Int
+	Private toast As B4XDaisyToast
 End Sub
 
 Public Sub Initialize As Object
@@ -22,17 +23,24 @@ End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
-	Root.Color = xui.Color_RGB(245, 247, 250)
-	B4XPages.SetTitle(Me, "Card")
 
 	svHost.Initialize(Max(1dip, Root.Height))
 	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
 	pnlHost = svHost.Panel
 	pnlHost.Color = xui.Color_Transparent
 
+	toast.Initialize(Me, "toast")
+	toast.SetRoot(Root)
+	Dim dummy As Panel
+	dummy.Initialize("")
+	Dim toastHost As B4XView = dummy
+	toastHost.SetLayoutAnimated(0, 0, 0, 1dip, 1dip)
+	toast.DesignerCreateView(toastHost, Null, CreateMap())
+
 End Sub
 
 Private Sub B4XPage_Appear
+	toast.Clear
 	If pnlHost.NumberOfViews = 0 Then
 		Wait For (RenderExamples(Root.Width, Root.Height)) Complete  (Done As Boolean)
 	End If
@@ -40,6 +48,7 @@ Private Sub B4XPage_Appear
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
+	toast.Base_Resize(Width, Height)
 	If svHost.IsInitialized Then
 		svHost.SetLayoutAnimated(0, 0, 0, Width, Height)
 	End If
@@ -61,7 +70,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	Dim vBase As B4XView = cBase.AddToParent(pnlHost, leftBase, currentY, baseW, 430dip)
 	ApplyCardDefaults(cBase, "baseline")
 	cBase.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
-	SetCardContent(cBase, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now")
+	SetCardContent(cBase, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now", "buynow")
 	AddTitleBadges(cBase)
 	cBase.Size = "md"
 	cBase.Style = "none"
@@ -77,7 +86,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	ApplyCardDefaults(cBorder, "border")
 	cBorder.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
 	cBorder.Style = "border"
-	SetCardContent(cBorder, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now")
+	SetCardContent(cBorder, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now", "buynow")
 	currentY = currentY + vBorder.Height + 10dip
 
 	Dim cDash As B4XDaisyCard
@@ -86,7 +95,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	ApplyCardDefaults(cDash, "dash")
 	cDash.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
 	cDash.Style = "dash"
-	SetCardContent(cDash, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now")
+	SetCardContent(cDash, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now", "buynow")
 	currentY = currentY + vDash.Height + SECTION_GAP
 	Sleep(0)
 
@@ -100,7 +109,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 		cSize.LayoutMode = "none"
 		cSize.Style = "border"
 		cSize.Size = token
-		SetCardContent(cSize, token.ToUpperCase & " Card", "Card size token: " & token, "Buy Now")
+		SetCardContent(cSize, token.ToUpperCase & " Card", "Card size token: " & token, "Buy Now", "buynow")
 		currentY = currentY + vSize.Height + 8dip
 	Next
 	Sleep(0)
@@ -114,7 +123,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	cOverlay.LayoutMode = "overlay"
 	cOverlay.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
 	cOverlay.TextColorVariant = "neutral-content"
-	SetCardContent(cOverlay, "Shoes!", "If a dog chews shoes whose shoes does he choose?", "Buy Now")
+	SetCardContent(cOverlay, "Shoes!", "If a dog chews shoes whose shoes does he choose?", "Buy Now", "buynow")
 	SetBodyTextColor(cOverlay, xui.Color_White)
 	currentY = currentY + vOverlay.Height + SECTION_GAP
 
@@ -124,7 +133,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	Dim vActionTop As B4XView = cActionTop.AddToParent(pnlHost, leftBase, currentY, baseW, 260dip)
 	ApplyCardDefaults(cActionTop, "action-top")
 	cActionTop.LayoutMode = "none"
-	SetCardContent(cActionTop, "Action first", "Compose actions in CardActions for complete control.", "Primary")
+	SetCardContent(cActionTop, "Action first", "Compose actions in CardActions for complete control.", "Primary", "primary")
 	currentY = currentY + vActionTop.Height + SECTION_GAP
 
 	AddSectionTitle("Card with place-items-center")
@@ -133,7 +142,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	Dim vPlaceItems As B4XView = cPlaceItems.AddToParent(pnlHost, leftBase, currentY, baseW, 260dip)
 	ApplyCardDefaults(cPlaceItems, "place-items-center")
 	cPlaceItems.LayoutMode = "none"
-	SetCardContent(cPlaceItems, "Action first", "Compose actions in CardActions for complete control.", "Primary")
+	SetCardContent(cPlaceItems, "Action first", "Compose actions in CardActions for complete control.", "Primary", "primary")
 	cPlaceItems.PlaceItemsCenter = True
 	currentY = currentY + vPlaceItems.Height + SECTION_GAP
 
@@ -145,7 +154,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	cNeutral.LayoutMode = "none"
 	cNeutral.BackgroundColorVariant = "neutral"
 	cNeutral.TextColorVariant = "neutral-content"
-	SetCardContent(cNeutral, "Cookies!", "We are using cookies for no reason.", "Accept")
+	SetCardContent(cNeutral, "Cookies!", "We are using cookies for no reason.", "Accept", "accept")
 	SetBodyTextColor(cNeutral, xui.Color_White)
 	currentY = currentY + vNeutral.Height + SECTION_GAP
 
@@ -158,7 +167,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	ApplyCardDefaults(cSide, "side")
 	cSide.LayoutMode = "side"
 	cSide.ImagePath = "photo-1635805737707-575885ab0820.webp"
-	SetCardContent(cSide, "New movie is released!", "Click the button to watch on Jetflix app.", "Watch")
+	SetCardContent(cSide, "New movie is released!", "Click the button to watch on Jetflix app.", "Watch", "watch")
 	currentY = currentY + vSide.Height + SECTION_GAP
 
 	AddSectionTitle("Side layout card")
@@ -168,7 +177,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	ApplyCardDefaults(cResponsive, "responsive")
 	cResponsive.LayoutMode = "side"
 	cResponsive.ImagePath = "photo-1494232410401-ad00d5433cfa.webp"
-	SetCardContent(cResponsive, "New album is released!", "This card keeps side mode when layout mode is set to side.", "Listen")
+	SetCardContent(cResponsive, "New album is released!", "This card keeps side mode when layout mode is set to side.", "Listen", "listen")
 	currentY = currentY + vResponsive.Height + SECTION_GAP
 
 	AddSectionTitle("User baseline card (image bottom)")
@@ -177,7 +186,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	Dim vBaseBottom As B4XView = cBaseBottom.AddToParent(pnlHost, leftBase, currentY, baseW, 430dip)
 	ApplyCardDefaults(cBaseBottom, "baseline-bottom")
 	cBaseBottom.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
-	SetCardContent(cBaseBottom, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now")
+	SetCardContent(cBaseBottom, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now", "buynow")
 	AddTitleBadges(cBaseBottom)
 	cBaseBottom.Size = "md"
 	cBaseBottom.Style = "none"
@@ -193,7 +202,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 		Dim vVariant As B4XView = cVariant.AddToParent(pnlHost, leftBase, currentY, baseW, 240dip)
 		ApplyCardDefaults(cVariant, "variant-" & token)
 		cVariant.LayoutMode = "none"
-		SetCardContent(cVariant, "Action first (" & token & ")", "Compose actions in CardActions for complete control.", "Primary")
+		SetCardContent(cVariant, "Action first (" & token & ")", "Compose actions in CardActions for complete control.", "Primary", "primary")
 		cVariant.Variant = token
 		currentY = currentY + vVariant.Height + 8dip
 	Next
@@ -209,7 +218,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 		ApplyCardDefaults(cDashVar, "dash-" & token)
 		cDashVar.Style = "dash"
 		cDashVar.LayoutMode = "none"
-		SetCardContent(cDashVar, token & " border", "Dashed border using variant color.", "Primary")
+		SetCardContent(cDashVar, token & " border", "Dashed border using variant color.", "Primary", "primary")
 		' manually apply variant-colored dashed border on the container
 		Dim borderCol As Int = B4XDaisyVariants.ResolveBorderColorVariant(token, xui.Color_Transparent)
 		Dim corner As Float = B4XDaisyVariants.ResolveRoundedDip("rounded-box", 0)
@@ -259,7 +268,7 @@ Private Sub ResolveCardBodyPaddingDip(SizeToken As String) As Int
 	End Select
 End Sub
 
-Private Sub SetCardContent(Card As B4XDaisyCard, Title As String, BodyText As String, ActionText As String)
+Private Sub SetCardContent(Card As B4XDaisyCard, Title As String, BodyText As String, ActionText As String, EventName As String)
 	Card.Title = Title
 	Dim titleExtras As B4XView = Card.CardTitle
 	If titleExtras.IsInitialized Then titleExtras.RemoveAllViews
@@ -282,7 +291,8 @@ Private Sub SetCardContent(Card As B4XDaisyCard, Title As String, BodyText As St
 	actions.RemoveAllViews
 	If ActionText <> Null And ActionText.Trim.Length > 0 Then
 		Dim actionBtn As B4XDaisyButton
-		actionBtn.Initialize(Me, "")
+		actionBtn.Initialize(Me, EventName)
+		actionBtn.Tag = ActionText
 		actionBtn.Size = "sm"
 		actionBtn.Variant = "primary"
 		actionBtn.Style = "outline"
@@ -290,7 +300,7 @@ Private Sub SetCardContent(Card As B4XDaisyCard, Title As String, BodyText As St
 		actionBtn.AddToParent(actions, 0, 0, 0, 0)
 	End If
 
-	If Card.mBase.IsInitialized Then Card.Base_Resize(Card.mBase.Width, Card.mBase.Height)
+	If Card.GetContainer.IsInitialized Then Card.Base_Resize(Card.GetActualWidth, Card.GetActualHeight)
 	ApplyBodyPaddingDebugBorder(Card)
 End Sub
 
@@ -324,7 +334,7 @@ Private Sub AddTitleBadges(Card As B4XDaisyCard)
 	bPopular.Text = "POPULAR"
 	bPopular.AddToParent(host, 0, 0, 0, 0)
 
-	If Card.mBase.IsInitialized Then Card.Base_Resize(Card.mBase.Width, Card.mBase.Height)
+	If Card.GetContainer.IsInitialized Then Card.Base_Resize(Card.GetActualWidth, Card.GetActualHeight)
 End Sub
 
 Private Sub AddSectionTitle(Text As String)
@@ -339,11 +349,40 @@ Private Sub AddSectionTitle(Text As String)
 End Sub
 
 Private Sub card_Click(Tag As Object)
-	ToastMessageShow("Card click: " & Tag, False)
+	toast.Clear
+	toast.InfoWithDuration("Card click: " & Tag, 3000)
 End Sub
 
-Private Sub card_ActionClick(ActionId As String, Tag As Object)
-	ToastMessageShow("Action click (" & ActionId & "): " & Tag, False)
+' Shared event name used by every "Buy Now" action button across the
+' baseline, border, dash, size, overlay and image-bottom cards.
+Private Sub buynow_Click(Tag As Object)
+	toast.Clear
+	toast.SuccessWithDuration("Buy Now selected: " & Tag, 3000)
+End Sub
+
+' Shared event name used by every "Primary" action button across the
+' action-first, place-items-center, variant and dashed-variant cards.
+Private Sub primary_Click(Tag As Object)
+	toast.Clear
+	toast.InfoWithDuration("Primary action: " & Tag, 3000)
+End Sub
+
+' Unique event name for the cookies card.
+Private Sub accept_Click(Tag As Object)
+	toast.Clear
+	toast.SuccessWithDuration("Cookies accepted!", 3000)
+End Sub
+
+' Unique event name for the Jetflix side-layout card.
+Private Sub watch_Click(Tag As Object)
+	toast.Clear
+	toast.InfoWithDuration("Now playing on Jetflix", 3000)
+End Sub
+
+' Unique event name for the album side-layout card.
+Private Sub listen_Click(Tag As Object)
+	toast.Clear
+	toast.WarningWithDuration("Streaming the new album", 3000)
 End Sub
 
 

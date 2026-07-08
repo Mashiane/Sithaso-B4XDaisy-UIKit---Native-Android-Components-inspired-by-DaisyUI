@@ -8,7 +8,7 @@ Version=13.4
 ' B4XPageOverlay demo page
 ' Shows B4XDaisyOverlay applied to various B4XView targets.
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
     Private Root As B4XView
     Private xui As XUI
@@ -32,8 +32,6 @@ End Sub
 '  */
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
-    Root.Color = xui.Color_RGB(245, 247, 250)
-    B4XPages.SetTitle(Me, "Overlay")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -49,7 +47,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     mFsOverlay.CloseOnClick = True
     mFsOverlay.AttachTo(Root)
     mFsDismissLbl.Initialize(Me, "")
-    mFsDismissLbl.AddToParent(mFsOverlay.mBase, 0, 0, mFsOverlay.mBase.Width, mFsOverlay.mBase.Height)
+    mFsDismissLbl.AddToParent(mFsOverlay.GetHostView, 0, 0, mFsOverlay.GetActualWidth, mFsOverlay.GetActualHeight)
     mFsDismissLbl.Text = "Tap anywhere to dismiss"
     mFsDismissLbl.setTextColor(xui.Color_White)
     mFsDismissLbl.TextSize = 16
@@ -64,7 +62,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     mWhiteOverlay.CloseOnClick = True
     mWhiteOverlay.AttachTo(Root)
     mWhiteDismissLbl.Initialize(Me, "")
-    mWhiteDismissLbl.AddToParent(mWhiteOverlay.mBase, 0, 0, mWhiteOverlay.mBase.Width, mWhiteOverlay.mBase.Height)
+    mWhiteDismissLbl.AddToParent(mWhiteOverlay.GetHostView, 0, 0, mWhiteOverlay.GetActualWidth, mWhiteOverlay.GetActualHeight)
     mWhiteDismissLbl.Text = "Tap anywhere to dismiss"
     mWhiteDismissLbl.setTextColor(xui.Color_RGB(30, 41, 59))
     mWhiteDismissLbl.TextSize = 16

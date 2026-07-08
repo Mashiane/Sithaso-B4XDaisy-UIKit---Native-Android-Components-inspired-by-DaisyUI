@@ -5,11 +5,10 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
     Private Root As B4XView
     Private xui As XUI
-    Private overlay As B4XDaisyOverlay
     Private spinner As B4XDaisyCanvasSpinner
     Private btn As B4XView
 End Sub
@@ -21,19 +20,12 @@ End Sub
 Private Sub B4XPage_Created (Root1 As B4XView)
     Root = Root1
     Root.Color = xui.Color_White
-    B4XPages.SetTitle(Me, "Canvas Spinner")
-
-    overlay.Initialize(Me, "overlay")
-    overlay.OverlayColor = xui.Color_White
-    overlay.Opacity = 0.7
-    overlay.AttachTo(Root) ' adds to root and expands automatically
-    overlay.Visible = False ' start hidden
 
     spinner.Initialize(Me, "spinner")
-    spinner.AttachTo(overlay.GetHostView) ' attach into overlay surface
-    ' make sure the spinner has the proper size/drawing immediately
-    spinner.Resize(Root.Width, Root.Height)
-    spinner.Hide ' not animating until the overlay is shown
+    If Root.Parent.IsInitialized Then
+        spinner.Show(Root.Parent)
+        spinner.Hide
+    End If
     
     Dim db As B4XDaisyButton
     db.Initialize(Me, "btn")
@@ -42,16 +34,16 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
-    overlay.Resize(Width, Height)
     spinner.Resize(Width, Height)
 End Sub
 
 Private Sub btn_Click(Tag As Object)
-    overlay.Visible = Not(overlay.Visible)
-    If overlay.Visible Then
-        spinner.Show
-    Else
+    If spinner.Visible Then
         spinner.Hide
+    Else
+        If Root.Parent.IsInitialized Then
+            spinner.Show(Root.Parent)
+        End If
     End If
 End Sub
 

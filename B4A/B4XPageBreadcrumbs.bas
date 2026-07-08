@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -29,7 +30,6 @@ End Sub
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(245, 247, 250))
-    B4XPages.SetTitle(Me, "Breadcrumbs")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -62,11 +62,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     basic.AddToParent(pnlHost, contentLeft, currentY, maxW, 40dip)
     basic.TextSize = "text-sm"
     basic.CurrentIndex = 2
-    basic.ClearItems
+    basic.Clear
     basic.AddItem("home", "Home", "", True)
     basic.AddItem("documents", "Documents", "", True)
     basic.AddItem("add-document", "Add Document", "", False)
-    basic.getView.SetLayoutAnimated(0, basic.getView.Left, basic.getView.Top, basic.getView.Width, basic.GetComputedHeight)
+    basic.SetLayoutAnimated(0, basic.Left, basic.Top, basic.Width, basic.GetComputedHeight)
     currentY = currentY + basic.GetComputedHeight + 18dip
 
     ''' <summary>
@@ -79,11 +79,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     withIcons.AddToParent(pnlHost, contentLeft, currentY, maxW, 40dip)
     withIcons.TextSize = "text-sm"
     withIcons.CurrentIndex = 2
-    withIcons.ClearItems
+    withIcons.Clear
     withIcons.AddItem("home-icon", "Home", "breadcrumb-folder.svg", True)
     withIcons.AddItem("documents-icon", "Documents", "breadcrumb-folder.svg", True)
     withIcons.AddItem("add-document-icon", "Add Document", "breadcrumb-document.svg", False)
-    withIcons.getView.SetLayoutAnimated(0, withIcons.getView.Left, withIcons.getView.Top, withIcons.getView.Width, withIcons.GetComputedHeight)
+    withIcons.SetLayoutAnimated(0, withIcons.Left, withIcons.Top, withIcons.Width, withIcons.GetComputedHeight)
     currentY = currentY + withIcons.GetComputedHeight + 18dip
 
     ''' <summary>
@@ -97,13 +97,13 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     scrolling.AddToParent(pnlHost, contentLeft, currentY, narrowW, 40dip)
     scrolling.TextSize = "text-sm"
     scrolling.CurrentIndex = 4
-    scrolling.ClearItems
+    scrolling.Clear
     scrolling.AddItem("long-1", "Long text 1", "", True)
     scrolling.AddItem("long-2", "Long text 2", "", True)
     scrolling.AddItem("long-3", "Long text 3", "", True)
     scrolling.AddItem("long-4", "Long text 4", "", True)
     scrolling.AddItem("long-5", "Long text 5", "", False)
-    scrolling.getView.SetLayoutAnimated(0, scrolling.getView.Left, scrolling.getView.Top, scrolling.getView.Width, scrolling.GetComputedHeight)
+    scrolling.SetLayoutAnimated(0, scrolling.Left, scrolling.Top, scrolling.Width, scrolling.GetComputedHeight)
     currentY = currentY + scrolling.GetComputedHeight + 18dip
 
     ''' <summary>
@@ -118,11 +118,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeSm.AddToParent(pnlHost, contentLeft, currentY, maxW, 40dip)
     sizeSm.TextSize = "text-sm"
     sizeSm.CurrentIndex = 2
-    sizeSm.ClearItems
+    sizeSm.Clear
     sizeSm.AddItem("size-sm-home", "Home", "breadcrumb-folder.svg", True)
     sizeSm.AddItem("size-sm-library", "Library", "", True)
     sizeSm.AddItem("size-sm-current", "Typography", "breadcrumb-document.svg", False)
-    sizeSm.getView.SetLayoutAnimated(0, sizeSm.getView.Left, sizeSm.getView.Top, sizeSm.getView.Width, sizeSm.GetComputedHeight)
+    sizeSm.SetLayoutAnimated(0, sizeSm.Left, sizeSm.Top, sizeSm.Width, sizeSm.GetComputedHeight)
     currentY = currentY + sizeSm.GetComputedHeight + 12dip
 
     currentY = AddDescription(contentLeft, currentY, maxW, "text-base")
@@ -131,11 +131,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeBase.AddToParent(pnlHost, contentLeft, currentY, maxW, 44dip)
     sizeBase.TextSize = "text-base"
     sizeBase.CurrentIndex = 2
-    sizeBase.ClearItems
+    sizeBase.Clear
     sizeBase.AddItem("size-base-home", "Home", "breadcrumb-folder.svg", True)
     sizeBase.AddItem("size-base-library", "Library", "", True)
     sizeBase.AddItem("size-base-current", "Typography", "breadcrumb-document.svg", False)
-    sizeBase.getView.SetLayoutAnimated(0, sizeBase.getView.Left, sizeBase.getView.Top, sizeBase.getView.Width, sizeBase.GetComputedHeight)
+    sizeBase.SetLayoutAnimated(0, sizeBase.Left, sizeBase.Top, sizeBase.Width, sizeBase.GetComputedHeight)
     currentY = currentY + sizeBase.GetComputedHeight + 12dip
 
     currentY = AddDescription(contentLeft, currentY, maxW, "text-lg")
@@ -144,11 +144,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeLg.AddToParent(pnlHost, contentLeft, currentY, maxW, 48dip)
     sizeLg.TextSize = "text-lg"
     sizeLg.CurrentIndex = 2
-    sizeLg.ClearItems
+    sizeLg.Clear
     sizeLg.AddItem("size-lg-home", "Home", "breadcrumb-folder.svg", True)
     sizeLg.AddItem("size-lg-library", "Library", "", True)
     sizeLg.AddItem("size-lg-current", "Typography", "breadcrumb-document.svg", False)
-    sizeLg.getView.SetLayoutAnimated(0, sizeLg.getView.Left, sizeLg.getView.Top, sizeLg.getView.Width, sizeLg.GetComputedHeight)
+    sizeLg.SetLayoutAnimated(0, sizeLg.Left, sizeLg.Top, sizeLg.Width, sizeLg.GetComputedHeight)
     currentY = currentY + sizeLg.GetComputedHeight + 12dip
 
     currentY = AddDescription(contentLeft, currentY, maxW, "text-xl")
@@ -157,11 +157,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeXl.AddToParent(pnlHost, contentLeft, currentY, maxW, 52dip)
     sizeXl.TextSize = "text-xl"
     sizeXl.CurrentIndex = 2
-    sizeXl.ClearItems
+    sizeXl.Clear
     sizeXl.AddItem("size-xl-home", "Home", "breadcrumb-folder.svg", True)
     sizeXl.AddItem("size-xl-library", "Library", "", True)
     sizeXl.AddItem("size-xl-current", "Typography", "breadcrumb-document.svg", False)
-    sizeXl.getView.SetLayoutAnimated(0, sizeXl.getView.Left, sizeXl.getView.Top, sizeXl.getView.Width, sizeXl.GetComputedHeight)
+    sizeXl.SetLayoutAnimated(0, sizeXl.Left, sizeXl.Top, sizeXl.Width, sizeXl.GetComputedHeight)
     currentY = currentY + sizeXl.GetComputedHeight + PAGE_PAD
 
     pnlHost.Height = Max(Height, currentY)

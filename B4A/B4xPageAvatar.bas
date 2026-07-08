@@ -1,11 +1,11 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -16,6 +16,9 @@ Sub Class_Globals
 	'Lookup table for runtime demos / targeted updates by id.
 	Private AvatarById As Map
 	Private DemoLoopToken As Int
+
+	Private interactiveAvatar As B4XDaisyAvatar
+	Private avatarPicker As B4XDaisyFileInput
 End Sub
 
 Public Sub Initialize As Object
@@ -24,8 +27,6 @@ End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
-	Root.Color = xui.Color_RGB(245, 247, 250)
-	B4XPages.SetTitle(Me, "Avatar")
 
 	'Scrollable host panel for manual, responsive card layout.
 	svHost.Initialize(Max(1dip, Root.Height))
@@ -990,9 +991,121 @@ Private Sub CreateSamples As ResumableSub
 		"title": xlblTitle5 _
 	)
 	AvatarCards.Add(item5)
+
+	' Add new ResizeMode, Blur, and Glass custom examples
+	' ResizeMode examples
+	AddCustomCard("ResizeMode: FIT", "face11.jpg", "rounded-lg", 0, 0, False, "FIT")
+	AddCustomCard("ResizeMode: FILL", "face11.jpg", "rounded-lg", 0, 0, False, "FILL")
+	AddCustomCard("ResizeMode: COVER", "face11.jpg", "rounded-lg", 0, 0, False, "FILL_NO_DISTORTIONS")
+	AddCustomCard("ResizeMode: NONE", "face11.jpg", "rounded-lg", 0, 0, False, "NONE")
+
+	' Blur examples
+	AddCustomCard("Blur Radius: 5", "face12.jpg", "circle", 0, 5, False, "FILL_NO_DISTORTIONS")
+	AddCustomCard("Blur Radius: 15", "face12.jpg", "circle", 0, 15, False, "FILL_NO_DISTORTIONS")
+
+
+	' Interactive File Picker Integration Card
+	Dim cardInt As B4XView = xui.CreatePanel("")
+	cardInt.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	cardInt.Tag = "interactive-picker"
+	pnlHost.AddView(cardInt, 0, 0, 10dip, 10dip)
+
+	interactiveAvatar.Initialize(Me, "interactive_avatar")
+	Dim avViewInt As B4XView = interactiveAvatar.AddToParent(cardInt, 0, 0, 108dip, 108dip)
+	interactiveAvatar.SetAvatarType("text")
+	interactiveAvatar.SetPlaceHolder("Choose")
+	interactiveAvatar.SetWidth("24")
+	interactiveAvatar.SetHeight("24")
+	interactiveAvatar.SetCenterOnParent(True)
+	interactiveAvatar.SetVariant("neutral")
+	interactiveAvatar.SetBackgroundColorVariant("neutral")
+	interactiveAvatar.SetTextColorVariant("neutral-content")
+	interactiveAvatar.SetAvatarMask("circle")
+
+	avatarPicker.Initialize(Me, "avatarPicker")
+	avatarPicker.AddToParent(cardInt, 0, 0, 200dip, 40dip)
+	avatarPicker.ButtonText = "Choose Image"
+	avatarPicker.Placeholder = "No image selected"
+	avatarPicker.Accept = "image/*"
+	avatarPicker.MaxSize = 5 ' 5MB limit
+	avatarPicker.Variant = "primary"
+
+	Dim lblTitleInt As Label
+	lblTitleInt.Initialize("")
+	Dim xlblTitleInt As B4XView = lblTitleInt
+	xlblTitleInt.Text = "Interactive: Choose an image file above to display here"
+	xlblTitleInt.TextColor = xui.Color_RGB(71, 85, 105)
+	xlblTitleInt.TextSize = 12
+	xlblTitleInt.SetTextAlignment("CENTER", "CENTER")
+	cardInt.AddView(xlblTitleInt, 0, 0, 10dip, 10dip)
+
+	Dim itemInt As Map = CreateMap( _
+		"panel": cardInt, _
+		"avatar": interactiveAvatar, _
+		"avatar_view": avViewInt, _
+		"id": "", _
+		"title": xlblTitleInt _
+	)
+	AvatarCards.Add(itemInt)
+
 	Sleep(0)
 	LayoutCards(Root.Width, Root.Height)
 	Return true
+End Sub
+
+Private Sub AddCustomCard(TitleText As String, Img As String, MaskName As String, RingW As Int, BlurRadiusVal As Int, GlassVal As Boolean, ResizeModeVal As String) As B4XDaisyAvatar
+	Dim card As B4XView = xui.CreatePanel("")
+	card.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 14dip)
+	pnlHost.AddView(card, 0, 0, 10dip, 10dip)
+
+	Dim av As B4XDaisyAvatar
+	av.Initialize(Me, "avatar")
+	Dim avView As B4XView = av.AddToParent(card, 0, 0, 120dip, 120dip)
+	
+	av.SetWidth("24")
+	av.SetHeight("24")
+	av.SetCenterOnParent(True)
+	av.SetAvatarMask(MaskName)
+	av.SetShadow("none")
+	
+	If Img.Length > 0 Then
+		av.SetImage(Img)
+	Else
+		av.SetAvatarType("text")
+		av.SetPlaceHolder("AV")
+		av.SetVariant("neutral")
+		av.SetBackgroundColorVariant("neutral")
+		av.SetTextColorVariant("neutral-content")
+	End If
+	
+	If RingW > 0 Then
+		av.SetRingWidth(RingW)
+		av.SetRingOffset(2dip)
+		av.SetRingColorVariant("primary")
+	End If
+	
+	av.setBlurRadius(BlurRadiusVal)
+	av.setGlass(GlassVal)
+	av.setResizeMode(ResizeModeVal)
+
+	Dim lblTitle As Label
+	lblTitle.Initialize("")
+	Dim xlblTitle As B4XView = lblTitle
+	xlblTitle.Text = TitleText
+	xlblTitle.TextColor = xui.Color_RGB(15, 23, 42)
+	xlblTitle.TextSize = 13
+	xlblTitle.SetTextAlignment("CENTER", "CENTER")
+	card.AddView(xlblTitle, 0, 0, 10dip, 10dip)
+
+	Dim item As Map = CreateMap( _
+		"panel": card, _
+		"avatar": av, _
+		"avatar_view": avView, _
+		"id": "", _
+		"title": xlblTitle _
+	)
+	AvatarCards.Add(item)
+	Return av
 End Sub
 
 Private Sub StartRuntimeDemos
@@ -1127,7 +1240,9 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 		Dim avatarView As B4XView = item.Get("avatar_view")
 		Dim xlblTitle As B4XView = item.Get("title")
 		
-		Dim isGroup As Boolean = (GetType(avatar).ToLowerCase.Contains("avatargroup"))
+		Dim cardTag As String = ""
+		If card.Tag <> Null Then cardTag = card.Tag
+		Dim isGroup As Boolean = (GetType(avatar).ToLowerCase.Contains("avatargroup") Or cardTag = "interactive-picker")
 		
 		If isGroup Then
 			' Finish current single row if needed
@@ -1139,18 +1254,41 @@ Private Sub LayoutCards(Width As Int, Height As Int)
 			
 			Dim rowW As Int = Width - pad * 2
 			Dim rowH As Int = cardH ' Maintain consistency with single cards
+			If cardTag = "interactive-picker" Then
+				rowH = 200dip
+			End If
 			
 			card.RemoveViewFromParent
 			pnlHost.AddView(card, pad, currentY, rowW, rowH)
 			
-			' Center group inside the full-width card with internal padding
-			avatarView.SetLayoutAnimated(0, 10dip, 8dip, rowW - 20dip, 108dip)
-			xlblTitle.SetLayoutAnimated(0, 8dip, 120dip, rowW - 16dip, 30dip)
-			
-			If xui.SubExists(avatar, "ResizeToParent", 1) Then
-				CallSub2(avatar, "ResizeToParent", avatarView)
-			Else If xui.SubExists(avatar, "Base_Resize", 2) Then
-				CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
+			If cardTag = "interactive-picker" Then
+				Dim avSize As Int = 96dip
+				Dim avLeft As Int = (rowW - avSize) / 2
+				avatarView.SetLayoutAnimated(0, avLeft, 12dip, avSize, avSize)
+				
+				Dim pickerW As Int = rowW - 40dip
+				Dim pickerLeft As Int = 20dip
+				avatarPicker.SetLayoutAnimated(0, pickerLeft, 12dip + avSize + 8dip, pickerW, 40dip)
+				avatarPicker.Refresh
+				
+				xlblTitle.SetLayoutAnimated(0, 12dip, 12dip + avSize + 8dip + 40dip + 6dip, rowW - 24dip, 24dip)
+				xlblTitle.SetTextAlignment("CENTER", "CENTER")
+				
+				If xui.SubExists(avatar, "ResizeToParent", 1) Then
+					CallSub2(avatar, "ResizeToParent", avatarView)
+				Else If xui.SubExists(avatar, "Base_Resize", 2) Then
+					CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
+				End If
+			Else
+				' Center group inside the full-width card with internal padding
+				avatarView.SetLayoutAnimated(0, 10dip, 8dip, rowW - 20dip, 108dip)
+				xlblTitle.SetLayoutAnimated(0, 8dip, 120dip, rowW - 16dip, 30dip)
+				
+				If xui.SubExists(avatar, "ResizeToParent", 1) Then
+					CallSub2(avatar, "ResizeToParent", avatarView)
+				Else If xui.SubExists(avatar, "Base_Resize", 2) Then
+					CallSub3(avatar, "Base_Resize", avatarView.Width, avatarView.Height)
+				End If
 			End If
 			
 			currentY = currentY + rowH + pad
@@ -1188,6 +1326,31 @@ End Sub
 
 Private Sub avatar_Click (Tag As Object)
 	'Log("Avatar page click")
+End Sub
+
+Private Sub avatarPicker_FileSelected(FileName As String)
+	#If B4A
+	If avatarPicker.ExceedsSize Then
+		ToastMessageShow("Error: Selected image exceeds 5MB size limit!", True)
+		Return
+	End If
+	
+	Dim bmp As B4XBitmap = avatarPicker.GetBitmap
+	If bmp.IsInitialized Then
+		interactiveAvatar.SetAvatarType("image")
+		interactiveAvatar.setAvatarBitmap(bmp, Null)
+		ToastMessageShow("Profile image updated successfully! (Extension: " & avatarPicker.Extension & ")", False)
+	Else
+		ToastMessageShow("Error: Failed to read image file data.", True)
+	End If
+	#Else
+	#End If
+End Sub
+
+Private Sub avatarPicker_Cancelled
+	#If B4A
+	ToastMessageShow("Image selection cancelled", False)
+	#End If
 End Sub
 
 

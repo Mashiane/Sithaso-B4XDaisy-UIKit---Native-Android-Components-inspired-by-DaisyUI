@@ -5,7 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -24,7 +24,6 @@ End Sub
 Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
 	Root.Color = xui.Color_RGB(240, 244, 249)
-	B4XPages.SetTitle(Me, "Dashboard")
 
 	Dashboard.Initialize(Me, "dash")
 	Dashboard.AddToParent(Root)
@@ -45,7 +44,10 @@ Private Sub CreateLauncherButtons As List
 	Dim apps As List
 	apps.Initialize
 
+	'apps.Add(CreateMap("id":"kuza_mobility", "label":"Client Onboarding", "imagePath":"kuzamobilitylogo.jpg", "svgPath":""))
 	apps.Add(CreateMap("id":"accordion", "label":"Accordion", "imagePath":"accordion.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"actionsheet", "label":"Action Sheet", "imagePath":"modal.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"sheetmodal", "label":"Sheet Modal", "imagePath":"modal.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"avatar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"badge", "label":"Badge", "imagePath":"badge.webp", "svgPath":""))
@@ -58,6 +60,8 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"checkbox", "label":"Checkbox", "imagePath":"checkbox.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"checkbox-group", "label":"Checkbox Group", "imagePath":"checkbox.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"collapse", "label":"Collapse", "imagePath":"collapse.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"colorwheel", "label":"Color Wheel", "imagePath":"colorwheel.png", "svgPath":""))
+	apps.Add(CreateMap("id":"signaturepad", "label":"Signature Pad", "imagePath":"", "svgPath":"pencil-solid.svg"))
 	apps.Add(CreateMap("id":"countdown", "label":"Countdown", "imagePath":"countdown.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"diff", "label":"Diff", "imagePath":"diff.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
@@ -68,13 +72,15 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"fab_flower", "label":"Fab Flower", "imagePath":"fab.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"fab_navbar", "label":"Fab Navbar", "imagePath":"navbar.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"file-input", "label":"File Input", "imagePath":"file-input.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"filter", "label":"Filter", "imagePath":"filter.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"hover3d", "label":"Hover3d", "imagePath":"hover-3d.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"iconbutton", "label":"Icon Button", "imagePath":"", "svgPath":"heart-solid.svg"))
 	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"input", "label":"Input", "imagePath":"input.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"otp", "label":"Input OTP", "imagePath":"input.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"kbd", "label":"Kbd", "imagePath":"kbd.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"label", "label":"Label", "imagePath":"label.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"link", "label":"Link", "imagePath":"link.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"list", "label":"List", "imagePath":"list.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"list1k", "label":"List 1K", "imagePath":"list.webp", "svgPath":""))
@@ -94,15 +100,19 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"range", "label":"Range", "imagePath":"range.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"rating", "label":"Rating", "imagePath":"rating.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"select", "label":"Select", "imagePath":"select.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"picker", "label":"Picker", "imagePath":"select.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"segment", "label":"Segment", "imagePath":"divider.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"stat", "label":"Stat", "imagePath":"stat.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"steps", "label":"Steps", "imagePath":"steps.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"svg_icon", "label":"SVG", "imagePath":"", "svgPath":"bell-solid.svg"))
 	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"sweetalert", "label":"SweetAlert", "imagePath":"alert.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tab", "label":"Tab", "imagePath":"tab.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"textrotate", "label":"Text Rotate", "imagePath":"text-rotate.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"typography", "label":"Typography", "imagePath":"label.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"textarea", "label":"Textarea", "imagePath":"textarea.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"timeline", "label":"Timeline", "imagePath":"timeline.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
@@ -110,6 +120,8 @@ Private Sub CreateLauncherButtons As List
 	apps.Add(CreateMap("id":"toggle-group", "label":"Toggle Group", "imagePath":"toggle.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
 	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"pagescrolldemo", "label":"Page Scroll Demo", "imagePath":"divider.webp", "svgPath":""))
+	apps.Add(CreateMap("id":"navscrolldock", "label":"Nav Scroll Doc", "imagePath":"navbar.webp", "svgPath":""))
 	NormalizeDashboardButtonImages(apps)
 	Return apps
 End Sub
@@ -189,8 +201,17 @@ End Sub
 
 Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 	Select Case ButtonId
+		'Case "kuza_mobility"
+			'NavigateFromMainPage("KM01Onboarding")
+			'Return
 		Case "accordion"
 			NavigateFromMainPage("Accordion")
+			Return
+		Case "actionsheet"
+			NavigateFromMainPage("ActionSheet")
+			Return
+		Case "sheetmodal"
+			NavigateFromMainPage("SheetModal")
 			Return
 		Case "alert"
 			NavigateFromMainPage("Alert")
@@ -225,6 +246,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "collapse"
 			NavigateFromMainPage("Collapse")
 			Return
+		Case "colorwheel"
+			NavigateFromMainPage("ColorWheel")
+			Return
+		Case "signaturepad"
+			NavigateFromMainPage("SignaturePad")
+			Return
 		Case "countdown"
 			NavigateFromMainPage("Countdown")
 			Return
@@ -258,6 +285,12 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "fieldset"
 			NavigateFromMainPage("FieldSet")
 			Return
+		Case "file-input"
+			NavigateFromMainPage("File Input")
+			Return
+		Case "filter"
+			NavigateFromMainPage("Filter")
+			Return
 		Case "hero"
 			NavigateFromMainPage("Hero")
 			Return
@@ -272,11 +305,11 @@ Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
 		Case "input"
 			NavigateFromMainPage("Input")
 			Return
+		Case "otp"
+			NavigateFromMainPage("Input OTP")
+			Return
 		Case "kbd"
 			NavigateFromMainPage("Kbd")
-			Return
-		Case "label"
-			NavigateFromMainPage("Label")
 			Return
 		Case "link"
 			NavigateFromMainPage("Link")
@@ -335,8 +368,14 @@ Case "list1k"
 		Case "select"
 			NavigateFromMainPage("Select")
 			Return
+		Case "picker"
+			NavigateFromMainPage("Picker")
+			Return
 		Case "skeleton"
 			NavigateFromMainPage("Skeleton")
+			Return
+		Case "segment"
+			NavigateFromMainPage("Segment")
 			Return
 		Case "stack"
 			NavigateFromMainPage("Stack")
@@ -356,6 +395,9 @@ Case "list1k"
 		Case "swap"
 			NavigateFromMainPage("Swap")
 			Return
+		Case "sweetalert"
+			NavigateFromMainPage("SweetAlert2")
+			Return
 		Case "tab"
 			NavigateFromMainPage("Tab")
 			Return
@@ -364,6 +406,9 @@ Case "list1k"
 			Return
 		Case "textrotate"
 			NavigateFromMainPage("TextRotate")
+			Return
+		Case "typography"
+			NavigateFromMainPage("Typography")
 			Return
 		Case "timeline"
 			NavigateFromMainPage("Timeline")
@@ -382,6 +427,12 @@ Case "list1k"
 			Return
 		Case "window"
 			NavigateFromMainPage("Window")
+			Return
+		Case "pagescrolldemo"
+			NavigateFromMainPage("PageScrollDemo")
+			Return
+		Case "navscrolldock"
+			NavigateFromMainPage("NavScrollDock")
 			Return
 	End Select
 	'#If B4A

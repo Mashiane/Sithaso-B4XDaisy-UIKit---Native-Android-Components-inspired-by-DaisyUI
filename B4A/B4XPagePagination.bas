@@ -4,7 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 #Region Variables
 Sub Class_Globals
     Private Root As B4XView
@@ -31,7 +31,6 @@ Private Sub B4XPage_Created(Root1 As B4XView)
         Root = Root1
         If Root.IsInitialized = False Then Return
         Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(245, 247, 250))
-        B4XPages.SetTitle(Me, "Pagination")
 
         svHost.Initialize(Max(1dip, Root.Height))
         Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -40,6 +39,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 
         RenderExamples(Root.Width, Root.Height)
     Catch
+        Log("B4XPagePagination.B4XPage_Created: " & LastException.Message)
         ' Ignore errors
     End Try
 End Sub
@@ -395,6 +395,7 @@ Private Sub ShowPageClick(ExampleName As String, PageIndex As Int, ItemId As Str
     Try
         ToastMessageShow(ExampleName & ": Page " & (PageIndex + 1) & " (" & ItemId & ")", False)
     Catch
+        Log("B4XPagePagination.ShowPageClick: " & LastException.Message)
         ' Ignore errors
     End Try
     #End If

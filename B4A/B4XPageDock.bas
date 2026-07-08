@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -12,6 +13,13 @@ Sub Class_Globals
     Private svHost As ScrollView
     Private pnlHost As B4XView
     Private PAGE_PAD As Int = 12dip
+    
+    Private dockBadgeDemo As B4XDaisyDock
+    Private btnBadgeSize As B4XDaisyButton
+    Private currentVariantIdx As Int = 0
+    Private badgeVariants() As String
+    Private currentBadgeSizeIdx As Int = 0
+    Private badgeSizes() As String
 End Sub
 #End Region
 
@@ -29,7 +37,9 @@ End Sub
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(245, 247, 250))
-    B4XPages.SetTitle(Me, "Dock")
+    
+    badgeVariants = Array As String("error", "primary", "secondary", "accent", "success", "warning", "info", "neutral")
+    badgeSizes = Array As String("auto", "xs", "sm", "md", "lg", "xl")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -320,6 +330,67 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     dockFullRounded.AddItem("fr-settings", "", "dock-settings.svg")
     currentY = currentY + dockFullRounded.View.Height + PAGE_PAD
 
+    ''' <summary>
+    ''' Example 14: Dock with Badges & Updates
+    ''' </summary>
+    currentY = AddSectionTitle(contentLeft, currentY, maxW, "Dock with Badges & Updates")
+    currentY = AddDescription(contentLeft, currentY, maxW, "Click buttons to increment, decrement, change colors, or set values with animations.")
+    
+    Dim cardBadge As B4XView = AddPreviewCard(contentLeft, currentY, maxW, ResolvePreviewHeightDip("lg"))
+    Dim hostBadge As B4XView = AddPreviewDockHost(cardBadge, ResolveDockHeightDip("lg"), True)
+    
+    dockBadgeDemo.Initialize(Me, "dockBadgeDemo")
+    dockBadgeDemo.Size = "lg"
+    dockBadgeDemo.ActiveIndex = 0
+    dockBadgeDemo.AddToParent(hostBadge, 0, 0, hostBadge.Width, 0)
+    
+    dockBadgeDemo.AddItem("badge-home", "Home", "dock-home.svg")
+    dockBadgeDemo.AddItem("badge-inbox", "Inbox", "dock-inbox.svg")
+    dockBadgeDemo.AddItem("badge-settings", "Settings", "dock-settings.svg")
+    
+    ' Set initial badge on Inbox
+    dockBadgeDemo.SetItemBadgeValue("badge-inbox", "5")
+    
+    currentY = currentY + cardBadge.Height + 12dip
+    
+    ' Add control buttons horizontally
+    Dim btnW As Int = (maxW - 8dip) / 2
+    
+    Dim btnInc As B4XDaisyButton
+    btnInc.Initialize(Me, "btnInc")
+    btnInc.AddToParent(pnlHost, contentLeft, currentY, btnW, 36dip)
+    btnInc.Text = "Increment (+1)"
+    btnInc.Size = "sm"
+    
+    Dim btnDec As B4XDaisyButton
+    btnDec.Initialize(Me, "btnDec")
+    btnDec.AddToParent(pnlHost, contentLeft + btnW + 8dip, currentY, btnW, 36dip)
+    btnDec.Text = "Decrement (-1)"
+    btnDec.Size = "sm"
+    
+    currentY = currentY + 44dip
+    
+    Dim btnSetMax As B4XDaisyButton
+    btnSetMax.Initialize(Me, "btnSetMax")
+    btnSetMax.AddToParent(pnlHost, contentLeft, currentY, btnW, 36dip)
+    btnSetMax.Text = "Set to '99+'"
+    btnSetMax.Size = "sm"
+    
+    Dim btnColor As B4XDaisyButton
+    btnColor.Initialize(Me, "btnColor")
+    btnColor.AddToParent(pnlHost, contentLeft + btnW + 8dip, currentY, btnW, 36dip)
+    btnColor.Text = "Cycle Color"
+    btnColor.Size = "sm"
+    
+    currentY = currentY + 44dip
+    
+    btnBadgeSize.Initialize(Me, "btnBadgeSize")
+    btnBadgeSize.AddToParent(pnlHost, contentLeft, currentY, maxW, 36dip)
+    btnBadgeSize.Text = "Badge Size: auto"
+    btnBadgeSize.Size = "sm"
+    
+    currentY = currentY + 44dip + PAGE_PAD
+
     pnlHost.Height = Max(Height, currentY)
 End Sub
 
@@ -475,6 +546,41 @@ End Sub
 
 Private Sub dockFullRounded_ItemClick(ItemId As String)
     ShowDockClick("Dock Full Rounded", ItemId)
+End Sub
+
+Private Sub dockBadgeDemo_ItemClick(ItemId As String)
+    ShowDockClick("Dock Badge Demo", ItemId)
+End Sub
+
+Private Sub btnInc_Click(Tag As Object)
+    dockBadgeDemo.SetItemBadgeIncrement("badge-inbox", 1)
+End Sub
+
+Private Sub btnDec_Click(Tag As Object)
+    dockBadgeDemo.SetItemBadgeDecrement("badge-inbox", 1)
+End Sub
+
+Private Sub btnSetMax_Click(Tag As Object)
+    dockBadgeDemo.SetItemBadgeValue("badge-inbox", "99+")
+End Sub
+
+Private Sub btnColor_Click(Tag As Object)
+    currentVariantIdx = (currentVariantIdx + 1) Mod badgeVariants.Length
+    Dim nextVar As String = badgeVariants(currentVariantIdx)
+    dockBadgeDemo.SetItemBadgeColor("badge-inbox", nextVar)
+    #If B4A
+    ToastMessageShow("Badge Color: " & nextVar, False)
+    #End If
+End Sub
+
+Private Sub btnBadgeSize_Click(Tag As Object)
+    currentBadgeSizeIdx = (currentBadgeSizeIdx + 1) Mod badgeSizes.Length
+    Dim nextSize As String = badgeSizes(currentBadgeSizeIdx)
+    dockBadgeDemo.BadgeSize = nextSize
+    btnBadgeSize.Text = "Badge Size: " & nextSize
+    #If B4A
+    ToastMessageShow("Badge Size: " & nextSize, False)
+    #End If
 End Sub
 
 Private Sub ShowDockClick(ExampleName As String, ItemId As String)

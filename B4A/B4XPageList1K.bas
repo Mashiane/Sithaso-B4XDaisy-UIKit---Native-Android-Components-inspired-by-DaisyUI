@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=2.00
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -20,8 +21,6 @@ End Sub
 
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
-    Root.Color = xui.Color_RGB(245, 247, 250)
-    B4XPages.SetTitle(Me, "List 1K")
     BuildList(Root.Width, Root.Height)
 End Sub
 #End Region

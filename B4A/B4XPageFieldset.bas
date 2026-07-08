@@ -5,7 +5,7 @@ Type=Class
 Version=1
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
     Private xui As XUI
     Private Root As B4XView
@@ -33,7 +33,13 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 
     AddTitle("Fieldset with multiple controls")
     AddDetailsFieldset
-    
+
+    AddTitle("Fieldset with Label Above")
+    AddLabelAboveFieldset
+
+    AddTitle("Required Fieldset with Daisy Controls")
+    AddRequiredFieldsetWithDaisyControls
+
     AddTitle("Fieldset shadows (borderless)")
     AddShadowFieldsetCollection
     
@@ -108,6 +114,86 @@ Private Sub AddDetailsFieldset
 
     fs.Refresh
     currentY = currentY + v.Height + 12dip
+End Sub
+
+Private Sub AddLabelAboveFieldset
+    Dim fs As B4XDaisyFieldset
+    fs.Initialize(Me, "fs_labelabove")
+
+    Dim boxW As Int = Min(Root.Width - 24dip, 320dip)
+    Dim left As Int = 12dip
+    Dim h As Int = 1dip
+    If boxW < Root.Width - 24dip Then left = (Root.Width - boxW) / 2
+
+    Dim v As B4XView = fs.AddToParent(pnlContent, left, currentY, boxW, h)
+    fs.setAutoHeight(True)
+    fs.setLabelAbove(True)
+    fs.setLegend("Label Above Fieldset (Visual Consistency)")
+    ApplyDemoFieldsetStyle(fs)
+
+    Dim inputView As B4XView = CreateNativeInput("Some input text")
+    fs.AddContentView(inputView, 0, 0, boxW - (fs.getPadding * 2dip), 42dip)
+
+    fs.Refresh
+    currentY = currentY + v.Height + gap
+
+    Dim fsRequired As B4XDaisyFieldset
+    fsRequired.Initialize(Me, "fs_labelabove_required")
+
+    Dim v2 As B4XView = fsRequired.AddToParent(pnlContent, left, currentY, boxW, h)
+    fsRequired.setAutoHeight(True)
+    fsRequired.setLabelAbove(True)
+    fsRequired.setRequired(True)
+    fsRequired.setLegend("Required Label Above Fieldset")
+    ApplyDemoFieldsetStyle(fsRequired)
+
+    Dim inputView2 As B4XView = CreateNativeInput("Required content")
+    fsRequired.AddContentView(inputView2, 0, 0, boxW - (fsRequired.getPadding * 2dip), 42dip)
+
+    fsRequired.Refresh
+    currentY = currentY + v2.Height + gap
+End Sub
+
+Private Sub AddRequiredFieldsetWithDaisyControls
+    Dim fs As B4XDaisyFieldset
+    fs.Initialize(Me, "fs_daisycontrols")
+
+    Dim boxW As Int = Min(Root.Width - 24dip, 320dip)
+    Dim left As Int = 12dip
+    Dim h As Int = 1dip
+    If boxW < Root.Width - 24dip Then left = (Root.Width - boxW) / 2
+
+    Dim v As B4XView = fs.AddToParent(pnlContent, left, currentY, boxW, h)
+    fs.setAutoHeight(True)
+    fs.setLabelAbove(True)
+    fs.setRequired(True)
+    fs.setLegend("Billing Details (Required)")
+    ApplyDemoFieldsetStyle(fs)
+
+    Dim contentW As Int = boxW - (fs.getPadding * 2dip)
+    Dim y As Int = 0
+
+    Dim inpName As B4XDaisyInput
+    inpName.Initialize(Me, "inpName")
+    inpName.AddToParent(fs.GetContentPanel, 0, y, contentW, 40dip)
+    inpName.setLabelAbove("Full Name")
+    inpName.setPlaceholder("Enter your name")
+    inpName.setRequired(True)
+    y = y + inpName.GetComputedHeight + 10dip
+
+    Dim selCountry As B4XDaisySelect
+    selCountry.Initialize(Me, "selCountry")
+    selCountry.AddToParent(fs.GetContentPanel, 0, y, contentW, 40dip)
+    selCountry.setLabelAbove("Country")
+    selCountry.setRequired(True)
+    selCountry.AddItem("", "Select Country...")
+    selCountry.AddItem("US", "United States")
+    selCountry.AddItem("ZA", "South Africa")
+    selCountry.AddItem("UK", "United Kingdom")
+    y = y + selCountry.GetComputedHeight + 10dip
+
+    fs.Refresh
+    currentY = currentY + v.Height + gap
 End Sub
 
 Private Sub AddShadowFieldsetCollection
@@ -220,8 +306,7 @@ Private Sub ApplyVariantBorderFieldsetStyle(fs As B4XDaisyFieldset, VariantName 
     fs.setBackgroundColor("bg-base-200")
     fs.setRoundedBox(True)
     fs.setBorderStyle("outlined")
-    fs.setBorderSize(1)
-    fs.setBorderColor("")
+    fs.setInputBorder(True)
     fs.setVariant(VariantName)
     fs.setPadding(16) ' p-4
     fs.setTextColor("text-base-content")

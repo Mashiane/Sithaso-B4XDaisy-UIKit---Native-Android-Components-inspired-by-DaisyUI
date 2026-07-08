@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 Sub Class_Globals
     Private Root As B4XView
     Private xui As XUI
@@ -12,6 +13,7 @@ Sub Class_Globals
     Private m1, m2, m3, m5, m7, m8, m9 As B4XDaisyModal
     Private m10, m11, m12, m13, m14, m15 As B4XDaisyModal
     Private m16, m17 As B4XDaisyModal
+    Private m18, m19, m20, m21, m22 As B4XDaisyModal
 End Sub
 
 Public Sub Initialize As Object
@@ -28,7 +30,6 @@ End Sub
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = xui.Color_White
-    B4XPages.SetTitle(Me, "Modal")
 
     ' ScrollView for vertical flow
     svHost.Initialize(Max(1dip, Root.Height))
@@ -50,7 +51,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m1.Title = "Hello!"
     m1.Visible = False
     AddLabel(m1, "Tap the button below to close.")
-    AddActionButton(m1, "Close", "m1_close")
+    m1.AddActionButton("modalBtn", "Close", "primary")
+    m1.Refresh
     
     Dim btn1 As B4XDaisyButton
     btn1.Initialize(Me, "btn1")
@@ -90,13 +92,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m5.Placement = "bottom"
     m5.Visible = False
     AddLabel(m5, "Slides up from the bottom of the screen.")
-    Dim btnM5Close As B4XDaisyButton
-    btnM5Close.Initialize(Me, "modalBtn")
-    btnM5Close.Tag = "m5_close"
-    btnM5Close.Text = "Close"
-    btnM5Close.Size = "md"
-    btnM5Close.Variant = "primary"
-    m5.AddAction(btnM5Close)
+    m5.AddActionButton("modalBtn", "Close", "primary")
     m5.Refresh
 
     Dim btn5 As B4XDaisyButton
@@ -110,13 +106,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m7.Title = "Immersive Mode"
     m7.FullScreen = True
     m7.Visible = False
-    Dim btnM7Dismiss As B4XDaisyButton
-    btnM7Dismiss.Initialize(Me, "modalBtn")
-    btnM7Dismiss.Tag = "m7_close"
-    btnM7Dismiss.Text = "Dismiss"
-    btnM7Dismiss.Size = "md"
-    btnM7Dismiss.Variant = "primary"
-    m7.AddAction(btnM7Dismiss)
+    m7.AddActionButton("modalBtn", "Dismiss", "primary")
     m7.Refresh
 
     Dim btn7 As B4XDaisyButton
@@ -242,7 +232,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m16.BackdropOpacity = 0
     m16.Visible = False
     AddLabel(m16, "The backdrop is invisible — only the dialog card appears.")
-    AddActionButton(m16, "Close", "m16_close")
+    m16.AddActionButton("modalBtn", "Close", "primary")
+    m16.Refresh
 
     Dim btn16 As B4XDaisyButton
     btn16.Initialize(Me, "btn16")
@@ -258,7 +249,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m17.ShowCloseButton = False
     m17.Visible = False
     AddLabel(m17, "This modal cannot be closed by tapping outside or pressing back. You must tap the button.")
-    AddActionButton(m17, "I Accept", "m17_close")
+    m17.AddActionButton("modalBtn", "I Accept", "primary")
+    m17.Refresh
 
     Dim btn17 As B4XDaisyButton
     btn17.Initialize(Me, "btn17")
@@ -266,9 +258,100 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     btn17.Text = "Non-Dismissable Modal"
     y = y + 46dip
 
+    ' === Color & Border variants ===
+    y = AddExample(y, "Color & Border Variants", "Variant backgrounds, borders and title colors")
+
+    ' --- Modal with primary variant background ---
+    m18.Initialize(Me, "m18")
+    m18.AddToParent(Root, 0, 0, Width, Height)
+    m18.Title = "Primary Background"
+    m18.BackgroundColor = "primary"
+    m18.TitleTextColor = "primary-content"
+    m18.ClickOutsideToClose = True
+    m18.ShowCloseButton = True
+    m18.Visible = False
+    AddLabelThemed(m18, "The modal box uses the primary variant as its background.", "primary-content")
+    m18.Refresh
+
+    Dim btn18 As B4XDaisyButton
+    btn18.Initialize(Me, "btn18")
+    btn18.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btn18.Text = "Primary BG Modal"
+    y = y + 46dip
+
+    ' --- Modal with secondary variant background ---
+    m19.Initialize(Me, "m19")
+    m19.AddToParent(Root, 0, 0, Width, Height)
+    m19.Title = "Secondary Background"
+    m19.BackgroundColor = "secondary"
+    m19.TitleTextColor = "secondary-content"
+    m19.ClickOutsideToClose = True
+    m19.ShowCloseButton = True
+    m19.Visible = False
+    AddLabelThemed(m19, "The modal box uses the secondary variant as its background.", "secondary-content")
+    m19.Refresh
+
+    Dim btn19 As B4XDaisyButton
+    btn19.Initialize(Me, "btn19")
+    btn19.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btn19.Text = "Secondary BG Modal"
+    y = y + 46dip
+
+    ' --- Modal with success variant background ---
+    m20.Initialize(Me, "m20")
+    m20.AddToParent(Root, 0, 0, Width, Height)
+    m20.Title = "Success Background"
+    m20.BackgroundColor = "success"
+    m20.TitleTextColor = "success-content"
+    m20.ClickOutsideToClose = True
+    m20.ShowCloseButton = True
+    m20.Visible = False
+    AddLabelThemed(m20, "The modal box uses the success variant as its background.", "success-content")
+    m20.Refresh
+
+    Dim btn20 As B4XDaisyButton
+    btn20.Initialize(Me, "btn20")
+    btn20.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btn20.Text = "Success BG Modal"
+    y = y + 46dip
+
+    ' --- Modal with a variant border color ---
+    m21.Initialize(Me, "m21")
+    m21.AddToParent(Root, 0, 0, Width, Height)
+    m21.Title = "Bordered Modal"
+    m21.BorderColor = "error"
+    m21.BorderWidth = "border-4"
+    m21.ClickOutsideToClose = True
+    m21.Visible = False
+    AddLabel(m21, "This modal box has an error-variant border (border-4).")
+    m21.AddActionButton("modalBtn", "Close", "primary")
+    m21.Refresh
+
+    Dim btn21 As B4XDaisyButton
+    btn21.Initialize(Me, "btn21")
+    btn21.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btn21.Text = "Bordered Modal"
+    y = y + 46dip
+
+    ' --- Modal with a colored title bar (variant) ---
+    m22.Initialize(Me, "m22")
+    m22.AddToParent(Root, 0, 0, Width, Height)
+    m22.Title = "Colored Title"
+    m22.TitleColor = "primary"
+    m22.ClickOutsideToClose = True
+    m22.Visible = False
+    AddLabel(m22, "The title bar uses the primary variant; its text auto-switches to primary-content.")
+    m22.AddActionButton("modalBtn", "Close", "primary")
+    m22.Refresh
+
+    Dim btn22 As B4XDaisyButton
+    btn22.Initialize(Me, "btn22")
+    btn22.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btn22.Text = "Colored Title Modal"
+    y = y + 46dip
+
     pnlHost.Height = y + 12dip
 End Sub
-
 Private Sub AddExample(Y As Int, Title As String, Subtitle As String) As Int
     Dim t1 As B4XDaisyText
     t1.Initialize(Me, "")
@@ -281,22 +364,47 @@ Private Sub AddExample(Y As Int, Title As String, Subtitle As String) As Int
 End Sub
 
 Private Sub AddLabel(m As B4XDaisyModal, Text As String)
+    Dim body As B4XView = m.getBodyContainer
+    Dim bodyW As Int = Max(1dip, body.Width)
     Dim lbl As B4XDaisyText
     lbl.Initialize(Me, "")
     lbl.Text = Text
     lbl.TextSize = "text-base"
-    lbl.AddToParent(m.getBodyContainer, 0, 0, m.getBodyContainer.Width, 40dip)
+    lbl.SingleLine = False        ' wrap long text across multiple lines
+    ' Add at the body's inner width; the text view auto-resizes its height to
+    ' fit the wrapped content.
+    lbl.AddToParent(body, 0, 0, bodyW, 24dip)
+    ' Measure the wrapped height for this content width and apply it explicitly
+    ' so the modal's h-auto box sizes to fit the (possibly multi-line) label.
+    Dim prefH As Int = Max(24dip, lbl.GetPreferredHeight(bodyW))
+    If lbl.mBase.Height <> prefH Then
+        lbl.mBase.SetLayoutAnimated(0, 0, 0, bodyW, prefH)
+        lbl.RefreshText
+    End If
+    ' Re-calculate modal auto-height so the box fits the label.
     m.Refresh
 End Sub
 
-Private Sub AddActionButton(m As B4XDaisyModal, Text As String, ItemTag As String)
-    Dim btn As B4XDaisyButton
-    btn.Initialize(Me, "modalBtn")
-    btn.Tag = ItemTag
-    btn.Text = Text
-    btn.Size = "sm"
-    btn.Variant = "primary"
-    m.AddAction(btn)
+' Adds a multi-line label whose text color is set to a variant/token spec
+' (e.g. "primary-content"). Used for modals with a variant background so the
+' body text stays readable.
+Private Sub AddLabelThemed(m As B4XDaisyModal, Text As String, TextColorSpec As String)
+    Dim body As B4XView = m.getBodyContainer
+    Dim bodyW As Int = Max(1dip, body.Width)
+    Dim lbl As B4XDaisyText
+    lbl.Initialize(Me, "")
+    lbl.Text = Text
+    lbl.TextSize = "text-base"
+    lbl.SingleLine = False
+    If TextColorSpec.Trim.Length > 0 And TextColorSpec.ToLowerCase <> "none" Then
+        lbl.setTextColorVariant(TextColorSpec)
+    End If
+    lbl.AddToParent(body, 0, 0, bodyW, 24dip)
+    Dim prefH As Int = Max(24dip, lbl.GetPreferredHeight(bodyW))
+    If lbl.mBase.Height <> prefH Then
+        lbl.mBase.SetLayoutAnimated(0, 0, 0, bodyW, prefH)
+        lbl.RefreshText
+    End If
     m.Refresh
 End Sub
 
@@ -361,6 +469,26 @@ Sub btn17_Click(Tag As Object)
     m17.Show
 End Sub
 
+Sub btn18_Click(Tag As Object)
+    m18.Show
+End Sub
+
+Sub btn19_Click(Tag As Object)
+    m19.Show
+End Sub
+
+Sub btn20_Click(Tag As Object)
+    m20.Show
+End Sub
+
+Sub btn21_Click(Tag As Object)
+    m21.Show
+End Sub
+
+Sub btn22_Click(Tag As Object)
+    m22.Show
+End Sub
+
 Sub modalBtn_Click(Tag As Object)
     CloseAllModals
 End Sub
@@ -381,6 +509,11 @@ Private Sub CloseAllModals
     m15.Close
     m16.Close
     m17.Close
+    m18.Close
+    m19.Close
+    m20.Close
+    m21.Close
+    m22.Close
 End Sub
 
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
@@ -400,4 +533,9 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
     If m15.getView.IsInitialized Then m15.AddToParent(Root, 0, 0, Width, Height)
     If m16.getView.IsInitialized Then m16.AddToParent(Root, 0, 0, Width, Height)
     If m17.getView.IsInitialized Then m17.AddToParent(Root, 0, 0, Width, Height)
+    If m18.getView.IsInitialized Then m18.AddToParent(Root, 0, 0, Width, Height)
+    If m19.getView.IsInitialized Then m19.AddToParent(Root, 0, 0, Width, Height)
+    If m20.getView.IsInitialized Then m20.AddToParent(Root, 0, 0, Width, Height)
+    If m21.getView.IsInitialized Then m21.AddToParent(Root, 0, 0, Width, Height)
+    If m22.getView.IsInitialized Then m22.AddToParent(Root, 0, 0, Width, Height)
 End Sub

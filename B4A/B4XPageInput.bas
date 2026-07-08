@@ -4,7 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings: 12
+#IgnoreWarnings:12,9
 
 #Region Variables
     Sub Class_Globals
@@ -32,8 +32,6 @@ Version=13.4
     ''' </summary>
     Private Sub B4XPage_Created(Root1 As B4XView)
         Root = Root1
-        Root.Color = xui.Color_RGB(245, 247, 250)
-        B4XPages.SetTitle(Me, "Input")
 
         svHost.Initialize(1dip)
         Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -395,6 +393,47 @@ Version=13.4
         c18.Tag = "input-multiline"
         AddRow(sec18, c18, 0)
         EndSection(sec18)
+
+        '============================================================
+        'Example 19: Search input (InputType = search)
+        '============================================================
+        Dim sec19 As Map = BeginSection("Search input")
+        Dim c19 As B4XDaisyInput
+        c19.Initialize(Me, "inpSearch")
+        c19.AddToParent(pnlHost, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        c19.LabelAbove = "Search"
+        c19.Placeholder = "Search..."
+        c19.InputType = "search"
+        c19.Variant = "neutral"
+        c19.Tag = "input-search"
+        AddRow(sec19, c19, 0)
+        EndSection(sec19)
+
+        '============================================================
+        'Example 20: Required field (red star)
+        '============================================================
+        Dim sec20 As Map = BeginSection("Required field")
+        Dim c20a As B4XDaisyInput
+        c20a.Initialize(Me, "inp")
+        c20a.AddToParent(pnlHost, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        c20a.LabelAbove = "Full name"
+        c20a.Placeholder = "Required field"
+        c20a.Required = True
+        c20a.Tag = "input-required"
+        AddRow(sec20, c20a, 0)
+
+        ' Floating label also shows the red star
+        Dim c20b As B4XDaisyInput
+        c20b.Initialize(Me, "inp")
+        c20b.AddToParent(pnlHost, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        c20b.LabelAbove = "Email"
+        c20b.FloatingLabel = True
+        c20b.Placeholder = "you@example.com"
+        c20b.Required = True
+        c20b.InputType = "email"
+        c20b.Tag = "input-required-floating"
+        AddRow(sec20, c20b, 0)
+        EndSection(sec20)
     End Sub
 
     ''' <summary>
@@ -428,11 +467,11 @@ Version=13.4
         Dim v As B4XView
         If Comp Is B4XDaisyInput Then
             Dim inp As B4XDaisyInput = Comp
-            v = inp.mBase
+            v = inp.getView
             If RowH <= 0 Then RowH = inp.GetComputedHeight
         Else If Comp Is B4XDaisyLabel Then
             Dim lbl As B4XDaisyLabel = Comp
-            v = lbl.mBase
+            v = lbl.getView
             If RowH <= 0 Then RowH = v.Height
         End If
         rowMap.Put("view", v)
@@ -449,15 +488,15 @@ Version=13.4
         Dim rows As List = Sec.Get("rows")
         Dim rowMap As Map
         rowMap.Initialize
-        rowMap.Put("view", Flex.mBase)
+        rowMap.Put("view", Flex.getView)
         rowMap.Put("comp", Flex)
         rowMap.Put("h", ITEM_HEIGHT)
         rowMap.Put("type", "flex")
         rowMap.Put("flex", Flex)
         rowMap.Put("input", Inp)
-        rowMap.Put("input_view", Inp.mBase)
+        rowMap.Put("input_view", Inp.getView)
         rowMap.Put("button", Btn)
-        rowMap.Put("button_view", Btn.mBase)
+        rowMap.Put("button_view", Btn.getView)
         rows.Add(rowMap)
     End Sub
 
@@ -514,7 +553,7 @@ Version=13.4
 
                     ' Let Base_Resize compute correct heights
                     inpComp.Base_Resize(inputW, 0)
-                    Dim inputH As Int = inpComp.mBase.Height
+                    Dim inputH As Int = inpComp.GetActualHeight
                     Dim btnH As Int = btnComp.GetComputedHeight
                     Dim flexH As Int = Max(inputH, btnH)
 
@@ -537,7 +576,7 @@ Version=13.4
                         ' height (including label-above, hint text, etc.)
                         Dim inp As B4XDaisyInput = comp
                         inp.Base_Resize(maxW, 0)
-                        actualH = inp.mBase.Height
+                        actualH = inp.GetActualHeight
                         ' Reposition view at computed height
                         rv.SetLayoutAnimated(0, PAGE_PAD, y, maxW, actualH)
                     Else If comp Is B4XDaisyLabel Then
@@ -545,7 +584,7 @@ Version=13.4
                         Dim lbl As B4XDaisyLabel = comp
                         If rh <= 0 Then
                             lbl.Base_Resize(maxW, 0)
-                            actualH = lbl.mBase.Height
+                            actualH = lbl.GetActualHeight
                         Else
                             lbl.Base_Resize(maxW, rh)
                             actualH = rh
@@ -607,6 +646,12 @@ Version=13.4
     Private Sub inpClick_AppendClick
         #If B4A
             ToastMessageShow("Append icon clicked (right icon)", False)
+        #End If
+    End Sub
+
+    Private Sub inpSearch_Clear
+        #If B4A
+            ToastMessageShow("Search cleared", False)
         #End If
     End Sub
 #End Region

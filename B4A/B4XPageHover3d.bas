@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -29,7 +30,6 @@ End Sub
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(245, 247, 250))
-    B4XPages.SetTitle(Me, "Hover 3D")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)

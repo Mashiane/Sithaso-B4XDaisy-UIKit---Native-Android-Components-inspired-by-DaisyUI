@@ -5,7 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -19,6 +19,12 @@ Sub Class_Globals
 	Private multiGroup As B4XDaisyBadgeGroupSelect
 	Private lblSingleState As B4XView
 	Private lblMultiState As B4XView
+	Private labelAboveSingleGroup As B4XDaisyBadgeGroupSelect
+	Private labelAboveMultiGroup As B4XDaisyBadgeGroupSelect
+	Private requiredGroup As B4XDaisyBadgeGroupSelect
+	Private lblLabelAboveSingleState As B4XView
+	Private lblLabelAboveMultiState As B4XView
+	Private lblRequiredState As B4XView
 End Sub
 
 Public Sub Initialize As Object
@@ -27,8 +33,6 @@ End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
-	Root.Color = xui.Color_RGB(245, 247, 250)
-	B4XPages.SetTitle(Me, "Badge")
 
 	svHost.Initialize(Max(1dip, Root.Height))
 	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -210,7 +214,7 @@ Private Sub BuildExampleDefinitions
 	successIcon.Put("icon_asset", "check-solid.svg")
 	iconItems.Add(successIcon)
 	Dim warningIcon As Map = BadgeItem("Warning", "md", "warning", "solid", "", False)
-	warningIcon.Put("icon_asset", "circle-question-regular.svg")
+	warningIcon.Put("icon_asset", "triangle-exclamation-solid.svg")
 	iconItems.Add(warningIcon)
 	Dim errorIcon As Map = BadgeItem("Error", "md", "error", "solid", "", False)
 	errorIcon.Put("icon_asset", "xmark-solid.svg")
@@ -219,23 +223,45 @@ Private Sub BuildExampleDefinitions
 
 	Dim closableItems As List
 	closableItems.Initialize
-	closableItems.Add(BadgeItem("Plain closable", "xl", "neutral", "solid", "", True))
+	Dim closablePlain As Map = BadgeItem("Plain closable", "xl", "neutral", "solid", "", True)
+	closablePlain.Put("rounded", "rounded-full")
+	closableItems.Add(closablePlain)
 	Dim closableIcon As Map = BadgeItem("Icon closable", "xl", "success", "solid", "", True)
 	closableIcon.Put("icon_asset", "check-solid.svg")
+	closableIcon.Put("rounded", "rounded-full")
 	closableItems.Add(closableIcon)
 	Dim closableAvatarLeft As Map = BadgeItem("Avatar left", "xl", "primary", "solid", "", True)
 	closableAvatarLeft.Put("avatar_image", "face21.jpg")
 	closableAvatarLeft.Put("avatar_position", "left")
+	closableAvatarLeft.Put("rounded", "rounded-full")
 	closableItems.Add(closableAvatarLeft)
-	ExampleDefs.Add(CreateMap("title":"Closable badges", "items": closableItems))
+	Dim closableCombo As Map = BadgeItem("Icon+Avatar+Close", "xl", "info", "solid", "", True)
+	closableCombo.Put("icon_asset", "circle-question-regular.svg")
+	closableCombo.Put("avatar_image", "face22.jpg")
+	closableCombo.Put("avatar_position", "left")
+	closableCombo.Put("rounded", "rounded-full")
+	closableItems.Add(closableCombo)
+	ExampleDefs.Add(CreateMap("title":"Closable badges", "note":"Tap the X to fire CloseClick (toast feedback).", "one_per_row": True, "items": closableItems))
 
 	Dim avatarRightItems As List
 	avatarRightItems.Initialize
-	Dim avatarRight As Map = BadgeItem("Avatar right", "md", "secondary", "solid", "", False)
+	Dim avatarRight As Map = BadgeItem("Avatar right", "xl", "secondary", "solid", "", False)
 	avatarRight.Put("avatar_image", "face22.jpg")
 	avatarRight.Put("avatar_position", "right")
+	avatarRight.Put("rounded", "rounded-full")
 	avatarRightItems.Add(avatarRight)
-	ExampleDefs.Add(CreateMap("title":"Badge with avatar on right", "items": avatarRightItems))
+	Dim avatarRightIcon As Map = BadgeItem("Avatar+Icon right", "xl", "primary", "solid", "", False)
+	avatarRightIcon.Put("avatar_image", "face21.jpg")
+	avatarRightIcon.Put("avatar_position", "right")
+	avatarRightIcon.Put("icon_asset", "check-solid.svg")
+	avatarRightIcon.Put("rounded", "rounded-full")
+	avatarRightItems.Add(avatarRightIcon)
+	Dim avatarRightSoft As Map = BadgeItem("Avatar right soft", "xl", "accent", "soft", "", False)
+	avatarRightSoft.Put("avatar_image", "face22.jpg")
+	avatarRightSoft.Put("avatar_position", "right")
+	avatarRightSoft.Put("rounded", "rounded-full")
+	avatarRightItems.Add(avatarRightSoft)
+	ExampleDefs.Add(CreateMap("title":"Badge with avatar on right", "one_per_row": True, "items": avatarRightItems))
 End Sub
 
 Private Sub BadgeItem(Text As String, Size As String, Variant As String, Style As String, AvatarText As String, Closable As Boolean) As Map
@@ -264,8 +290,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 		Sleep(0)
 	Next
 
-	'y = RenderHeadingExamples(maxW, y)
-	'y = RenderButtonExamples(maxW, y)
+	y = RenderHeadingExamples(maxW, y)
+	y = RenderButtonExamples(maxW, y)
 
 	y = RenderBadgeGroupSelectSections(maxW, y)
 
@@ -290,10 +316,7 @@ Private Sub RenderBadgeGroupSelectSections(MaxW As Int, StartY As Int) As Int
 	singleGroup.setBadgeCheckedTextColor(B4XDaisyVariants.ResolveTextColorVariant("success", xui.Color_White))
 	singleGroup.setItemsSpec("low:Low|normal:Normal|high:High|urgent:Urgent")
 	
-	Dim selected1 As List
-	selected1.Initialize
-	selected1.Add("normal")
-	singleGroup.setSelectedIds(selected1)
+		singleGroup.setChecked("normal")
 	
 	lblSingleState = CreateStateLabel("Selected: normal")
 	pnlHost.AddView(lblSingleState, PAGE_PAD, y + v1.Height + 8dip, MaxW, 18dip)
@@ -313,17 +336,131 @@ Private Sub RenderBadgeGroupSelectSections(MaxW As Int, StartY As Int) As Int
 	multiGroup.setBadgeCheckedTextColor(B4XDaisyVariants.ResolveTextColorVariant("success", xui.Color_White))
 	multiGroup.setItemsSpec("ui:UI|api:API|db:Database|qa:QA|ops:Ops|ai:AI")
 	
-	Dim selected2 As List
-	selected2.Initialize
-	selected2.Add("ui")
-	selected2.Add("api")
-	multiGroup.setSelectedIds(selected2)
+		multiGroup.setChecked("ui;api")
 	
 	lblMultiState = CreateStateLabel("Selected: ui, api")
 	pnlHost.AddView(lblMultiState, PAGE_PAD, y + v2.Height + 8dip, MaxW, 18dip)
 	y = y + v2.Height + 34dip
 	
+	' --- Label Above (Single + Multi) ---
+	Dim titleLA As B4XView = CreateSectionLabel("BadgeGroupSelect - Label Above", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleLA, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+	
+	labelAboveSingleGroup.Initialize(Me, "labelabovesingle")
+	Dim vLA1 As B4XView = labelAboveSingleGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	labelAboveSingleGroup.setLabelAbove(True)
+	labelAboveSingleGroup.setLegend("Priority (label above)")
+	labelAboveSingleGroup.setBadgeSelectionMode("single")
+	ApplyDemoBadgeGroupStyle(labelAboveSingleGroup)
+	labelAboveSingleGroup.setItemsSpec("low:Low|normal:Normal|high:High|urgent:Urgent")
+	labelAboveSingleGroup.setChecked("normal")
+	lblLabelAboveSingleState = CreateStateLabel("Selected: normal")
+	pnlHost.AddView(lblLabelAboveSingleState, PAGE_PAD, y + vLA1.Height + 8dip, MaxW, 18dip)
+	y = y + vLA1.Height + 34dip
+	
+	labelAboveMultiGroup.Initialize(Me, "labelabovemulti")
+	Dim vLA2 As B4XView = labelAboveMultiGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	labelAboveMultiGroup.setLabelAbove(True)
+	labelAboveMultiGroup.setLegend("Skills (label above)")
+	labelAboveMultiGroup.setBadgeSelectionMode("multi")
+	ApplyDemoBadgeGroupStyle(labelAboveMultiGroup)
+	labelAboveMultiGroup.setHintText("Tap badges to select your skills")
+	labelAboveMultiGroup.setItemsSpec("ui:UI|api:API|db:Database|qa:QA|ops:Ops|ai:AI")
+	labelAboveMultiGroup.setChecked("ui;api")
+	lblLabelAboveMultiState = CreateStateLabel("Selected: ui, api")
+	pnlHost.AddView(lblLabelAboveMultiState, PAGE_PAD, y + vLA2.Height + 8dip, MaxW, 18dip)
+	y = y + vLA2.Height + 34dip
+	
+	' --- Required + Label Above (red star + validation error) ---
+	Dim titleReq As B4XView = CreateSectionLabel("BadgeGroupSelect - Required + Label Above", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleReq, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+	
+	requiredGroup.Initialize(Me, "requiredgroup")
+	Dim vReq As B4XView = requiredGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	requiredGroup.setLabelAbove(True)
+	requiredGroup.setRequired(True)
+	requiredGroup.setLegend("Required: pick at least one")
+	requiredGroup.setBadgeSelectionMode("multi")
+	ApplyDemoBadgeGroupStyle(requiredGroup)
+	requiredGroup.setHintText("Select one or more options to continue")
+	requiredGroup.setItemsSpec("email:Email|sms:SMS|push:Push|inapp:In-App")
+	' Nothing selected -> Validate() fails and renders the red error text below.
+	requiredGroup.Validate
+	lblRequiredState = CreateStateLabel("IsValid: false")
+	pnlHost.AddView(lblRequiredState, PAGE_PAD, y + vReq.Height + 8dip, MaxW, 18dip)
+	y = y + vReq.Height + 34dip
+	
+	' --- Input Border with Variants ---
+	Dim titleIB As B4XView = CreateSectionLabel("BadgeGroupSelect - Input Border by Variant", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleIB, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+	
+	Dim ibVariants() As String = Array As String("neutral", "primary", "secondary", "accent", "info", "success", "warning", "error")
+	For Each vname As String In ibVariants
+		Dim ibGroup As B4XDaisyBadgeGroupSelect
+		ibGroup.Initialize(Me, "ibgroup")
+		Dim vIB As B4XView = ibGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+		ibGroup.setLegend("InputBorder: " & vname)
+		ibGroup.setVariant(vname)
+		ibGroup.setInputBorder(True)
+		ibGroup.setBadgeSelectionMode("single")
+		ApplyDemoBadgeGroupStyle(ibGroup)
+		ibGroup.setBadgeCheckedColor(B4XDaisyVariants.ResolveBackgroundColorVariant(vname, xui.Color_RGB(59, 130, 246)))
+		ibGroup.setBadgeCheckedTextColor(B4XDaisyVariants.ResolveTextColorVariant(vname, xui.Color_White))
+		ibGroup.setItemsSpec("a:Option A|b:Option B|c:Option C")
+		y = y + vIB.Height + 10dip
+	Next
+	y = y + 8dip
+	
+	' --- Empty Legend ---
+	Dim titleEL As B4XView = CreateSectionLabel("BadgeGroupSelect - Empty Legend", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleEL, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+
+	Dim emptyClassic As B4XDaisyBadgeGroupSelect
+	emptyClassic.Initialize(Me, "emptyclassic")
+	Dim vEC As B4XView = emptyClassic.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	emptyClassic.setLegend("")
+	emptyClassic.setBadgeSelectionMode("multi")
+	ApplyDemoBadgeGroupStyle(emptyClassic)
+	emptyClassic.setItemsSpec("a:Alpha|b:Beta|c:Gamma")
+	y = y + vEC.Height + 12dip
+
+	Dim emptyLA As B4XDaisyBadgeGroupSelect
+	emptyLA.Initialize(Me, "emptyla")
+	Dim vELA As B4XView = emptyLA.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	emptyLA.setLegend("")
+	emptyLA.setLabelAbove(True)
+	emptyLA.setBadgeSelectionMode("multi")
+	ApplyDemoBadgeGroupStyle(emptyLA)
+	emptyLA.setItemsSpec("a:One|b:Two")
+	y = y + vELA.Height + 12dip
+	
+	' --- Bold Legend ---
+	Dim titleBL As B4XView = CreateSectionLabel("BadgeGroupSelect - Bold Legend", 14, xui.Color_RGB(30, 41, 59), True)
+	pnlHost.AddView(titleBL, PAGE_PAD, y, MaxW, 20dip)
+	y = y + 22dip
+
+	Dim boldGroup As B4XDaisyBadgeGroupSelect
+	boldGroup.Initialize(Me, "boldgroup")
+	Dim vBL As B4XView = boldGroup.AddToParent(pnlHost, PAGE_PAD, y, MaxW, 1dip)
+	boldGroup.setLegend("Bold legend caption")
+	boldGroup.setLegendBold(True)
+	boldGroup.setBadgeSelectionMode("multi")
+	ApplyDemoBadgeGroupStyle(boldGroup)
+	boldGroup.setItemsSpec("a:Alpha|b:Beta|c:Gamma")
+	y = y + vBL.Height + 12dip
+	
 	Return y
+End Sub
+
+Private Sub ApplyDemoBadgeGroupStyle(Group As B4XDaisyBadgeGroupSelect)
+	Group.setBadgeColor("neutral")
+	Group.setBadgeStyle("solid")
+	Group.setBadgeCheckedColor(B4XDaisyVariants.ResolveBackgroundColorVariant("success", xui.Color_RGB(34, 197, 94)))
+	Group.setBadgeCheckedTextColor(B4XDaisyVariants.ResolveTextColorVariant("success", xui.Color_White))
 End Sub
 
 Private Sub CreateStateLabel(Text As String) As B4XView
@@ -355,13 +492,14 @@ Private Sub RenderBadgeSection(Section As Map, MaxW As Int, StartY As Int) As In
 	Dim rowPanel As B4XView = xui.CreatePanel("")
 	rowPanel.Color = xui.Color_Transparent
 	pnlHost.AddView(rowPanel, PAGE_PAD, y, MaxW, 1dip)
-	Dim rowH As Int = LayoutBadgeItems(rowPanel, MaxW, items, title)
+	Dim onePerRow As Boolean = Section.GetDefault("one_per_row", False)
+	Dim rowH As Int = LayoutBadgeItems(rowPanel, MaxW, items, title, onePerRow)
 	rowPanel.SetLayoutAnimated(0, PAGE_PAD, y, MaxW, rowH)
 	y = y + rowH + 14dip
 	Return y
 End Sub
 
-Private Sub LayoutBadgeItems(RowPanel As B4XView, MaxW As Int, Items As List, SectionName As String) As Int
+Private Sub LayoutBadgeItems(RowPanel As B4XView, MaxW As Int, Items As List, SectionName As String, OnePerRow As Boolean) As Int
 	Dim x As Int = 0
 	Dim y As Int = 0
 	Dim rowH As Int = 0
@@ -374,7 +512,7 @@ Private Sub LayoutBadgeItems(RowPanel As B4XView, MaxW As Int, Items As List, Se
 		Dim bw As Int = Max(1dip, badgeView.Width)
 		Dim bh As Int = Max(1dip, badgeView.Height)
 
-		If x > 0 And x + bw > MaxW Then
+		If x > 0 And (OnePerRow Or x + bw > MaxW) Then
 			x = 0
 			y = y + rowH + ROW_GAP
 			rowH = 0
@@ -455,6 +593,24 @@ Private Sub RenderHeadingExamples(MaxW As Int, StartY As Int) As Int
 	Return y + 10dip
 End Sub
 
+Private Sub MeasureHeadingTextWidth(Lbl As Label, Text As String, TextSize As Float) As Int
+	If Text = Null Or Text.Length = 0 Then Return 0
+	Try
+	Return Max(0, B4XDaisyVariants.MeasureTextWidthSafe(Text, TextSize, Lbl.Typeface, 2dip))
+	Catch
+	Return Max(1dip, Round(Text.Length * TextSize * 0.55))
+	End Try
+End Sub
+
+Private Sub MeasureHeadingTextHeight(Lbl As Label, Text As String, TextSize As Float, Width As Int) As Int
+	If Text = Null Or Text.Length = 0 Then Return 0
+	Try
+	Return Max(1dip, B4XDaisyVariants.MeasureTextHeightSafe(Text, TextSize, Lbl.Typeface, Width, 2dip))
+	Catch
+	Return Max(1dip, Round(TextSize * 1.4) + 2dip)
+	End Try
+End Sub
+
 Private Sub AddHeadingBadgeRow(MaxW As Int, StartY As Int, HeadingText As String, HeadingSize As Int, BadgeSize As String) As Int
 	Dim row As B4XView = xui.CreatePanel("")
 	row.Color = xui.Color_Transparent
@@ -466,6 +622,7 @@ Private Sub AddHeadingBadgeRow(MaxW As Int, StartY As Int, HeadingText As String
 	xlbl.Text = HeadingText
 	xlbl.TextColor = xui.Color_RGB(15, 23, 42)
 	xlbl.TextSize = HeadingSize
+	xlbl.SetTextAlignment("CENTER", "LEFT")
 	row.AddView(xlbl, 0, 0, MaxW, 10dip)
 
 	Dim badge As B4XDaisyBadge
@@ -479,10 +636,16 @@ Private Sub AddHeadingBadgeRow(MaxW As Int, StartY As Int, HeadingText As String
 	Dim bw As Int = Max(1dip, badgeView.Width)
 	Dim bh As Int = Max(1dip, badgeView.Height)
 
-	Dim estimatedLabelW As Int = Max(60dip, Round(HeadingText.Length * HeadingSize * 0.55))
-	Dim rowH As Int = Max(bh + 6dip, HeadingSize + 12dip)
-	xlbl.SetLayoutAnimated(0, 0, (rowH - (HeadingSize + 8dip)) / 2, MaxW, HeadingSize + 8dip)
-	Dim badgeX As Int = Min(MaxW - bw, estimatedLabelW + 8dip)
+	' Measure the actual rendered heading text width so the badge sits right
+	' after the text instead of relying on a rough character-count estimate.
+	Dim measuredLabelW As Int = Max(1dip, MeasureHeadingTextWidth(lbl, HeadingText, HeadingSize))
+	Dim gap As Int = 8dip
+	' Compute the real text height so the heading is not vertically clipped (a
+	' fixed TextSize+8dip box was cutting off half of the word on most rows).
+	Dim labelH As Int = Max(HeadingSize + 8dip, MeasureHeadingTextHeight(lbl, HeadingText, HeadingSize, measuredLabelW))
+	Dim rowH As Int = Max(bh + 6dip, labelH + 4dip)
+	xlbl.SetLayoutAnimated(0, 0, (rowH - labelH) / 2, measuredLabelW, labelH)
+	Dim badgeX As Int = Min(MaxW - bw, measuredLabelW + gap)
 	badgeView.SetLayoutAnimated(0, badgeX, (rowH - bh) / 2, bw, bh)
 	badge.Base_Resize(bw, bh)
 	row.SetLayoutAnimated(0, PAGE_PAD, StartY, MaxW, rowH)
@@ -561,12 +724,12 @@ Private Sub badge_Checked(Id As String, Checked As Boolean)
 	ToastMessageShow("Toggle badge id=" & chipId & ", checked=" & stateText, False)
 End Sub
 
-Private Sub singlegroup_SelectionChanged(SelectedIds As List)
+Private Sub singlegroup_Changed(SelectedIds As List)
 	Dim txt As String = "Selected: " & JoinIds(SelectedIds)
 	If lblSingleState.IsInitialized Then lblSingleState.Text = txt
 End Sub
 
-Private Sub multigroup_SelectionChanged(SelectedIds As List)
+Private Sub multigroup_Changed(SelectedIds As List)
 	Dim txt As String = "Selected: " & JoinIds(SelectedIds)
 	If lblMultiState.IsInitialized Then lblMultiState.Text = txt
 End Sub
@@ -581,6 +744,26 @@ Private Sub multigroup_ItemChanged(Item As Map)
 	Dim id As String = Item.GetDefault("id", "")
 	Dim checked As Boolean = Item.GetDefault("checked", False)
 	ToastMessageShow("multi -> " & id & " = " & checked, False)
+End Sub
+
+Private Sub labelabovesinglegroup_Changed(SelectedIds As List)
+	If lblLabelAboveSingleState.IsInitialized Then lblLabelAboveSingleState.Text = "Selected: " & JoinIds(SelectedIds)
+End Sub
+
+Private Sub labelabovemultigroup_Changed(SelectedIds As List)
+	If lblLabelAboveMultiState.IsInitialized Then lblLabelAboveMultiState.Text = "Selected: " & JoinIds(SelectedIds)
+End Sub
+
+Private Sub requiredgroup_Changed(SelectedIds As List)
+	If lblRequiredState.IsInitialized = False Then Return
+	Dim sel As String = JoinIds(SelectedIds)
+	If SelectedIds.IsInitialized And SelectedIds.Size > 0 Then
+		requiredGroup.ClearError
+		lblRequiredState.Text = "IsValid: true  |  Selected: " & sel
+	Else
+		requiredGroup.Validate
+		lblRequiredState.Text = "IsValid: false"
+	End If
 End Sub
 
 Private Sub JoinIds(Ids As List) As String

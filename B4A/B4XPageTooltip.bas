@@ -5,7 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -29,8 +29,6 @@ End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
-	Root.Color = xui.Color_RGB(245, 247, 250)
-	B4XPages.SetTitle(Me, "Tooltip")
 
 	Dim sv As ScrollView
 	sv.Initialize(Max(1dip, Root.Height))
@@ -57,33 +55,29 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim btnInfo As B4XDaisyButton = CreateButton("Show Info Tooltip", "v_info")
 	btnInfo.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttInfo.Initialize(Me, "ttInfo")
-	ttInfo.mBase = CreateDummyBase
-	ttInfo.DesignerCreateView(ttInfo.mBase, Null, CreateMap("Message": "Info: System details", "Variant": "info"))
-	ttInfo.AttachToTarget(btnInfo.mBase)
+	ttInfo.CreateView(CreateMap("Message": "Info: System details", "Variant": "info"))
+	ttInfo.AttachToTarget(btnInfo.getView)
 	currentY = currentY + 100dip ' Large gap for tooltip visibility
 	
 	Dim btnSuccess As B4XDaisyButton = CreateButton("Show Success Tooltip", "v_success")
 	btnSuccess.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttSuccess.Initialize(Me, "ttSuccess")
-	ttSuccess.mBase = CreateDummyBase
-	ttSuccess.DesignerCreateView(ttSuccess.mBase, Null, CreateMap("Message": "Success: Task complete!", "Variant": "success"))
-	ttSuccess.AttachToTarget(btnSuccess.mBase)
+	ttSuccess.CreateView(CreateMap("Message": "Success: Task complete!", "Variant": "success"))
+	ttSuccess.AttachToTarget(btnSuccess.getView)
 	currentY = currentY + 100dip
 	
 	Dim btnWarning As B4XDaisyButton = CreateButton("Show Warning Tooltip", "v_warning")
 	btnWarning.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttWarning.Initialize(Me, "ttWarning")
-	ttWarning.mBase = CreateDummyBase
-	ttWarning.DesignerCreateView(ttWarning.mBase, Null, CreateMap("Message": "Warning: Check parameters", "Variant": "warning"))
-	ttWarning.AttachToTarget(btnWarning.mBase)
+	ttWarning.CreateView(CreateMap("Message": "Warning: Check parameters", "Variant": "warning"))
+	ttWarning.AttachToTarget(btnWarning.getView)
 	currentY = currentY + 100dip
 	
 	Dim btnError As B4XDaisyButton = CreateButton("Show Error Tooltip", "v_error")
 	btnError.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttError.Initialize(Me, "ttError")
-	ttError.mBase = CreateDummyBase
-	ttError.DesignerCreateView(ttError.mBase, Null, CreateMap("Message": "Error: Action failed!", "Variant": "error"))
-	ttError.AttachToTarget(btnError.mBase)
+	ttError.CreateView(CreateMap("Message": "Error: Action failed!", "Variant": "error"))
+	ttError.AttachToTarget(btnError.getView)
 	currentY = currentY + 120dip
 
 	'--- Positions Section ---
@@ -93,35 +87,31 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim btnTop As B4XDaisyButton = CreateButton("Tooltip Top", "pos_top")
 	btnTop.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttTop.Initialize(Me, "ttTop")
-	ttTop.mBase = CreateDummyBase
-	ttTop.DesignerCreateView(ttTop.mBase, Null, CreateMap("Message": "I am on top"))
-	ttTop.AttachToTarget(btnTop.mBase)
+	ttTop.CreateView(CreateMap("Message": "I am on top"))
+	ttTop.AttachToTarget(btnTop.getView)
 	currentY = currentY + 100dip
 	
 	Dim btnBottom As B4XDaisyButton = CreateButton("Tooltip Bottom", "pos_bottom")
 	btnBottom.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttBottom.Initialize(Me, "ttBottom")
-	ttBottom.mBase = CreateDummyBase
-	ttBottom.DesignerCreateView(ttBottom.mBase, Null, CreateMap("Message": "I am at the bottom", "Position": "bottom"))
-	ttBottom.AttachToTarget(btnBottom.mBase)
+	ttBottom.CreateView(CreateMap("Message": "I am at the bottom", "Position": "bottom"))
+	ttBottom.AttachToTarget(btnBottom.getView)
 	currentY = currentY + 100dip
 	
 	' For Left tooltip: place button on the right side to give space to the left
 	Dim btnLeft As B4XDaisyButton = CreateButton("Left", "pos_left")
 	btnLeft.AddToParent(content, 180dip, currentY, 100dip, 40dip)
 	ttLeft.Initialize(Me, "ttLeft")
-	ttLeft.mBase = CreateDummyBase
-	ttLeft.DesignerCreateView(ttLeft.mBase, Null, CreateMap("Message": "Left side tooltip", "Position": "left"))
-	ttLeft.AttachToTarget(btnLeft.mBase)
+	ttLeft.CreateView(CreateMap("Message": "Left side tooltip", "Position": "left"))
+	ttLeft.AttachToTarget(btnLeft.getView)
 	currentY = currentY + 100dip
 	
 	' For Right tooltip: place button on the left side to give space to the right
 	Dim btnRight As B4XDaisyButton = CreateButton("Right", "pos_right")
 	btnRight.AddToParent(content, 20dip, currentY, 100dip, 40dip)
 	ttRight.Initialize(Me, "ttRight")
-	ttRight.mBase = CreateDummyBase
-	ttRight.DesignerCreateView(ttRight.mBase, Null, CreateMap("Message": "Right side tooltip", "Position": "right"))
-	ttRight.AttachToTarget(btnRight.mBase)
+	ttRight.CreateView(CreateMap("Message": "Right side tooltip", "Position": "right"))
+	ttRight.AttachToTarget(btnRight.getView)
 	currentY = currentY + 120dip
 
 	'--- Rich Section ---
@@ -131,9 +121,8 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim btnRich As B4XDaisyButton = CreateButton("Show Rich Tooltip", "rich")
 	btnRich.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttRich.Initialize(Me, "ttRich")
-	ttRich.mBase = CreateDummyBase
-	ttRich.DesignerCreateView(ttRich.mBase, Null, CreateMap("Variant": "neutral", "ShowArrow": True))
-	ttRich.AttachToTarget(btnRich.mBase)
+	ttRich.CreateView(CreateMap("Variant": "neutral", "ShowArrow": True))
+	ttRich.AttachToTarget(btnRich.getView)
 	
 	' Create a rich panel
 	Dim p As Panel
@@ -161,14 +150,6 @@ Private Sub AddSectionHeader(Parent As B4XView, Text As String, Y As Int)
 	lbl.Text = Text
 	lbl.TextSize = "text-lg"
 	lbl.FontBold = True
-End Sub
-
-Private Sub CreateDummyBase As B4XView
-	Dim p As Panel
-	p.Initialize("")
-	Dim b As B4XView = p
-	b.SetLayoutAnimated(0, 0, 0, 1dip, 1dip)
-	Return b
 End Sub
 
 Private Sub CreateButton(Text As String, Tag As Object) As B4XDaisyButton

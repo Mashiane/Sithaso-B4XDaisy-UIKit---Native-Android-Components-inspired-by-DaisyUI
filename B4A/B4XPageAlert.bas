@@ -5,7 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	' Begin page-level variable declarations.
 	' Root page container provided by B4XPages.
@@ -30,9 +30,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	' Capture page root.
 	Root = Root1
 	' Light neutral background for demo readability.
-	Root.Color = xui.Color_RGB(245, 247, 250)
 	' Page title shown in B4XPages top bar.
-	B4XPages.SetTitle(Me, "Alert")
 	
 	' Create the scroll container with an initial content height.
 	svHost.Initialize(Max(1dip, Root.Height))

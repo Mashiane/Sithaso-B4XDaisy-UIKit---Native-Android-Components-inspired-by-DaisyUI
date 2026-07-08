@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 Sub Class_Globals
     Private Root As B4XView
@@ -23,7 +24,6 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-100", xui.Color_White)
     Dropdowns.Initialize
-    B4XPages.SetTitle(Me, "Dropdown")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -397,9 +397,7 @@ Private Sub dropdown_ItemClick(Tag As Object, Text As String)
 End Sub
 
 Private Sub host_Click(Tag As Object)
-    Log("Host Button Clicked: " & Tag)
 End Sub
 
 Private Sub avatar_Click(Tag As Object)
-    Log("Avatar Trigger Clicked: " & Tag)
 End Sub

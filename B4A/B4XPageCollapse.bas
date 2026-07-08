@@ -6,7 +6,7 @@ Version=13.4
 @EndOfDesignText@
 
 #Region Variables
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
     Private Root As B4XView
     Private xui As XUI
@@ -29,8 +29,6 @@ End Sub
 ''' </summary>
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
-    Root.Color = xui.Color_RGB(245, 247, 250)
-    B4XPages.SetTitle(Me, "Collapse")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)

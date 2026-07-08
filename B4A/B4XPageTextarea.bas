@@ -4,7 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings: 12
+#IgnoreWarnings:12,9
 
 #Region Variables
     Sub Class_Globals
@@ -32,8 +32,6 @@ Version=13.4
     ''' </summary>
     Private Sub B4XPage_Created(Root1 As B4XView)
         Root = Root1
-        Root.Color = xui.Color_RGB(245, 247, 250)
-        B4XPages.SetTitle(Me, "Textarea")
 
         svHost.Initialize(1dip)
         Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -183,6 +181,23 @@ Version=13.4
         c7.Tag = "auto-height-textarea"
         AddRow(sec7, c7, 0)
         EndSection(sec7)
+
+        '============================================================
+        'Example 8: Required textarea (red star on label above)
+        '============================================================
+        Dim sec8 As Map = BeginSection("Required textarea")
+        Dim c8 As B4XDaisyInput
+        c8.Initialize(Me, "txt")
+        c8.SingleLine = False
+        c8.AddToParent(pnlHost, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        c8.LabelAbove = "Your message"
+        c8.Placeholder = "Tell us about your issue..."
+        c8.HintText = "This field is required"
+        c8.MaxLines = 3
+        c8.Required = True
+        c8.Tag = "required-textarea"
+        AddRow(sec8, c8, 0)
+        EndSection(sec8)
     End Sub
 
     ''' <summary>
@@ -212,7 +227,7 @@ Version=13.4
         Dim rows As List = Sec.Get("rows")
         Dim rowMap As Map
         rowMap.Initialize
-        Dim v As B4XView = Comp.mBase
+        Dim v As B4XView = Comp.getView
         If RowH <= 0 Then RowH = Comp.GetComputedHeight
         rowMap.Put("view", v)
         rowMap.Put("comp", Comp)
@@ -261,7 +276,7 @@ Version=13.4
 
                 Dim inp As B4XDaisyInput = row.Get("comp")
                 inp.Base_Resize(maxW, rh)
-                Dim actualH As Int = inp.mBase.Height
+                Dim actualH As Int = inp.GetActualHeight
                 rv.SetLayoutAnimated(0, PAGE_PAD, y, maxW, actualH)
                 y = y + actualH
 

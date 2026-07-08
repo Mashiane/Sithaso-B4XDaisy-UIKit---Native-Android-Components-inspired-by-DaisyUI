@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -28,8 +29,6 @@ End Sub
 ''' </summary>
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
-    Root.Color = xui.Color_RGB(245, 247, 250)
-    B4XPages.SetTitle(Me, "Timeline")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -53,7 +52,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ' ====== 1. Default Timeline (Vertical) ======
     y = AddSectionTitle("1. Default Timeline", y, maxW)
     Dim tl1 As B4XDaisyTimeline
-    tl1.Initialize(Me, "tl1")
+    tl1.Initialize(Me, "tl")
     tl1.Orientation = "vertical"
     tl1.AddToParent(pnlHost, PAGE_PAD, y, maxW, 300dip)
     tl1.AddItemBox("tl1_1", "1984", "First Macintosh computer", False, True)
@@ -68,7 +67,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ' ====== 2. Timeline with icons ======
     y = AddSectionTitle("2. Timeline with icons", y, maxW)
     Dim tl2 As B4XDaisyTimeline
-    tl2.Initialize(Me, "tl2")
+    tl2.Initialize(Me, "tl")
     tl2.Orientation = "vertical"
     tl2.AddToParent(pnlHost, PAGE_PAD, y, maxW, 300dip)
     tl2.AddItemBox("tl2_1", "1984", "First Macintosh computer", False, True)
@@ -81,7 +80,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ' ====== 3. Timeline with different sides ======
     y = AddSectionTitle("3. Timeline with different sides", y, maxW)
     Dim tl3 As B4XDaisyTimeline
-    tl3.Initialize(Me, "tl3")
+    tl3.Initialize(Me, "tl")
     tl3.Orientation = "vertical"
     tl3.AddToParent(pnlHost, PAGE_PAD, y, maxW, 300dip)
     tl3.AddItemBox("tl3_1", "First Macintosh computer", "", False, False)
@@ -94,7 +93,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ' ====== 4. Timeline with different sides / colorful (Multi-line test) ======
     y = AddSectionTitle("4. Colorful & Multi-line", y, maxW)
     Dim tl4 As B4XDaisyTimeline
-    tl4.Initialize(Me, "tl4")
+    tl4.Initialize(Me, "tl")
     tl4.Orientation = "vertical"
     tl4.AddToParent(pnlHost, PAGE_PAD, y, maxW, 450dip)
     tl4.AddItemBox("tl4_1", "1984", "First Macintosh computer (Revolutionary PC)", False, True)
@@ -113,7 +112,7 @@ tl4.SetItemVariant("tl4_5", "warning")
     ' ====== 5. Timeline horizontal with dashed border ======
     y = AddSectionTitle("5. Horizontal with dashed border & boxes", y, maxW)
     Dim tl5 As B4XDaisyTimeline
-    tl5.Initialize(Me, "tl5")
+    tl5.Initialize(Me, "tl")
     tl5.Orientation = "horizontal"
     tl5.AddToParent(pnlHost, PAGE_PAD, y, maxW, 200dip)
     tl5.AddItemBox("tl5_1", "1984", "First Macintosh", False, True)
@@ -129,7 +128,7 @@ Next
     ' ====== 6. Timeline horizontal with different sides ======
     y = AddSectionTitle("6. Timeline horizontal with different sides", y, maxW)
     Dim tl6 As B4XDaisyTimeline
-    tl6.Initialize(Me, "tl6")
+    tl6.Initialize(Me, "tl")
     tl6.Orientation = "horizontal"
     tl6.AddToParent(pnlHost, PAGE_PAD, y, maxW, 200dip)
     tl6.AddItemBox("tl6_1", "First Macintosh computer", "", False, False)
@@ -142,7 +141,7 @@ Next
     ' ====== 7. Compact left-aligned (no start text, boxes fill width) ======
     y = AddSectionTitle("7. Compact Left-Aligned (no start text)", y, maxW)
     Dim tl7 As B4XDaisyTimeline
-    tl7.Initialize(Me, "tl7")
+    tl7.Initialize(Me, "tl")
     tl7.Orientation = "vertical"
     tl7.setCompact(True)
     tl7.setSnapIcon(True)
@@ -194,6 +193,16 @@ End Sub
 ''' </summary>
 Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub
+
+Sub tl_ItemClick (Id As String)
+    Dim tl As B4XDaisyTimeline = Sender
+    tl.ToggleItem(Id)
+    Dim isDone As Boolean = tl.GetItemDone(Id)
+    
+    Dim statusText As String = IIf(isDone, "Done", "Not Done")
+    Dim alertVariant As String = IIf(isDone, "success", "info")
+    B4XPages.MainPage.ShowAlertNotification("Timeline Toggled", "Item " & Id & " is now " & statusText, alertVariant, 2000, "top-center")
 End Sub
 #End Region
 

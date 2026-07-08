@@ -5,7 +5,7 @@ Type=Class
 Version=13.4
 @EndOfDesignText@
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
@@ -26,8 +26,6 @@ End Sub
 
 Private Sub B4XPage_Created(Root1 As B4XView)
 	Root = Root1
-	Root.Color = xui.Color_RGB(245, 247, 250)
-	B4XPages.SetTitle(Me, "Divider")
 
 	svHost.Initialize(Max(1dip, Root.Height))
 	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -244,20 +242,10 @@ Private Sub MeasureTextWidthDip(Text As String, FontSize As Float) As Int
 	t = t.Trim
 	If t.Length = 0 Then Return 0
 	Dim extraPad As Int = Max(6dip, Min(24dip, t.Length * 3dip))
-	Dim lbl As Label
-	lbl.Initialize("")
-	Dim measureView As B4XView = lbl
 	Try
-		If Root.IsInitialized Then
-			Root.AddView(measureView, 0, 0, 1dip, 1dip)
-			Dim c As Canvas
-			c.Initialize(lbl)
-			Dim w As Float = c.MeasureStringWidth(t, lbl.Typeface, FontSize)
-			measureView.RemoveViewFromParent
-			Return Max(1dip, Ceil(w) + extraPad)
-		End If
+		Return B4XDaisyVariants.MeasureTextWidthSafe(t, FontSize, Null, extraPad)
 	Catch
-		If measureView.IsInitialized Then measureView.RemoveViewFromParent
+		Log("B4XPageDivider.MeasureTextWidthDip: " & LastException.Message)
 	End Try
 	Return Max(1dip, Ceil(t.Length * FontSize * 0.7) + extraPad)
 End Sub

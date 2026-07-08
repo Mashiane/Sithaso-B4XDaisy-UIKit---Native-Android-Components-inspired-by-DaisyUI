@@ -14,12 +14,25 @@ Version=9.85
 'https://github.com/users/Mashiane/projects/1
 'https://www.b4x.com/android/forum/threads/b4x-b4a-b4xdaisy-ui-kit-native-components-inspired-by-daisyui-tailwind.170352/
 
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 
 Sub Class_Globals
+	Public MapFrom As String
 	Private Root As B4XView
 	Private xui As XUI
 	Private PendingDashboardOnReopen As Boolean
+	'Public KM01SignInPage As KM01SignIn
+	'Public KM01TypeOfUserPage As KM01TypeOfUser
+	'Public KM01ClientProfilePage As KM01ClientProfile
+	'Public KM01KYCPage As KM01KYC
+	'Public KM01NewProfilePage As KM01NewProfile
+	'Public KM01CompanyRepresentativePage As KM01CompanyRepresentative
+	'Public KM01LocationDetailsPage As KM01LocationDetails
+	'Public KM01IDDetailsPage As KM01IDDetails
+	'Public KM01CongratulationsPage As KM01Congratulations
+	'Public KM01OnboardingPage As KM01Onboarding
+	'Public KM01LeafletMapPage As KM01LeafletMap
+	'Public KM01PhysicalAddressesPage As KM01PhysicalAddresses
 	Public ChatPage As B4XPageChat
 	Public AlertPage As B4XPageAlert
 	Public AvatarPage As B4XPageAvatar
@@ -37,11 +50,16 @@ Sub Class_Globals
 	Public RadialProgressPage As B4XPageRadialProgress
 	Public ProgressPage As B4XPageProgress
 	Public DashboardPage As B4XPageDashboard
+	Public ActionSheetPage As B4XPageActionSheet
 	Public ToastPage As B4XPageToast
 	Public TooltipPage As B4XPageTooltip
+	Public SegmentPage As B4XPageSegment
+	Public ColorWheelPage As B4XPageColorWheel
+	Public SignaturePadPage As B4XPageSignaturePad
+	Public SheetModalPage As B4XPageSheetModal
+	
 	Public NavbarPage As B4XPageNavbar
 	Private WindowPage As B4XPageWindow
-	Private B4XGifView1 As B4XGifView
 	Private FieldSetPage As B4XPageFieldset
 	Public ButtonPage As B4XPageButton
 	Public HeroPage As B4XPageHero
@@ -59,8 +77,8 @@ Sub Class_Globals
 	Public TextRotatePage As B4XPageTextRotate
 	Public TimelinePage As B4XPageTimeline
 	Public Hover3dPage As B4XPageHover3d
-	Private AppOverlay As B4XDaisyOverlay
 	Private AppLoader As B4XDaisyCanvasSpinner
+	Public SweetAlert As B4XDaisySweetAlert
 	Public FabPage As B4XPageFab
 	Public FabBasicPage As B4XPageFabBasic
 	Public FabNavbarPage As B4XPageFabNavbar
@@ -76,8 +94,9 @@ Sub Class_Globals
 	Public PaginationPage As B4XPagePagination
 	Public StepsPage As B4XPageSteps
 	Public TabPage As B4XPageTab
-	Public LabelPage As B4XPageLabel
+	Public TextPage As B4XPageText
 	Public InputPage As B4XPageInput
+	Public OTPPage As B4XPageOTP
 	Public CheckboxPage As B4XPageCheckbox
 	Public RadioPage As B4XPageRadio
 	Public TogglePage As B4XPageToggle
@@ -85,10 +104,17 @@ Sub Class_Globals
 	Public RatingPage As B4XPageRating
 	Public TextareaPage As B4XPageTextarea
 	Public SelectPage As B4XPageSelect
+	Public PickerPage As B4XPagePicker
 	Public RadioGroupPage As B4XPageRadioGroup
 	Public CheckboxGroupPage As B4XPageCheckboxGroup
 	Public ToggleGroupPage As B4XPageToggleGroup
 	Public IconButtonPage As B4XPageIconButton
+	Public FileInputPage As B4XPageFileInput
+	Public SweetAlertPage As B4XPageSweetAlert
+	Public FilterPage As B4XPageFilter
+	Public PageScrollDemo As B4XPageScrollDemo
+	Public NavScrollDockPage As B4XPageNavScrollDock
+	Private ActiveAlert As B4XDaisyAlert
 End Sub
 
 Public Sub Initialize
@@ -98,44 +124,40 @@ End Sub
 
 Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
+	Root.RemoveAllViews
 	PendingDashboardOnReopen = False
-	'show the splash screen
-	Root.LoadLayout("Splash")
-	B4XGifView1.SetGif(File.DirAssets, "jendigitalart-cat-133_256.gif")
+	
+	'Initialize global loader unconditionally to prevent NullPointerExceptions
+	AppLoader.Initialize(Me, "AppLoader")
+	SweetAlert.Initialize(Me, Root, "SweetAlert")
+
 	Sleep(0)
+	'Attach and show global loader during ShowSplashScreen initialization
+	If Root.Parent.IsInitialized Then
+		AppLoader.Show(Root.Parent)
+	End If
+
 	'load the other pages
 	Wait For (ShowSplashScreen) Complete (Unused As Boolean)
 
-	'Initialize global loader after initial layout is loaded - avoids interference
-	AppOverlay.Initialize(Me, "AppOverlay")
-	AppOverlay.OverlayColor = xui.Color_White
-	AppOverlay.Opacity = 0
-	If Root.Parent.IsInitialized Then
-		AppOverlay.AttachTo(Root.Parent)
-		AppOverlay.Visible = False
-
-		AppLoader.Initialize(Me, "AppLoader")
-		AppLoader.AttachTo(AppOverlay.GetHostView)
-		AppLoader.Hide
-	End If
-
-
-	'Root.RemoveAllViews
-	B4XPages.SetTitle(Me, "B4XDaisy UIKit")
-	'DEBUG: show Input page directly to reproduce layout issues faster
-	B4XPages.ShowPage("Dashboard")
+	'Show the Dashboard as the app start page.
+	ShowPageWithLoader("Dashboard")
 End Sub
+
 
 Private Sub B4XPage_Appear
 	If PendingDashboardOnReopen Then
 		PendingDashboardOnReopen = False
-		B4XPages.ShowPage("Dashboard")
+		ShowPageWithLoader("Dashboard")
 	End If
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
-	If AppOverlay.IsInitialized Then AppOverlay.Resize(Width, Height)
 	If AppLoader.IsInitialized Then AppLoader.Resize(Width, Height)
+	If SweetAlert.IsInitialized And SweetAlert.Visible Then
+		SweetAlert.SetLayoutAnimated(0, 0, 0, Width, Height)
+		SweetAlert.Refresh
+	End If
 End Sub
 
 Sub ShowSplashScreen As ResumableSub
@@ -186,8 +208,9 @@ Sub ShowSplashScreen As ResumableSub
 	PaginationPage.Initialize
 	StepsPage.Initialize
 	TabPage.Initialize
-	LabelPage.Initialize
+	TextPage.Initialize
 	InputPage.Initialize
+	OTPPage.Initialize
 	CheckboxPage.Initialize
 	RadioPage.Initialize
 	TogglePage.Initialize
@@ -195,13 +218,21 @@ Sub ShowSplashScreen As ResumableSub
 	RatingPage.Initialize
 	TextareaPage.Initialize
 	SelectPage.Initialize
+	PickerPage.Initialize
 	RadioGroupPage.Initialize
 	CheckboxGroupPage.Initialize
 	ToggleGroupPage.Initialize
 	IconButtonPage.Initialize
+	FileInputPage.Initialize
+	FilterPage.Initialize
 	DashboardPage.Initialize
+	ActionSheetPage.Initialize
 	ToastPage.Initialize
 	TooltipPage.Initialize
+	SegmentPage.Initialize
+	ColorWheelPage.Initialize
+	SignaturePadPage.Initialize
+	SheetModalPage.Initialize
 	NavbarPage.Initialize
 	WindowPage.Initialize
 	FieldSetPage.Initialize
@@ -209,17 +240,36 @@ Sub ShowSplashScreen As ResumableSub
 	TextRotatePage.Initialize
 	TimelinePage.Initialize
 	Hover3dPage.Initialize
+	SweetAlertPage.Initialize
+	PageScrollDemo.Initialize
+	'KM01SignInPage.Initialize
+	'KM01TypeOfUserPage.Initialize
+	'KM01ClientProfilePage.Initialize
+	'KM01KYCPage.Initialize
+	'KM01NewProfilePage.Initialize
+	'KM01CompanyRepresentativePage.Initialize
+	'KM01LocationDetailsPage.Initialize
+	'KM01IDDetailsPage.Initialize
+	'KM01CongratulationsPage.Initialize
+	'KM01OnboardingPage.Initialize
+	NavScrollDockPage.Initialize
+	'KM01LeafletMapPage.Initialize
+	'KM01PhysicalAddressesPage.Initialize
 
+	'B4XPages.AddPage("KM01LeafletMap", KM01LeafletMapPage)
 	B4XPages.AddPage("Stat", StatPage)
 	B4XPages.AddPage("Chat", ChatPage)
 	B4XPages.AddPage("Alert", AlertPage)
 	B4XPages.AddPage("Avatar", AvatarPage)
 	B4XPages.AddPage("Badge", BadgePage)
 	B4XPages.AddPage("Card", CardPage)
+	B4XPages.AddPage("Filter", FilterPage)
+	B4XPages.AddPage("File Input", FileInputPage)
 	B4XPages.AddPage("Checkbox Group", CheckboxGroupPage)
 	B4XPages.AddPage("Toggle Group", ToggleGroupPage)
 	B4XPages.AddPage("Radio Group", RadioGroupPage)
 	B4XPages.AddPage("Select", SelectPage)
+	B4XPages.AddPage("Picker", PickerPage)
 	B4XPages.AddPage("Rating", RatingPage)
 	B4XPages.AddPage("Textarea", TextareaPage)
 	B4XPages.AddPage("Range", RangePage)
@@ -227,7 +277,8 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Radio", RadioPage)
 	B4XPages.AddPage("Checkbox", CheckboxPage)
 	B4XPages.AddPage("Input", InputPage)
-	B4XPages.AddPage("Label", LabelPage)
+	B4XPages.AddPage("Input OTP", OTPPage)
+	B4XPages.AddPage("Typography", TextPage)
 	B4XPages.AddPage("Tab", TabPage)
 	B4XPages.AddPage("Steps", StepsPage)
 	B4XPages.AddPage("Dock", DockPage)
@@ -247,6 +298,8 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("List", ListPage)
 	B4XPages.AddPage("List 1K", List1KPage)
 	B4XPages.AddPage("Dashboard", DashboardPage)
+	B4XPages.AddPage("ActionSheet", ActionSheetPage)
+	B4XPages.AddPage("SheetModal", SheetModalPage)
 	B4XPages.AddPage("Skeleton", SkeletonPage)
 	B4XPages.AddPage("Hero", HeroPage)
 	B4XPages.AddPage("Button", ButtonPage)
@@ -263,6 +316,9 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Progress", ProgressPage)
 	B4XPages.AddPage("Toast", ToastPage)
 	B4XPages.AddPage("Tooltip", TooltipPage)
+	B4XPages.AddPage("Segment", SegmentPage)
+	B4XPages.AddPage("ColorWheel", ColorWheelPage)
+	B4XPages.AddPage("SignaturePad", SignaturePadPage)
 	B4XPages.AddPage("Navbar", NavbarPage)
 	B4XPages.AddPage("Window", WindowPage)
 	B4XPages.AddPage("FieldSet", FieldSetPage)
@@ -276,19 +332,42 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("Timeline", TimelinePage)
 	B4XPages.AddPage("Hover3d", Hover3dPage)
 	B4XPages.AddPage("Icon Button", IconButtonPage)
+	B4XPages.AddPage("SweetAlert2", SweetAlertPage)
+	B4XPages.AddPage("PageScrollDemo", PageScrollDemo)
+	'B4XPages.AddPage("KM01SignIn", KM01SignInPage)
+	'B4XPages.AddPage("KM01TypeOfUser", KM01TypeOfUserPage)
+	'B4XPages.AddPage("KM01ClientProfile", KM01ClientProfilePage)
+	'B4XPages.AddPage("KM01KYC", KM01KYCPage)
+	'B4XPages.AddPage("KM01NewProfile", KM01NewProfilePage)
+	'B4XPages.AddPage("KM01CompanyRepresentative", KM01CompanyRepresentativePage)
+	'B4XPages.AddPage("KM01LocationDetails", KM01LocationDetailsPage)
+	'B4XPages.AddPage("KM01IDDetails", KM01IDDetailsPage)
+	'B4XPages.AddPage("KM01Congratulations", KM01CongratulationsPage)
+	'B4XPages.AddPage("KM01Onboarding", KM01OnboardingPage)
+	'B4XPages.AddPage("KM01PhysicalAddresses", KM01PhysicalAddressesPage)
+	B4XPages.AddPage("NavScrollDock", NavScrollDockPage)
 	Return True
 End Sub
 
 'Return True to close, False to cancel
 
 Private Sub B4XPage_CloseRequest As ResumableSub
-	Dim sf As Object = xui.Msgbox2Async("Are you sure you want to close the application?", "Close B4XDaisy UI Kit?", "Yes", "", "No", Null)
-	Wait For (sf) Msgbox_Result (Result As Int)
-	If Result = xui.DialogResponse_Positive Then
+	Dim sf As Object = ShowConfirm("Close B4XDaisyUIKit?", "Are you sure you want to close the application?", "Yes", "No")
+	Wait For (sf) Complete (Result As B4XDaisySweetAlertResult)
+	If Result.IsConfirmed Then
 		PendingDashboardOnReopen = True
 		Return True
 	End If
-	B4XPages.ShowPage("Dashboard")
+	ShowPageWithLoader("Dashboard")
+	Return False
+End Sub
+
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	If KeyCode = KeyCodes.KEYCODE_BACK Then
+		Return B4XPages.Delegate.Activity_KeyPress(KeyCode)
+	End If
+	B4XPages.GetManager.RaiseEvent(B4XPages.GetManager.GetTopPage, "B4XPage_KeyPress", Array(KeyCode))
 	Return False
 End Sub
 
@@ -298,15 +377,11 @@ End Sub
 
 Public Sub ShowPageWithLoader(PageId As String)
 	Try
-		AppOverlay.Open
-		AppLoader.Show
-		AppOverlay.Resize(Root.Width, Root.Height)
-		AppLoader.Resize(Root.Width, Root.Height)
+		AppLoader.Show(Root.Parent)
 		Sleep(500)
 		Sleep(0)
 		B4XPages.ShowPage(PageId)
-		AppOverlay.Open
-		AppLoader.Show
+		AppLoader.Show(Root.Parent)
 		Sleep(0)
 	Catch
 		Log("ERROR: ShowPageWithLoader crashed for page '" & PageId & "': " & LastException.Message)
@@ -315,12 +390,187 @@ Public Sub ShowPageWithLoader(PageId As String)
 		jo.RunMethod("printStackTrace", Null)
 		#End If
 			ToastMessageShow("Error loading " & PageId & ": " & LastException.Message, True)
-			AppLoader.Hide
-			AppOverlay.Close
+			If AppLoader.IsInitialized Then AppLoader.Hide
 	End Try
 End Sub
 
+'/**
+'* Closes the given page (removing it from the B4XPages navigation stack via
+'* B4XPages.ClosePage) while showing the transition loader, then lets the
+'* B4XPages manager reveal the previous page. Use this from a page's
+'* navbar_Back instead of ShowPageWithLoader so back navigation actually pops
+'* the page from mStackOfPageIds and the page collection does not keep growing.
+'*/
+Public Sub ClosePageWithLoader(Page As Object)
+	Try
+		AppLoader.Show(Root.Parent)
+		Sleep(500)
+		Sleep(0)
+		B4XPages.ClosePage(Page)
+		AppLoader.Show(Root.Parent)
+		Sleep(0)
+	Catch
+		Log("ERROR: ClosePageWithLoader crashed: " & LastException.Message)
+		#If B4A
+		Dim jo As JavaObject = LastException
+		jo.RunMethod("printStackTrace", Null)
+		#End If
+			ToastMessageShow("Error closing page: " & LastException.Message, True)
+			If AppLoader.IsInitialized Then AppLoader.Hide
+	End Try
+End Sub
+
+Sub PagePause
+	If AppLoader.IsInitialized Then AppLoader.Show(Root.Parent)
+End Sub
+
+Sub PageResume
+	If AppLoader.IsInitialized Then AppLoader.Hide
+End Sub
+
 Private Sub Page_Ready
-	AppLoader.Hide
-	AppOverlay.Close
+	If AppLoader.IsInitialized Then AppLoader.Hide
+End Sub
+
+' Displays a simple status/information Sweet Alert.
+Public Sub ShowAlert(Title As String, Text As String, Icon As String, AllowOutside As Boolean) As ResumableSub
+	Dim TopPage As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If TopPage <> Null And TopPage.Root.IsInitialized Then
+		SweetAlert.Parent = TopPage.Root
+	Else If Root.Parent.IsInitialized Then
+		SweetAlert.Parent = Root.Parent
+	Else
+		SweetAlert.Parent = Root
+	End If
+	SweetAlert.Title = Title
+	SweetAlert.Text = Text
+	SweetAlert.Icon = Icon
+	SweetAlert.AllowOutsideClick = AllowOutside
+	SweetAlert.ShowConfirmButton = True
+	SweetAlert.ConfirmButtonText = "OK"
+	SweetAlert.ShowCancelButton = False
+	SweetAlert.ShowDenyButton = False
+	SweetAlert.TimerMs = 0
+	Wait For (SweetAlert.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
+	Return Result
+End Sub
+
+' Displays a confirmation Sweet Alert with backdrop clicks disabled (AllowOutsideClick = False).
+' Returns an integer matching xui.DialogResponse_Positive (-1), xui.DialogResponse_Cancel (-2) or xui.DialogResponse_Negative (-3).
+Public Sub ShowConfirm(Title As String, Text As String, ConfirmText As String, CancelText As String) As ResumableSub
+	Dim TopPage As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If TopPage <> Null And TopPage.Root.IsInitialized Then
+		SweetAlert.Parent = TopPage.Root
+	Else If Root.Parent.IsInitialized Then
+		SweetAlert.Parent = Root.Parent
+	Else
+		SweetAlert.Parent = Root
+	End If
+	SweetAlert.Title = Title
+	SweetAlert.Text = Text
+	SweetAlert.Icon = "question"
+	SweetAlert.AllowOutsideClick = False
+	SweetAlert.ShowConfirmButton = True
+	SweetAlert.ConfirmButtonText = ConfirmText
+	SweetAlert.ShowCancelButton = True
+	SweetAlert.CancelButtonText = CancelText
+	SweetAlert.ShowDenyButton = False
+	SweetAlert.TimerMs = 0
+	Wait For (SweetAlert.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
+	Return Result
+End Sub
+
+' Displays a floating DaisyUI alert notification on the active page.
+' Position supports: "top-right", "top-left", "top-center", "bottom-left", "bottom-right", "middle-center" (default "top-right").
+' The alert automatically dismisses after DurationMs. If DurationMs is 0, it stays until tapped.
+Public Sub ShowAlertNotification(Title As String, Text As String, AlertVariant As String, DurationMs As Int, Position As String) As B4XDaisyAlert
+	If ActiveAlert <> Null Then
+		Try
+			ActiveAlert.RemoveViewFromParent
+		Catch
+			Log("B4XMainPage.ShowAlertNotification: " & LastException.Message)
+		End Try
+		ActiveAlert = Null
+	End If
+
+	Dim TopPage As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If TopPage = Null Or TopPage.Root.IsInitialized = False Then Return Null
+
+	Dim alert As B4XDaisyAlert
+	alert.Initialize(Me, "GlobalAlert")
+	alert.SetTitle(Title)
+	alert.SetText(Text)
+	alert.SetVariant(AlertVariant)
+	alert.SetStyle("solid")
+	alert.SetIconVisible(True)
+	alert.SetIconSize("6")
+	alert.SetShadow("md")
+	alert.SetRoundedBox(True)
+	alert.Tag = alert
+	
+	Dim alertWidth As Int
+	Dim alertLeft As Int
+	Dim alertTop As Int = 16dip
+	
+	Dim pos As String = Position.ToLowerCase
+	If pos = "" Then pos = "top-right"
+	
+	Select Case pos
+		Case "top-right", "bottom-right"
+			alertWidth = Min(320dip, TopPage.Root.Width - 32dip)
+			alertLeft = TopPage.Root.Width - alertWidth - 16dip
+		Case "top-left", "bottom-left"
+			alertWidth = Min(320dip, TopPage.Root.Width - 32dip)
+			alertLeft = 16dip
+		Case "middle-center"
+			alertWidth = Min(320dip, TopPage.Root.Width - 32dip)
+			alertLeft = (TopPage.Root.Width - alertWidth) / 2
+		Case Else '"top-center" or any other value
+			alertWidth = TopPage.Root.Width - 32dip
+			alertLeft = 16dip
+	End Select
+	
+	alert.AddToParent(TopPage.Root, alertLeft, alertTop, alertWidth, 0)
+	
+	Dim alertHeight As Int = alert.GetComputedHeight
+	Select Case pos
+		Case "bottom-right", "bottom-left"
+			alertTop = TopPage.Root.Height - alertHeight - 16dip
+			alert.setTop(alertTop)
+		Case "middle-center"
+			alertTop = (TopPage.Root.Height - alertHeight) / 2
+			alert.setTop(alertTop)
+	End Select
+	
+	alert.BringToFront
+	
+	ActiveAlert = alert
+	
+	If DurationMs > 0 Then
+		DismissAlertAfterDelay(alert, DurationMs)
+	End If
+	
+	Return alert
+End Sub
+
+Private Sub DismissAlertAfterDelay(Alert1 As B4XDaisyAlert, DelayMs As Int)
+	Sleep(DelayMs)
+	Try
+		If Alert1 = ActiveAlert Then
+			Alert1.RemoveViewFromParent
+			ActiveAlert = Null
+		End If
+	Catch
+		Log("Failed to dismiss alert: " & LastException.Message)
+	End Try
+End Sub
+
+Private Sub GlobalAlert_Click(Tag As Object)
+	Dim alert As B4XDaisyAlert = Tag
+	Try
+		alert.RemoveViewFromParent
+		If ActiveAlert = alert Then ActiveAlert = Null
+	Catch
+		Log("Failed to dismiss alert on click: " & LastException.Message)
+	End Try
 End Sub

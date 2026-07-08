@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -25,7 +26,6 @@ End Sub
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = xui.Color_RGB(246, 248, 251)
-    B4XPages.SetTitle(Me, "Fab Basic")
 
     BuildPage
     LayoutPage(Root.Width, Root.Height)

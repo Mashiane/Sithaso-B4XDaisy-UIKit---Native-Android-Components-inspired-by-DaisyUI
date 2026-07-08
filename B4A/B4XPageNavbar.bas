@@ -4,7 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings:12
+#IgnoreWarnings:12,9
 Sub Class_Globals
 	Private xui As XUI
 	Private Root As B4XView
@@ -252,7 +252,7 @@ Private Sub AddNavbarComplex
 	ind.Variant = "success"
 	ind.HorizontalPlacement = "start"
 	ind.VerticalPlacement = "top"
-	ind.AttachToTarget(av.mBase)
+	ind.AttachToTarget(av.getView)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -284,7 +284,7 @@ Private Sub AddNavbarInteractive
 	bellIndicator.setRounded("rounded-full")
 	bellIndicator.Variant = "primary"
 	bellIndicator.HorizontalPlacement = "start"
-	bellIndicator.AttachToTarget(bell.mBase)
+	bellIndicator.AttachToTarget(bell.getView)
 	
 	currentY = currentY + 64dip + gap
 End Sub

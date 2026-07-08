@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -29,7 +30,6 @@ End Sub
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
     Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(245, 247, 250))
-    B4XPages.SetTitle(Me, "Steps")
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -55,14 +55,17 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     ' =========================================================
     ''' <summary>
-    ''' Example 1: Basic horizontal steps (step-primary for completed steps).
-    ''' Mirrors the first DaisyUI docs example.
+    ''' Example 1: Basic horizontal steps (step-primary for completed steps) with ConnectOnClick.
+    ''' Mirrors the first DaisyUI docs example. ConnectOnClick=True lets a tap fill the
+    ''' connector line and circles up to and including the tapped step.
     ''' </summary>
-    y = AddSectionTitle(contentLeft, y, maxW, "1. Horizontal steps")
-    y = AddDescription(contentLeft, y, maxW, "Completed steps use step-primary; pending steps use the default base color.")
+    y = AddSectionTitle(contentLeft, y, maxW, "1. Horizontal steps (connect on click)")
+    y = AddDescription(contentLeft, y, maxW, "Completed steps use step-primary; pending steps use the default base color. ConnectOnClick is enabled � tap any step to fill the connector line and circles up to and including that step.")
 
     Dim ex1 As B4XDaisySteps
     ex1.Initialize(Me, "steps")
+    ex1.setConnectOnClick(True)
+    ex1.setActiveColor("primary")
     ex1.AddStep("Register", "primary")
     ex1.AddStep("Choose plan", "primary")
     ex1.AddStep("Purchase", "")
@@ -77,7 +80,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ''' Mirrors the steps-vertical DaisyUI docs example.
     ''' </summary>
     y = AddSectionTitle(contentLeft, y, maxW, "2. Vertical steps")
-    y = AddDescription(contentLeft, y, maxW, "Same steps rendered vertically — connector bars become vertical lines.")
+    y = AddDescription(contentLeft, y, maxW, "Same steps rendered vertically � connector bars become vertical lines.")
 
     Dim ex2 As B4XDaisySteps
     ex2.Initialize(Me, "steps")
@@ -141,9 +144,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     Dim ex5icons As B4XDaisySteps
     ex5icons.Initialize(Me, "steps")
-    ex5icons.AddStepWithIcon("Step 1", "neutral", "😕")
-    ex5icons.AddStepWithIcon("Step 2", "neutral", "😃")
-    ex5icons.AddStepWithIcon("Step 3", "", "😍")
+    ex5icons.AddStepWithIcon("Step 1", "neutral", "??")
+    ex5icons.AddStepWithIcon("Step 2", "neutral", "??")
+    ex5icons.AddStepWithIcon("Step 3", "", "??")
     Dim ex5iconsH As Int = ex5icons.GetComputedHeight
     ex5icons.AddToParent(pnlHost, contentLeft, y, maxW, ex5iconsH)
     y = y + ex5iconsH + 20dip
@@ -161,25 +164,25 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex6markers.setScrollable(True)
     ex6markers.AddStepWithContent("Step 1", "neutral", "?")
     ex6markers.AddStepWithContent("Step 2", "neutral", "!")
-    ex6markers.AddStepWithContent("Step 3", "neutral", "✓")
-    ex6markers.AddStepWithContent("Step 4", "neutral", "✕")
-    ex6markers.AddStepWithContent("Step 5", "neutral", "★")
+    ex6markers.AddStepWithContent("Step 3", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 4", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 5", "neutral", "?")
     ex6markers.AddStepWithContent("Step 6", "neutral", "")
-    ex6markers.AddStepWithContent("Step 7", "neutral", "●")
-    ex6markers.AddStepWithContent("Step 8", "neutral", "◆")
-    ex6markers.AddStepWithContent("Step 9", "neutral", "▲")
-    ex6markers.AddStepWithContent("Step 10", "neutral", "●")
-    ex6markers.AddStepWithContent("Step 11", "neutral", "■")
-    ex6markers.AddStepWithContent("Step 12", "neutral", "★")
-    ex6markers.AddStepWithContent("Step 13", "neutral", "◎")
-    ex6markers.AddStepWithContent("Step 14", "neutral", "✿")
+    ex6markers.AddStepWithContent("Step 7", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 8", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 9", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 10", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 11", "neutral", "�")
+    ex6markers.AddStepWithContent("Step 12", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 13", "neutral", "?")
+    ex6markers.AddStepWithContent("Step 14", "neutral", "?")
     Dim ex6markersH As Int = ex6markers.GetComputedHeight
     ex6markers.AddToParent(pnlHost, contentLeft, y, maxW, ex6markersH)
     y = y + ex6markersH + 20dip
 
     ' =========================================================
     ''' <summary>
-    ''' Example 7: Mixed variants — info + error step with custom content.
+    ''' Example 7: Mixed variants � info + error step with custom content.
     ''' Mirrors the mixed-variant DaisyUI docs example (moon mission).
     ''' </summary>
     y = AddSectionTitle(contentLeft, y, maxW, "7. Mixed variants")
@@ -270,7 +273,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ''' Demonstrates the AddStepWithSvgIcon API using 5 SVG files from the Files folder.
     ''' </summary>
     y = AddSectionTitle(contentLeft, y, maxW, "10. SVG icons in step circles")
-    y = AddDescription(contentLeft, y, maxW, "SVG icons from the Files folder rendered inside step circles — tinted by step state.")
+    y = AddDescription(contentLeft, y, maxW, "SVG icons from the Files folder rendered inside step circles � tinted by step state.")
 
     Dim ex10svg As B4XDaisySteps
     ex10svg.Initialize(Me, "steps")
@@ -306,11 +309,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     ' =========================================================
     ''' <summary>
-    ''' Example 12: Horizontal scrollable steps — many steps in a fixed-width container.
+    ''' Example 12: Horizontal scrollable steps � many steps in a fixed-width container.
     ''' Demonstrates the internal HorizontalScrollView when Scrollable=True (default).
     ''' </summary>
     y = AddSectionTitle(contentLeft, y, maxW, "12. Horizontal scrollable (many steps)")
-    y = AddDescription(contentLeft, y, maxW, "24 steps in a fixed-height horizontal container — scroll to see all steps.")
+    y = AddDescription(contentLeft, y, maxW, "24 steps in a fixed-height horizontal container � scroll to see all steps.")
 
     Dim ex12hscroll As B4XDaisySteps
     ex12hscroll.Initialize(Me, "steps")
@@ -334,11 +337,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     ' =========================================================
     ''' <summary>
-    ''' Example 13: Vertical scrollable steps — many steps in a fixed-height container.
+    ''' Example 13: Vertical scrollable steps � many steps in a fixed-height container.
     ''' Demonstrates the internal ScrollView when Scrollable=True with vertical orientation.
     ''' </summary>
     y = AddSectionTitle(contentLeft, y, maxW, "13. Vertical scrollable (many steps)")
-    y = AddDescription(contentLeft, y, maxW, "20 steps in a 300dip tall vertical container — scroll to see all steps.")
+    y = AddDescription(contentLeft, y, maxW, "20 steps in a 300dip tall vertical container � scroll to see all steps.")
 
     Dim ex13vscroll As B4XDaisySteps
     ex13vscroll.Initialize(Me, "stepsVScroll")
@@ -362,6 +365,54 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim vscrollH As Int = 300dip
     ex13vscroll.AddToParent(pnlHost, contentLeft, y, maxW, vscrollH)
     y = y + vscrollH + 20dip
+
+    ' =========================================================
+    ''' <summary>
+    ''' Example 14: Custom step gap (StepGap property).
+    ''' Demonstrates widening the space between steps. The default gap is 0,
+    ''' which keeps steps at the minimum 64dip column width (horizontal) / 64dip
+    ''' row height (vertical). Here StepGap=48 adds extra room between consecutive
+    ''' circles and connector bars. Scrollable=True so it fits any screen width.
+    ''' </summary>
+    y = AddSectionTitle(contentLeft, y, maxW, "14. Step gap (custom spacing)")
+    y = AddDescription(contentLeft, y, maxW, "StepGap adds extra dip between steps. Default is 0 (64dip step columns). Here StepGap=48 widens each step column to 112dip so circles sit further apart.")
+
+    Dim ex14gap As B4XDaisySteps
+    ex14gap.Initialize(Me, "steps")
+    ex14gap.setConnectOnClick(True)
+    ex14gap.setActiveColor("primary")
+    ex14gap.setScrollable(True)
+    ex14gap.setStepGap(48dip)
+    ex14gap.AddStep("Register", "primary")
+    ex14gap.AddStep("Choose plan", "primary")
+    ex14gap.AddStep("Purchase", "")
+    ex14gap.AddStep("Receive", "")
+    Dim ex14gapH As Int = ex14gap.GetComputedHeight
+    ex14gap.AddToParent(pnlHost, contentLeft, y, maxW, ex14gapH)
+    y = y + ex14gapH + 20dip
+
+    ' =========================================================
+    ''' <summary>
+    ''' Example 15: Custom step gap (vertical orientation).
+    ''' Same StepGap value applied to a vertical steps list to show the gap
+    ''' works in both orientations ? step rows grow taller, connector bars lengthen.
+    ''' </summary>
+    y = AddSectionTitle(contentLeft, y, maxW, "15. Step gap (vertical)")
+    y = AddDescription(contentLeft, y, maxW, "Vertical orientation with StepGap=40. Each step row grows from 64dip to 104dip, lengthening the vertical connector bars between circles.")
+
+    Dim ex15vgap As B4XDaisySteps
+    ex15vgap.Initialize(Me, "stepsVGap")
+    ex15vgap.setOrientation("vertical")
+    ex15vgap.setActiveColor("secondary")
+    ex15vgap.setActiveStep(1)
+    ex15vgap.setStepGap(40dip)
+    ex15vgap.AddStep("Register", "secondary")
+    ex15vgap.AddStep("Choose plan", "secondary")
+    ex15vgap.AddStep("Purchase", "")
+    ex15vgap.AddStep("Receive Product", "")
+    Dim ex15vgapH As Int = ex15vgap.GetComputedHeight
+    ex15vgap.AddToParent(pnlHost, contentLeft, y, maxW, ex15vgapH)
+    y = y + ex15vgapH + 20dip
 
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
@@ -429,6 +480,12 @@ End Sub
 Private Sub stepsVScroll_StepClick(Index As Int, Tag As Object)
     #If B4A
     ToastMessageShow("VScroll Step " & (Index + 1) & " clicked", False)
+    #End If
+End Sub
+
+Private Sub stepsVGap_StepClick(Index As Int, Tag As Object)
+    #If B4A
+    ToastMessageShow("VGap Step " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 #End Region

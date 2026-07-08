@@ -4,7 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings: 12
+#IgnoreWarnings:12,9
 #Region Variables
 Sub Class_Globals
 	Private Root As B4XView
@@ -31,8 +31,6 @@ End Sub
 ''' </summary>
 Private Sub B4XPage_Created(Root1 As B4XView)
 	Root = Root1
-	Root.Color = xui.Color_RGB(245, 247, 250)
-	B4XPages.SetTitle(Me, "Toggle Group")
 
 	svHost.Initialize(Max(1dip, Root.Height))
 	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -133,6 +131,84 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	g4.Items = CreateMap("terms": "Accept terms", "policy": "Accept privacy policy")
 	y = y + g4.GetComputedHeight + 16dip
 
+	''' <summary>
+	''' Example 5: Label Above & Required Variations
+	''' Demonstrates toggle groups with LabelAbove set to True, showing variations of required (with red star) and not required.
+	''' </summary>
+	y = AddSectionTitle("5. Label Above (Required & Not Required)", y, maxW)
+	
+	Dim g5a As B4XDaisyToggleGroup
+	g5a.Initialize(Me, "group5a")
+	g5a.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+	g5a.Legend = "Required: Enable Notification Channels"
+	g5a.LabelAbove = True
+	g5a.Required = True
+	g5a.Items = CreateMap("email": "Email alerts", "sms": "SMS alerts", "push": "Push alerts")
+	y = y + g5a.GetComputedHeight + 12dip
+
+	Dim g5b As B4XDaisyToggleGroup
+	g5b.Initialize(Me, "group5b")
+	g5b.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+	g5b.Legend = "Not Required: Optional integrations"
+	g5b.LabelAbove = True
+	g5b.Required = False
+	g5b.Items = CreateMap("slack": "Slack", "discord": "Discord")
+	y = y + g5b.GetComputedHeight + 16dip
+
+	''' <summary>
+	''' Example 6: Input Border by Variant
+	''' Demonstrates InputBorder=True combined with each Variant so the fieldset border
+	''' picks up the variant color (mirrors B4XDaisyFieldset variant border behavior).
+	''' </summary>
+	y = AddSectionTitle("6. Input Border by Variant", y, maxW)
+	Dim ibVariants() As String = Array As String("neutral", "primary", "secondary", "accent", "info", "success", "warning", "error")
+	For Each vname As String In ibVariants
+		Dim gIB As B4XDaisyToggleGroup
+		gIB.Initialize(Me, "groupib")
+		gIB.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+		gIB.Legend = "InputBorder: " & vname
+		gIB.Variant = vname
+		gIB.InputBorder = True
+		gIB.ToggleColor = vname
+		gIB.Items = CreateMap("a": "Option A", "b": "Option B")
+		y = y + gIB.GetComputedHeight + 10dip
+	Next
+	''' <summary>
+	''' Example 7: Empty Legend
+	''' Demonstrates a group with Legend = "" (no caption). Classic style now sits
+	''' flush to the top (no wasted legend strip); LabelAbove style is a label-less box.
+	''' </summary>
+	y = AddSectionTitle("7. Empty Legend", y, maxW)
+
+	Dim g7a As B4XDaisyToggleGroup
+	g7a.Initialize(Me, "group7a")
+	g7a.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+	g7a.Legend = ""
+	g7a.Items = CreateMap("a": "Option A", "b": "Option B")
+	y = y + g7a.GetComputedHeight + 12dip
+
+	Dim g7b As B4XDaisyToggleGroup
+	g7b.Initialize(Me, "group7b")
+	g7b.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+	g7b.Legend = ""
+	g7b.LabelAbove = True
+	g7b.Items = CreateMap("x": "Option X", "y": "Option Y")
+	y = y + g7b.GetComputedHeight + 16dip
+
+	''' <summary>
+	''' Example 8: Bold Legend
+	''' Demonstrates LegendBold = True so the legend caption renders in bold.
+	''' </summary>
+	y = AddSectionTitle("8. Bold Legend", y, maxW)
+
+	Dim g8 As B4XDaisyToggleGroup
+	g8.Initialize(Me, "group8")
+	g8.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+	g8.Legend = "Bold legend caption"
+	g8.LegendBold = True
+	g8.Items = CreateMap("a": "Option A", "b": "Option B")
+	y = y + g8.GetComputedHeight + 16dip
+
 	pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
@@ -168,7 +244,6 @@ Private Sub group1_ItemChanged(Id As String, Text As String, Checked As Boolean)
 End Sub
 
 Private Sub group1_Changed(SelectedIds As List)
-	Log("Group 1 Selection Changed: " & SelectedIds)
 End Sub
 
 Private Sub group2_ItemChanged(Id As String, Text As String, Checked As Boolean)
@@ -176,7 +251,6 @@ Private Sub group2_ItemChanged(Id As String, Text As String, Checked As Boolean)
 End Sub
 
 Private Sub group2_Changed(SelectedIds As List)
-	Log("Group 2 Selection Changed: " & SelectedIds)
 End Sub
 
 Private Sub group3xs_ItemChanged(Id As String, Text As String, Checked As Boolean)
@@ -189,5 +263,13 @@ End Sub
 
 Private Sub group4_ItemChanged(Id As String, Text As String, Checked As Boolean)
 	lblLog.Text = "Group 4 Item Changed: " & Id & " (" & Text & ") = " & Checked
+End Sub
+
+Private Sub group5a_ItemChanged(Id As String, Text As String, Checked As Boolean)
+	lblLog.Text = "Group 5a (Required) Item Changed: " & Id & " (" & Text & ") = " & Checked
+End Sub
+
+Private Sub group5b_ItemChanged(Id As String, Text As String, Checked As Boolean)
+	lblLog.Text = "Group 5b (Not Required) Item Changed: " & Id & " (" & Text & ") = " & Checked
 End Sub
 #End Region

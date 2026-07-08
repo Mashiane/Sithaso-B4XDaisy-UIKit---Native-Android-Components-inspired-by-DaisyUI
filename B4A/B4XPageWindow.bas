@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=1
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 Sub Class_Globals
 	Private xui As XUI

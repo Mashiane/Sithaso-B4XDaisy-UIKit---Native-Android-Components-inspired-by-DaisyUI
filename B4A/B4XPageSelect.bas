@@ -4,6 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
+#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -32,8 +33,6 @@ End Sub
 ''' </summary>
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
-    Root.Color = xui.Color_RGB(245, 247, 250)
-    B4XPages.SetTitle(Me, "Select")
 
     Try
         svHost.Initialize(1dip)
@@ -53,7 +52,7 @@ End Sub
 ''' Renders all DaisyUI Select examples with full variant, size, and state coverage.
 ''' Follows DaisyUI docs parity: base, ghost, 8 color variants, 3 sizes, disabled,
 ''' programmatic selection, label-above, hint-text.
-''' Each example follows: Initialize → AddToParent → idiomatic property assignments.
+''' Each example follows: Initialize ? AddToParent ? idiomatic property assignments.
 ''' All examples include LabelAbove for consistency.
 ''' </summary>
 Private Sub RenderExamples(Width As Int, Height As Int)
@@ -63,10 +62,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim y As Int = PAGE_PAD
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 1: Base / Default select (DaisyUI Example 1)
     ' Demonstrates: default select with no variant
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Base (Default)", y, maxW)
     Dim c1 As B4XDaisySelect
     c1.Initialize(Me, "sel1")
@@ -77,10 +76,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c1.Tag = "base"
     y = y + c1.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 2: Ghost style select (DaisyUI Example 2)
     ' Demonstrates: transparent background, border hidden until focus
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Ghost", y, maxW)
     Dim c2 As B4XDaisySelect
     c2.Initialize(Me, "sel2")
@@ -92,10 +91,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c2.Tag = "ghost"
     y = y + c2.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 3: Primary color (DaisyUI Example 4)
     ' Demonstrates: primary color variant border
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Primary", y, maxW)
     Dim c3 As B4XDaisySelect
     c3.Initialize(Me, "sel3")
@@ -107,9 +106,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c3.Tag = "primary"
     y = y + c3.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 4: Secondary color (DaisyUI Example 5)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Secondary", y, maxW)
     Dim c4 As B4XDaisySelect
     c4.Initialize(Me, "sel4")
@@ -121,9 +120,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c4.Tag = "secondary"
     y = y + c4.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 5: Accent color (DaisyUI Example 6)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Accent", y, maxW)
     Dim c5 As B4XDaisySelect
     c5.Initialize(Me, "sel5")
@@ -135,9 +134,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c5.Tag = "accent"
     y = y + c5.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 6: Neutral color (DaisyUI Example 7)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Neutral", y, maxW)
     Dim c6 As B4XDaisySelect
     c6.Initialize(Me, "sel6")
@@ -149,9 +148,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c6.Tag = "neutral"
     y = y + c6.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 7: Info color (DaisyUI Example 8)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Info", y, maxW)
     Dim c7 As B4XDaisySelect
     c7.Initialize(Me, "sel7")
@@ -163,9 +162,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c7.Tag = "info"
     y = y + c7.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 8: Success color (DaisyUI Example 9)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Success", y, maxW)
     Dim c8 As B4XDaisySelect
     c8.Initialize(Me, "sel8")
@@ -177,9 +176,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c8.Tag = "success"
     y = y + c8.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 9: Warning color (DaisyUI Example 10)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Warning", y, maxW)
     Dim c9 As B4XDaisySelect
     c9.Initialize(Me, "sel9")
@@ -191,9 +190,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c9.Tag = "warning"
     y = y + c9.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 10: Error color (DaisyUI Example 11)
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Error", y, maxW)
     Dim c10 As B4XDaisySelect
     c10.Initialize(Me, "sel10")
@@ -205,11 +204,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c10.Tag = "error"
     y = y + c10.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
-    ' Example 11: Sizes — md(40), lg(48), xl(56)
+    ' -------------------------------------------------------
+    ' Example 11: Sizes � md(40), lg(48), xl(56)
     ' Demonstrates: DaisyUI size token heights (--size-field * N)
     ' DaisyUI Example 12
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Sizes", y, maxW)
 
     ' md: --size-field * 10 = 40dip (default)
@@ -245,10 +244,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     cXL.Tag = "size-xl"
     y = y + cXL.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 12: Disabled (DaisyUI Example 13)
     ' Demonstrates: muted bg, muted text, no interaction
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Disabled", y, maxW)
     Dim c12 As B4XDaisySelect
     c12.Initialize(Me, "sel12")
@@ -260,10 +259,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c12.Tag = "disabled"
     y = y + c12.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 13: Programmatic selection
     ' Demonstrates: SelectedIndex = 2 pre-selects "Gamma" before any user interaction
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Programmatic Selection", y, maxW)
     Dim c13 As B4XDaisySelect
     c13.Initialize(Me, "sel13")
@@ -275,10 +274,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c13.Tag = "programmatic"
     y = y + c13.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 14: Label Above + Variant
     ' Demonstrates: optional label above the trigger with primary variant
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Label Above + Primary", y, maxW)
     Dim c14 As B4XDaisySelect
     c14.Initialize(Me, "sel14")
@@ -290,10 +289,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c14.Tag = "label-above"
     y = y + c14.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 15: Hint Text below
     ' Demonstrates: helper text rendered below the trigger
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Label Above + Hint Text", y, maxW)
     Dim c15 As B4XDaisySelect
     c15.Initialize(Me, "sel15")
@@ -305,10 +304,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c15.Tag = "hint-text"
     y = y + c15.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     ' Example 16: Value/Text pairs (HTML select pattern)
     ' Demonstrates: AddItem(value, text) with distinct keys vs display labels
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
     y = AddSectionTitle("Value / Text Pairs", y, maxW)
     Dim c16 As B4XDaisySelect
     c16.Initialize(Me, "sel16")
@@ -324,10 +323,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c16.Tag = "value-text"
     y = y + c16.GetComputedHeight + 16dip
 
-    ' ═══════════════════════════════════════════════════════
-    ' Example 17: Long list (scrolling test)
-    ' Demonstrates: 50+ items to verify ScrollView and MaxDropdownRows
-    ' ═══════════════════════════════════════════════════════
+    ' -------------------------------------------------------
+    ' Example 17: Long list (scrolling test) + ActiveColor
+    ' Demonstrates: 50 items to verify ScrollView and MaxDropdownRows,
+    ' with the selected dropdown row highlighted in the primary variant.
+    ' -------------------------------------------------------
     y = AddSectionTitle("Scrolling (50 items)", y, maxW)
     Dim c17 As B4XDaisySelect
     c17.Initialize(Me, "sel17")
@@ -341,8 +341,44 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c17.Placeholder = "Scroll through items"
     c17.LabelAbove = "Long List"
     c17.MaxDropdownRows = 6
+    c17.ActiveColor = "primary"
+    c17.SelectedIndex = 2
     c17.Tag = "scroll-test"
     y = y + c17.GetComputedHeight + 16dip
+
+    ' ---------------------------------------------------------
+    ' Example 18: ActiveColor - selected item highlight variant
+    ' Demonstrates: a neutral-bordered select whose selected dropdown item
+    ' uses the primary variant for its background + content color.
+    ' Open the dropdown to see the pre-selected item highlighted in primary.
+    ' ---------------------------------------------------------
+    y = AddSectionTitle("ActiveColor (selected highlight)", y, maxW)
+    Dim c18 As B4XDaisySelect
+    c18.Initialize(Me, "sel18")
+    c18.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+    c18.Items = CreateMap("alpha": "Alpha", "beta": "Beta", "gamma": "Gamma", "delta": "Delta")
+    c18.Placeholder = "Pick a letter"
+    c18.LabelAbove = "Greek Letter"
+    c18.Variant = "neutral"
+    c18.ActiveColor = "primary"
+    c18.SelectedIndex = 2
+    c18.Tag = "active-color"
+    y = y + c18.GetComputedHeight + 16dip
+
+    ' --------------------------------------------------------
+    ' Example 19: Required select (red star on label)
+    ' Demonstrates: Required = True shows a red star next to LabelAbove.
+    ' --------------------------------------------------------
+    y = AddSectionTitle("Required", y, maxW)
+    Dim c19 As B4XDaisySelect
+    c19.Initialize(Me, "sel19")
+    c19.AddToParent(pnlHost, PAGE_PAD, y, maxW, 0)
+    c19.Items = CreateMap("mobile": "Mobile", "home": "Home", "work": "Work")
+    c19.Placeholder = "Select a phone type"
+    c19.LabelAbove = "Phone type"
+    c19.Required = True
+    c19.Tag = "required"
+    y = y + c19.GetComputedHeight + 16dip
 
     mContentHeight = Max(Height, y + PAGE_PAD)
     pnlHost.Height = mContentHeight
