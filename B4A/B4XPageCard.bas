@@ -309,7 +309,11 @@ Private Sub SetBodyTextColor(Card As B4XDaisyCard, ColorValue As Int)
 	If body.IsInitialized = False Then Return
 	For i = 0 To body.NumberOfViews - 1
 		Dim v As B4XView = body.GetView(i)
-		If v Is Label Then v.TextColor = ColorValue
+		Try
+			If v Is Label Then v.TextColor = ColorValue
+		Catch
+			' Not a Label — skip
+		End Try
 	Next
 End Sub
 

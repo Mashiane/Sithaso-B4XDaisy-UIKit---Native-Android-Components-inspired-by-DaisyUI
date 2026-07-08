@@ -91,11 +91,11 @@ File89=login-email.svg
 File90=login-facebook.svg
 File91=login-github.svg
 File92=login-google.svg
-File93=arrow-up-solid.svg
-File94=login-kakao.svg
-File95=login-line.svg
-File96=login-linkedin.svg
-File97=login-metamask.svg
+File93=login-kakao.svg
+File94=login-line.svg
+File95=login-linkedin.svg
+File96=login-metamask.svg
+File97=arrow-up-solid.svg
 File98=login-microsoft.svg
 File99=login-slack.svg
 File100=login-vk.svg
@@ -119,11 +119,11 @@ File117=photo-1414694762283-acccc27bca85.webp
 File118=photo-1494232410401-ad00d5433cfa.webp
 File119=photo-1494253109108-2e30c049369b.webp
 File120=photo-1507358522600-9f71e620c44e.webp
-File121=badge.webp
-File122=photo-1550258987-190a2d41a8ba.webp
-File123=photo-1559181567-c3190ca9959b.webp
-File124=photo-1559703248-dcaaec9fab78.webp
-File125=photo-1560717789-0ac7c58ac90a.webp
+File121=photo-1550258987-190a2d41a8ba.webp
+File122=photo-1559181567-c3190ca9959b.webp
+File123=photo-1559703248-dcaaec9fab78.webp
+File124=photo-1560717789-0ac7c58ac90a.webp
+File125=badge.webp
 File126=photo-1560717789-0ac7c58ac90a-blur.webp
 File127=photo-1565098772267-60af42b81ef2.webp
 File128=photo-1572635148818-ef6fd45eb394.webp
@@ -476,8 +476,8 @@ Version=13.5
 @EndOfDesignText@
 #Region  Project Attributes
 	#ApplicationLabel: B4XDaisy UIKit
-	#VersionCode: 1
-	#VersionName: 0.40
+	#VersionCode: 70
+	#VersionName: 0.70
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: True

@@ -377,12 +377,19 @@ End Sub
 
 Public Sub ShowPageWithLoader(PageId As String)
 	Try
+		Dim pInStack As Boolean = PageInStack(PageId)
+		If pInStack Then
+			Log($"Page Already In Stack: ${PageId}"$)
+		End If
 		AppLoader.Show(Root.Parent)
 		Sleep(500)
 		Sleep(0)
 		B4XPages.ShowPage(PageId)
 		AppLoader.Show(Root.Parent)
 		Sleep(0)
+		'how many stacked pages are there
+		Dim iStacked As Int = CountStackedPages
+		Log($"Stacked Pages Count: ${iStacked}"$)
 	Catch
 		Log("ERROR: ShowPageWithLoader crashed for page '" & PageId & "': " & LastException.Message)
 		#If B4A
@@ -573,4 +580,16 @@ Private Sub GlobalAlert_Click(Tag As Object)
 	Catch
 		Log("Failed to dismiss alert on click: " & LastException.Message)
 	End Try
+End Sub
+
+Sub CountStackedPages As Int
+	Return B4XPages.GetManager.mStackOfPageIds.Size 
+End Sub
+
+Sub PageInStack(pageID As String) As Boolean
+	Dim idxPOs As Int = B4XPages.GetManager.mStackOfPageIds.AsList.IndexOf(pageID)
+	If idxPOs = -1 Then
+		Return False 
+	End If
+	Return True
 End Sub
