@@ -214,7 +214,7 @@ End Sub
 
 Private Sub crumbs_ItemClick(ItemId As String)
     #If B4A
-    ToastMessageShow("Breadcrumb " & ItemId, False)
+    B4XPages.MainPage.ShowToast("Breadcrumb " & ItemId, False)
     #End If
 End Sub
 #End Region

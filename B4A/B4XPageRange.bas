@@ -4,7 +4,6 @@ ModulesStructureVersion=1
 Type=Class
 Version=13.4
 @EndOfDesignText@
-#IgnoreWarnings:12,9
 
 #Region Variables
 Sub Class_Globals
@@ -30,6 +29,8 @@ End Sub
 ''' </summary>
 Private Sub B4XPage_Created(Root1 As B4XView)
 	Root = Root1
+	Root.Color = xui.Color_RGB(245, 247, 250)
+	B4XPages.SetTitle(Me, "Range")
 
 	svHost.Initialize(Max(1dip, Root.Height))
 	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -249,6 +250,214 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rRTL.Tag = "range-rtl"
 	y = y + 40dip
 
+	''' Example 18: Label Above
+	''' Demonstrates a caption rendered above the slider (LabelAbove + LabelVisible).
+	y = AddSectionTitle("Label Above", y, maxW)
+	Dim rLabel As B4XDaisyRange
+	rLabel.Initialize(Me, "rangeLabel")
+	rLabel.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rLabel.LabelAbove = "Volume"
+	rLabel.LabelVisible = True
+	rLabel.Value = 60
+	rLabel.Tag = "range-label-above"
+	y = y + rLabel.GetComputedHeight + 12dip
+
+	''' Example 19: Hint Text
+	''' Demonstrates helper text rendered below the slider.
+	y = AddSectionTitle("Hint Text", y, maxW)
+	Dim rHint As B4XDaisyRange
+	rHint.Initialize(Me, "rangeHint")
+	rHint.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rHint.LabelAbove = "Brightness"
+	rHint.LabelVisible = True
+	rHint.HintText = "Drag to adjust screen brightness."
+	rHint.Value = 75
+	rHint.Tag = "range-hint"
+	y = y + rHint.GetComputedHeight + 12dip
+
+	''' Example 20: Required (red star)
+	''' Demonstrates the Required flag rendering a red asterisk on the label.
+	y = AddSectionTitle("Required (red star)", y, maxW)
+	Dim rRequired As B4XDaisyRange
+	rRequired.Initialize(Me, "rangeRequired")
+	rRequired.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rRequired.LabelAbove = "Acceptance Level"
+	rRequired.LabelVisible = True
+	rRequired.Required = True
+	rRequired.MinValue = 0
+	rRequired.MaxValue = 100
+	rRequired.Value = 40
+	rRequired.HintText = "Value must be greater than the minimum."
+	rRequired.Tag = "range-required"
+	y = y + rRequired.GetComputedHeight + 12dip
+
+	''' Example 21: Validation For A Value
+	''' Required range starting at the minimum (invalid). Tap Validate to check;
+	''' the error text renders below in red. Dragging clears the transient error.
+	y = AddSectionTitle("Validation For A Value", y, maxW)
+	Dim rValid As B4XDaisyRange
+	rValid.Initialize(Me, "rangeValid")
+	rValid.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rValid.LabelAbove = "Quantity"
+	rValid.LabelVisible = True
+	rValid.Required = True
+	rValid.MinValue = 0
+	rValid.MaxValue = 100
+	rValid.Value = 0
+	rValid.HintText = "Select a quantity greater than 0, then tap Validate."
+	rValid.Tag = "range-valid"
+	y = y + rValid.GetComputedHeight + 8dip
+
+	Dim btnValidate As B4XDaisyButton
+	btnValidate.Initialize(Me, "btnValidateRange")
+	btnValidate.AddToParent(pnlHost, PAGE_PAD, y, maxW, 40dip)
+	btnValidate.Text = "Validate Quantity"
+	btnValidate.Tag = rValid
+	y = y + 48dip
+
+	''' Example 22: Prepend/Append Icons (Volume)
+	''' Demonstrates left/right SVG icons that step the value on tap, with a
+	''' transient tooltip that fades in on drag / icon tap and fades out after release.
+	y = AddSectionTitle("Icon Controls (tap icons to step)", y, maxW)
+	Dim rIconVol As B4XDaisyRange
+	rIconVol.Initialize(Me, "rangeIconVol")
+	rIconVol.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rIconVol.LabelAbove = "Volume"
+	rIconVol.LabelVisible = True
+	rIconVol.IconLeft = "volume-low-solid-full.svg"
+	rIconVol.IconRight = "volume-high-solid-full.svg"
+	rIconVol.MinValue = 0
+	rIconVol.MaxValue = 100
+	rIconVol.StepValue = 10
+	rIconVol.Value = 50
+	rIconVol.ShowValue = True
+	rIconVol.ValueSuffix = "%"
+	rIconVol.Variant = "primary"
+	rIconVol.ShowTooltip = True
+	rIconVol.TooltipOpen = False
+	rIconVol.Tag = "range-icon-volume"
+	y = y + rIconVol.GetComputedHeight + 12dip
+
+	''' Example 23: Permanent Tooltip
+	''' Demonstrates a tooltip that stays permanently visible above the thumb
+	''' (TooltipOpen = True). Useful for live-readout sliders.
+	y = AddSectionTitle("Permanent Tooltip (always visible)", y, maxW)
+	Dim rPermTip As B4XDaisyRange
+	rPermTip.Initialize(Me, "rangePermTip")
+	rPermTip.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rPermTip.MinValue = 0
+	rPermTip.MaxValue = 100
+	rPermTip.Value = 65
+	rPermTip.Variant = "secondary"
+	rPermTip.ShowTooltip = True
+	rPermTip.TooltipOpen = True
+	rPermTip.TooltipPosition = "top"
+	rPermTip.Tag = "range-perm-tooltip"
+	y = y + 40dip
+
+	''' Example 24: Icons + Tooltip + Chrome (Brightness)
+	''' Combines prepend/append icons, a transient tooltip, label above and hint
+	''' text below - the full composite range surface.
+	y = AddSectionTitle("Icons + Tooltip + Label + Hint", y, maxW)
+	Dim rBright As B4XDaisyRange
+	rBright.Initialize(Me, "rangeBright")
+	rBright.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rBright.LabelAbove = "Brightness"
+	rBright.LabelVisible = True
+	rBright.HintText = "Drag the slider or tap the moon/sun to adjust brightness."
+	rBright.IconLeft = "nightmoon.svg"
+	rBright.IconRight = "daysun.svg"
+	rBright.MinValue = 0
+	rBright.MaxValue = 100
+	rBright.StepValue = 5
+	rBright.Value = 40
+	rBright.ShowValue = True
+	rBright.ValueSuffix = "%"
+	rBright.Variant = "accent"
+	rBright.ShowTooltip = True
+	rBright.TooltipOpen = False
+	rBright.Tag = "range-brightness"
+	y = y + rBright.GetComputedHeight + 12dip
+	''' Example 25: Sizes + Label Above + Show Value (neutral)
+	''' Demonstrates the range across all sizes, each with a left-aligned label
+	''' and a right-aligned live value readout, in the neutral color variant.
+	''' This showcases how the label / value chrome scales with Size.
+	y = AddSectionTitle("Sizes + Label + Value (neutral)", y, maxW)
+
+	Dim rSV_XS As B4XDaisyRange
+	rSV_XS.Initialize(Me, "rangeSVXS")
+	rSV_XS.AddToParent(pnlHost, PAGE_PAD, y, maxW, 16dip)
+	rSV_XS.Size = "xs"
+	rSV_XS.Variant = "neutral"
+	rSV_XS.LabelAbove = "Extra Small (xs)"
+	rSV_XS.LabelVisible = True
+	rSV_XS.ShowValue = True
+	rSV_XS.ValueSuffix = "%"
+	rSV_XS.MinValue = 0
+	rSV_XS.MaxValue = 100
+	rSV_XS.Value = 50
+	rSV_XS.Tag = "range-sv-xs"
+	y = y + rSV_XS.GetComputedHeight + 10dip
+
+	Dim rSV_SM As B4XDaisyRange
+	rSV_SM.Initialize(Me, "rangeSVSM")
+	rSV_SM.AddToParent(pnlHost, PAGE_PAD, y, maxW, 20dip)
+	rSV_SM.Size = "sm"
+	rSV_SM.Variant = "neutral"
+	rSV_SM.LabelAbove = "Small (sm)"
+	rSV_SM.LabelVisible = True
+	rSV_SM.ShowValue = True
+	rSV_SM.ValueSuffix = "%"
+	rSV_SM.MinValue = 0
+	rSV_SM.MaxValue = 100
+	rSV_SM.Value = 50
+	rSV_SM.Tag = "range-sv-sm"
+	y = y + rSV_SM.GetComputedHeight + 10dip
+
+	Dim rSV_MD As B4XDaisyRange
+	rSV_MD.Initialize(Me, "rangeSVMD")
+	rSV_MD.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	rSV_MD.Size = "md"
+	rSV_MD.Variant = "neutral"
+	rSV_MD.LabelAbove = "Medium (md)"
+	rSV_MD.LabelVisible = True
+	rSV_MD.ShowValue = True
+	rSV_MD.ValueSuffix = "%"
+	rSV_MD.MinValue = 0
+	rSV_MD.MaxValue = 100
+	rSV_MD.Value = 50
+	rSV_MD.Tag = "range-sv-md"
+	y = y + rSV_MD.GetComputedHeight + 10dip
+
+	Dim rSV_LG As B4XDaisyRange
+	rSV_LG.Initialize(Me, "rangeSVLG")
+	rSV_LG.AddToParent(pnlHost, PAGE_PAD, y, maxW, 28dip)
+	rSV_LG.Size = "lg"
+	rSV_LG.Variant = "neutral"
+	rSV_LG.LabelAbove = "Large (lg)"
+	rSV_LG.LabelVisible = True
+	rSV_LG.ShowValue = True
+	rSV_LG.ValueSuffix = "%"
+	rSV_LG.MinValue = 0
+	rSV_LG.MaxValue = 100
+	rSV_LG.Value = 50
+	rSV_LG.Tag = "range-sv-lg"
+	y = y + rSV_LG.GetComputedHeight + 10dip
+
+	Dim rSV_XL As B4XDaisyRange
+	rSV_XL.Initialize(Me, "rangeSVXL")
+	rSV_XL.AddToParent(pnlHost, PAGE_PAD, y, maxW, 32dip)
+	rSV_XL.Size = "xl"
+	rSV_XL.Variant = "neutral"
+	rSV_XL.LabelAbove = "Extra Large (xl)"
+	rSV_XL.LabelVisible = True
+	rSV_XL.ShowValue = True
+	rSV_XL.ValueSuffix = "%"
+	rSV_XL.MinValue = 0
+	rSV_XL.MaxValue = 100
+	rSV_XL.Value = 50
+	rSV_XL.Tag = "range-sv-xl"
+	y = y + rSV_XL.GetComputedHeight + 12dip
 	pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
@@ -278,5 +487,31 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
 End Sub
 
 Private Sub range1_Changed(Value As Int)
+End Sub
+
+Private Sub btnValidateRange_Click (Tag As Object)
+	If Tag Is B4XDaisyRange Then
+		Dim r As B4XDaisyRange = Tag
+		Dim ok As Boolean = r.Validate
+		If ok Then
+			B4XPages.MainPage.ShowToastSuccess("Valid: value is greater than the minimum.", False)
+		Else
+			Dim msg As String = r.ErrorText
+			If msg.Length = 0 Then msg = "This field is required."
+			B4XPages.MainPage.ShowToastError("Invalid: " & msg, False)
+		End If
+	End If
+End Sub
+
+Private Sub rangeIconVol_Changed(Value As Int)
+	Log("rangeIconVol Changed: " & Value)
+End Sub
+
+Private Sub rangePermTip_Changed(Value As Int)
+	Log("rangePermTip Changed: " & Value)
+End Sub
+
+Private Sub rangeBright_Changed(Value As Int)
+	Log("rangeBright Changed: " & Value)
 End Sub
 #End Region

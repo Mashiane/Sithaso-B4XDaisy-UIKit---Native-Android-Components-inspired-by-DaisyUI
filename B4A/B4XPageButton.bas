@@ -329,9 +329,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     y = AddSectionTitle("Wide button", y, maxW)
     Dim bwWide As B4XDaisyButton
     bwWide.Initialize(Me, "component")
-    bwWide.AddToParent(pnlHost, PAGE_PAD, y, maxW, 40dip)
     bwWide.Text = "Wide"
     bwWide.Wide = True
+    bwWide.AddToParent(pnlHost, PAGE_PAD, y, 0, 40dip)
     bwWide.Tag = "wide"
     y = y + 56dip
 
@@ -589,6 +589,39 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     bLoginMetaMask.Tag = "login-metamask"
     y = y + 56dip
 
+    ' /**
+    '  * Example: Glass Button on Image.
+    '  */
+    y = AddSectionTitle("Glass Button on Image", y, maxW)
+    Dim cardGlassBtn As Panel
+    cardGlassBtn.Initialize("")
+    Dim xCardGlassBtn As B4XView = cardGlassBtn
+    pnlHost.AddView(xCardGlassBtn, PAGE_PAD, y, maxW, 140dip)
+    
+    Dim ivGlassBtn As ImageView
+    ivGlassBtn.Initialize("")
+    Dim xivGlassBtn As B4XView = ivGlassBtn
+    xCardGlassBtn.AddView(xivGlassBtn, 0, 0, maxW, 140dip)
+    Try
+        If File.Exists(File.DirAssets, "6.jpg") Then
+            Dim bmpGlassBtn As B4XBitmap = xui.LoadBitmap(File.DirAssets, "6.jpg")
+            xivGlassBtn.SetBitmap(bmpGlassBtn.Resize(maxW, 140dip, False))
+        End If
+    Catch
+        Log("B4XPageButton.RenderExamples: " & LastException.Message)
+    End Try
+    xCardGlassBtn.SetColorAndBorder(xui.Color_Transparent, 0, 0, B4XDaisyVariants.GetRadiusBoxDip(16dip))
+
+    Dim bGlassDemo As B4XDaisyButton
+    bGlassDemo.Initialize(Me, "component")
+    bGlassDemo.Glass = True
+    bGlassDemo.Text = "Glass Button"
+    bGlassDemo.TextColor = xui.Color_White
+    bGlassDemo.Tag = "glass-button"
+    bGlassDemo.AddToParent(xCardGlassBtn, (maxW - 140dip) / 2, (140dip - 44dip) / 2, 140dip, 44dip)
+
+    y = y + 152dip
+
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
@@ -607,11 +640,9 @@ End Sub
 '  * Handles click feedback for rendered examples.
 '  */
 Private Sub component_Click(Tag As Object)
-    #If B4A
     Dim s As String = Tag
     If s.Length = 0 Then s = "button"
-    ToastMessageShow("Clicked: " & s, False)
-    #End If
+    B4XPages.MainPage.ShowToast("Clicked: " & s, False)
 End Sub
 
 Private Sub B4XPage_Appear

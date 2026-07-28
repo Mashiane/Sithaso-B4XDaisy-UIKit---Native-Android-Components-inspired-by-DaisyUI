@@ -714,14 +714,14 @@ Private Sub badge_Click(Tag As Object)
 End Sub
 
 Private Sub badge_CloseClick(Tag As Object)
-	ToastMessageShow("Badge closed: " & Tag, False)
+	B4XPages.MainPage.ShowToast("Badge closed: " & Tag, False)
 End Sub
 
 Private Sub badge_Checked(Id As String, Checked As Boolean)
 	Dim chipId As String = Id
 	If chipId = Null Or chipId.Trim.Length = 0 Then chipId = "(no-id)"
 	Dim stateText As String = IIf(Checked, "true", "false")
-	ToastMessageShow("Toggle badge id=" & chipId & ", checked=" & stateText, False)
+	B4XPages.MainPage.ShowToast("Toggle badge id=" & chipId & ", checked=" & stateText, False)
 End Sub
 
 Private Sub singlegroup_Changed(SelectedIds As List)
@@ -737,13 +737,13 @@ End Sub
 Private Sub singlegroup_ItemChanged(Item As Map)
 	Dim id As String = Item.GetDefault("id", "")
 	Dim checked As Boolean = Item.GetDefault("checked", False)
-	ToastMessageShow("single -> " & id & " = " & checked, False)
+	B4XPages.MainPage.ShowToast("single -> " & id & " = " & checked, False)
 End Sub
 
 Private Sub multigroup_ItemChanged(Item As Map)
 	Dim id As String = Item.GetDefault("id", "")
 	Dim checked As Boolean = Item.GetDefault("checked", False)
-	ToastMessageShow("multi -> " & id & " = " & checked, False)
+	B4XPages.MainPage.ShowToast("multi -> " & id & " = " & checked, False)
 End Sub
 
 Private Sub labelabovesinglegroup_Changed(SelectedIds As List)

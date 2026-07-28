@@ -107,6 +107,6 @@ End Sub
 
 #Region Events
 Private Sub List1K_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List1K: Row " & (Index + 1), False)
+    B4XPages.MainPage.ShowToast("List1K: Row " & (Index + 1), False)
 End Sub
 #End Region

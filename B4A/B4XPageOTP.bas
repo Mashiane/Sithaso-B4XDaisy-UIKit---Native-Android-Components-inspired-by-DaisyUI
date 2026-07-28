@@ -464,14 +464,14 @@ Version=13.5
     ''' <summary>Fires on blur when value changed (ionic ionChange).</summary>
     Private Sub otp_Changed(Value As String)
         #If B4A
-        ToastMessageShow("OTP changed: " & Value, False)
+        B4XPages.MainPage.ShowToast("OTP changed: " & Value, False)
         #End If
     End Sub
 
     ''' <summary>Fires when all boxes are filled (ionic ionComplete).</summary>
     Private Sub otp_Complete(Value As String)
         #If B4A
-        ToastMessageShow("OTP complete: " & Value, True)
+        B4XPages.MainPage.ShowToast("OTP complete: " & Value, True)
         #End If
     End Sub
 
@@ -483,7 +483,7 @@ Version=13.5
 
     Private Sub otp_DescriptionClick
         #If B4A
-        ToastMessageShow("Resend the code tapped", False)
+        B4XPages.MainPage.ShowToast("Resend the code tapped", False)
         #End If
     End Sub
 #End Region

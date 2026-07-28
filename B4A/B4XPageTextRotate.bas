@@ -13,6 +13,7 @@ Sub Class_Globals
     Private svHost As ScrollView
     Private pnlHost As B4XView
     Private PAGE_PAD As Int = 12dip
+    Private mRotates As List
 End Sub
 #End Region
 
@@ -23,6 +24,7 @@ End Sub
 
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
+	mRotates.Initialize
 
     svHost.Initialize(Max(1dip, Root.Height))
     Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
@@ -31,12 +33,32 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 
     RenderExamples(Root.Width, Root.Height)
 End Sub
+
+Private Sub B4XPage_Appear
+	If mRotates.IsInitialized Then
+		For Each tr As B4XDaisyTextRotate In mRotates
+			tr.Start
+		Next
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub
+
+Private Sub B4XPage_Disappear
+	If mRotates.IsInitialized Then
+		For Each tr As B4XDaisyTextRotate In mRotates
+			tr.Stop
+		Next
+	End If
+End Sub
+
 #End Region
 
 #Region Rendering
 Private Sub RenderExamples(Width As Int, Height As Int)
     If pnlHost.IsInitialized = False Then Return
     pnlHost.RemoveAllViews
+    If mRotates.IsInitialized = False Then mRotates.Initialize
+    mRotates.Clear
 
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim y As Int = PAGE_PAD
@@ -49,6 +71,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tr1.AddToParent(pnlHost, PAGE_PAD, y, maxW, 42dip)
     tr1.setDuration("3s")
     tr1.SetItems(Array As String("ONE", "TWO", "THREE"))
+    mRotates.Add(tr1)
     y = y + tr1.GetComputedHeight + 18dip
 
     ' Example 2: Six words, large, centered
@@ -75,6 +98,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
         tr2.AddItem(dt2)
     Next
     tr2.Refresh
+    mRotates.Add(tr2)
     y = y + tr2.GetComputedHeight + 18dip
 
     ' Example 3: Per-item color variant
@@ -102,6 +126,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
         tr3.AddItem(dtr)
     Next
     tr3.Refresh
+    mRotates.Add(tr3)
     y = y + tr3.GetComputedHeight + 18dip
 
     ' Example 4: Custom duration, bold + primary variant
@@ -126,6 +151,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     dtFast.setHAlign("CENTER")
     tr4.AddItem(dtFast)
     tr4.Refresh
+    mRotates.Add(tr4)
     y = y + tr4.GetComputedHeight + 18dip
 
     ' Example 5: Emoji-prefixed items
@@ -149,7 +175,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
         tr5.AddItem(dte)
     Next
     tr5.Refresh
+    mRotates.Add(tr5)
     y = y + tr5.GetComputedHeight + 18dip
+
 
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
@@ -187,8 +215,5 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
     ResizeComponents(Width, Height)
 End Sub
 
-Private Sub B4XPage_Appear
-    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
-End Sub
-
 #End Region
+

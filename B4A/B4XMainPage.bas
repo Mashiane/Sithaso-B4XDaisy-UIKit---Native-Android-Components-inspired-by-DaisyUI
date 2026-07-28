@@ -65,6 +65,7 @@ Sub Class_Globals
 	Public HeroPage As B4XPageHero
 	Public SkeletonPage As B4XPageSkeleton
 	Public StatPage As B4XPageStat
+	Public InfoCardPage As B4XPageInfoCard
 	Public CarouselPage As B4XPageCarousel
 	Public OverlayPage As B4XPageOverlay
 	Public CollapsePage As B4XPageCollapse
@@ -83,6 +84,7 @@ Sub Class_Globals
 	Public FabBasicPage As B4XPageFabBasic
 	Public FabNavbarPage As B4XPageFabNavbar
 	Public FabFlowerPage As B4XPageFabFlower
+	Public BoomMenuPage As B4XPageBoomMenu
 	Public MenuPage As B4XPageMenu
 	Public MenuRuntimePage As B4XPageMenuRuntime
 	Public MenuRuntime2Page As B4XPageMenuRuntime2
@@ -110,10 +112,12 @@ Sub Class_Globals
 	Public ToggleGroupPage As B4XPageToggleGroup
 	Public IconButtonPage As B4XPageIconButton
 	Public FileInputPage As B4XPageFileInput
+	Public MediaPickerPage As B4XPageMediaPicker
 	Public SweetAlertPage As B4XPageSweetAlert
 	Public FilterPage As B4XPageFilter
 	Public PageScrollDemo As B4XPageScrollDemo
 	Public NavScrollDockPage As B4XPageNavScrollDock
+	Public EnjoyHintPage As B4XPageEnjoyHint
 	Private ActiveAlert As B4XDaisyAlert
 End Sub
 
@@ -140,15 +144,22 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	'load the other pages
 	Wait For (ShowSplashScreen) Complete (Unused As Boolean)
 
-	'Show the Dashboard as the app start page.
-	ShowPageWithLoader("Dashboard")
+	'Show avatarui as the app start page.
+	ShowPageWithLoader("dashboard")
+	'just check if animations are enabled
+	Dim bHasAnimation As Boolean = B4XDaisyVariants.AreSystemAnimationsEnabled
+	Log($"Animation Enabled: ${bHasAnimation}"$)
+	If bHasAnimation = False Then
+		'ensure animation is turned on
+		B4XDaisyVariants.ForceAnimatorDurationScale(1)
+	End If
 End Sub
 
 
 Private Sub B4XPage_Appear
 	If PendingDashboardOnReopen Then
 		PendingDashboardOnReopen = False
-		ShowPageWithLoader("Dashboard")
+		ShowPageWithLoader("dashboard")
 	End If
 End Sub
 
@@ -193,10 +204,12 @@ Sub ShowSplashScreen As ResumableSub
 	List1KPage.Initialize
 	SkeletonPage.Initialize
 	StatPage.Initialize
+	InfoCardPage.Initialize
 	FabPage.Initialize
 	FabBasicPage.Initialize
 	FabNavbarPage.Initialize
 	FabFlowerPage.Initialize
+	BoomMenuPage.Initialize
 	MenuPage.Initialize
 	MenuRuntimePage.Initialize
 	MenuRuntime2Page.Initialize
@@ -224,6 +237,7 @@ Sub ShowSplashScreen As ResumableSub
 	ToggleGroupPage.Initialize
 	IconButtonPage.Initialize
 	FileInputPage.Initialize
+	MediaPickerPage.Initialize
 	FilterPage.Initialize
 	DashboardPage.Initialize
 	ActionSheetPage.Initialize
@@ -253,87 +267,91 @@ Sub ShowSplashScreen As ResumableSub
 	'KM01CongratulationsPage.Initialize
 	'KM01OnboardingPage.Initialize
 	NavScrollDockPage.Initialize
+	EnjoyHintPage.Initialize
 	'KM01LeafletMapPage.Initialize
 	'KM01PhysicalAddressesPage.Initialize
 
 	'B4XPages.AddPage("KM01LeafletMap", KM01LeafletMapPage)
-	B4XPages.AddPage("Stat", StatPage)
-	B4XPages.AddPage("Chat", ChatPage)
-	B4XPages.AddPage("Alert", AlertPage)
-	B4XPages.AddPage("Avatar", AvatarPage)
-	B4XPages.AddPage("Badge", BadgePage)
-	B4XPages.AddPage("Card", CardPage)
-	B4XPages.AddPage("Filter", FilterPage)
-	B4XPages.AddPage("File Input", FileInputPage)
-	B4XPages.AddPage("Checkbox Group", CheckboxGroupPage)
-	B4XPages.AddPage("Toggle Group", ToggleGroupPage)
-	B4XPages.AddPage("Radio Group", RadioGroupPage)
-	B4XPages.AddPage("Select", SelectPage)
-	B4XPages.AddPage("Picker", PickerPage)
-	B4XPages.AddPage("Rating", RatingPage)
-	B4XPages.AddPage("Textarea", TextareaPage)
-	B4XPages.AddPage("Range", RangePage)
-	B4XPages.AddPage("Toggle", TogglePage)
-	B4XPages.AddPage("Radio", RadioPage)
-	B4XPages.AddPage("Checkbox", CheckboxPage)
-	B4XPages.AddPage("Input", InputPage)
-	B4XPages.AddPage("Input OTP", OTPPage)
-	B4XPages.AddPage("Typography", TextPage)
-	B4XPages.AddPage("Tab", TabPage)
-	B4XPages.AddPage("Steps", StepsPage)
-	B4XPages.AddPage("Dock", DockPage)
-	B4XPages.AddPage("Pagination", PaginationPage)
-	B4XPages.AddPage("Breadcrumbs", BreadcrumbsPage)
-	B4XPages.AddPage("Link", LinkPage)
-	B4XPages.AddPage("Modal", ModalPage)
-	B4XPages.AddPage("Dropdown", DropdownPage)
-	B4XPages.AddPage("Menu", MenuPage)
-	B4XPages.AddPage("Menu Runtime", MenuRuntimePage)
-	B4XPages.AddPage("Menu Runtime 2", MenuRuntime2Page)
-	B4XPages.AddPage("Fab", FabPage)
-	B4XPages.AddPage("Fab Basic", FabBasicPage)
-	B4XPages.AddPage("Fab Navbar", FabNavbarPage)
-	B4XPages.AddPage("Fab Flower", FabFlowerPage)
-	B4XPages.AddPage("Diff", DiffPage)
-	B4XPages.AddPage("List", ListPage)
-	B4XPages.AddPage("List 1K", List1KPage)
-	B4XPages.AddPage("Dashboard", DashboardPage)
-	B4XPages.AddPage("ActionSheet", ActionSheetPage)
-	B4XPages.AddPage("SheetModal", SheetModalPage)
-	B4XPages.AddPage("Skeleton", SkeletonPage)
-	B4XPages.AddPage("Hero", HeroPage)
-	B4XPages.AddPage("Button", ButtonPage)
-	B4XPages.AddPage("Kbd", KbdPage)
-	B4XPages.AddPage("Divider", DividerPage)
-	B4XPages.AddPage("Indicator", IndicatorPage)
-	B4XPages.AddPage("Status", StatusPage)
-	B4XPages.AddPage("Loading", LoadingPage)
-	B4XPages.AddPage("Mask", MaskPage)
-	B4XPages.AddPage("Stack", StackPage)
-	B4XPages.AddPage("SVG Icon", SvgIconPage)
-	B4XPages.AddPage("Swap", SwapPage)
-	B4XPages.AddPage("Radial Progress", RadialProgressPage)
-	B4XPages.AddPage("Progress", ProgressPage)
-	B4XPages.AddPage("Toast", ToastPage)
-	B4XPages.AddPage("Tooltip", TooltipPage)
-	B4XPages.AddPage("Segment", SegmentPage)
-	B4XPages.AddPage("ColorWheel", ColorWheelPage)
-	B4XPages.AddPage("SignaturePad", SignaturePadPage)
-	B4XPages.AddPage("Navbar", NavbarPage)
-	B4XPages.AddPage("Window", WindowPage)
-	B4XPages.AddPage("FieldSet", FieldSetPage)
-	B4XPages.AddPage("Carousel", CarouselPage)
-	B4XPages.AddPage("Overlay", OverlayPage)
-	B4XPages.AddPage("Collapse", CollapsePage)
-	B4XPages.AddPage("Accordion", AccordionPage)
-	B4XPages.AddPage("Countdown", CountdownPage)
-	B4XPages.AddPage("CanvasSpinner", CanvasSpinner)
-	B4XPages.AddPage("TextRotate", TextRotatePage)
-	B4XPages.AddPage("Timeline", TimelinePage)
-	B4XPages.AddPage("Hover3d", Hover3dPage)
-	B4XPages.AddPage("Icon Button", IconButtonPage)
-	B4XPages.AddPage("SweetAlert2", SweetAlertPage)
-	B4XPages.AddPage("PageScrollDemo", PageScrollDemo)
+	B4XPages.AddPage("stat", StatPage)
+	B4XPages.AddPage("infocard", InfoCardPage)
+	B4XPages.AddPage("chat", ChatPage)
+	B4XPages.AddPage("alert", AlertPage)
+	B4XPages.AddPage("avatar", AvatarPage)
+	B4XPages.AddPage("badge", BadgePage)
+	B4XPages.AddPage("card", CardPage)
+	B4XPages.AddPage("filter", FilterPage)
+	B4XPages.AddPage("file-input", FileInputPage)
+	B4XPages.AddPage("media-picker", MediaPickerPage)
+	B4XPages.AddPage("checkbox-group", CheckboxGroupPage)
+	B4XPages.AddPage("toggle-group", ToggleGroupPage)
+	B4XPages.AddPage("radio-group", RadioGroupPage)
+	B4XPages.AddPage("select", SelectPage)
+	B4XPages.AddPage("picker", PickerPage)
+	B4XPages.AddPage("rating", RatingPage)
+	B4XPages.AddPage("textarea", TextareaPage)
+	B4XPages.AddPage("range", RangePage)
+	B4XPages.AddPage("toggle", TogglePage)
+	B4XPages.AddPage("radio", RadioPage)
+	B4XPages.AddPage("checkbox", CheckboxPage)
+	B4XPages.AddPage("input", InputPage)
+	B4XPages.AddPage("otp", OTPPage)
+	B4XPages.AddPage("typography", TextPage)
+	B4XPages.AddPage("tab", TabPage)
+	B4XPages.AddPage("steps", StepsPage)
+	B4XPages.AddPage("dock", DockPage)
+	B4XPages.AddPage("pagination", PaginationPage)
+	B4XPages.AddPage("breadcrumbs", BreadcrumbsPage)
+	B4XPages.AddPage("link", LinkPage)
+	B4XPages.AddPage("modal", ModalPage)
+	B4XPages.AddPage("dropdown", DropdownPage)
+	B4XPages.AddPage("menu", MenuPage)
+	B4XPages.AddPage("menu_runtime", MenuRuntimePage)
+	B4XPages.AddPage("menu_runtime2", MenuRuntime2Page)
+	B4XPages.AddPage("fab", FabPage)
+	B4XPages.AddPage("fab_basic", FabBasicPage)
+	B4XPages.AddPage("fab_navbar", FabNavbarPage)
+	B4XPages.AddPage("fab_flower", FabFlowerPage)
+	B4XPages.AddPage("boommenu", BoomMenuPage)
+	B4XPages.AddPage("diff", DiffPage)
+	B4XPages.AddPage("list", ListPage)
+	B4XPages.AddPage("list1k", List1KPage)
+	B4XPages.AddPage("dashboard", DashboardPage)
+	B4XPages.AddPage("actionsheet", ActionSheetPage)
+	B4XPages.AddPage("sheetmodal", SheetModalPage)
+	B4XPages.AddPage("skeleton", SkeletonPage)
+	B4XPages.AddPage("hero", HeroPage)
+	B4XPages.AddPage("button", ButtonPage)
+	B4XPages.AddPage("kbd", KbdPage)
+	B4XPages.AddPage("divider", DividerPage)
+	B4XPages.AddPage("indicator", IndicatorPage)
+	B4XPages.AddPage("status", StatusPage)
+	B4XPages.AddPage("loading", LoadingPage)
+	B4XPages.AddPage("mask", MaskPage)
+	B4XPages.AddPage("stack", StackPage)
+	B4XPages.AddPage("svg_icon", SvgIconPage)
+	B4XPages.AddPage("swap", SwapPage)
+	B4XPages.AddPage("radialprogress", RadialProgressPage)
+	B4XPages.AddPage("progress", ProgressPage)
+	B4XPages.AddPage("toast", ToastPage)
+	B4XPages.AddPage("tooltip", TooltipPage)
+	B4XPages.AddPage("segment", SegmentPage)
+	B4XPages.AddPage("colorwheel", ColorWheelPage)
+	B4XPages.AddPage("signaturepad", SignaturePadPage)
+	B4XPages.AddPage("navbar", NavbarPage)
+	B4XPages.AddPage("window", WindowPage)
+	B4XPages.AddPage("fieldset", FieldSetPage)
+	B4XPages.AddPage("carousel", CarouselPage)
+	B4XPages.AddPage("overlay", OverlayPage)
+	B4XPages.AddPage("collapse", CollapsePage)
+	B4XPages.AddPage("accordion", AccordionPage)
+	B4XPages.AddPage("countdown", CountdownPage)
+	B4XPages.AddPage("cspinner", CanvasSpinner)
+	B4XPages.AddPage("textrotate", TextRotatePage)
+	B4XPages.AddPage("timeline", TimelinePage)
+	B4XPages.AddPage("hover3d", Hover3dPage)
+	B4XPages.AddPage("iconbutton", IconButtonPage)
+	B4XPages.AddPage("sweetalert", SweetAlertPage)
+	B4XPages.AddPage("pagescrolldemo", PageScrollDemo)
 	'B4XPages.AddPage("KM01SignIn", KM01SignInPage)
 	'B4XPages.AddPage("KM01TypeOfUser", KM01TypeOfUserPage)
 	'B4XPages.AddPage("KM01ClientProfile", KM01ClientProfilePage)
@@ -345,20 +363,21 @@ Sub ShowSplashScreen As ResumableSub
 	'B4XPages.AddPage("KM01Congratulations", KM01CongratulationsPage)
 	'B4XPages.AddPage("KM01Onboarding", KM01OnboardingPage)
 	'B4XPages.AddPage("KM01PhysicalAddresses", KM01PhysicalAddressesPage)
-	B4XPages.AddPage("NavScrollDock", NavScrollDockPage)
+	B4XPages.AddPage("navscrolldock", NavScrollDockPage)
+	B4XPages.AddPage("enjoyhint", EnjoyHintPage)
 	Return True
 End Sub
 
 'Return True to close, False to cancel
 
 Private Sub B4XPage_CloseRequest As ResumableSub
-	Dim sf As Object = ShowConfirm("Close B4XDaisyUIKit?", "Are you sure you want to close the application?", "Yes", "No")
+	Dim sf As Object = ShowSwalConfirm("Close B4XDaisyUIKit?", "Are you sure you want to close the application?", "Yes", "No")
 	Wait For (sf) Complete (Result As B4XDaisySweetAlertResult)
 	If Result.IsConfirmed Then
 		PendingDashboardOnReopen = True
 		Return True
 	End If
-	ShowPageWithLoader("Dashboard")
+	ShowPageWithLoader("dashboard")
 	Return False
 End Sub
 
@@ -382,22 +401,19 @@ Public Sub ShowPageWithLoader(PageId As String)
 			Log($"Page Already In Stack: ${PageId}"$)
 		End If
 		AppLoader.Show(Root.Parent)
-		Sleep(500)
-		Sleep(0)
+		Sleep(150)
 		B4XPages.ShowPage(PageId)
-		AppLoader.Show(Root.Parent)
-		Sleep(0)
 		'how many stacked pages are there
 		Dim iStacked As Int = CountStackedPages
 		Log($"Stacked Pages Count: ${iStacked}"$)
 	Catch
-		Log("ERROR: ShowPageWithLoader crashed for page '" & PageId & "': " & LastException.Message)
+		Log("B4XMainPage.ShowPageWithLoader: " & LastException.Message)
 		#If B4A
 		Dim jo As JavaObject = LastException
 		jo.RunMethod("printStackTrace", Null)
 		#End If
-			ToastMessageShow("Error loading " & PageId & ": " & LastException.Message, True)
-			If AppLoader.IsInitialized Then AppLoader.Hide
+		Log("B4XMainPage.ShowPageWithLoader: " & LastException.Message)
+		If AppLoader.IsInitialized Then AppLoader.Hide
 	End Try
 End Sub
 
@@ -411,19 +427,16 @@ End Sub
 Public Sub ClosePageWithLoader(Page As Object)
 	Try
 		AppLoader.Show(Root.Parent)
-		Sleep(500)
-		Sleep(0)
+		Sleep(150)
 		B4XPages.ClosePage(Page)
-		AppLoader.Show(Root.Parent)
-		Sleep(0)
 	Catch
-		Log("ERROR: ClosePageWithLoader crashed: " & LastException.Message)
+		Log("B4XMainPage.ClosePageWithLoader: " & LastException.Message)
 		#If B4A
 		Dim jo As JavaObject = LastException
 		jo.RunMethod("printStackTrace", Null)
 		#End If
-			ToastMessageShow("Error closing page: " & LastException.Message, True)
-			If AppLoader.IsInitialized Then AppLoader.Hide
+		Log("B4XMainPage.ClosePageWithLoader: " & LastException.Message)
+		If AppLoader.IsInitialized Then AppLoader.Hide
 	End Try
 End Sub
 
@@ -435,12 +448,12 @@ Sub PageResume
 	If AppLoader.IsInitialized Then AppLoader.Hide
 End Sub
 
-Private Sub Page_Ready
+Public Sub Page_Ready
 	If AppLoader.IsInitialized Then AppLoader.Hide
 End Sub
 
 ' Displays a simple status/information Sweet Alert.
-Public Sub ShowAlert(Title As String, Text As String, Icon As String, AllowOutside As Boolean) As ResumableSub
+Public Sub ShowSwalAlert(Title As String, Text As String, Icon As String, AllowOutside As Boolean) As ResumableSub
 	Dim TopPage As B4XPageInfo = B4XPages.GetManager.GetTopPage
 	If TopPage <> Null And TopPage.Root.IsInitialized Then
 		SweetAlert.Parent = TopPage.Root
@@ -464,7 +477,7 @@ End Sub
 
 ' Displays a confirmation Sweet Alert with backdrop clicks disabled (AllowOutsideClick = False).
 ' Returns an integer matching xui.DialogResponse_Positive (-1), xui.DialogResponse_Cancel (-2) or xui.DialogResponse_Negative (-3).
-Public Sub ShowConfirm(Title As String, Text As String, ConfirmText As String, CancelText As String) As ResumableSub
+Public Sub ShowSwalConfirm(Title As String, Text As String, ConfirmText As String, CancelText As String) As ResumableSub
 	Dim TopPage As B4XPageInfo = B4XPages.GetManager.GetTopPage
 	If TopPage <> Null And TopPage.Root.IsInitialized Then
 		SweetAlert.Parent = TopPage.Root
@@ -490,12 +503,12 @@ End Sub
 ' Displays a floating DaisyUI alert notification on the active page.
 ' Position supports: "top-right", "top-left", "top-center", "bottom-left", "bottom-right", "middle-center" (default "top-right").
 ' The alert automatically dismisses after DurationMs. If DurationMs is 0, it stays until tapped.
-Public Sub ShowAlertNotification(Title As String, Text As String, AlertVariant As String, DurationMs As Int, Position As String) As B4XDaisyAlert
+Public Sub ShowToastAlert(Title As String, Text As String, AlertVariant As String, DurationMs As Int, Position As String) As B4XDaisyAlert
 	If ActiveAlert <> Null Then
 		Try
 			ActiveAlert.RemoveViewFromParent
 		Catch
-			Log("B4XMainPage.ShowAlertNotification: " & LastException.Message)
+			Log("B4XMainPage.ShowToastAlert: " & LastException.Message)
 		End Try
 		ActiveAlert = Null
 	End If
@@ -529,10 +542,10 @@ Public Sub ShowAlertNotification(Title As String, Text As String, AlertVariant A
 		Case "top-left", "bottom-left"
 			alertWidth = Min(320dip, TopPage.Root.Width - 32dip)
 			alertLeft = 16dip
-		Case "middle-center"
+		Case "middle-center", "top-center", "bottom-center"
 			alertWidth = Min(320dip, TopPage.Root.Width - 32dip)
 			alertLeft = (TopPage.Root.Width - alertWidth) / 2
-		Case Else '"top-center" or any other value
+		Case Else
 			alertWidth = TopPage.Root.Width - 32dip
 			alertLeft = 16dip
 	End Select
@@ -541,15 +554,15 @@ Public Sub ShowAlertNotification(Title As String, Text As String, AlertVariant A
 	
 	Dim alertHeight As Int = alert.GetComputedHeight
 	Select Case pos
-		Case "bottom-right", "bottom-left"
+		Case "bottom-right", "bottom-left", "bottom-center"
 			alertTop = TopPage.Root.Height - alertHeight - 16dip
-			alert.setTop(alertTop)
+			alert.View.Top = alertTop
 		Case "middle-center"
 			alertTop = (TopPage.Root.Height - alertHeight) / 2
-			alert.setTop(alertTop)
+			alert.View.Top = alertTop
 	End Select
 	
-	alert.BringToFront
+	alert.View.BringToFront
 	
 	ActiveAlert = alert
 	
@@ -560,6 +573,30 @@ Public Sub ShowAlertNotification(Title As String, Text As String, AlertVariant A
 	Return alert
 End Sub
 
+Public Sub ShowToast(Message As String, LongDuration As Boolean) As B4XDaisyAlert
+	Dim duration As Int
+	If LongDuration Then duration = 3500 Else duration = 2500
+	Return ShowToastAlert("", Message, "info", duration, "bottom-center")
+End Sub
+
+Public Sub ShowToastError(Message As String, LongDuration As Boolean) As B4XDaisyAlert
+	Dim duration As Int
+	If LongDuration Then duration = 3500 Else duration = 2500
+	Return ShowToastAlert("Error", Message, "error", duration, "bottom-center")
+End Sub
+
+Public Sub ShowToastSuccess(Message As String, LongDuration As Boolean) As B4XDaisyAlert
+	Dim duration As Int
+	If LongDuration Then duration = 3500 Else duration = 2500
+	Return ShowToastAlert("Success", Message, "success", duration, "bottom-center")
+End Sub
+
+Public Sub ShowToastWarning(Message As String, LongDuration As Boolean) As B4XDaisyAlert
+	Dim duration As Int
+	If LongDuration Then duration = 3500 Else duration = 2500
+	Return ShowToastAlert("Warning", Message, "warning", duration, "bottom-center")
+End Sub
+
 Private Sub DismissAlertAfterDelay(Alert1 As B4XDaisyAlert, DelayMs As Int)
 	Sleep(DelayMs)
 	Try
@@ -568,7 +605,7 @@ Private Sub DismissAlertAfterDelay(Alert1 As B4XDaisyAlert, DelayMs As Int)
 			ActiveAlert = Null
 		End If
 	Catch
-		Log("Failed to dismiss alert: " & LastException.Message)
+		Log("B4XMainPage.DismissAlertAfterDelay: " & LastException.Message)
 	End Try
 End Sub
 
@@ -578,7 +615,7 @@ Private Sub GlobalAlert_Click(Tag As Object)
 		alert.RemoveViewFromParent
 		If ActiveAlert = alert Then ActiveAlert = Null
 	Catch
-		Log("Failed to dismiss alert on click: " & LastException.Message)
+		Log("B4XMainPage.GlobalAlert_Click: " & LastException.Message)
 	End Try
 End Sub
 

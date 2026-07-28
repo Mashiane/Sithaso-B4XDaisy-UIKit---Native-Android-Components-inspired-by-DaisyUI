@@ -331,6 +331,6 @@ Private Sub HandleDismissData(Context As String, Data As Object, Role As String)
 		msg = "Action Executed: " & Data
 		variant = "success"
 	End If
-	B4XPages.MainPage.ShowAlertNotification(Context, msg, variant, 3000, "top-right")
+	B4XPages.MainPage.ShowToastAlert(Context, msg, variant, 3000, "top-right")
 End Sub
 #End Region

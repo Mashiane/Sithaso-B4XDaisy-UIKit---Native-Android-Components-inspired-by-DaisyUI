@@ -14,6 +14,8 @@ Sub Class_Globals
     Private m10, m11, m12, m13, m14, m15 As B4XDaisyModal
     Private m16, m17 As B4XDaisyModal
     Private m18, m19, m20, m21, m22 As B4XDaisyModal
+    Private mNoAnim, mSlowAnim As B4XDaisyModal
+    Private mPresetYesNo, mPresetOkCancel As B4XDaisyModal
 End Sub
 
 Public Sub Initialize As Object
@@ -120,7 +122,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m8.Title = "Sidebar"
     m8.Sidebar = True
     m8.SidebarSide = "left"
-    m8.SidebarDuration = 300
+    m8.Duration = 300
     m8.Width = "w-[70%]"
     m8.Visible = False
     AddLabel(m8, "This behaves like a drawer/sidebar modal.")
@@ -136,7 +138,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m9.Title = "Sidebar"
     m9.Sidebar = True
     m9.SidebarSide = "right"
-    m9.SidebarDuration = 300
+    m9.Duration = 300
     m9.Width = "w-[70%]"
     m9.Visible = False
     AddLabel(m9, "This behaves like a drawer/sidebar modal.")
@@ -350,6 +352,66 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     btn22.Text = "Colored Title Modal"
     y = y + 46dip
 
+    mNoAnim.Initialize(Me, "mNoAnim")
+    mNoAnim.AddToParent(Root, 0, 0, Width, Height)
+    mNoAnim.Title = "Instant Snap Modal"
+    mNoAnim.Animated = False
+    mNoAnim.Visible = False
+    AddLabel(mNoAnim, "This modal snaps instantly without any opening or closing animation transitions.")
+    mNoAnim.AddActionButton("modalBtn", "Close", "primary")
+    mNoAnim.Refresh
+    
+    Dim btnNoAnim As B4XDaisyButton
+    btnNoAnim.Initialize(Me, "btnNoAnim")
+    btnNoAnim.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btnNoAnim.Text = "Open Instant Modal"
+    y = y + 46dip
+    
+    mSlowAnim.Initialize(Me, "mSlowAnim")
+    mSlowAnim.AddToParent(Root, 0, 0, Width, Height)
+    mSlowAnim.Title = "Slow Animation Modal"
+    mSlowAnim.Duration = 1000
+    mSlowAnim.Visible = False
+    AddLabel(mSlowAnim, "This modal opens and closes slowly with a 1000ms animation duration.")
+    mSlowAnim.AddActionButton("modalBtn", "Close", "primary")
+    mSlowAnim.Refresh
+    
+    Dim btnSlowAnim As B4XDaisyButton
+    btnSlowAnim.Initialize(Me, "btnSlowAnim")
+    btnSlowAnim.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btnSlowAnim.Text = "Open Slow Modal"
+    y = y + 46dip
+
+    ' Action Type Presets Example 1: Yes / No
+    mPresetYesNo.Initialize(Me, "mPresetYesNo")
+    mPresetYesNo.AddToParent(Root, 0, 0, Width, Height)
+    mPresetYesNo.Title = "Confirm Action"
+    mPresetYesNo.setActionType("yes-no")
+    mPresetYesNo.Visible = False
+    AddLabel(mPresetYesNo, "Are you sure you want to proceed with this task?")
+    mPresetYesNo.Refresh
+
+    Dim btnPreset1 As B4XDaisyButton
+    btnPreset1.Initialize(Me, "btnPreset1")
+    btnPreset1.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btnPreset1.Text = "Preset: Yes / No"
+    y = y + 46dip
+
+    ' Action Type Presets Example 2: OK / Cancel
+    mPresetOkCancel.Initialize(Me, "mPresetOkCancel")
+    mPresetOkCancel.AddToParent(Root, 0, 0, Width, Height)
+    mPresetOkCancel.Title = "Information"
+    mPresetOkCancel.setActionType("ok-cancel")
+    mPresetOkCancel.Visible = False
+    AddLabel(mPresetOkCancel, "Your settings have been saved successfully.")
+    mPresetOkCancel.Refresh
+
+    Dim btnPreset2 As B4XDaisyButton
+    btnPreset2.Initialize(Me, "btnPreset2")
+    btnPreset2.AddToParent(pnlHost, 20dip, y, 180dip, 40dip)
+    btnPreset2.Text = "Preset: OK / Cancel"
+    y = y + 46dip
+
     pnlHost.Height = y + 12dip
 End Sub
 Private Sub AddExample(Y As Int, Title As String, Subtitle As String) As Int
@@ -489,7 +551,40 @@ Sub btn22_Click(Tag As Object)
     m22.Show
 End Sub
 
+Sub btnNoAnim_Click(Tag As Object)
+    mNoAnim.Show
+End Sub
+
+Sub btnSlowAnim_Click(Tag As Object)
+    mSlowAnim.Show
+End Sub
+
+Sub btnPreset1_Click(Tag As Object)
+    mPresetYesNo.Show
+End Sub
+
+Sub btnPreset2_Click(Tag As Object)
+    mPresetOkCancel.Show
+End Sub
+
+Sub mPresetYesNo_YesClick(Tag As Object)
+    B4XPages.MainPage.ShowToastSuccess("Modal: 'YES' tapped!", False)
+End Sub
+
+Sub mPresetYesNo_NoClick(Tag As Object)
+    B4XPages.MainPage.ShowToastError("Modal: 'NO' tapped!", False)
+End Sub
+
+Sub mPresetOkCancel_OkClick(Tag As Object)
+    B4XPages.MainPage.ShowToastSuccess("Modal: 'OK' tapped!", False)
+End Sub
+
+Sub mPresetOkCancel_CancelClick(Tag As Object)
+    B4XPages.MainPage.ShowToast("Modal: 'CANCEL' tapped!", False)
+End Sub
+
 Sub modalBtn_Click(Tag As Object)
+    B4XPages.MainPage.ShowToast("Modal closed", False)
     CloseAllModals
 End Sub
 
@@ -514,6 +609,10 @@ Private Sub CloseAllModals
     m20.Close
     m21.Close
     m22.Close
+    mNoAnim.Close
+    mSlowAnim.Close
+    If mPresetYesNo.IsInitialized Then mPresetYesNo.Close
+    If mPresetOkCancel.IsInitialized Then mPresetOkCancel.Close
 End Sub
 
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
@@ -538,4 +637,8 @@ Private Sub B4XPage_Resize(Width As Int, Height As Int)
     If m20.getView.IsInitialized Then m20.AddToParent(Root, 0, 0, Width, Height)
     If m21.getView.IsInitialized Then m21.AddToParent(Root, 0, 0, Width, Height)
     If m22.getView.IsInitialized Then m22.AddToParent(Root, 0, 0, Width, Height)
+    If mNoAnim.IsInitialized And mNoAnim.getView.IsInitialized Then mNoAnim.AddToParent(Root, 0, 0, Width, Height)
+    If mSlowAnim.IsInitialized And mSlowAnim.getView.IsInitialized Then mSlowAnim.AddToParent(Root, 0, 0, Width, Height)
+    If mPresetYesNo.IsInitialized And mPresetYesNo.getView.IsInitialized Then mPresetYesNo.AddToParent(Root, 0, 0, Width, Height)
+    If mPresetOkCancel.IsInitialized And mPresetOkCancel.getView.IsInitialized Then mPresetOkCancel.AddToParent(Root, 0, 0, Width, Height)
 End Sub

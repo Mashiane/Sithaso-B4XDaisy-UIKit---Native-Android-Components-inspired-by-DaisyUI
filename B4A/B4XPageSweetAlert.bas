@@ -105,7 +105,7 @@ Private Sub DemoAction_Click(Tag As Object)
 		Case "btnBasic"
 			swal.Title = "Any fool can use a computer"
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
-			ToastMessageShow("Basic alert dismissed", False)
+			B4XPages.MainPage.ShowToast("Basic alert dismissed", False)
 			
 		Case "btnTitleText"
 			swal.Title = "The Internet?"
@@ -116,9 +116,9 @@ Private Sub DemoAction_Click(Tag As Object)
 			swal.CancelButtonText = "No"
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
 			If Result.IsConfirmed Then
-				ToastMessageShow("User clicked: Yes", False)
+				B4XPages.MainPage.ShowToast("User clicked: Yes", False)
 			Else
-				ToastMessageShow("User clicked: No", False)
+				B4XPages.MainPage.ShowToast("User clicked: No", False)
 			End If			
 		Case "btnError"
 			swal.Icon = "error"
@@ -127,9 +127,9 @@ Private Sub DemoAction_Click(Tag As Object)
 			swal.ShowCancelButton = True
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
 			If Result.IsConfirmed Then
-				ToastMessageShow("Confirmed error dialog", False)
+				B4XPages.MainPage.ShowToast("Confirmed error dialog", False)
 			Else
-				ToastMessageShow("Error dialog dismissed/cancelled", False)
+				B4XPages.MainPage.ShowToast("Error dialog dismissed/cancelled", False)
 			End If
 			
 		Case "btnThree"
@@ -146,16 +146,16 @@ Private Sub DemoAction_Click(Tag As Object)
 				swalSuccess.Title = "Saved!"
 				swalSuccess.Icon = "success"
 				Wait For (swalSuccess.ShowAsync) Complete (Res2 As B4XDaisySweetAlertResult)
-				ToastMessageShow("Saved success dismissed", False)
+				B4XPages.MainPage.ShowToast("Saved success dismissed", False)
 			Else If Result.IsDenied Then
 				Dim swalInfo As B4XDaisySweetAlert
 				swalInfo.Initialize(Me, Root, "swal")
 				swalInfo.Title = "Changes are not saved"
 				swalInfo.Icon = "info"
 				Wait For (swalInfo.ShowAsync) Complete (Res3 As B4XDaisySweetAlertResult)
-				ToastMessageShow("Changes info dismissed", False)
+				B4XPages.MainPage.ShowToast("Changes info dismissed", False)
 			Else
-				ToastMessageShow("Three-button dialog cancelled", False)
+				B4XPages.MainPage.ShowToast("Three-button dialog cancelled", False)
 			End If
 			
 		Case "btnTimer"
@@ -165,9 +165,9 @@ Private Sub DemoAction_Click(Tag As Object)
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
 			
 			If Result.Dismiss = "timer" Then
-				ToastMessageShow("Closed by the timer", False)
+				B4XPages.MainPage.ShowToast("Closed by the timer", False)
 			Else
-				ToastMessageShow($"Timed alert closed by: ${Result.Dismiss}"$, False)
+				B4XPages.MainPage.ShowToast($"Timed alert closed by: ${Result.Dismiss}"$, False)
 			End If
 			
 		Case "btnLoading"
@@ -181,7 +181,7 @@ Private Sub DemoAction_Click(Tag As Object)
 			SimulateLoading(swal)
 			
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
-			ToastMessageShow("Loading demo alert finished", False)
+			B4XPages.MainPage.ShowToast("Loading demo alert finished", False)
  
 		Case "btnCloseFooter"
 			swal.Title = "Terms of service"
@@ -192,9 +192,9 @@ Private Sub DemoAction_Click(Tag As Object)
 			swal.ConfirmButtonText = "Accept"
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
 			If Result.IsConfirmed Then
-				ToastMessageShow("Terms accepted", False)
+				B4XPages.MainPage.ShowToast("Terms accepted", False)
 			Else
-				ToastMessageShow($"Terms dismissed/cancelled by: ${Result.Dismiss}"$, False)
+				B4XPages.MainPage.ShowToast($"Terms dismissed/cancelled by: ${Result.Dismiss}"$, False)
 			End If
 			
 		Case "btnWarning"
@@ -206,9 +206,9 @@ Private Sub DemoAction_Click(Tag As Object)
 			swal.CancelButtonText = "Cancel"
 			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
 			If Result.IsConfirmed Then
-				ToastMessageShow("File deleted", False)
+				B4XPages.MainPage.ShowToast("File deleted", False)
 			Else
-				ToastMessageShow("Cancelled", False)
+				B4XPages.MainPage.ShowToast("Cancelled", False)
 			End If
 	End Select
 End Sub

@@ -12,7 +12,6 @@ Sub Class_Globals
 	Private pnlContent As B4XView
 	Private currentY As Int = 20dip
 	Private gap As Int = 40dip
-	Private toaster As B4XDaisyToast
 	Private bellIndicator As B4XDaisyIndicator
 	Private nbClearStart As B4XDaisyNavbar
 	Private nbClearCenter As B4XDaisyNavbar
@@ -33,11 +32,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	pnlContent.Color = xui.Color_RGB(242, 242, 242)
 	B4XDaisyVariants.DisableClipping(pnlContent)
 	
-	' Initialize toaster
-	toaster.Initialize(Me, "toaster")
-	toaster.CreateView
-	toaster.SetRoot(Root)
-	toaster.SetPosition("end", "top")
+	' Toaster migrated to B4XMainPage central methods
 	
 	AddTitle("Navbar Basics")
 	
@@ -135,20 +130,20 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 End Sub
 
 Private Sub AddTitle(Text As String)
-        Dim lbl As B4XDaisyText
-        lbl.Initialize(Me, "")
-        lbl.AddToParent(pnlContent, 20dip, currentY, Root.Width - 40dip, 30dip)
-        lbl.Text = Text
-        lbl.TextSize = 18
-        lbl.FontBold = True
-        lbl.TextColor = xui.Color_DarkGray
-        currentY = currentY + lbl.GetComputedHeight + 10dip
+	Dim lbl As B4XDaisyText
+	lbl.Initialize(Me, "")
+	lbl.AddToParent(pnlContent, 20dip, currentY, Root.Width - 40dip, 30dip)
+	lbl.Text = Text
+	lbl.TextSize = 18
+	lbl.FontBold = True
+	lbl.TextColor = xui.Color_DarkGray
+	currentY = currentY + lbl.GetComputedHeight + 10dip
 End Sub
 
 ' =======================================================
 ' AddNavbarTitleOnly
 ' Demonstrates a basic Navbar with a title only.
-' Also shows a fixed FAB (bottom-end) on Root � the simplest
+' Also shows a fixed FAB (bottom-end) on Root ? the simplest
 ' way to pair a FAB with a Navbar page. The FAB uses fixed
 ' placement so it always sits at the screen corner, independent
 ' of the ScrollView content position.
@@ -196,7 +191,7 @@ Private Sub AddNavbarTitleAndIcon
 End Sub
 
 Private Sub nb2_menu_Click (Tag As Object)
-	toaster.InfoWithDuration("MENU button clicked!", 1500)
+	B4XPages.MainPage.ShowToast("MENU button clicked!", False)
 End Sub
 
 Private Sub AddNavbarIconsStartEnd
@@ -252,7 +247,7 @@ Private Sub AddNavbarComplex
 	ind.Variant = "success"
 	ind.HorizontalPlacement = "start"
 	ind.VerticalPlacement = "top"
-	ind.AttachToTarget(av.getView)
+	ind.AttachTo(av.getView)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -284,7 +279,7 @@ Private Sub AddNavbarInteractive
 	bellIndicator.setRounded("rounded-full")
 	bellIndicator.Variant = "primary"
 	bellIndicator.HorizontalPlacement = "start"
-	bellIndicator.AttachToTarget(bell.getView)
+	bellIndicator.AttachTo(bell.getView)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -311,41 +306,41 @@ End Sub
 Private Sub nb_int_Opened
 	' Log used for verification in this specific task as requested
 	'Log("Navbar Opened")
-	toaster.InfoWithDuration("Hamburger: Opened", 1000)
+	B4XPages.MainPage.ShowToast("Hamburger: Opened", False)
 End Sub
 
 Private Sub nb_int_Closed
 	'Log("Navbar Closed")
-	toaster.InfoWithDuration("Hamburger: Closed", 1000)
+	B4XPages.MainPage.ShowToast("Hamburger: Closed", False)
 End Sub
 
 Private Sub nb_int_LogoClick
-	toaster.SuccessWithDuration("Logo Clicked!", 1500)
+	B4XPages.MainPage.ShowToastSuccess("Logo Clicked!", False)
 End Sub
 
 Private Sub nb_center_logo_LogoClick
-	toaster.SuccessWithDuration("Center Logo Clicked!", 1500)
+	B4XPages.MainPage.ShowToastSuccess("Center Logo Clicked!", False)
 End Sub
 
 Private Sub bell_Click(Tag As Object)
 	bellIndicator.Increment
-	toaster.InfoWithDuration("Bell clicked! Count: " & bellIndicator.getValue & " (displays: " & bellIndicator.Text & ")", 1500)
+	B4XPages.MainPage.ShowToast("Bell clicked! Count: " & bellIndicator.getValue & " (displays: " & bellIndicator.Text & ")", False)
 End Sub
 
 Private Sub bars_Click(Tag As Object)
-	toaster.InfoWithDuration("Start Icon (bars) Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Start Icon (bars) Clicked!", False)
 End Sub
 
 Private Sub ellipsis_Click(Tag As Object)
-	toaster.InfoWithDuration("End Icon (ellipsis) Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("End Icon (ellipsis) Clicked!", False)
 End Sub
 
 Private Sub complex_bars_Click(Tag As Object)
-	toaster.InfoWithDuration("Complex Start Icon (bars) Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Complex Start Icon (bars) Clicked!", False)
 End Sub
 
 Private Sub avatar_Click(Tag As Object)
-	toaster.InfoWithDuration("Avatar Icon Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Avatar Icon Clicked!", False)
 End Sub
 
 Private Sub AddNavbarWithCircleButtons
@@ -365,11 +360,11 @@ Private Sub AddNavbarWithCircleButtons
 End Sub
 
 Private Sub btn_start_Click (Tag As Object)
-	toaster.InfoWithDuration("Start Ghost Button Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Start Ghost Button Clicked!", False)
 End Sub
 
 Private Sub btn_end_Click (Tag As Object)
-	toaster.InfoWithDuration("End Solid Button Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("End Solid Button Clicked!", False)
 End Sub
 
 Private Sub AddNavbarWithThreeCircleButtons
@@ -390,18 +385,18 @@ Private Sub AddNavbarWithThreeCircleButtons
 End Sub
 
 Private Sub btn_left_Click (Tag As Object)
-	toaster.InfoWithDuration("Left Button Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Left Button Clicked!", False)
 End Sub
 
 Private Sub btn_middle_Click (Tag As Object)
-	toaster.InfoWithDuration("Middle Button Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Middle Button Clicked!", False)
 	
 	' Automatically increment/decrement to demonstrate
 	bellIndicator.Increment
 End Sub
 
 Private Sub btn_right_Click (Tag As Object)
-	toaster.InfoWithDuration("Right Button Clicked!", 1500)
+	B4XPages.MainPage.ShowToast("Right Button Clicked!", False)
 End Sub
 
 Private Sub AddNavbarRounded(RoundedMode As String)
@@ -502,43 +497,43 @@ End Sub
 ' ---- Click handlers for text-button demos ----
 
 Private Sub nbtxt_ghost_Click (Tag As Object)
-	toaster.InfoWithDuration("Ghost Menu button tapped", 1500)
+	B4XPages.MainPage.ShowToast("Ghost Menu button tapped", False)
 End Sub
 
 Private Sub nbtxt_primary_Click (Tag As Object)
-	toaster.SuccessWithDuration("Primary Login button tapped", 1500)
+	B4XPages.MainPage.ShowToastSuccess("Primary Login button tapped", False)
 End Sub
 
 Private Sub nbtxt_secondary_Click (Tag As Object)
-	toaster.InfoWithDuration("Secondary Back button tapped", 1500)
+	B4XPages.MainPage.ShowToast("Secondary Back button tapped", False)
 End Sub
 
 Private Sub nbtxt_accent_Click (Tag As Object)
-	toaster.SuccessWithDuration("Accent Save button tapped", 1500)
+	B4XPages.MainPage.ShowToastSuccess("Accent Save button tapped", False)
 End Sub
 
 Private Sub nbtxt_success_Click (Tag As Object)
-	toaster.SuccessWithDuration("Success OK button tapped", 1500)
+	B4XPages.MainPage.ShowToastSuccess("Success OK button tapped", False)
 End Sub
 
 Private Sub nbtxt_warning_Click (Tag As Object)
-	toaster.WarningWithDuration("Warning button tapped", 1500)
+	B4XPages.MainPage.ShowToastWarning("Warning button tapped", False)
 End Sub
 
 Private Sub nbtxt_error_Click (Tag As Object)
-	toaster.ErrorWithDuration("Error Delete button tapped", 1500)
+	B4XPages.MainPage.ShowToastError("Error Delete button tapped", False)
 End Sub
 
 Private Sub nbtxt_neutral_Click (Tag As Object)
-	toaster.InfoWithDuration("Neutral Actions button tapped", 1500)
+	B4XPages.MainPage.ShowToast("Neutral Actions button tapped", False)
 End Sub
 
 Private Sub nbtxt_bars_Click(Tag As Object)
-	toaster.InfoWithDuration("Center-neutral navbar: bars clicked", 1500)
+	B4XPages.MainPage.ShowToast("Center-neutral navbar: bars clicked", False)
 End Sub
 
 Private Sub nbtxt_ghost_end_Click (Tag As Object)
-	toaster.InfoWithDuration("Ghost Skip button tapped", 1500)
+	B4XPages.MainPage.ShowToast("Ghost Skip button tapped", False)
 End Sub
 
 ' Back button: icon only (no label text)
@@ -555,7 +550,7 @@ Private Sub AddNavbarBackIconOnly
 End Sub
 
 Private Sub nb_back_icon_Back (Tag As Object)
-	toaster.InfoWithDuration("Back (icon only) tapped", 1500)
+	B4XPages.MainPage.ShowToast("Back (icon only) tapped", False)
 End Sub
 
 ' Back button: icon + text label
@@ -572,7 +567,7 @@ Private Sub AddNavbarBackWithText
 End Sub
 
 Private Sub nb_back_text_Back (Tag As Object)
-	toaster.SuccessWithDuration("Back (with text) tapped", 1500)
+	B4XPages.MainPage.ShowToastSuccess("Back (with text) tapped", False)
 End Sub
 
 
@@ -611,27 +606,27 @@ Private Sub nbcs_clearBtn_Click (Tag As Object)
 	' Clear all items from the start slot and add a new "Home" button
 	nbClearStart.ClearStartSlot
 	Dim homeBtn As B4XDaisyButton = nbClearStart.AddButtonToStart("nbcs_home", "Home", "primary", 90dip, 36dip, False)
-	toaster.SuccessWithDuration("Start slot cleared! Added: Home button", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Start slot cleared! Added: Home button", False)
 End Sub
 
 Private Sub nbcs_home_Click (Tag As Object)
-	toaster.InfoWithDuration("Home button tapped!", 1500)
+	B4XPages.MainPage.ShowToast("Home button tapped!", False)
 End Sub
 
 Private Sub nbcs_bars_Click(Tag As Object)
-	toaster.InfoWithDuration("Start bars icon tapped", 1500)
+	B4XPages.MainPage.ShowToast("Start bars icon tapped", False)
 End Sub
 
 Private Sub nbcs_menu_Click (Tag As Object)
-	toaster.InfoWithDuration("Start Menu button tapped", 1500)
+	B4XPages.MainPage.ShowToast("Start Menu button tapped", False)
 End Sub
 
 Private Sub nbcs_Opened
-	toaster.InfoWithDuration("Hamburger opened", 1000)
+	B4XPages.MainPage.ShowToast("Hamburger opened", False)
 End Sub
 
 Private Sub nbcs_Closed
-	toaster.InfoWithDuration("Hamburger closed", 1000)
+	B4XPages.MainPage.ShowToast("Hamburger closed", False)
 End Sub
 
 ' =======================================================
@@ -669,19 +664,19 @@ Private Sub nbcc_clearBtn_Click (Tag As Object)
 	' Clear all items from the center slot and add a new search button
 	nbClearCenter.ClearCenterSlot
 	Dim searchBtn As B4XDaisyButton = nbClearCenter.AddButtonToCenter("nbcc_newsearch", "Search", "none", 100dip, 36dip, True)
-	toaster.SuccessWithDuration("Center slot cleared! Added: Search button", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Center slot cleared! Added: Search button", False)
 End Sub
 
 Private Sub nbcc_newsearch_Click (Tag As Object)
-	toaster.InfoWithDuration("New Search button tapped!", 1500)
+	B4XPages.MainPage.ShowToast("New Search button tapped!", False)
 End Sub
 
 Private Sub nbcc_bars_Click(Tag As Object)
-	toaster.InfoWithDuration("Center demo start bars tapped", 1500)
+	B4XPages.MainPage.ShowToast("Center demo start bars tapped", False)
 End Sub
 
 Private Sub nbcc_search_Click (Tag As Object)
-	toaster.InfoWithDuration("Center search button tapped", 1500)
+	B4XPages.MainPage.ShowToast("Center search button tapped", False)
 End Sub
 
 ' =======================================================
@@ -717,37 +712,37 @@ Private Sub nbce_clearBtn_Click (Tag As Object)
 	' Clear all items from the end slot and add a new profile button
 	nbClearEnd.ClearEndSlot
 	Dim profileBtn As B4XDaisyButton = nbClearEnd.AddButtonToEnd("nbce_profile", "Profile", "success", 90dip, 36dip, False)
-	toaster.SuccessWithDuration("End slot cleared! Added: Profile button", 2000)
+	B4XPages.MainPage.ShowToastSuccess("End slot cleared! Added: Profile button", False)
 End Sub
 
 Private Sub nbce_profile_Click (Tag As Object)
-	toaster.InfoWithDuration("Profile button tapped!", 1500)
+	B4XPages.MainPage.ShowToast("Profile button tapped!", False)
 End Sub
 
 Private Sub nbce_bell_Click(Tag As Object)
-	toaster.InfoWithDuration("End bell icon tapped", 1500)
+	B4XPages.MainPage.ShowToast("End bell icon tapped", False)
 End Sub
 
 Private Sub nbce_login_Click (Tag As Object)
-	toaster.InfoWithDuration("End Login button tapped", 1500)
+	B4XPages.MainPage.ShowToast("End Login button tapped", False)
 End Sub
 
 ' --- FAB events for the fixed FAB on the first navbar example ---
 
 Private Sub nb1_fab_Click(Tag As Object)
-	toaster.InfoWithDuration("FAB clicked!", 1500)
+	B4XPages.MainPage.ShowToast("FAB clicked!", False)
 End Sub
 
 Private Sub nb1_fab_ActionClick(Index As Int, Tag As Object)
 	Dim actionName As String = ""
 	If Tag <> Null Then actionName = Tag
-	toaster.InfoWithDuration("Action " & Index & ": " & actionName, 2000)
+	B4XPages.MainPage.ShowToast("Action " & Index & ": " & actionName, False)
 End Sub
 
 Private Sub B4XPage_Appear
-    ' Bring fixed FAB to front whenever this page becomes visible
-    If nb1Fab.IsInitialized Then
-        nb1Fab.BringToFront
-    End If
-    CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+	' Bring fixed FAB to front whenever this page becomes visible
+	If nb1Fab.IsInitialized Then
+		nb1Fab.BringToFront
+	End If
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

@@ -95,6 +95,10 @@ End Sub
 Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
+
+Private Sub B4XPage_Disappear
+	If fab.IsInitialized And fab.IsOpen Then fab.Close
+End Sub
 #End Region
 
 #Region Demo Events
@@ -110,7 +114,7 @@ Private Sub ShowDemoToast(Kind As String, Tag As Object)
     Dim s As String = ""
     If Tag <> Null Then s = Tag
     If s.Length = 0 Then s = Kind
-    ToastMessageShow(Kind & ": " & s, False)
+    B4XPages.MainPage.ShowToast(Kind & ": " & s, False)
     #End If
 End Sub
 #End Region

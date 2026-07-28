@@ -279,19 +279,19 @@ End Sub
 
 #Region Events
 Private Sub ib_Click(Tag As Object)
-    ToastMessageShow("Clicked: " & Tag, False)
+    B4XPages.MainPage.ShowToast("Clicked: " & Tag, False)
 End Sub
 
 
 Private Sub ibloading_Click(Tag As Object)
-    ToastMessageShow("Loading: " & Tag, False)
+    B4XPages.MainPage.ShowToast("Loading: " & Tag, False)
 End Sub
 Private Sub ibactive_Click(Tag As Object)
-    ToastMessageShow("Active: " & Tag, False)
+    B4XPages.MainPage.ShowToast("Active: " & Tag, False)
 End Sub
 
 Private Sub ibicon_Click(Tag As Object)
-    ToastMessageShow("Icon: " & Tag, False)
+    B4XPages.MainPage.ShowToast("Icon: " & Tag, False)
 End Sub
 #End Region
 

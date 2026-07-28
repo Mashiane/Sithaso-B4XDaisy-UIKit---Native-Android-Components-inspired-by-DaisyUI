@@ -17,7 +17,7 @@ Sub Class_Globals
     Private svHost As ScrollView
     Private pnlHost As B4XView
     Private PAGE_PAD As Int = 12dip
-    Private toaster As B4XDaisyToast
+    Private mCarousels As List
 End Sub
 #End Region
 
@@ -28,26 +28,35 @@ End Sub
 
 Private Sub B4XPage_Created(Root1 As B4XView)
     Root = Root1
-
+	mCarousels.Initialize
 	svHost.Initialize(Max(1dip, Root.Height))
 	Root.AddView(svHost, 0, 0, Root.Width, Root.Height)
 	pnlHost = svHost.Panel
 	pnlHost.Color = xui.Color_Transparent
-
-	' Initialize toast for click feedback
-	toaster.Initialize(Me, "toaster")
-	toaster.CreateView
-	toaster.SetRoot(Root)
-	toaster.SetPosition("end", "bottom")
 
 End Sub
 
 Private Sub B4XPage_Appear
 	If pnlHost.NumberOfViews = 0 Then
 		Wait For (RenderExamples(Root.Width, Root.Height)) Complete  (Done As Boolean)
+	Else
+		If mCarousels.IsInitialized Then
+			For Each c As B4XDaisyCarousel In mCarousels
+				c.Resume
+			Next
+		End If
 	End If
 	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
+
+Private Sub B4XPage_Disappear
+	If mCarousels.IsInitialized Then
+		For Each c As B4XDaisyCarousel In mCarousels
+			c.Pause
+		Next
+	End If
+End Sub
+
 #End Region
 
 #Region Rendering
@@ -59,14 +68,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim currentY As Int = PAGE_PAD
     
     ' #region Example 1: Snap to start (default)
-    ' DaisyUI: <div class="carousel rounded-box"> - natural image sizes, no gap/padding.
+    ' DaisyUI: <div class="carousel rounded-box w-full"> with full width items.
     ' Each item has a click handler that shows a toast notification.
     currentY = AddSectionTitle("Snap to start (default)", currentY, maxW)
     Dim carousel1 As B4XDaisyCarousel
     carousel1.Initialize(Me, "carousel1")
     carousel1.RoundedBox = True
-    carousel1.Height = "h-auto"
-    carousel1.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 0)
+    carousel1.Width = "w-full"
+    carousel1.Height = "h-[300px]"
+    carousel1.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 300dip)
     
     Dim images1() As String = Array As String("photo-1559703248-dcaaec9fab78.webp", _
                                              "photo-1565098772267-60af42b81ef2.webp", _
@@ -83,8 +93,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         itm.ItemType = "image"
         itm.Source = img
         itm.Snap = "start"
-        itm.Width = "w-[300px]"
-        itm.Height = "h-[400px]"
+        itm.Width = "w-full"
+        itm.Height = "h-full"
         carousel1.AddItem(itm)
         idx1 = idx1 + 1
     Next
@@ -94,14 +104,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #endregion
     
     ' #region Example 2: Snap to center
-    ' DaisyUI: <div class="carousel carousel-center rounded-box"> - natural image sizes.
+    ' DaisyUI: <div class="carousel carousel-center rounded-box w-full"> with full width items.
     currentY = AddSectionTitle("Snap to center", currentY, maxW)
     Dim carousel2 As B4XDaisyCarousel
     carousel2.Initialize(Me, "carousel2")
     carousel2.Snap = "center"
     carousel2.RoundedBox = True
-    carousel2.Height = "h-auto"
-    carousel2.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 200dip)
+    carousel2.Width = "w-full"
+    carousel2.Height = "h-[300px]"
+    carousel2.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 300dip)
     
     Dim idx2 As Int = 0
     For Each img As String In images1
@@ -111,8 +122,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         itm.ItemType = "image"
         itm.Source = img
         itm.Snap = "center"
-        itm.Width = "w-[300px]"
-        itm.Height = "h-[400px]"
+        itm.Width = "w-full"
+        itm.Height = "h-full"
         carousel2.AddItem(itm)
         idx2 = idx2 + 1
     Next
@@ -121,14 +132,15 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #endregion
 
     ' #region Example 3: Snap to end
-    ' DaisyUI: <div class="carousel carousel-end rounded-box"> - natural image sizes.
+    ' DaisyUI: <div class="carousel carousel-end rounded-box w-full"> with full width items.
     currentY = AddSectionTitle("Snap to end", currentY, maxW)
     Dim carousel3 As B4XDaisyCarousel
     carousel3.Initialize(Me, "carousel3")
     carousel3.Snap = "end"
     carousel3.RoundedBox = True
-    carousel3.Height = "h-auto"
-    carousel3.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 200dip)
+    carousel3.Width = "w-full"
+    carousel3.Height = "h-[300px]"
+    carousel3.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 300dip)
     
     Dim idx3 As Int = 0
     For Each img As String In images1
@@ -138,8 +150,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
         itm.ItemType = "image"
         itm.Source = img
         itm.Snap = "end"
-        itm.Width = "w-[300px]"
-        itm.Height = "h-[400px]"
+        itm.Width = "w-full"
+        itm.Height = "h-full"
         carousel3.AddItem(itm)
         idx3 = idx3 + 1
     Next
@@ -206,13 +218,13 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     ' #endregion
     
     ' #region Example 6: Carousel with half width items
-    ' DaisyUI: <div class="carousel rounded-box w-96"> with items that are w-1/2.
-    ' Carousel is fixed at w-96 (384dip); each item is exactly half that (192dip).
+    ' DaisyUI: <div class="carousel rounded-box w-full"> with items that are w-1/2.
+    ' Carousel takes full width of the page less padding; each item is exactly half that.
     currentY = AddSectionTitle("Carousel with half width items", currentY, maxW)
     Dim carousel6 As B4XDaisyCarousel
     carousel6.Initialize(Me, "carousel6")
     carousel6.RoundedBox = True
-    carousel6.Width = "w-96"
+    carousel6.Width = "w-full"
     carousel6.Height = "h-96"
     carousel6.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 200dip)
     
@@ -435,17 +447,17 @@ End Sub
 
 ' Handles clicks from items in examples 1-10 (event name "item")
 Private Sub item_Click(Tag As Object)
-    toaster.InfoWithDuration("Carousel item: " & Tag, 2500)
+    B4XPages.MainPage.ShowToast("Carousel item: " & Tag, False)
 End Sub
 
 ' Handles clicks from items in example 11 (event name "item11")
 Private Sub item11_Click(Tag As Object)
-    toaster.InfoWithDuration("Carousel item: " & Tag, 2500)
+    B4XPages.MainPage.ShowToast("Carousel item: " & Tag, False)
 End Sub
 
 ' Handles clicks from items in example 12 (event name "item12")
 Private Sub item12_Click(Tag As Object)
-    toaster.InfoWithDuration("Carousel item: " & Tag, 2500)
+    B4XPages.MainPage.ShowToast("Carousel item: " & Tag, False)
 End Sub
 
 ' Carousel container click handler

@@ -225,9 +225,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex7.Initialize(Me, "ex7")
     ex7.AddToParent(pnlHost, contentLeft, y, maxW, 200dip)
     ex7.Style = "lift"
-    ex7.AddTabWithIcon("Live", "▶")
-    ex7.AddTabWithIcon("Laugh", "😄")
-    ex7.AddTabWithIcon("Love", "❤")
+    ex7.AddTabWithIcon("Live", "?")
+    ex7.AddTabWithIcon("Laugh", "??")
+    ex7.AddTabWithIcon("Love", "?")
     ex7.ActiveIndex = 0
     ex7.SetTabContentText(0, "Live content")
     ex7.SetTabContentText(1, "Laugh content")
@@ -438,115 +438,115 @@ End Sub
 
 Private Sub ex1_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex1 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex1 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex2_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex2 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex2 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex3_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex3 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex3 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex4_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex4 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex4 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex5xs_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex5 XS Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex5 XS Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex5sm_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex5 SM Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex5 SM Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex5md_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex5 MD Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex5 MD Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex5lg_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex5 LG Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex5 LG Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex5xl_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex5 XL Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex5 XL Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex6_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex6 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex6 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex7_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex7 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex7 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex8_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex8 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex8 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex9_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex9 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex9 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex10_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex10 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex10 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex11_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex11 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex11 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex12_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex12 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex12 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex13_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex13 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex13 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex14_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex14 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex14 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 
 Private Sub ex15_TabClick(Index As Int)
     #If B4A
-    ToastMessageShow("Ex15 Tab " & (Index + 1) & " clicked", False)
+    B4XPages.MainPage.ShowToast("Ex15 Tab " & (Index + 1) & " clicked", False)
     #End If
 End Sub
 #End Region

@@ -84,7 +84,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     Dim lbl As Label
     lbl.Initialize("")
     mStatusLbl = lbl
-    mStatusLbl.Text = "Tap a button — the operation appears here"
+    mStatusLbl.Text = "Tap a button ? the operation appears here"
     mStatusLbl.TextColor = xui.Color_RGB(100, 116, 139)
     mStatusLbl.Font = xui.CreateDefaultFont(11)
     mStatusLbl.Color = statusBg
@@ -214,7 +214,7 @@ Private Sub btn_Click(Tag As Object)
         Case "clear-icon-1"
             mIconOn = False
             mMenu.SetItemIcon("item-1", "house-solid.svg")
-            ShowStatus("SetItemIcon(""item-1"", ""house-solid.svg"")  — restored")
+            ShowStatus("SetItemIcon(""item-1"", ""house-solid.svg"")  ? restored")
 
         ' ---- Badge ----
         Case "badge-inc"
@@ -225,7 +225,7 @@ Private Sub btn_Click(Tag As Object)
         Case "badge-clear"
             mBadgeCount = 0
             mMenu.SetItemBadgeText("item-badge", "")
-            ShowStatus("SetItemBadgeText(""item-badge"", """")  — badge hidden")
+            ShowStatus("SetItemBadgeText(""item-badge"", """")  ? badge hidden")
 
         Case "badge-color"
             mBadgeColorIndex = (mBadgeColorIndex + 1) Mod 4
@@ -251,31 +251,31 @@ Private Sub btn_Click(Tag As Object)
         ' ---- Item Visibility ----
         Case "hide-3"
             mMenu.SetItemVisible("item-3", False)
-            ShowStatus("SetItemVisible(""item-3"", False)  — Settings hidden")
+            ShowStatus("SetItemVisible(""item-3"", False)  ? Settings hidden")
 
         Case "show-3"
             mMenu.SetItemVisible("item-3", True)
-            ShowStatus("SetItemVisible(""item-3"", True)  — Settings visible")
+            ShowStatus("SetItemVisible(""item-3"", True)  ? Settings visible")
 
         ' ---- Scroll ----
         Case "scroll-bottom"
             mMenu.ScrollToItem("item-10")
-            ShowStatus("ScrollToItem(""item-10"")  →  Sign Out")
+            ShowStatus("ScrollToItem(""item-10"")  ?  Sign Out")
 
         Case "scroll-top"
             mMenu.ScrollToItem("item-1")
-            ShowStatus("ScrollToItem(""item-1"")  →  Overview")
+            ShowStatus("ScrollToItem(""item-1"")  ?  Overview")
 
         ' ---- Submenu ----
         Case "submenu-open"
             mSubmenuOpen = True
             mMenu.SetSubmenuOpen(mSubmenuIndex, True)
-            ShowStatus("SetSubmenuOpen(" & mSubmenuIndex & ", True)  — Team expanded")
+            ShowStatus("SetSubmenuOpen(" & mSubmenuIndex & ", True)  ? Team expanded")
 
         Case "submenu-close"
             mSubmenuOpen = False
             mMenu.SetSubmenuOpen(mSubmenuIndex, False)
-            ShowStatus("SetSubmenuOpen(" & mSubmenuIndex & ", False)  — Team collapsed")
+            ShowStatus("SetSubmenuOpen(" & mSubmenuIndex & ", False)  ? Team collapsed")
 
     End Select
 End Sub
@@ -294,7 +294,7 @@ Private Sub menu_ItemClick(Tag As Object, Text As String)
     If s.Trim.Length = 0 Then s = Tag
     ShowStatus("ItemClick: """ & s & """")
     #If B4A
-    ToastMessageShow(s, False)
+    B4XPages.MainPage.ShowToast(s, False)
     #End If
 End Sub
 

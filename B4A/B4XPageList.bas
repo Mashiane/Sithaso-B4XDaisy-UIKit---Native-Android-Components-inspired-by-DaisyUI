@@ -271,7 +271,7 @@ Private Sub iconHeart_Click(Tag As Object)
 End Sub
 
 Private Sub iconplay_Click(Tag As Object)
-    ToastMessageShow("Play: " & Tag, False)
+    B4XPages.MainPage.ShowToast("Play: " & Tag, False)
 End Sub
 
 Private Sub CreateRankedSongRow(Panel As B4XView, Data As Map)
@@ -469,39 +469,39 @@ Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
 End Sub
 
 Private Sub List1_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List1 Clicked: " & Index & " Tag=" & Tag, False)
+    B4XPages.MainPage.ShowToast("List1 Clicked: " & Index & " Tag=" & Tag, False)
 End Sub
 
 Private Sub List1_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List1 Long: " & Index, False)
+    B4XPages.MainPage.ShowToast("List1 Long: " & Index, False)
 End Sub
 
 Private Sub List2_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List2 Clicked: " & Index & " Tag=" & Tag, False)
+    B4XPages.MainPage.ShowToast("List2 Clicked: " & Index & " Tag=" & Tag, False)
 End Sub
 
 Private Sub List2_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List2 Long: " & Index, False)
+    B4XPages.MainPage.ShowToast("List2 Long: " & Index, False)
 End Sub
 
 Private Sub List3_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List3 Clicked: " & Index & " Tag=" & Tag, False)
+    B4XPages.MainPage.ShowToast("List3 Clicked: " & Index & " Tag=" & Tag, False)
 End Sub
 
 Private Sub List3_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List3 Long: " & Index, False)
+    B4XPages.MainPage.ShowToast("List3 Long: " & Index, False)
 End Sub
 
 Private Sub List4_ItemClick(Index As Int, Tag As Object)
-    ToastMessageShow("List4 Clicked: " & Index & " Tag=" & Tag, False)
+    B4XPages.MainPage.ShowToast("List4 Clicked: " & Index & " Tag=" & Tag, False)
 End Sub
 
 Private Sub List4_ItemLongClick(Index As Int, Tag As Object)
-    ToastMessageShow("List4 Long: " & Index, False)
+    B4XPages.MainPage.ShowToast("List4 Long: " & Index, False)
 End Sub
 
 Private Sub nhplay_Click(Tag As Object)
-    ToastMessageShow("Play: " & Tag, False)
+    B4XPages.MainPage.ShowToast("Play: " & Tag, False)
 End Sub
 
 Private Sub nhheart_Click(Tag As Object)

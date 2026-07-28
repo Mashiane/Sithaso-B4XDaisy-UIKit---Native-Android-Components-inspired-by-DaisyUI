@@ -11,8 +11,6 @@ Sub Class_Globals
 	Private xui As XUI
 	Private pageScroll As B4XDaisyPageScroll
 	Private pnlHost As B4XView
-	Private toast As B4XDaisyToast
-
 	' Signature Pad instance
 	Private spDemo As B4XDaisySignaturePad
 	Private spTarget As B4XDaisySignaturePad
@@ -46,6 +44,10 @@ Sub Class_Globals
     
 	' Local Base64 buffer
 	Private localSavedBase64 As String = ""
+
+	' B4XDaisySignature (fieldset wrapper) instances
+	Private sigFieldset As B4XDaisySignature
+	Private sigFieldsetRequired As B4XDaisySignature
 End Sub
 #End Region
 
@@ -63,11 +65,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	pageScroll.AddToParent(Root, 0, 0, Root.Width, Root.Height)
 	pnlHost = pageScroll.Panel
 
-	' Initialize Toast for feedback
-	toast.Initialize(Me, "toast")
-	toast.CreateView
-	toast.SetRoot(Root)
-	toast.SetPosition("end", "bottom")
+	' Toast migrated to B4XMainPage central methods
 
 	RenderExamples(Root.Width, Root.Height)
 End Sub
@@ -80,15 +78,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Dim padding As Int = pageScroll.PagePadding
 	Dim gap As Int = pageScroll.YGap
 	Dim y As Int = padding
-	Dim btnW As Int = maxW - (padding * 2)
     
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	' Section 1: The Interactive Signature Pad
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	y = pageScroll.AddSectionTitle("Interactive Drawing Area", y, False)
     
 	spDemo.Initialize(Me, "spDemo")
-	spDemo.AddToParent(pnlHost, padding, y, btnW, 220dip)
+	spDemo.AddToParent(pnlHost, padding, y, maxW, 220dip)
 	spDemo.PenColor = xui.Color_Black
 	spDemo.BackgroundColor = xui.Color_White
 	spDemo.MinWidth = 2
@@ -98,45 +95,45 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	spDemo.DisallowParentIntercept = True
 	y = y + spDemo.GetComputedHeight + gap
     
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	' Section 2: Drawing Actions & Settings
 	' Buttons are stacked vertically (one per row) using full width.
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	y = pageScroll.AddSectionTitle("Canvas Controls & Settings", y, False)
     
 	btnClear.Initialize(Me, "btnClear")
-	btnClear.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnClear.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnClear.Text = "Clear"
 	btnClear.Variant = "error"
 	y = y + btnClear.GetComputedHeight + gap
     
 	btnCheckEmpty.Initialize(Me, "btnCheckEmpty")
-	btnCheckEmpty.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnCheckEmpty.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnCheckEmpty.Text = "Check Empty"
 	btnCheckEmpty.Variant = "neutral"
 	y = y + btnCheckEmpty.GetComputedHeight + gap
     
 	btnPenBlack.Initialize(Me, "btnPenBlack")
-	btnPenBlack.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnPenBlack.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnPenBlack.Text = "Pen Color: Black"
 	btnPenBlack.Variant = "neutral"
 	y = y + btnPenBlack.GetComputedHeight + gap
     
 	btnPenRed.Initialize(Me, "btnPenRed")
-	btnPenRed.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnPenRed.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnPenRed.Text = "Pen Color: Red"
 	btnPenRed.Variant = "error"
 	y = y + btnPenRed.GetComputedHeight + gap
     
 	btnPenBlue.Initialize(Me, "btnPenBlue")
-	btnPenBlue.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnPenBlue.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnPenBlue.Text = "Pen Color: Blue"
 	btnPenBlue.Variant = "info"
 	y = y + btnPenBlue.GetComputedHeight + gap
 	
 	' Pen Width slider - controls the signature pad stroke width
 	lblPenWidth.Initialize(Me, "lblPenWidth")
-	lblPenWidth.AddToParent(pnlHost, padding, y, btnW, 24dip)
+	lblPenWidth.AddToParent(pnlHost, padding, y, maxW, 24dip)
 	lblPenWidth.Text = "Pen Width"
 	lblPenWidth.TextColor = xui.Color_RGB(30, 41, 59)
 	lblPenWidth.TextSize = 14
@@ -145,7 +142,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	y = y + lblPenWidth.GetComputedHeight + 4dip
 	
 	rngPenWidth.Initialize(Me, "rngPenWidth")
-	rngPenWidth.AddToParent(pnlHost, padding, y, btnW, 44dip)
+	rngPenWidth.AddToParent(pnlHost, padding, y, maxW, 44dip)
 	rngPenWidth.MinValue = 1
 	rngPenWidth.MaxValue = 20
 	rngPenWidth.StepValue = 1
@@ -158,42 +155,42 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     
 	' Settings Toggles stacked vertically
 	tglIntercept.Initialize(Me, "tglIntercept")
-	tglIntercept.AddToParent(pnlHost, padding, y, btnW, 40dip)
+	tglIntercept.AddToParent(pnlHost, padding, y, maxW, 40dip)
 	tglIntercept.Checked = True
 	tglIntercept.Text = "Disallow Scroll Intercept"
 	y = y + tglIntercept.getComputedHeight + gap
     
 	tglEnable.Initialize(Me, "tglEnable")
-	tglEnable.AddToParent(pnlHost, padding, y, btnW, 40dip)
+	tglEnable.AddToParent(pnlHost, padding, y, maxW, 40dip)
 	tglEnable.Checked = True
 	tglEnable.Text = "Enabled"
 	y = y + tglEnable.getComputedHeight + gap
     
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	' Section 3: Import / Export & Preview
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	y = pageScroll.AddSectionTitle("Import, Export & Validation", y, False)
     
 	btnExportPNG.Initialize(Me, "btnExportPNG")
-	btnExportPNG.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnExportPNG.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnExportPNG.Text = "Export PNG"
 	btnExportPNG.Variant = "primary"
 	y = y + btnExportPNG.GetComputedHeight + gap
     
 	btnExportBMP.Initialize(Me, "btnExportBMP")
-	btnExportBMP.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnExportBMP.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnExportBMP.Text = "Export BMP"
 	btnExportBMP.Variant = "primary"
 	y = y + btnExportBMP.GetComputedHeight + gap
     
 	btnSaveLocal.Initialize(Me, "btnSaveLocal")
-	btnSaveLocal.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnSaveLocal.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnSaveLocal.Text = "Save Base64"
 	btnSaveLocal.Variant = "secondary"
 	y = y + btnSaveLocal.GetComputedHeight + gap
     
 	btnLoadLocal.Initialize(Me, "btnLoadLocal")
-	btnLoadLocal.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnLoadLocal.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnLoadLocal.Text = "Load Base64"
 	btnLoadLocal.Variant = "secondary"
 	y = y + btnLoadLocal.GetComputedHeight + gap
@@ -206,7 +203,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	p.Initialize("")
 	pnlPreviewFrame = p
 	pnlPreviewFrame.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_LightGray, 8dip)
-	pnlHost.AddView(pnlPreviewFrame, padding, y, btnW, 120dip)
+	pnlHost.AddView(pnlPreviewFrame, padding, y, maxW, 120dip)
     
 	' Add image view inside frame
 	Dim iv As ImageView
@@ -219,13 +216,13 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	#End If
 	y = y + pnlPreviewFrame.Height + gap
     
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	' Section 4: Drawing Synchronization & Pad Copying
-	' ─────────────────────────────────────────────────────────────
+	' -------------------------------------------------------------
 	y = pageScroll.AddSectionTitle("Drawing Synchronization & Pad Copying", y, False)
     
 	spTarget.Initialize(Me, "spTarget")
-	spTarget.AddToParent(pnlHost, padding, y, btnW, 150dip)
+	spTarget.AddToParent(pnlHost, padding, y, maxW, 150dip)
 	spTarget.PenColor = xui.Color_Blue
 	spTarget.BackgroundColor = xui.Color_White
 	spTarget.MinWidth = 2
@@ -234,17 +231,42 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	y = y + spTarget.GetComputedHeight + gap
     
 	btnCopyToTarget.Initialize(Me, "btnCopyToTarget")
-	btnCopyToTarget.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnCopyToTarget.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnCopyToTarget.Text = "Copy to Target Pad"
 	btnCopyToTarget.Variant = "accent"
 	y = y + btnCopyToTarget.GetComputedHeight + gap
     
 	btnClearTarget.Initialize(Me, "btnClearTarget")
-	btnClearTarget.AddToParent(pnlHost, padding, y, btnW, 36dip)
+	btnClearTarget.AddToParent(pnlHost, padding, y, maxW, 36dip)
 	btnClearTarget.Text = "Clear Target"
 	btnClearTarget.Variant = "neutral"
 	y = y + btnClearTarget.GetComputedHeight + gap
     
+	' -------------------------------------------------------------
+	' Section 5: Fieldset Wrapper (B4XDaisySignature)
+	' -------------------------------------------------------------
+	y = pageScroll.AddSectionTitle("Fieldset Wrapped Signature", y, False)
+
+	sigFieldset.Initialize(Me, "sigFieldset")
+	sigFieldset.AddToParent(pnlHost, padding, y, maxW, 180dip)
+	sigFieldset.setLegend("Your Signature")
+	sigFieldset.setVariant("primary")
+	sigFieldset.setShadow("sm")
+	sigFieldset.setHintText("Draw your signature in the area above")
+	y = y + sigFieldset.getHeight + gap
+
+	y = pageScroll.AddSectionTitle("Required Signature with Validation", y, False)
+
+	sigFieldsetRequired.Initialize(Me, "sigFieldsetRequired")
+	sigFieldsetRequired.AddToParent(pnlHost, padding, y, maxW, 180dip)
+	sigFieldsetRequired.setLegend("Authorized Signature")
+	sigFieldsetRequired.setLabelAbove(True)
+	sigFieldsetRequired.setRequired(True)
+	sigFieldsetRequired.setHintText("This field is required — please sign above")
+	sigFieldsetRequired.setErrorText("You must provide a signature before continuing")
+	sigFieldsetRequired.setShadow("sm")
+	y = y + sigFieldsetRequired.getHeight + gap
+
 	' AutoFit scroll height
 	pageScroll.AutoFit
 End Sub
@@ -253,7 +275,7 @@ End Sub
 #Region Page Events
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
 	If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
-	If toast.IsInitialized Then toast.Base_Resize(Width, Height)
+
 	RenderExamples(Width, Height)
 End Sub
 
@@ -265,31 +287,31 @@ End Sub
 #Region UI Actions
 Private Sub btnClear_Click(Tag As Object)
 	spDemo.Clear
-	toast.InfoWithDuration("Signature pad cleared", 1500)
+	B4XPages.MainPage.ShowToast("Signature pad cleared", False)
 End Sub
 
 Private Sub btnCheckEmpty_Click(Tag As Object)
 	If spDemo.IsEmpty Then
-		toast.WarningWithDuration("Signature pad is empty!", 2000)
+		B4XPages.MainPage.ShowToastWarning("Signature pad is empty!", False)
 	Else
-		toast.SuccessWithDuration("Signature pad contains a drawing!", 2000)
+		B4XPages.MainPage.ShowToastSuccess("Signature pad contains a drawing!", False)
 	End If
 End Sub
 
 ' Pen colors selection
 Private Sub btnPenBlack_Click(Tag As Object)
 	spDemo.PenColor = xui.Color_Black
-	toast.InfoWithDuration("Pen color set to Black", 1500)
+	B4XPages.MainPage.ShowToast("Pen color set to Black", False)
 End Sub
 
 Private Sub btnPenRed_Click(Tag As Object)
 	spDemo.PenColor = xui.Color_Red
-	toast.InfoWithDuration("Pen color set to Red", 1500)
+	B4XPages.MainPage.ShowToast("Pen color set to Red", False)
 End Sub
 
 Private Sub btnPenBlue_Click(Tag As Object)
 	spDemo.PenColor = xui.Color_Blue
-	toast.InfoWithDuration("Pen color set to Blue", 1500)
+	B4XPages.MainPage.ShowToast("Pen color set to Blue", False)
 End Sub
 
 ' Pen Width range - updates the signature pad stroke width in real time
@@ -302,25 +324,25 @@ End Sub
 Private Sub tglIntercept_Checked(Checked As Boolean)
 	spDemo.DisallowParentIntercept = Checked
 	If Checked Then
-		toast.SuccessWithDuration("Parent Scroll Intercept Disabled", 1500)
+		B4XPages.MainPage.ShowToastSuccess("Parent Scroll Intercept Disabled", False)
 	Else
-		toast.InfoWithDuration("Parent Scroll Intercept Enabled", 1500)
+		B4XPages.MainPage.ShowToast("Parent Scroll Intercept Enabled", False)
 	End If
 End Sub
 
 Private Sub tglEnable_Checked(Checked As Boolean)
 	spDemo.Enabled = Checked
 	If Checked Then
-		toast.SuccessWithDuration("Signature pad Enabled", 1500)
+		B4XPages.MainPage.ShowToastSuccess("Signature pad Enabled", False)
 	Else
-		toast.InfoWithDuration("Signature pad Disabled", 1500)
+		B4XPages.MainPage.ShowToast("Signature pad Disabled", False)
 	End If
 End Sub
 
 ' Exports & Imports
 Private Sub btnExportPNG_Click(Tag As Object)
 	If spDemo.IsEmpty Then
-		toast.WarningWithDuration("Cannot export: drawing area is empty", 2000)
+		B4XPages.MainPage.ShowToastWarning("Cannot export: drawing area is empty", False)
 		Return
 	End If
     
@@ -333,12 +355,12 @@ Private Sub btnExportPNG_Click(Tag As Object)
 	Dim ivX As B4XView = ivPreview
 	ivX.SetBitmap(bmp)
     
-	toast.SuccessWithDuration("Exported PNG successfully", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Exported PNG successfully", False)
 End Sub
 
 Private Sub btnExportBMP_Click(Tag As Object)
 	If spDemo.IsEmpty Then
-		toast.WarningWithDuration("Cannot export: drawing area is empty", 2000)
+		B4XPages.MainPage.ShowToastWarning("Cannot export: drawing area is empty", False)
 		Return
 	End If
     
@@ -351,44 +373,61 @@ Private Sub btnExportBMP_Click(Tag As Object)
 	Dim ivX As B4XView = ivPreview
 	ivX.SetBitmap(bmp)
     
-	toast.SuccessWithDuration("Exported BMP successfully", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Exported BMP successfully", False)
 End Sub
 
 Private Sub btnSaveLocal_Click(Tag As Object)
 	If spDemo.IsEmpty Then
-		toast.WarningWithDuration("Cannot save: drawing area is empty", 2000)
+		B4XPages.MainPage.ShowToastWarning("Cannot save: drawing area is empty", False)
 		Return
 	End If
     
 	localSavedBase64 = spDemo.GetBase64
-	toast.SuccessWithDuration("Base64 string saved to local memory", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Base64 string saved to local memory", False)
 End Sub
 
 Private Sub btnLoadLocal_Click(Tag As Object)
 	If localSavedBase64 = "" Then
-		toast.WarningWithDuration("No saved Base64 string found. Save one first!", 2000)
+		B4XPages.MainPage.ShowToastWarning("No saved Base64 string found. Save one first!", False)
 		Return
 	End If
     
 	' Load signature from base64
 	spDemo.SetBase64(localSavedBase64)
-	toast.SuccessWithDuration("Loaded signature from Base64 string", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Loaded signature from Base64 string", False)
 End Sub
 
 Private Sub btnCopyToTarget_Click(Tag As Object)
 	If spDemo.IsEmpty Then
-		toast.WarningWithDuration("Nothing to copy: drawing area is empty", 2000)
+		B4XPages.MainPage.ShowToastWarning("Nothing to copy: drawing area is empty", False)
 		Return
 	End If
     
 	' Get signature as B4XBitmap from spDemo and set it onto spTarget
 	Dim bmp As B4XBitmap = spDemo.GetBitMap
 	spTarget.SetBitmap(bmp)
-	toast.SuccessWithDuration("Copied signature as Bitmap successfully", 2000)
+	B4XPages.MainPage.ShowToastSuccess("Copied signature as Bitmap successfully", False)
 End Sub
 
 Private Sub btnClearTarget_Click(Tag As Object)
 	spTarget.Clear
-	toast.InfoWithDuration("Target signature pad cleared", 1500)
+	B4XPages.MainPage.ShowToast("Target signature pad cleared", False)
+End Sub
+
+' B4XDaisySignature fieldset wrapper actions
+Private Sub sigFieldset_Saved (Data As String)
+	B4XPages.MainPage.ShowToastSuccess("Signature saved! (Base64 length: " & Data.Length & ")", False)
+End Sub
+
+Private Sub sigFieldset_Cleared
+	B4XPages.MainPage.ShowToast("Signature cleared", False)
+End Sub
+
+Private Sub sigFieldsetRequired_Saved (Data As String)
+	B4XPages.MainPage.ShowToastSuccess("Required Signature saved! (Base64 length: " & Data.Length & ")", False)
+End Sub
+
+Private Sub sigFieldsetRequired_Cleared
+	B4XPages.MainPage.ShowToast("Required Signature cleared", False)
 End Sub
 #End Region

@@ -86,13 +86,13 @@ Private Sub ExampleNotificationBell(Y As Int, Width As Int) As Int
     Dim iconSize As Int = 48dip
     Dim iconPad As Int = 12dip
 
-    ' Container row — needed so the indicator badge can overflow the bell without being clipped
+    ' Container row ? needed so the indicator badge can overflow the bell without being clipped
     Dim row As B4XView = xui.CreatePanel("")
     row.Color = xui.Color_Transparent
     B4XDaisyVariants.DisableClipping(row)
     pnlHost.AddView(row, PAGE_PAD, Y, iconSize + iconPad * 2, iconSize + iconPad * 2)
 
-    ' Bell SVG icon — the visual trigger, centered in row with padding
+    ' Bell SVG icon ? the visual trigger, centered in row with padding
     Dim bell As B4XDaisySvgIcon
     bell.Initialize(Me, "bell")
     Dim bellView As B4XView = bell.AddToParent(row, iconPad, iconPad, iconSize, iconSize)
@@ -110,7 +110,7 @@ Private Sub ExampleNotificationBell(Y As Int, Width As Int) As Int
     ind.setSize("xs")
     ind.setHorizontalPlacement("end")
     ind.setVerticalPlacement("top")
-    ind.AttachToTarget(bellView)
+    ind.AttachTo(bellView)
 
     ' Menu width: 90% of available page width, expressed as px for TailwindSizeToDip
     Dim menuW As Int = Max(200dip, Width * 0.9)
@@ -145,7 +145,7 @@ Private Sub ExampleNotificationBell(Y As Int, Width As Int) As Int
 
     ' Multi-line: sender title + message item
     dd.Menu.AddTitle("Marcus T.")
-    dd.AddItem("notif-marcus", "Meeting rescheduled to 3pm — please update your calendar.")
+    dd.AddItem("notif-marcus", "Meeting rescheduled to 3pm ? please update your calendar.")
 
     ' Single-line
     dd.AddItem("notif-login", "New login from Chrome on Windows")
@@ -302,7 +302,7 @@ Private Sub AddDropdownBlock(SectionTitle As String, DropdownComp As B4XDaisyDro
         End Select
     End If
 
-    ' Render title above the button — must happen before hostTop is calculated
+    ' Render title above the button ? must happen before hostTop is calculated
     ' so that Y is already advanced past the title when positioning the trigger.
     If SectionTitle.Length > 0 Then
         Y = AddSectionTitle(SectionTitle, Y, blockW)
@@ -392,7 +392,7 @@ Private Sub dropdown_ItemClick(Tag As Object, Text As String)
     #If B4A
     Dim displayText As String = Text
     If displayText.Length = 0 Then displayText = "" & Tag
-    ToastMessageShow("Dropdown: " & displayText, False)
+    B4XPages.MainPage.ShowToast("Dropdown: " & displayText, False)
     #End If
 End Sub
 

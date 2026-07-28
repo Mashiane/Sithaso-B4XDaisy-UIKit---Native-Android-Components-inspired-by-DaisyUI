@@ -132,9 +132,9 @@ Private Sub ExampleClick_Click(Tag As Object)
 			toast.SetPosition("end", "top")
 			toast.Error("Top End Notification")
 		Case "timed_success"
-			toast.SuccessWithDuration("Successful Operation!", 3000)
+			B4XPages.MainPage.ShowToastSuccess("Successful Operation!", True)
 		Case "timed_error"
-			toast.ErrorWithDuration("Failed to save data.", 5000)
+			B4XPages.MainPage.ShowToastError("Failed to save data.", True)
 		Case "stack_info"
 			toast.Info("New message arrived.")
 		Case "clear_all"

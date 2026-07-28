@@ -354,7 +354,7 @@ Private Sub closeBreakpoints_Click(Tag As Object)
 End Sub
 
 Private Sub smBreakpoints_BreakpointDidChange(Breakpoint As Float)
-	B4XPages.MainPage.ShowAlertNotification("Breakpoint Change", "Snapped to: " & (Breakpoint * 100) & "%", "info", 1500, "top-right")
+	B4XPages.MainPage.ShowToastAlert("Breakpoint Change", "Snapped to: " & (Breakpoint * 100) & "%", "info", 1500, "top-right")
 End Sub
 
 ' ----------------------------------------------------
@@ -392,7 +392,7 @@ End Sub
 
 Private Sub btnAction_Click(Tag As Object)
 	smAuto.Dismiss(Null, "submit")
-	B4XPages.MainPage.ShowAlertNotification("Auto Height", "Settings saved successfully!", "success", 2000, "top-right")
+	B4XPages.MainPage.ShowToastAlert("Auto Height", "Settings saved successfully!", "success", 2000, "top-right")
 End Sub
 
 ' ----------------------------------------------------

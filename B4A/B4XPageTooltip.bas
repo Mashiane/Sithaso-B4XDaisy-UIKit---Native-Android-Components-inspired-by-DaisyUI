@@ -21,6 +21,13 @@ Sub Class_Globals
 	Private ttLeft As B4XDaisyTooltip
 	Private ttRight As B4XDaisyTooltip
 	Private ttRich As B4XDaisyTooltip
+	' Alignment examples
+	Private ttTopStart As B4XDaisyTooltip
+	Private ttTopCenter As B4XDaisyTooltip
+	Private ttTopEnd As B4XDaisyTooltip
+	Private ttLeftStart As B4XDaisyTooltip
+	Private ttLeftCenter As B4XDaisyTooltip
+	Private ttLeftEnd As B4XDaisyTooltip
 End Sub
 
 Public Sub Initialize As Object
@@ -55,29 +62,37 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim btnInfo As B4XDaisyButton = CreateButton("Show Info Tooltip", "v_info")
 	btnInfo.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttInfo.Initialize(Me, "ttInfo")
-	ttInfo.CreateView(CreateMap("Message": "Info: System details", "Variant": "info"))
-	ttInfo.AttachToTarget(btnInfo.getView)
+	ttInfo.CreateView(100dip, 100dip)
+	ttInfo.Message = "Info: System details"
+	ttInfo.Variant = "info"
+	ttInfo.AttachTo(btnInfo.getView)
 	currentY = currentY + 100dip ' Large gap for tooltip visibility
 	
 	Dim btnSuccess As B4XDaisyButton = CreateButton("Show Success Tooltip", "v_success")
 	btnSuccess.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttSuccess.Initialize(Me, "ttSuccess")
-	ttSuccess.CreateView(CreateMap("Message": "Success: Task complete!", "Variant": "success"))
-	ttSuccess.AttachToTarget(btnSuccess.getView)
+	ttSuccess.CreateView(100dip, 100dip)
+	ttSuccess.Message = "Success: Task complete!"
+	ttSuccess.Variant = "success"
+	ttSuccess.AttachTo(btnSuccess.getView)
 	currentY = currentY + 100dip
 	
 	Dim btnWarning As B4XDaisyButton = CreateButton("Show Warning Tooltip", "v_warning")
 	btnWarning.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttWarning.Initialize(Me, "ttWarning")
-	ttWarning.CreateView(CreateMap("Message": "Warning: Check parameters", "Variant": "warning"))
-	ttWarning.AttachToTarget(btnWarning.getView)
+	ttWarning.CreateView(100dip, 100dip)
+	ttWarning.Message = "Warning: Check parameters"
+	ttWarning.Variant = "warning"
+	ttWarning.AttachTo(btnWarning.getView)
 	currentY = currentY + 100dip
 	
 	Dim btnError As B4XDaisyButton = CreateButton("Show Error Tooltip", "v_error")
 	btnError.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttError.Initialize(Me, "ttError")
-	ttError.CreateView(CreateMap("Message": "Error: Action failed!", "Variant": "error"))
-	ttError.AttachToTarget(btnError.getView)
+	ttError.CreateView(100dip, 100dip)
+	ttError.Message = "Error: Action failed!"
+	ttError.Variant = "error"
+	ttError.AttachTo(btnError.getView)
 	currentY = currentY + 120dip
 
 	'--- Positions Section ---
@@ -87,33 +102,107 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim btnTop As B4XDaisyButton = CreateButton("Tooltip Top", "pos_top")
 	btnTop.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttTop.Initialize(Me, "ttTop")
-	ttTop.CreateView(CreateMap("Message": "I am on top"))
-	ttTop.AttachToTarget(btnTop.getView)
+	ttTop.CreateView(100dip, 100dip)
+	ttTop.Message = "I am on top"
+	ttTop.AttachTo(btnTop.getView)
 	currentY = currentY + 100dip
 	
 	Dim btnBottom As B4XDaisyButton = CreateButton("Tooltip Bottom", "pos_bottom")
 	btnBottom.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttBottom.Initialize(Me, "ttBottom")
-	ttBottom.CreateView(CreateMap("Message": "I am at the bottom", "Position": "bottom"))
-	ttBottom.AttachToTarget(btnBottom.getView)
+	ttBottom.CreateView(100dip, 100dip)
+	ttBottom.Message = "I am at the bottom"
+	ttBottom.Position = "bottom"
+	ttBottom.AttachTo(btnBottom.getView)
 	currentY = currentY + 100dip
 	
 	' For Left tooltip: place button on the right side to give space to the left
 	Dim btnLeft As B4XDaisyButton = CreateButton("Left", "pos_left")
 	btnLeft.AddToParent(content, 180dip, currentY, 100dip, 40dip)
 	ttLeft.Initialize(Me, "ttLeft")
-	ttLeft.CreateView(CreateMap("Message": "Left side tooltip", "Position": "left"))
-	ttLeft.AttachToTarget(btnLeft.getView)
+	ttLeft.CreateView(100dip, 100dip)
+	ttLeft.Message = "Left side tooltip"
+	ttLeft.Position = "left"
+	ttLeft.AttachTo(btnLeft.getView)
 	currentY = currentY + 100dip
 	
 	' For Right tooltip: place button on the left side to give space to the right
 	Dim btnRight As B4XDaisyButton = CreateButton("Right", "pos_right")
 	btnRight.AddToParent(content, 20dip, currentY, 100dip, 40dip)
 	ttRight.Initialize(Me, "ttRight")
-	ttRight.CreateView(CreateMap("Message": "Right side tooltip", "Position": "right"))
-	ttRight.AttachToTarget(btnRight.getView)
+	ttRight.CreateView(100dip, 100dip)
+	ttRight.Message = "Right side tooltip"
+	ttRight.Position = "right"
+	ttRight.AttachTo(btnRight.getView)
 	currentY = currentY + 120dip
 
+	'--- Alignment Section ---
+	' Demonstrates tooltip-start / tooltip-center / tooltip-end alignment.
+	AddSectionHeader(content, "Alignment (start / center / end)", currentY)
+	currentY = currentY + 60dip
+
+	' Top alignment: tooltip above the button, shifted to start / center / end.
+	Dim btnTopStart As B4XDaisyButton = CreateButton("Top start", "al_top_start")
+	btnTopStart.AddToParent(content, 20dip, currentY, 200dip, 40dip)
+	ttTopStart.Initialize(Me, "ttTopStart")
+	ttTopStart.CreateView(100dip, 100dip)
+	ttTopStart.Message = "start"
+	ttTopStart.Position = "top"
+	ttTopStart.Alignment = "start"
+	ttTopStart.AttachTo(btnTopStart.getView)
+	currentY = currentY + 90dip
+ 
+	Dim btnTopCenter As B4XDaisyButton = CreateButton("Top center", "al_top_center")
+	btnTopCenter.AddToParent(content, 20dip, currentY, 200dip, 40dip)
+	ttTopCenter.Initialize(Me, "ttTopCenter")
+	ttTopCenter.CreateView(100dip, 100dip)
+	ttTopCenter.Message = "center"
+	ttTopCenter.Position = "top"
+	ttTopCenter.Alignment = "center"
+	ttTopCenter.AttachTo(btnTopCenter.getView)
+	currentY = currentY + 90dip
+ 
+	Dim btnTopEnd As B4XDaisyButton = CreateButton("Top end", "al_top_end")
+	btnTopEnd.AddToParent(content, 20dip, currentY, 200dip, 40dip)
+	ttTopEnd.Initialize(Me, "ttTopEnd")
+	ttTopEnd.CreateView(100dip, 100dip)
+	ttTopEnd.Message = "end"
+	ttTopEnd.Position = "top"
+	ttTopEnd.Alignment = "end"
+	ttTopEnd.AttachTo(btnTopEnd.getView)
+	currentY = currentY + 110dip
+ 
+	' Left alignment: tooltip to the left of the button, shifted to start / center / end (vertical).
+	Dim btnLeftStart As B4XDaisyButton = CreateButton("Left start", "al_left_start")
+	btnLeftStart.AddToParent(content, 180dip, currentY, 120dip, 40dip)
+	ttLeftStart.Initialize(Me, "ttLeftStart")
+	ttLeftStart.CreateView(100dip, 100dip)
+	ttLeftStart.Message = "start"
+	ttLeftStart.Position = "left"
+	ttLeftStart.Alignment = "start"
+	ttLeftStart.AttachTo(btnLeftStart.getView)
+	currentY = currentY + 80dip
+ 
+	Dim btnLeftCenter As B4XDaisyButton = CreateButton("Left center", "al_left_center")
+	btnLeftCenter.AddToParent(content, 180dip, currentY, 120dip, 40dip)
+	ttLeftCenter.Initialize(Me, "ttLeftCenter")
+	ttLeftCenter.CreateView(100dip, 100dip)
+	ttLeftCenter.Message = "center"
+	ttLeftCenter.Position = "left"
+	ttLeftCenter.Alignment = "center"
+	ttLeftCenter.AttachTo(btnLeftCenter.getView)
+	currentY = currentY + 80dip
+ 
+	Dim btnLeftEnd As B4XDaisyButton = CreateButton("Left end", "al_left_end")
+	btnLeftEnd.AddToParent(content, 180dip, currentY, 120dip, 40dip)
+	ttLeftEnd.Initialize(Me, "ttLeftEnd")
+	ttLeftEnd.CreateView(100dip, 100dip)
+	ttLeftEnd.Message = "end"
+	ttLeftEnd.Position = "left"
+	ttLeftEnd.Alignment = "end"
+	ttLeftEnd.AttachTo(btnLeftEnd.getView)
+	currentY = currentY + 120dip
+ 
 	'--- Rich Section ---
 	AddSectionHeader(content, "Rich Content", currentY)
 	currentY = currentY + 60dip
@@ -121,8 +210,10 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Dim btnRich As B4XDaisyButton = CreateButton("Show Rich Tooltip", "rich")
 	btnRich.AddToParent(content, 20dip, currentY, 260dip, 40dip)
 	ttRich.Initialize(Me, "ttRich")
-	ttRich.CreateView(CreateMap("Variant": "neutral", "ShowArrow": True))
-	ttRich.AttachToTarget(btnRich.getView)
+	ttRich.CreateView(100dip, 100dip)
+	ttRich.Variant = "neutral"
+	ttRich.ShowArrow = True
+	ttRich.AttachTo(btnRich.getView)
 	
 	' Create a rich panel
 	Dim p As Panel
@@ -171,6 +262,12 @@ Private Sub ExampleClick_Click(Tag As Object)
 		Case "pos_left" : ttLeft.Visible = Not(ttLeft.Visible)
 		Case "pos_right" : ttRight.Visible = Not(ttRight.Visible)
 		Case "rich" : ttRich.Visible = Not(ttRich.Visible)
+		Case "al_top_start" : ttTopStart.Visible = Not(ttTopStart.Visible)
+		Case "al_top_center" : ttTopCenter.Visible = Not(ttTopCenter.Visible)
+		Case "al_top_end" : ttTopEnd.Visible = Not(ttTopEnd.Visible)
+		Case "al_left_start" : ttLeftStart.Visible = Not(ttLeftStart.Visible)
+		Case "al_left_center" : ttLeftCenter.Visible = Not(ttLeftCenter.Visible)
+		Case "al_left_end" : ttLeftEnd.Visible = Not(ttLeftEnd.Visible)
 	End Select
 End Sub
 

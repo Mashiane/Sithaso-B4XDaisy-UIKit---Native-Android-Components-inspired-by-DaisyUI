@@ -84,7 +84,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     Dim lbl As Label
     lbl.Initialize("")
     mStatusLbl = lbl
-    mStatusLbl.Text = "Tap a button — the operation appears here"
+    mStatusLbl.Text = "Tap a button ? the operation appears here"
     mStatusLbl.TextColor = xui.Color_RGB(100, 116, 139)
     mStatusLbl.Font = xui.CreateDefaultFont(11)
     mStatusLbl.Color = statusBg
@@ -197,12 +197,12 @@ Private Sub btn_Click(Tag As Object)
         Case "add-item"
             mDynamicCount = mDynamicCount + 1
             mMenu.AddItem("dyn-" & mDynamicCount, "Dynamic item " & mDynamicCount)
-            ShowStatus("AddItem(""dyn-" & mDynamicCount & """)  — item added at end")
+            ShowStatus("AddItem(""dyn-" & mDynamicCount & """)  ? item added at end")
 
         Case "rebuild"
             RebuildMenuItems
             ResetState
-            ShowStatus("Clear() + rebuild — all items restored, state reset")
+            ShowStatus("Clear() + rebuild ? all items restored, state reset")
 
         Case "measure"
             ShowStatus("GetPreferredWidth=" & mMenu.GetPreferredWidth & "  GetPreferredHeight=" & mMenu.GetPreferredHeight)
@@ -215,7 +215,7 @@ Private Sub btn_Click(Tag As Object)
             mMenu.Dividers = True
             mMenu.Enabled = True
             mMenu.Visible = True
-            ShowStatus("Reset — menu restored to defaults")
+            ShowStatus("Reset ? menu restored to defaults")
 
     End Select
 End Sub
@@ -234,7 +234,7 @@ Private Sub menu_ItemClick(Tag As Object, Text As String)
     If s.Trim.Length = 0 Then s = Tag
     ShowStatus("ItemClick: """ & s & """")
     #If B4A
-    ToastMessageShow(s, False)
+    B4XPages.MainPage.ShowToast(s, False)
     #End If
 End Sub
 

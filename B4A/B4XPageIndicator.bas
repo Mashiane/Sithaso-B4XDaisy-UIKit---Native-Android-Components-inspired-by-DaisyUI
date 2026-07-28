@@ -105,7 +105,7 @@ Private Sub RenderSidesSection(MaxW As Int, StartY As Int) As Int
 		ind.setHorizontalPlacement(p.GetDefault("hx", "end"))
 		ind.setVerticalPlacement(p.GetDefault("vy", "top"))
 		ind.AddToParent(row, boxLeft, boxTop, boxSize, boxSize)
-		ind.AttachToTarget(baseView)
+		ind.AttachTo(baseView)
 	Next
 
 	Dim rowH As Int = boxTop + boxSize + 44dip
@@ -175,7 +175,7 @@ Private Sub RenderNoTextSidesSection(MaxW As Int, StartY As Int) As Int
 		ind.setHorizontalPlacement(p.GetDefault("hx", "end"))
 		ind.setVerticalPlacement(p.GetDefault("vy", "top"))
 		ind.AddToParent(row, boxLeft, boxTop, boxSize, boxSize)
-		ind.AttachToTarget(baseView)
+		ind.AttachTo(baseView)
 	Next
 
 	Dim rowH As Int = boxTop + boxSize + 44dip
@@ -235,7 +235,7 @@ Private Sub RenderVariantSection(MaxW As Int, StartY As Int) As Int
 		ind.setHorizontalPlacement("end")
 		ind.setVerticalPlacement("top")
 		ind.AddToParent(row, left, top, boxSize, boxSize)
-		ind.AttachToTarget(baseView)
+		ind.AttachTo(baseView)
 	Next
 
 	Dim rows As Int = Max(1, variants.Size)
@@ -277,7 +277,7 @@ Private Sub RenderAvatarSection(MaxW As Int, StartY As Int) As Int
 	online.setHorizontalPlacement("end")
 	online.setVerticalPlacement("top")
 	online.AddToParent(row, avatarLeft, avatarTop, avatarSize, avatarSize)
-	online.AttachToTarget(avatarView)
+	online.AttachTo(avatarView)
 
 	Dim rowH As Int = avatarTop + avatarSize + 26dip
 	row.SetLayoutAnimated(0, PAGE_PAD, y, MaxW, rowH)
@@ -323,7 +323,7 @@ Private Sub RenderCountIndicatorSection(MaxW As Int, StartY As Int) As Int
 	countInd.setHorizontalPlacement("end")
 	countInd.setVerticalPlacement("top")
 	countInd.AddToParent(row, boxLeft, boxTop, boxSize, boxSize)
-	countInd.AttachToTarget(baseView)
+	countInd.AttachTo(baseView)
 	StartCounterDemoLoop(countInd)
 
 	Dim rowH As Int = boxTop + boxSize + 30dip
@@ -368,7 +368,7 @@ Private Sub RenderSvgCounterSection(MaxW As Int, StartY As Int) As Int
 	ind.setHorizontalPlacement("end")
 	ind.setVerticalPlacement("top")
 	ind.AddToParent(row, iconLeft, iconTop, iconSize, iconSize)
-	ind.AttachToTarget(bellView)
+	ind.AttachTo(bellView)
 
 	Dim rowH As Int = iconTop + iconSize + 24dip
 	row.SetLayoutAnimated(0, PAGE_PAD, y, MaxW, rowH)
@@ -437,7 +437,7 @@ Private Sub RenderCapExamplesSection(MaxW As Int, StartY As Int) As Int
 		ind.setHorizontalPlacement("end")
 		ind.setVerticalPlacement("top")
 		ind.AddToParent(row, exLeft, exTop, boxSize, boxSize)
-		ind.AttachToTarget(baseView)
+		ind.AttachTo(baseView)
 	Next
 
 	Dim rows As Int = Max(1, (examples.Size + cols - 1) / cols)
@@ -482,7 +482,7 @@ End Sub
 
 Private Sub indicator_Click(Tag As Object)
 	#If B4A
-	ToastMessageShow("Indicator click: " & Tag, False)
+	B4XPages.MainPage.ShowToast("Indicator click: " & Tag, False)
 	#End If
 End Sub
 

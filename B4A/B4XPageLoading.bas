@@ -34,6 +34,10 @@ End Sub
 Private Sub B4XPage_Appear
 	If SampleItems.Size = 0 Then
 		Wait For (CreateSamples) Complete  (Done As Boolean)
+	Else
+		For Each loading As B4XDaisyLoading In LoadingComponents
+			loading.StartAnimation
+		Next
 	End If
 	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub

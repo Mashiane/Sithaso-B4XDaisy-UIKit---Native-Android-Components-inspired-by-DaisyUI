@@ -95,6 +95,10 @@ End Sub
 Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
+
+Private Sub B4XPage_Disappear
+	If fab.IsInitialized And fab.IsOpen Then fab.Close
+End Sub
 #End Region
 
 #Region Demo Events

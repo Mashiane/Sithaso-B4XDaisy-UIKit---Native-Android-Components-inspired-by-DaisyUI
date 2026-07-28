@@ -14,7 +14,6 @@ Sub Class_Globals
     Private lblTitle As Label
     Private lblBody As Label
     Private fab As B4XDaisyFab
-    Private toaster As B4XDaisyToast
 End Sub
 #End Region
 
@@ -55,13 +54,6 @@ Private Sub BuildPage
         pnlInfo.AddView(lblBody, 0, 0, 0, 0)
     End If
 
-    If toaster.IsInitialized = False Then
-        toaster.Initialize(Me, "toaster")
-        toaster.CreateView
-        toaster.SetRoot(Root)
-        toaster.SetPosition("end", "top")
-    End If
-
     If fab.IsInitialized = False Then
         fab.Initialize(Me, "fabbasic")
         fab.Tag = "basic-fab"
@@ -96,10 +88,14 @@ End Sub
 Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
+
+Private Sub B4XPage_Disappear
+	If fab.IsInitialized And fab.IsOpen Then fab.Close
+End Sub
 #End Region
 
 #Region Demo Events
 Private Sub fabbasic_Click(Tag As Object)
-    toaster.SuccessWithDuration("FAB tapped!", 2000)
+    B4XPages.MainPage.ShowToastSuccess("FAB tapped!", False)
 End Sub
 #End Region

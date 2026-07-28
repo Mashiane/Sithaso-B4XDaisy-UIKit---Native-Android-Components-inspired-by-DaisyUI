@@ -280,13 +280,13 @@ Private Sub component_FileSelected(FileName As String)
     #If B4A
     Dim comp As B4XDaisyFileInput = Sender
     If comp.ExceedsSize Then
-        ToastMessageShow("Error: File size limit exceeded!", True)
+        B4XPages.MainPage.ShowToast("Error: File size limit exceeded!", True)
     Else
         Dim details As String = "Selected: " & comp.FileName & CRLF & _
                                 "Size: " & comp.FileSize & " bytes" & CRLF & _
                                 "Type: " & comp.MimeType & CRLF & _
                                 "Extension: " & comp.Extension
-        ToastMessageShow(details, True)
+        B4XPages.MainPage.ShowToast(details, True)
     End If
     #Else
     #End If
@@ -294,20 +294,20 @@ End Sub
 
 Private Sub component_Cancelled
     #If B4A
-    ToastMessageShow("File selection cancelled", False)
+    B4XPages.MainPage.ShowToast("File selection cancelled", False)
     #End If
 End Sub
 
 Private Sub picker_FileSelected(FileName As String)
     #If B4A
     If interactiveInput.ExceedsSize Then
-        ToastMessageShow("Error: File size limit exceeded!", True)
+        B4XPages.MainPage.ShowToast("Error: File size limit exceeded!", True)
     Else
         Dim details As String = "Selected: " & interactiveInput.FileName & CRLF & _
                                 "Size: " & interactiveInput.FileSize & " bytes" & CRLF & _
                                 "Type: " & interactiveInput.MimeType & CRLF & _
                                 "Extension: " & interactiveInput.Extension
-        ToastMessageShow(details, True)
+        B4XPages.MainPage.ShowToast(details, True)
     End If
     #Else
     #End If
@@ -315,7 +315,7 @@ End Sub
 
 Private Sub picker_Cancelled
     #If B4A
-    ToastMessageShow("Interactive file selection cancelled", False)
+    B4XPages.MainPage.ShowToast("Interactive file selection cancelled", False)
     #End If
 End Sub
 #End Region

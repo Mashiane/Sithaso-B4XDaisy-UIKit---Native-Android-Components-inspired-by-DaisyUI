@@ -67,7 +67,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	AddSectionTitle("User baseline card")
 	Dim cBase As B4XDaisyCard
 	cBase.Initialize(Me, "card")
-	Dim vBase As B4XView = cBase.AddToParent(pnlHost, leftBase, currentY, baseW, 430dip)
+	Dim vBase As B4XView = cBase.AddToParent(pnlHost, leftBase, currentY, baseW, 0)
 	ApplyCardDefaults(cBase, "baseline")
 	cBase.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
 	SetCardContent(cBase, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now", "buynow")
@@ -183,7 +183,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 	AddSectionTitle("User baseline card (image bottom)")
 	Dim cBaseBottom As B4XDaisyCard
 	cBaseBottom.Initialize(Me, "card")
-	Dim vBaseBottom As B4XView = cBaseBottom.AddToParent(pnlHost, leftBase, currentY, baseW, 430dip)
+	Dim vBaseBottom As B4XView = cBaseBottom.AddToParent(pnlHost, leftBase, currentY, baseW, 0)
 	ApplyCardDefaults(cBaseBottom, "baseline-bottom")
 	cBaseBottom.ImagePath = "photo-1606107557195-0e29a4b5b4aa.webp"
 	SetCardContent(cBaseBottom, "Card Title", "A card component has a figure, a body part, and inside body there are title and actions parts", "Buy Now", "buynow")
@@ -312,6 +312,7 @@ Private Sub SetBodyTextColor(Card As B4XDaisyCard, ColorValue As Int)
 		Try
 			If v Is Label Then v.TextColor = ColorValue
 		Catch
+			Log("B4XPageCard.SetBodyTextColor: " & LastException.Message)
 			' Not a Label — skip
 		End Try
 	Next

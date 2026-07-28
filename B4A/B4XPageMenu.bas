@@ -376,6 +376,6 @@ Private Sub menu_ItemClick(Tag As Object, Text As String)
     #If B4A
     Dim s As String = Text
     If s.Length = 0 Then s = Tag
-    ToastMessageShow("Menu: " & s, False)
+    B4XPages.MainPage.ShowToast("Menu: " & s, False)
     #End If
 End Sub

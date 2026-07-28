@@ -391,6 +391,45 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     
     currentY = currentY + 44dip + PAGE_PAD
 
+    ''' <summary>
+    ''' Example 15: Dock Active Position Top
+    ''' </summary>
+    currentY = AddSectionTitle(contentLeft, currentY, maxW, "Dock Active Position Top")
+    currentY = AddDescription(contentLeft, currentY, maxW, "Dock with active line indicator positioned at the top of the button item.")
+    Dim cardTopInd As B4XView = AddPreviewCard(contentLeft, currentY, maxW, ResolvePreviewHeightDip("md"))
+    Dim hostTopInd As B4XView = AddPreviewDockHost(cardTopInd, ResolveDockHeightDip("md"), True)
+    Dim dockTopInd As B4XDaisyDock
+    dockTopInd.Initialize(Me, "dockTopInd")
+    dockTopInd.Size = "md"
+    dockTopInd.ActivePosition = "top"
+    dockTopInd.ActiveIndex = 1
+    dockTopInd.AddToParent(hostTopInd, 0, 0, hostTopInd.Width, 0)
+    dockTopInd.AddItem("top-home", "Home", "dock-home.svg")
+    dockTopInd.AddItem("top-inbox", "Inbox", "dock-inbox.svg")
+    dockTopInd.AddItem("top-settings", "Settings", "dock-settings.svg")
+    currentY = currentY + cardTopInd.Height + 18dip
+
+    ''' <summary>
+    ''' Example 16: Glass Dock on Image
+    ''' </summary>
+    currentY = AddSectionTitle(contentLeft, currentY, maxW, "Glass Dock on Image")
+    currentY = AddDescription(contentLeft, currentY, maxW, "Dock with translucent glass effect overlaying background image 6.jpg.")
+    Dim cardGlass As B4XView = AddPreviewCardWithImage(contentLeft, currentY, maxW, ResolvePreviewHeightDip("md"), "6.jpg")
+    Dim hostGlass As B4XView = AddPreviewDockHost(cardGlass, ResolveDockHeightDip("md"), False)
+    Dim dockGlass As B4XDaisyDock
+    dockGlass.Initialize(Me, "dockGlass")
+    dockGlass.Size = "md"
+    dockGlass.Glass = True
+    dockGlass.Rounded = "full"
+    dockGlass.ActivePosition = "top"
+    dockGlass.ActiveIndex = 1
+    dockGlass.TextColor = xui.Color_White
+    dockGlass.AddToParent(hostGlass, 0, 0, hostGlass.Width, 0)
+    dockGlass.AddItem("glass-home", "Home", "dock-home.svg")
+    dockGlass.AddItem("glass-inbox", "Inbox", "dock-inbox.svg")
+    dockGlass.AddItem("glass-settings", "Settings", "dock-settings.svg")
+    currentY = currentY + cardGlass.Height + PAGE_PAD
+
     pnlHost.Height = Max(Height, currentY)
 End Sub
 
@@ -434,6 +473,32 @@ Private Sub AddPreviewCard(Left As Int, Y As Int, Width As Int, Height As Int) A
     Dim bg As Int = B4XDaisyVariants.ResolveBackgroundColorVariant("bg-base-300", xui.Color_RGB(229, 231, 235))
     card.SetColorAndBorder(bg, 0, 0, B4XDaisyVariants.GetRadiusBoxDip(16dip))
     pnlHost.AddView(card, Left, Y, Width, Height)
+    Return card
+End Sub
+
+''' <summary>
+''' Adds a preview card with a background image.
+''' </summary>
+Private Sub AddPreviewCardWithImage(Left As Int, Y As Int, Width As Int, Height As Int, ImageFile As String) As B4XView
+    Dim p As Panel
+    p.Initialize("")
+    Dim card As B4XView = p
+    pnlHost.AddView(card, Left, Y, Width, Height)
+    
+    Dim iv As ImageView
+    iv.Initialize("")
+    Dim xiv As B4XView = iv
+    card.AddView(xiv, 0, 0, Width, Height)
+    Try
+        If File.Exists(File.DirAssets, ImageFile) Then
+            Dim bmp As B4XBitmap = xui.LoadBitmap(File.DirAssets, ImageFile)
+            xiv.SetBitmap(bmp.Resize(Width, Height, False))
+        End If
+    Catch
+        Log("B4XPageDock.AddPreviewCardWithImage: " & LastException.Message)
+    End Try
+    
+    card.SetColorAndBorder(xui.Color_Transparent, 0, 0, B4XDaisyVariants.GetRadiusBoxDip(16dip))
     Return card
 End Sub
 
@@ -552,6 +617,14 @@ Private Sub dockBadgeDemo_ItemClick(ItemId As String)
     ShowDockClick("Dock Badge Demo", ItemId)
 End Sub
 
+Private Sub dockTopInd_ItemClick(ItemId As String)
+    ShowDockClick("Dock Active Top", ItemId)
+End Sub
+
+Private Sub dockGlass_ItemClick(ItemId As String)
+    ShowDockClick("Glass Dock", ItemId)
+End Sub
+
 Private Sub btnInc_Click(Tag As Object)
     dockBadgeDemo.SetItemBadgeIncrement("badge-inbox", 1)
 End Sub
@@ -569,7 +642,7 @@ Private Sub btnColor_Click(Tag As Object)
     Dim nextVar As String = badgeVariants(currentVariantIdx)
     dockBadgeDemo.SetItemBadgeColor("badge-inbox", nextVar)
     #If B4A
-    ToastMessageShow("Badge Color: " & nextVar, False)
+    B4XPages.MainPage.ShowToast("Badge Color: " & nextVar, False)
     #End If
 End Sub
 
@@ -579,13 +652,13 @@ Private Sub btnBadgeSize_Click(Tag As Object)
     dockBadgeDemo.BadgeSize = nextSize
     btnBadgeSize.Text = "Badge Size: " & nextSize
     #If B4A
-    ToastMessageShow("Badge Size: " & nextSize, False)
+    B4XPages.MainPage.ShowToast("Badge Size: " & nextSize, False)
     #End If
 End Sub
 
 Private Sub ShowDockClick(ExampleName As String, ItemId As String)
     #If B4A
-    ToastMessageShow(ExampleName & ": " & ItemId, False)
+    B4XPages.MainPage.ShowToast(ExampleName & ": " & ItemId, False)
     #End If
 End Sub
 #End Region

@@ -41,8 +41,8 @@ Private Sub B4XPage_Created(Root1 As B4XView)
         pnlHost.Color = xui.Color_Transparent
         B4XDaisyVariants.DisableClippingRecursive(pnlHost)
     Catch
-        Log("ERROR: B4XPageSelect.B4XPage_Created: " & LastException.Message)
-        ToastMessageShow("Select page error: " & LastException.Message, True)
+        Log("B4XPageSelect.B4XPage_Created: " & LastException.Message)
+        B4XPages.MainPage.ShowToast("Select page error: " & LastException.Message, True)
     End Try
 End Sub
 #End Region
@@ -205,7 +205,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     y = y + c10.GetComputedHeight + 16dip
 
     ' -------------------------------------------------------
-    ' Example 11: Sizes � md(40), lg(48), xl(56)
+    ' Example 11: Sizes ? md(40), lg(48), xl(56)
     ' Demonstrates: DaisyUI size token heights (--size-field * N)
     ' DaisyUI Example 12
     ' -------------------------------------------------------
@@ -418,97 +418,97 @@ End Sub
 ''' <summary>Handles selection change events from select components.</summary>
 Private Sub sel1_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Selected - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Selected - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel2_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Ghost - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Ghost - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel3_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Primary - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Primary - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel4_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Secondary - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Secondary - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel5_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Accent - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Accent - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel6_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Neutral - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Neutral - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel7_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Info - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Info - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel8_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Success - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Success - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel9_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Warning - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Warning - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel10_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Error - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Error - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel12_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Disabled - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Disabled - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel13_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Pre-selected - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Pre-selected - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel14_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Browser - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Browser - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel15_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Currency - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Currency - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel16_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Country key - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Country key - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 
 Private Sub sel17_Changed(Index As Int, Key As String, Value As String)
     #If B4A
-        ToastMessageShow("Item - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
+        B4XPages.MainPage.ShowToast("Item - Index: " & Index & ", Key: " & Key & ", Value: " & Value, False)
     #End If
 End Sub
 #End Region

@@ -27,12 +27,8 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 
 	Dashboard.Initialize(Me, "dash")
 	Dashboard.AddToParent(Root)
-	Dashboard.setAutoGrid(False)
-	Dashboard.setMinCellHeight(96)
 	Dashboard.setBackgroundImage("janis-kloter-GipF6xThS6g-unsplash.jpg")
-	Dashboard.setPagePadding(12)
-	Dashboard.setCellSpacing(6)
-	Dashboard.SetButtons(CreateLauncherButtons)
+	PopulateDashboard
 '	B4XPages.MainPage.SetStatusBarState(False)
 End Sub
 
@@ -40,404 +36,95 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	Dashboard.Resize(Width, Height)
 End Sub
 
-Private Sub CreateLauncherButtons As List
-	Dim apps As List
-	apps.Initialize
-
-	'apps.Add(CreateMap("id":"kuza_mobility", "label":"Client Onboarding", "imagePath":"kuzamobilitylogo.jpg", "svgPath":""))
-	apps.Add(CreateMap("id":"accordion", "label":"Accordion", "imagePath":"accordion.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"actionsheet", "label":"Action Sheet", "imagePath":"modal.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"sheetmodal", "label":"Sheet Modal", "imagePath":"modal.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"alert", "label":"Alert", "imagePath":"alert.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"avatar", "label":"Avatar", "imagePath":"avatar.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"badge", "label":"Badge", "imagePath":"badge.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"breadcrumbs", "label":"Breadcrumbs", "imagePath":"breadcrumbs.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"button", "label":"Button", "imagePath":"button.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"cspinner", "label":"Canvas Spinner", "imagePath":"canvasspinner.jpeg", "svgPath":""))
-	apps.Add(CreateMap("id":"card", "label":"Card", "imagePath":"card.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"carousel", "label":"Carousel", "imagePath":"carousel.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"chat", "label":"Chat", "imagePath":"chat.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"checkbox", "label":"Checkbox", "imagePath":"checkbox.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"checkbox-group", "label":"Checkbox Group", "imagePath":"checkbox.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"collapse", "label":"Collapse", "imagePath":"collapse.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"colorwheel", "label":"Color Wheel", "imagePath":"colorwheel.png", "svgPath":""))
-	apps.Add(CreateMap("id":"signaturepad", "label":"Signature Pad", "imagePath":"", "svgPath":"pencil-solid.svg"))
-	apps.Add(CreateMap("id":"countdown", "label":"Countdown", "imagePath":"countdown.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"diff", "label":"Diff", "imagePath":"diff.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"divider", "label":"Divider", "imagePath":"divider.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"dock", "label":"Dock", "imagePath":"dock.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"dropdown", "label":"Dropdown", "imagePath":"dropdown.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"fab", "label":"Fab", "imagePath":"fab.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"fab_basic", "label":"Fab Basic", "imagePath":"fab.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"fab_flower", "label":"Fab Flower", "imagePath":"fab.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"fab_navbar", "label":"Fab Navbar", "imagePath":"navbar.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"fieldset", "label":"Fieldset", "imagePath":"fieldset.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"file-input", "label":"File Input", "imagePath":"file-input.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"filter", "label":"Filter", "imagePath":"filter.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"hero", "label":"Hero", "imagePath":"hero.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"hover3d", "label":"Hover3d", "imagePath":"hover-3d.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"iconbutton", "label":"Icon Button", "imagePath":"", "svgPath":"heart-solid.svg"))
-	apps.Add(CreateMap("id":"indicator", "label":"Indicator", "imagePath":"indicator.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"input", "label":"Input", "imagePath":"input.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"otp", "label":"Input OTP", "imagePath":"input.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"kbd", "label":"Kbd", "imagePath":"kbd.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"link", "label":"Link", "imagePath":"link.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"list", "label":"List", "imagePath":"list.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"list1k", "label":"List 1K", "imagePath":"list.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"loading", "label":"Loading", "imagePath":"loading.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"mask", "label":"Mask", "imagePath":"mask.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"menu", "label":"Menu", "imagePath":"menu.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"menu_runtime2", "label":"Menu Level", "imagePath":"menu.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"menu_runtime", "label":"Menu Runtime", "imagePath":"menu.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"modal", "label":"Modal", "imagePath":"modal.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"navbar", "label":"Navbar", "imagePath":"navbar.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"overlay", "label":"Overlay", "imagePath":"", "svgPath":"eye-solid.svg"))
-	apps.Add(CreateMap("id":"pagination", "label":"Pagination", "imagePath":"pagination.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"progress", "label":"Progress", "imagePath":"progress.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"radialprogress", "label":"Radial Progress", "imagePath":"radial-progress.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"radio", "label":"Radio", "imagePath":"radio.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"radio-group", "label":"Radio Group", "imagePath":"radio.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"range", "label":"Range", "imagePath":"range.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"rating", "label":"Rating", "imagePath":"rating.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"select", "label":"Select", "imagePath":"select.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"picker", "label":"Picker", "imagePath":"select.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"skeleton", "label":"Skeleton", "imagePath":"skeleton.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"segment", "label":"Segment", "imagePath":"divider.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"stack", "label":"Stack", "imagePath":"stack.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"stat", "label":"Stat", "imagePath":"stat.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"status", "label":"Status", "imagePath":"status.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"steps", "label":"Steps", "imagePath":"steps.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"svg_icon", "label":"SVG", "imagePath":"", "svgPath":"bell-solid.svg"))
-	apps.Add(CreateMap("id":"swap", "label":"Swap", "imagePath":"swap.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"sweetalert", "label":"SweetAlert", "imagePath":"alert.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"tab", "label":"Tab", "imagePath":"tab.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"textrotate", "label":"Text Rotate", "imagePath":"text-rotate.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"typography", "label":"Typography", "imagePath":"label.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"textarea", "label":"Textarea", "imagePath":"textarea.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"timeline", "label":"Timeline", "imagePath":"timeline.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"toast", "label":"Toast", "imagePath":"alert.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"toggle", "label":"Toggle", "imagePath":"toggle.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"toggle-group", "label":"Toggle Group", "imagePath":"toggle.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"tooltip", "label":"Tooltip", "imagePath":"tooltip.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"window", "label":"Window", "imagePath":"mockup-window.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"pagescrolldemo", "label":"Page Scroll Demo", "imagePath":"divider.webp", "svgPath":""))
-	apps.Add(CreateMap("id":"navscrolldock", "label":"Nav Scroll Doc", "imagePath":"navbar.webp", "svgPath":""))
-	NormalizeDashboardButtonImages(apps)
-	Return apps
+Private Sub PopulateDashboard
+	Dashboard.Clear
+	
+	Dashboard.AddItem("accordion", "Accordion", "accordion.webp")
+	Dashboard.AddItem("actionsheet", "Action Sheet", "modal.webp")
+	Dashboard.AddItem("sheetmodal", "Sheet Modal", "modal.webp")
+	Dashboard.AddItem("alert", "Alert", "alert.webp")
+	Dashboard.AddItem("avatar", "Avatar", "avatar.webp")
+	Dashboard.AddItem("badge", "Badge", "badge.webp")
+	Dashboard.AddItem("breadcrumbs", "Bread Crumbs", "breadcrumbs.webp")
+	Dashboard.AddItem("button", "Button", "button.webp")
+	Dashboard.AddItem("cspinner", "Canvas Spinner", "canvasspinner.jpeg")
+	Dashboard.AddItem("card", "Card", "card.webp")
+	Dashboard.AddItem("carousel", "Carousel", "carousel.webp")
+	Dashboard.AddItem("chat", "Chat", "chat.webp")
+	Dashboard.AddItem("checkbox", "Checkbox", "checkbox.webp")
+	Dashboard.AddItem("checkbox-group", "Checkbox Group", "checkbox.webp")
+	Dashboard.AddItem("collapse", "Collapse", "collapse.webp")
+	Dashboard.AddItem("colorwheel", "Color Wheel", "colorwheel.png")
+	Dashboard.AddItem("signaturepad", "Signature Pad", "pencil-solid.svg")
+	Dashboard.AddItem("countdown", "Count Down", "countdown.webp")
+	Dashboard.AddItem("diff", "Diff", "diff.webp")
+	Dashboard.AddItem("divider", "Divider", "diff.webp")
+	Dashboard.AddItem("dock", "Dock", "dock.webp")
+	Dashboard.AddItem("dropdown", "Drop Down", "dropdown.webp")
+	Dashboard.AddItem("fab", "Fab", "fab.webp")
+	Dashboard.AddItem("fab_basic", "Fab Basic", "fab.webp")
+	Dashboard.AddItem("fab_flower", "Fab Flower", "fab.webp")
+	Dashboard.AddItem("fab_navbar", "Fab Navbar", "navbar.webp")
+	Dashboard.AddItem("boommenu", "Boom Menu", "fab.webp")
+	Dashboard.AddItem("fieldset", "Field Set", "fieldset.webp")
+	Dashboard.AddItem("file-input", "File Input", "file-input.webp")
+	Dashboard.AddItem("media-picker", "Media & File Pickers", "camera-solid.svg")
+	Dashboard.AddItem("filter", "Filter", "filter.webp")
+	Dashboard.AddItem("hero", "Hero", "hero.webp")
+	Dashboard.AddItem("hover3d", "Hover 3D", "hover-3d.webp")
+	Dashboard.AddItem("iconbutton", "Icon Button", "heart-solid.svg")
+	Dashboard.AddItem("indicator", "Indicator", "indicator.webp")
+	Dashboard.AddItem("input", "Input", "input.webp")
+	Dashboard.AddItem("otp", "Input OTP", "input.webp")
+	Dashboard.AddItem("kbd", "Kbd", "kbd.webp")
+	Dashboard.AddItem("link", "Link", "link.webp")
+	Dashboard.AddItem("list", "List", "list.webp")
+	Dashboard.AddItem("list1k", "List 1K", "list.webp")
+	Dashboard.AddItem("loading", "Loading", "loading.webp")
+	Dashboard.AddItem("mask", "Mask", "mask.webp")
+	Dashboard.AddItem("menu", "Menu", "menu.webp")
+	Dashboard.AddItem("menu_runtime2", "Menu Level", "menu.webp")
+	Dashboard.AddItem("menu_runtime", "Menu Runtime", "menu.webp")
+	Dashboard.AddItem("modal", "Modal", "modal.webp")
+	Dashboard.AddItem("navbar", "Navbar", "navbar.webp")
+	Dashboard.AddItem("overlay", "Overlay", "eye-solid.svg")
+	Dashboard.AddItem("pagination", "Pagination", "pagination.webp")
+	Dashboard.AddItem("progress", "Progress", "progress.webp")
+	Dashboard.AddItem("radialprogress", "Radial Progress", "radial-progress.webp")
+	Dashboard.AddItem("radio", "Radio", "radio.webp")
+	Dashboard.AddItem("radio-group", "Radio Group", "radio.webp")
+	Dashboard.AddItem("range", "Range", "range.webp")
+	Dashboard.AddItem("rating", "Rating", "rating.webp")
+	Dashboard.AddItem("select", "Select", "select.webp")
+	Dashboard.AddItem("picker", "Picker", "select.webp")
+	Dashboard.AddItem("skeleton", "Skeleton", "skeleton.webp")
+	Dashboard.AddItem("segment", "Segment", "divider.webp")
+	Dashboard.AddItem("stack", "Stack", "stack.webp")
+	Dashboard.AddItem("stat", "Stat", "stat.webp")
+	Dashboard.AddItem("infocard", "Info Card", "stat.webp")
+	Dashboard.AddItem("status", "Status", "status.webp")
+	Dashboard.AddItem("steps", "Steps", "steps.webp")
+	Dashboard.AddItem("svg_icon", "SVG", "bell-solid.svg")
+	Dashboard.AddItem("swap", "Swap", "swap.webp")
+	Dashboard.AddItem("sweetalert", "Sweet Alert", "alert.webp")
+	Dashboard.AddItem("tab", "Tab", "tab.webp")
+	Dashboard.AddItem("textrotate", "Text Rotate", "text-rotate.webp")
+	Dashboard.AddItem("typography", "Typography", "label.webp")
+	Dashboard.AddItem("textarea", "Textarea", "textarea.webp")
+	Dashboard.AddItem("timeline", "Timeline", "timeline.webp")
+	Dashboard.AddItem("toast", "Toast", "alert.webp")
+	Dashboard.AddItem("toggle", "Toggle", "toggle.webp")
+	Dashboard.AddItem("toggle-group", "Toggle Group", "toggle.webp")
+	Dashboard.AddItem("tooltip", "Tooltip", "tooltip.webp")
+	Dashboard.AddItem("window", "Window", "mockup-window.webp")
+	Dashboard.AddItem("pagescrolldemo", "Page Scroll Demo", "divider.webp")
+	Dashboard.AddItem("navscrolldock", "Nav Scroll Doc", "navbar.webp")
+	Dashboard.AddItem("enjoyhint", "Enjoy Hint", "alert.webp")
+	Dashboard.Refresh(True)
 End Sub
 
-Private Sub NormalizeDashboardButtonImages(Apps As List)
-	If Apps.IsInitialized = False Then Return
-	For i = 0 To Apps.Size - 1
-		Dim raw As Object = Apps.Get(i)
-		If raw Is Map Then
-			Dim item As Map = raw
-			Dim svgPath As String = item.GetDefault("svgPath", "")
-			If svgPath.Trim.Length > 0 Then
-				item.Put("imagePath", "")
-				Continue
-			End If
-			Dim originalPath As String = item.GetDefault("imagePath", "")
-			Dim resolvedPath As String = ResolveDashboardImagePath(originalPath, i)
-			If resolvedPath <> originalPath Then
-				item.Put("imagePath", resolvedPath)
-			End If
-		End If
-	Next
-End Sub
-
-Private Sub ResolveDashboardImagePath(ImagePath As String, Seed As Int) As String
-	Dim requested As String = ImagePath.Trim
-	If requested.Length > 0 And File.Exists(File.DirAssets, requested) Then Return requested
-
-	Dim fallbackImages() As String = Array As String( _
-		"face21.jpg", "face22.jpg", "face23.jpg", "face24.jpg", "face25.jpg", "face26.jpg", "face27.jpg", "angela.jpg", "anna.jpg" _
-	)
-	If fallbackImages.Length = 0 Then Return requested
-
-	Dim startIndex As Int = Abs(Seed) Mod fallbackImages.Length
-	For offset = 0 To fallbackImages.Length - 1
-		Dim candidate As String = fallbackImages((startIndex + offset) Mod fallbackImages.Length)
-		If File.Exists(File.DirAssets, candidate) Then Return candidate
-	Next
-
-	Return requested
-End Sub
-
-
-
-Private Sub PickRandomDemoImages(Count As Int) As List
-	Dim pool As List
-	pool.Initialize
-	Dim candidates() As String = Array As String( _
-		"face21.jpg", "face22.jpg", "face23.jpg", "face24.jpg", "face25.jpg", _
-		"face26.jpg", "face27.jpg", "face20.jpg", "face19.jpg", "angela.jpg", "anna.jpg" _
-	)
-	For Each fileName As String In candidates
-		If File.Exists(File.DirAssets, fileName) Then pool.Add(fileName)
-	Next
-
-	Dim result As List
-	result.Initialize
-	If pool.Size = 0 Then
-		For i = 0 To Count - 1
-			result.Add("face21.jpg")
-		Next
-		Return result
-	End If
-
-	For i = 0 To Count - 1
-		If pool.Size = 0 Then Exit
-		Dim idx As Int = Rnd(0, pool.Size)
-		result.Add(pool.Get(idx))
-		pool.RemoveAt(idx)
-	Next
-
-	Do While result.Size < Count
-		result.Add(result.Get(result.Size Mod Max(1, result.Size)))
-	Loop
-	Return result
-End Sub
-
-Private Sub dash_ButtonClick(ButtonId As String, ButtonDef As Map)
-	Select Case ButtonId
-		'Case "kuza_mobility"
-			'NavigateFromMainPage("KM01Onboarding")
-			'Return
-		Case "accordion"
-			NavigateFromMainPage("Accordion")
-			Return
-		Case "actionsheet"
-			NavigateFromMainPage("ActionSheet")
-			Return
-		Case "sheetmodal"
-			NavigateFromMainPage("SheetModal")
-			Return
-		Case "alert"
-			NavigateFromMainPage("Alert")
-			Return
-		Case "avatar"
-			NavigateFromMainPage("Avatar")
-			Return
-		Case "badge"
-			NavigateFromMainPage("Badge")
-			Return
-		Case "breadcrumbs"
-			NavigateFromMainPage("Breadcrumbs")
-			Return
-		Case "button"
-			NavigateFromMainPage("Button")
-			Return
-		Case "card"
-			NavigateFromMainPage("Card")
-			Return
-		Case "carousel"
-			NavigateFromMainPage("Carousel")
-			Return
-		Case "chat"
-			NavigateFromMainPage("Chat")
-			Return
-		Case "checkbox"
-			NavigateFromMainPage("Checkbox")
-			Return
-		Case "checkbox-group"
-			NavigateFromMainPage("Checkbox Group")
-			Return
-		Case "collapse"
-			NavigateFromMainPage("Collapse")
-			Return
-		Case "colorwheel"
-			NavigateFromMainPage("ColorWheel")
-			Return
-		Case "signaturepad"
-			NavigateFromMainPage("SignaturePad")
-			Return
-		Case "countdown"
-			NavigateFromMainPage("Countdown")
-			Return
-		Case "cspinner"
-			NavigateFromMainPage("CanvasSpinner")
-			Return
-		Case "diff"
-			NavigateFromMainPage("Diff")
-			Return
-		Case "divider"
-			NavigateFromMainPage("Divider")
-			Return
-		Case "dock"
-			NavigateFromMainPage("Dock")
-			Return
-		Case "dropdown"
-			NavigateFromMainPage("Dropdown")
-			Return
-		Case "fab"
-			NavigateFromMainPage("Fab")
-			Return
-		Case "fab_basic"
-			NavigateFromMainPage("Fab Basic")
-			Return
-		Case "fab_flower"
-			NavigateFromMainPage("Fab Flower")
-			Return
-		Case "fab_navbar"
-			NavigateFromMainPage("Fab Navbar")
-			Return
-		Case "fieldset"
-			NavigateFromMainPage("FieldSet")
-			Return
-		Case "file-input"
-			NavigateFromMainPage("File Input")
-			Return
-		Case "filter"
-			NavigateFromMainPage("Filter")
-			Return
-		Case "hero"
-			NavigateFromMainPage("Hero")
-			Return
-		Case "hover3d"
-			NavigateFromMainPage("Hover3d")
-		Case "iconbutton"
-			NavigateFromMainPage("Icon Button")
-			Return
-		Case "indicator"
-			NavigateFromMainPage("Indicator")
-			Return
-		Case "input"
-			NavigateFromMainPage("Input")
-			Return
-		Case "otp"
-			NavigateFromMainPage("Input OTP")
-			Return
-		Case "kbd"
-			NavigateFromMainPage("Kbd")
-			Return
-		Case "link"
-			NavigateFromMainPage("Link")
-			Return
-		Case "list"
-			NavigateFromMainPage("List")
-			Return
-Case "list1k"
-			NavigateFromMainPage("List 1K")
-			Return
-		Case "loading"
-			NavigateFromMainPage("Loading")
-			Return
-		Case "mask"
-			NavigateFromMainPage("Mask")
-			Return
-		Case "menu"
-			NavigateFromMainPage("Menu")
-			Return
-		Case "menu_runtime"
-			NavigateFromMainPage("Menu Runtime")
-			Return
-		Case "menu_runtime2"
-			NavigateFromMainPage("Menu Runtime 2")
-			Return
-		Case "modal"
-			NavigateFromMainPage("Modal")
-			Return
-		Case "navbar"
-			NavigateFromMainPage("Navbar")
-			Return
-		Case "overlay"
-			NavigateFromMainPage("Overlay")
-			Return
-		Case "pagination"
-			NavigateFromMainPage("Pagination")
-			Return
-		Case "progress"
-			NavigateFromMainPage("Progress")
-			Return
-		Case "radialprogress"
-			NavigateFromMainPage("Radial Progress")
-			Return
-		Case "radio"
-			NavigateFromMainPage("Radio")
-			Return
-		Case "radio-group"
-			NavigateFromMainPage("Radio Group")
-			Return
-		Case "range"
-			NavigateFromMainPage("Range")
-			Return
-		Case "rating"
-			NavigateFromMainPage("Rating")
-			Return
-		Case "select"
-			NavigateFromMainPage("Select")
-			Return
-		Case "picker"
-			NavigateFromMainPage("Picker")
-			Return
-		Case "skeleton"
-			NavigateFromMainPage("Skeleton")
-			Return
-		Case "segment"
-			NavigateFromMainPage("Segment")
-			Return
-		Case "stack"
-			NavigateFromMainPage("Stack")
-			Return
-		Case "stat"
-			NavigateFromMainPage("Stat")
-			Return
-		Case "status"
-			NavigateFromMainPage("Status")
-			Return
-		Case "steps"
-			NavigateFromMainPage("Steps")
-			Return
-		Case "svg_icon"
-			NavigateFromMainPage("SVG Icon")
-			Return
-		Case "swap"
-			NavigateFromMainPage("Swap")
-			Return
-		Case "sweetalert"
-			NavigateFromMainPage("SweetAlert2")
-			Return
-		Case "tab"
-			NavigateFromMainPage("Tab")
-			Return
-		Case "textarea"
-			NavigateFromMainPage("Textarea")
-			Return
-		Case "textrotate"
-			NavigateFromMainPage("TextRotate")
-			Return
-		Case "typography"
-			NavigateFromMainPage("Typography")
-			Return
-		Case "timeline"
-			NavigateFromMainPage("Timeline")
-			Return
-		Case "toast"
-			NavigateFromMainPage("Toast")
-			Return
-		Case "toggle"
-			NavigateFromMainPage("Toggle")
-			Return
-		Case "toggle-group"
-			NavigateFromMainPage("Toggle Group")
-			Return
-		Case "tooltip"
-			NavigateFromMainPage("Tooltip")
-			Return
-		Case "window"
-			NavigateFromMainPage("Window")
-			Return
-		Case "pagescrolldemo"
-			NavigateFromMainPage("PageScrollDemo")
-			Return
-		Case "navscrolldock"
-			NavigateFromMainPage("NavScrollDock")
-			Return
-	End Select
-	'#If B4A
-	'ToastMessageShow("App: " & ButtonDef.GetDefault("label", ButtonId), False)
-	'#End If
+Private Sub dash_ButtonClick(ButtonId As String)
+	NavigateFromMainPage(ButtonId)
 End Sub
 
 Private Sub NavigateFromMainPage(PageId As String)
@@ -446,10 +133,10 @@ Private Sub NavigateFromMainPage(PageId As String)
 	Try
 		B4XPages.MainPage.ShowPageWithLoader(target)
 	Catch
-		Log("ERROR: NavigateFromMainPage crashed for '" & target & "': " & LastException.Message)
-		ToastMessageShow("Navigation error: " & LastException.Message, True)
+		Log("B4XPageDashboard.NavigateFromMainPage: " & LastException.Message)
+		B4XPages.MainPage.ShowToast("Navigation error: " & LastException.Message, True)
 	End Try
 End Sub
 
-Private Sub dash_PageChanged(PageIndex As Int, PageCount As Int)
+Private Sub dash_Changed(PageIndex As Int, PageCount As Int)
 End Sub

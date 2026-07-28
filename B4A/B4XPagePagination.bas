@@ -326,74 +326,74 @@ Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
-Private Sub pag1_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pag1_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination", PageIndex, ItemId)
 End Sub
 
-Private Sub pagXs_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagXs_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination XS", PageIndex, ItemId)
 End Sub
 
-Private Sub pagSm_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagSm_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination SM", PageIndex, ItemId)
 End Sub
 
-Private Sub pagMd_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagMd_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination MD", PageIndex, ItemId)
 End Sub
 
-Private Sub pagLg_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagLg_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination LG", PageIndex, ItemId)
 End Sub
 
-Private Sub pagXl_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagXl_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination XL", PageIndex, ItemId)
 End Sub
 
-Private Sub pag3_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pag3_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Disabled", PageIndex, ItemId)
 End Sub
 
-Private Sub pag4_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pag4_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Interactive", PageIndex, ItemId)
 End Sub
 
-Private Sub pag5_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pag5_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination First/Last", PageIndex, ItemId)
 End Sub
 
-Private Sub pagNoShadow_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagNoShadow_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination No Shadow", PageIndex, ItemId)
 End Sub
 
-Private Sub pagShadowSm_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagShadowSm_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Shadow SM", PageIndex, ItemId)
 End Sub
 
-Private Sub pagShadowMd_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagShadowMd_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Shadow MD", PageIndex, ItemId)
 End Sub
 
-Private Sub pagShadowLg_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagShadowLg_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Shadow LG", PageIndex, ItemId)
 End Sub
 
-Private Sub pagRoundedFull_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagRoundedFull_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Rounded Full", PageIndex, ItemId)
 End Sub
 
-Private Sub pagRoundedMd_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagRoundedMd_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Rounded MD", PageIndex, ItemId)
 End Sub
 
-Private Sub pagRoundedNone_PageChanged(PageIndex As Int, ItemId As String)
+Private Sub pagRoundedNone_Changed(PageIndex As Int, ItemId As String)
     ShowPageClick("Pagination Rounded None", PageIndex, ItemId)
 End Sub
 
 Private Sub ShowPageClick(ExampleName As String, PageIndex As Int, ItemId As String)
     #If B4A
     Try
-        ToastMessageShow(ExampleName & ": Page " & (PageIndex + 1) & " (" & ItemId & ")", False)
+        B4XPages.MainPage.ShowToast(ExampleName & ": Page " & (PageIndex + 1) & " (" & ItemId & ")", False)
     Catch
         Log("B4XPagePagination.ShowPageClick: " & LastException.Message)
         ' Ignore errors

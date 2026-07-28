@@ -1331,7 +1331,7 @@ End Sub
 Private Sub avatarPicker_FileSelected(FileName As String)
 	#If B4A
 	If avatarPicker.ExceedsSize Then
-		ToastMessageShow("Error: Selected image exceeds 5MB size limit!", True)
+		B4XPages.MainPage.ShowToast("Error: Selected image exceeds 5MB size limit!", True)
 		Return
 	End If
 	
@@ -1339,9 +1339,9 @@ Private Sub avatarPicker_FileSelected(FileName As String)
 	If bmp.IsInitialized Then
 		interactiveAvatar.SetAvatarType("image")
 		interactiveAvatar.setAvatarBitmap(bmp, Null)
-		ToastMessageShow("Profile image updated successfully! (Extension: " & avatarPicker.Extension & ")", False)
+		B4XPages.MainPage.ShowToast("Profile image updated successfully! (Extension: " & avatarPicker.Extension & ")", False)
 	Else
-		ToastMessageShow("Error: Failed to read image file data.", True)
+		B4XPages.MainPage.ShowToast("Error: Failed to read image file data.", True)
 	End If
 	#Else
 	#End If
@@ -1349,7 +1349,7 @@ End Sub
 
 Private Sub avatarPicker_Cancelled
 	#If B4A
-	ToastMessageShow("Image selection cancelled", False)
+	B4XPages.MainPage.ShowToast("Image selection cancelled", False)
 	#End If
 End Sub
 

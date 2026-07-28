@@ -255,6 +255,6 @@ Private Sub btnLock_Click (Tag As Object)
     pageScroll.ScrollEnabled = Not(pageScroll.ScrollEnabled)
     btnLock.Variant = IIf(pageScroll.ScrollEnabled, "neutral", "error")
     #If B4A
-        ToastMessageShow("Scroll " & IIf(pageScroll.ScrollEnabled, "enabled", "locked"), False)
+        B4XPages.MainPage.ShowToast("Scroll " & IIf(pageScroll.ScrollEnabled, "enabled", "locked"), False)
     #End If
 End Sub

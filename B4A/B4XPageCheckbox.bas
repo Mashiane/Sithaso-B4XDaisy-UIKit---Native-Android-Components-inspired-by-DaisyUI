@@ -50,9 +50,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
 	Dim y As Int = PAGE_PAD
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 1. Basic Checkboxes
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("1. Basic Checkboxes", y, maxW)
 
 	' Unchecked Checkbox (No Label)
@@ -83,9 +83,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cbLabelLeft.Tag = "Label Left"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 2. Size Variants
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("2. Checkbox Sizes", y, maxW)
 
 	' Extra Small (xs)
@@ -138,9 +138,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cbXL.Tag = "Size XL"
 	y = y + 65dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 3. Semantic Color Variants
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("3. Color Variants", y, maxW)
 
 	' Neutral
@@ -223,9 +223,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cbError.Tag = "Error"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 4. Component States
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("4. Checkbox States", y, maxW)
 
 	' Indeterminate state
@@ -258,9 +258,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cbDisabledChecked.Tag = "Disabled Checked"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 5. Label Alignment (Position)
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("5. Label Alignment (Position)", y, maxW)
 
 	' Position = start (Label on the right)
@@ -285,10 +285,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cbPosEnd.Tag = "Position End"
 	y = y + 50dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 6. With Fieldset and Label  (DaisyUI Example 2)
 	' Mirrors: fieldset.bg-base-100 + legend + label wrapper
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("6. With Fieldset and Label", y, maxW)
 
 	''' Fieldset container with legend "Login options" and a checkbox inside a label row.
@@ -308,11 +308,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	fsLogin.Refresh
 	y = y + fsLogin.GetComputedHeight + 20dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 7. Custom Colors  (DaisyUI Example 7)
 	' Mirrors: border-indigo-600 bg-indigo-500 checked:bg-orange-400
 	'          checked:text-orange-800 checked:border-orange-500
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("7. Custom Colors", y, maxW)
 
 	''' Unchecked state: indigo background + indigo border
@@ -339,9 +339,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	cbCustomChecked.Tag = "Custom Checked"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 8. Shadow / Elevation
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("8. Shadow / Elevation", y, maxW)
 
 	Dim shadowLevels() As String = Array As String("none", "xs", "sm", "md", "lg", "xl", "2xl")
@@ -357,9 +357,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 		y = y + 45dip
 	Next
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 9. Custom Checked Styling
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("9. Custom Checked Styling", y, maxW)
 
 	Dim cbCustomStyle As B4XDaisyCheckbox
@@ -496,7 +496,7 @@ End Sub
 
 Private Sub LogStateChange(ControlId As String, Checked As Boolean)
 	#If B4A
-	ToastMessageShow(ControlId & " Checked = " & Checked, False)
+	B4XPages.MainPage.ShowToast(ControlId & " Checked = " & Checked, False)
 	#End If
 End Sub
 #End Region

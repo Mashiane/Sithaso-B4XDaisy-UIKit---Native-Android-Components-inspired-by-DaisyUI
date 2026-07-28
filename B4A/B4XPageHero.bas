@@ -131,7 +131,7 @@ Private Sub hero_Click(Tag As Object)
 End Sub
 
 Private Sub herobtn_Click(Tag As Object)
-    ToastMessageShow("Hero Action Clicked!", False)
+    B4XPages.MainPage.ShowToast("Hero Action Clicked!", False)
 End Sub
 
 Private Sub B4XPage_Appear

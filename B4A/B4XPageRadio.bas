@@ -56,9 +56,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
 	Dim y As Int = PAGE_PAD
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 1. Basic Radios (Grouped)
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("1. Basic Radios (Grouped)", y, maxW)
 
 	' Radio Option 1
@@ -79,9 +79,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rGroup1Opt2.Tag = "Group1-Opt2"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 2. Size Variants
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("2. Radio Sizes", y, maxW)
 
 	' Extra Small (xs)
@@ -139,9 +139,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rXL.Tag = "Size XL"
 	y = y + 65dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 3. Semantic Color Variants
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("3. Color Variants", y, maxW)
 
 	' Neutral
@@ -232,9 +232,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rError.Tag = "Error"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 4. Component States
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("4. Radio States", y, maxW)
 
 	' Disabled unchecked state
@@ -259,9 +259,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rDisabledChecked.Tag = "Disabled Checked"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 5. Label Alignment (Position)
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("5. Label Alignment (Position)", y, maxW)
 
 	' Position = start (Label on the right)
@@ -288,9 +288,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rPosEnd.Tag = "Position End"
 	y = y + 50dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 6. With Fieldset and Label
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("6. With Fieldset and Label", y, maxW)
 
 	Dim fsLogin As B4XDaisyFieldset
@@ -317,9 +317,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	fsLogin.Refresh
 	y = y + fsLogin.GetComputedHeight + 20dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 7. Custom Colors
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("7. Custom Colors", y, maxW)
 
 	' Unchecked state override
@@ -347,9 +347,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	rCustomChecked.Tag = "Custom Checked"
 	y = y + 60dip
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 8. Shadow / Elevation
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("8. Shadow / Elevation", y, maxW)
 
 	Dim shadowLevels() As String = Array As String("none", "xs", "sm", "md", "lg", "xl", "2xl")
@@ -366,9 +366,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 		y = y + 45dip
 	Next
 
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	' 9. Custom Checked Styling
-	' ═══════════════════════════════════════════════════════════════════════
+	' -----------------------------------------------------------------------
 	y = AddSectionTitle("9. Custom Checked Styling", y, maxW)
 
 	Dim rCustomStyle As B4XDaisyRadio
@@ -501,7 +501,7 @@ End Sub
 
 Private Sub LogStateChange(ControlId As String, Checked As Boolean)
 	#If B4A
-	ToastMessageShow(ControlId & " Checked = " & Checked, False)
+	B4XPages.MainPage.ShowToast(ControlId & " Checked = " & Checked, False)
 	#End If
 End Sub
 

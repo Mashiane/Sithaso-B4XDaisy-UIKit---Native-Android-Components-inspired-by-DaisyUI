@@ -620,7 +620,7 @@ Version=13.4
 
     Private Sub inp_EnterPressed(Text As String)
         #If B4A
-            ToastMessageShow("Enter pressed: " & Text, False)
+            B4XPages.MainPage.ShowToast("Enter pressed: " & Text, False)
         #End If
     End Sub
 
@@ -632,26 +632,26 @@ Version=13.4
         #If B4A
             Dim s As String = Tag
             If s.Length = 0 Then s = "input"
-            ToastMessageShow("Clicked: " & s, False)
+            B4XPages.MainPage.ShowToast("Clicked: " & s, False)
         #End If
     End Sub
 
     ' Clickable icon click handlers
     Private Sub inpClick_PrependClick
         #If B4A
-            ToastMessageShow("Prepend icon clicked (left icon)", False)
+            B4XPages.MainPage.ShowToast("Prepend icon clicked (left icon)", False)
         #End If
     End Sub
 
     Private Sub inpClick_AppendClick
         #If B4A
-            ToastMessageShow("Append icon clicked (right icon)", False)
+            B4XPages.MainPage.ShowToast("Append icon clicked (right icon)", False)
         #End If
     End Sub
 
     Private Sub inpSearch_Clear
         #If B4A
-            ToastMessageShow("Search cleared", False)
+            B4XPages.MainPage.ShowToast("Search cleared", False)
         #End If
     End Sub
 #End Region

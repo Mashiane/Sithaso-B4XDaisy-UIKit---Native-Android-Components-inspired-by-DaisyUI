@@ -170,7 +170,7 @@ Private Sub RenderContent
 	inp3.Initialize(Me, "inp3")
 	inp3.AddToParent(pnlHost, pad, y, maxW, 40dip)
 	inp3.LabelAbove = "Password"
-	inp3.Placeholder = "••••••••"
+	inp3.Placeholder = "????????"
 	inp3.InputType = "password"
 	y = y + inp3.GetComputedHeight + gap
 
@@ -288,33 +288,33 @@ End Sub
 #Region Event Handlers
 ' ELI15: Triggers when the user taps the back navigation arrow on the navbar.
 Private Sub navbar_Back(Tag As Object)
-	B4XPages.ShowPage("Dashboard")
+	B4XPages.ShowPage("dashboard")
 End Sub
 
 ' ELI15: Triggers when the user taps one of the bottom dock navigation items.
 Private Sub dock_ItemClick(ItemId As String)
 	#If B4A
 	' Display a short native Android pop-up toast message at the bottom of the screen.
-	ToastMessageShow("Dock: " & ItemId, False)
+	B4XPages.MainPage.ShowToast("Dock: " & ItemId, False)
 	#End If
 End Sub
 
 ' ELI15: Triggers when the Save button is clicked.
 Private Sub btnSave_Click(Tag As Object)
 	#If B4A
-	ToastMessageShow("Saved!", False)
+	B4XPages.MainPage.ShowToast("Saved!", False)
 	#End If
 End Sub
 
 ' ELI15: Triggers when the Cancel button is clicked.
 Private Sub btnCancel_Click(Tag As Object)
-	B4XPages.ShowPage("Dashboard")
+	B4XPages.ShowPage("dashboard")
 End Sub
 
 ' ELI15: Triggers when the Delete Account button is clicked.
 Private Sub btnDelete_Click(Tag As Object)
 	#If B4A
-	ToastMessageShow("Delete tapped", False)
+	B4XPages.MainPage.ShowToast("Delete tapped", False)
 	#End If
 End Sub
 #End Region

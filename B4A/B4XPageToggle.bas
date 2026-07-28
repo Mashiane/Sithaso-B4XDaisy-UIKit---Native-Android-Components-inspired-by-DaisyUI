@@ -394,7 +394,7 @@ Private Sub tg_Checked(Checked As Boolean)
 	Dim textVal As String = source.Text
 	If textVal.Length = 0 Then textVal = "Textless Toggle"
 	#If B4A
-	ToastMessageShow(textVal & " checked: " & Checked, False)
+	B4XPages.MainPage.ShowToast(textVal & " checked: " & Checked, False)
 	#End If
 End Sub
 #End Region

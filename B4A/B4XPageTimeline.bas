@@ -202,7 +202,7 @@ Sub tl_ItemClick (Id As String)
     
     Dim statusText As String = IIf(isDone, "Done", "Not Done")
     Dim alertVariant As String = IIf(isDone, "success", "info")
-    B4XPages.MainPage.ShowAlertNotification("Timeline Toggled", "Item " & Id & " is now " & statusText, alertVariant, 2000, "top-center")
+    B4XPages.MainPage.ShowToastAlert("Timeline Toggled", "Item " & Id & " is now " & statusText, alertVariant, 2000, "top-center")
 End Sub
 #End Region
 

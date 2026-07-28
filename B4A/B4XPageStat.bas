@@ -73,7 +73,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item1 As B4XDaisyStatItem
     item1.Initialize(Me, "component")
     item1.Title = "Total Page Views"
-    item1.Value = "89,400"
+    item1.Value = "89400"
+    item1.Animated = True
     item1.Description = "21% more than last month"
     stats1.AddItem(item1)
     stats1.Refresh
@@ -82,7 +83,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 
     item1.LogLabelWidths("Example 1: item1")
     
-    currentY = currentY + stats1.ContentHeight + 12dip
+    currentY = currentY + stats1.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats1, currentY, maxW)
+    currentY = currentY + 12dip
     Sleep(0)
     ' #endregion
     
@@ -99,7 +102,11 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item2_1 As B4XDaisyStatItem
     item2_1.Initialize(Me, "component")
     item2_1.Title = "Total Likes"
-    item2_1.Value = "25.6K"
+    item2_1.Value = "25.6"
+    item2_1.Suffix = "K"
+    item2_1.DecimalPlaces = 1
+    item2_1.UseGrouping = False
+    item2_1.Animated = True
     item2_1.Description = "21% more than last month"
     item2_1.FigureType = "svg"
     item2_1.FigureSource = "heart.svg"
@@ -110,7 +117,11 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item2_2 As B4XDaisyStatItem
     item2_2.Initialize(Me, "component")
     item2_2.Title = "Page Views"
-    item2_2.Value = "2.6M"
+    item2_2.Value = "2.6"
+    item2_2.Suffix = "M"
+    item2_2.DecimalPlaces = 1
+    item2_2.UseGrouping = False
+    item2_2.Animated = True
     item2_2.Description = "21% more than last month"
     item2_2.FigureType = "svg"
     item2_2.FigureSource = "stat_bolt.svg"
@@ -121,7 +132,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item2_3 As B4XDaisyStatItem
     item2_3.Initialize(Me, "component")
     item2_3.Title = "Tasks Done"
-    item2_3.Value = "86%"
+    item2_3.Value = "86"
+    item2_3.Suffix = "%"
+    item2_3.Animated = True
     item2_3.Description = "31 tasks remaining"
     item2_3.FigureType = "svg"
     item2_3.FigureSource = "check.svg"
@@ -130,7 +143,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats2.Refresh
     
-    currentY = currentY + stats2.ContentHeight + 12dip
+    currentY = currentY + stats2.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats2, currentY, maxW)
+    currentY = currentY + 12dip
     Sleep(0)
     ' #endregion
     
@@ -146,7 +161,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item3_1.Initialize(Me, "component")
     item3_1.CenterItems = True
     item3_1.Title = "Downloads"
-    item3_1.Value = "31K"
+    item3_1.Value = "31"
+    item3_1.Suffix = "K"
+    item3_1.Animated = True
     item3_1.Description = "From Jan 1st to Feb 1st"
     stats3.AddItem(item3_1)
     
@@ -154,7 +171,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item3_2.Initialize(Me, "component")
     item3_2.CenterItems = True
     item3_2.Title = "Users"
-    item3_2.Value = "4,200"
+    item3_2.Value = "4200"
+    item3_2.Animated = True
     item3_2.Description = Chr(8599) & " 40 (2%)"
     stats3.AddItem(item3_2)
     
@@ -162,13 +180,16 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item3_3.Initialize(Me, "component")
     item3_3.CenterItems = True
     item3_3.Title = "New Registers"
-    item3_3.Value = "1,200"
+    item3_3.Value = "1200"
+    item3_3.Animated = True
     item3_3.Description = Chr(8600) & " 90 (14%)"
     stats3.AddItem(item3_3)
     
     stats3.Refresh
     
-    currentY = currentY + stats3.ContentHeight + 12dip
+    currentY = currentY + stats3.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats3, currentY, maxW)
+    currentY = currentY + 12dip
     ' #endregion
     
     ' #region Example 4: Vertical � stats stacked top-to-bottom with bottom-edge separators
@@ -178,32 +199,40 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim stats4 As B4XDaisyStat
     stats4.Initialize(Me, "")
     stats4.Orientation = "vertical"
+    stats4.Width = "w-content"
     stats4.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
     Dim item4_1 As B4XDaisyStatItem
     item4_1.Initialize(Me, "component")
     item4_1.Title = "Downloads"
-    item4_1.Value = "31K"
+    item4_1.Value = "31"
+    item4_1.Suffix = "K"
+    item4_1.Animated = True
     item4_1.Description = "Jan 1st - Feb 1st"
     stats4.AddItem(item4_1)
     
     Dim item4_2 As B4XDaisyStatItem
     item4_2.Initialize(Me, "component")
     item4_2.Title = "New Users"
-    item4_2.Value = "4,200"
+    item4_2.Value = "4200"
+    item4_2.Animated = True
     item4_2.Description = Chr(8599) & " 400 (22%)"
     stats4.AddItem(item4_2)
     
     Dim item4_3 As B4XDaisyStatItem
     item4_3.Initialize(Me, "component")
     item4_3.Title = "New Registers"
-    item4_3.Value = "1,200"
+    item4_3.Value = "1200"
+    item4_3.Animated = True
     item4_3.Description = Chr(8600) & " 90 (14%)"
     stats4.AddItem(item4_3)
     
     stats4.Refresh
+    If stats4.ContentWidth > 0 Then stats4.SetLayoutAnimated(0, PAGE_PAD, currentY, stats4.ContentWidth, stats4.ContentHeight)
     
-    currentY = currentY + stats4.ContentHeight + 12dip
+    currentY = currentY + stats4.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats4, currentY, maxW)
+    currentY = currentY + 12dip
     Sleep(0)
     ' #endregion
     
@@ -219,7 +248,12 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item4b_1 As B4XDaisyStatItem
     item4b_1.Initialize(Me, "component")
     item4b_1.Title = "Revenue"
-    item4b_1.Value = "$12.4K"
+    item4b_1.Value = "12.4"
+    item4b_1.Prefix = "$"
+    item4b_1.Suffix = "K"
+    item4b_1.DecimalPlaces = 1
+    item4b_1.UseGrouping = False
+    item4b_1.Animated = True
     item4b_1.Description = "This quarter"
     item4b_1.Variant = "primary"
     stats4b.AddItem(item4b_1)
@@ -229,6 +263,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item4b_2.Initialize(Me, "component")
     item4b_2.Title = "Signups"
     item4b_2.Value = "890"
+    item4b_2.Animated = True
     item4b_2.Description = "Last 7 days"
     item4b_2.Variant = "secondary"
     stats4b.AddItem(item4b_2)
@@ -237,14 +272,18 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item4b_3 As B4XDaisyStatItem
     item4b_3.Initialize(Me, "component")
     item4b_3.Title = "Bounce Rate"
-    item4b_3.Value = "14%"
+    item4b_3.Value = "14"
+    item4b_3.Suffix = "%"
+    item4b_3.Animated = True
     item4b_3.Description = "Improved by 3%"
     item4b_3.Variant = "accent"
     stats4b.AddItem(item4b_3)
     
     stats4b.Refresh
     
-    currentY = currentY + stats4b.ContentHeight + 12dip
+    currentY = currentY + stats4b.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats4b, currentY, maxW)
+    currentY = currentY + 12dip
     Sleep(0)
     ' #endregion
     
@@ -258,7 +297,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item5_1 As B4XDaisyStatItem
     item5_1.Initialize(Me, "component")
     item5_1.Title = "Account balance"
-    item5_1.Value = "$89,400"
+    item5_1.Value = "89400"
+    item5_1.Prefix = "$"
+    item5_1.Animated = True
     Dim btn1 As B4XDaisyButton
     btn1.Initialize(Me, "component")
     btn1.Text = "Add funds"
@@ -269,7 +310,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats5.Refresh
     
-    currentY = currentY + stats5.ContentHeight + 12dip
+    currentY = currentY + stats5.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats5, currentY, maxW)
+    currentY = currentY + 12dip
     ' #endregion
     
     ' #region Example 6: With radial progress figure
@@ -282,7 +325,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item6_1 As B4XDaisyStatItem
     item6_1.Initialize(Me, "component")
     item6_1.Title = "Tasks Done"
-    item6_1.Value = "86%"
+    item6_1.Value = "86"
+    item6_1.Suffix = "%"
+    item6_1.Animated = True
     item6_1.Description = "31 remaining"
     item6_1.ValueColor = "primary"
     item6_1.FigureType = "radial"
@@ -293,7 +338,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item6_2 As B4XDaisyStatItem
     item6_2.Initialize(Me, "component")
     item6_2.Title = "Downloads"
-    item6_2.Value = "31K"
+    item6_2.Value = "31"
+    item6_2.Suffix = "K"
+    item6_2.Animated = True
     item6_2.Description = "From Jan 1st"
     item6_2.ValueColor = "secondary"
     item6_2.FigureType = "radial"
@@ -303,7 +350,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
 
     stats6.Refresh
 
-    currentY = currentY + stats6.ContentHeight + 12dip
+    currentY = currentY + stats6.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats6, currentY, maxW)
+    currentY = currentY + 12dip
     ' #endregion
     
     ' #region Example 7: With avatar figure
@@ -317,7 +366,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item7_1 As B4XDaisyStatItem
     item7_1.Initialize(Me, "component")
     item7_1.Title = "Active Users"
-    item7_1.Value = "1,240"
+    item7_1.Value = "1240"
+    item7_1.Animated = True
     item7_1.Description = "Online now"
     item7_1.FigureType = "image"
     item7_1.FigureSource = "face_anna.jpg"
@@ -327,7 +377,9 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim item7_2 As B4XDaisyStatItem
     item7_2.Initialize(Me, "component")
     item7_2.Title = "Engagement"
-    item7_2.Value = "92%"
+    item7_2.Value = "92"
+    item7_2.Suffix = "%"
+    item7_2.Animated = True
     item7_2.Description = "Last 30 days"
     item7_2.ValueColor = "accent"
     item7_2.FigureType = "image"
@@ -336,13 +388,71 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     
     stats7.Refresh
     
-    currentY = currentY + stats7.ContentHeight + 12dip
+    currentY = currentY + stats7.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats7, currentY, maxW)
+    currentY = currentY + 12dip
     ' #endregion
 
+    ' #region Example 8: Animated count-up (InfoCard parity) - numeric Value + tap to replay
+    ''' Demonstrates the count-up animation on a stat value. Animated defaults False, so
+    ''' this item explicitly opts in. Value must be a plain number; Prefix/Suffix/Separator/
+    ''' UseGrouping format it during the count-up. Tap an item to re-run the animation.
+    currentY = AddSectionTitle("9. Animated count-up", currentY, maxW)
+    Dim stats8 As B4XDaisyStat
+    stats8.Initialize(Me, "")
+    stats8.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
+
+    Dim item8_1 As B4XDaisyStatItem
+    item8_1.Initialize(Me, "anim")
+    item8_1.Title = "Total Revenue"
+    item8_1.Value = "45678"
+    item8_1.Description = "Tap to replay count-up"
+    item8_1.Animated = True
+    item8_1.Duration = 2
+    item8_1.Separator = ","
+    item8_1.UseGrouping = True
+    item8_1.Prefix = "$"
+    item8_1.Tag = item8_1
+    stats8.AddItem(item8_1)
+
+    Dim item8_2 As B4XDaisyStatItem
+    item8_2.Initialize(Me, "anim")
+    item8_2.Title = "Conversion"
+    item8_2.Value = "48.75"
+    item8_2.Description = "Tap to replay count-up"
+    item8_2.Animated = True
+    item8_2.Duration = 3
+    item8_2.DecimalPlaces = 2
+    item8_2.UseGrouping = False
+    item8_2.Suffix = "%"
+    item8_2.Tag = item8_2
+    stats8.AddItem(item8_2)
+
+    stats8.Refresh
+    If stats8.ContentWidth > 0 Then stats8.SetLayoutAnimated(0, PAGE_PAD, currentY, stats8.ContentWidth, stats8.ContentHeight)
+
+    currentY = currentY + stats8.ContentHeight + 6dip
+    currentY = AddAnimateButton("Animate", stats8, currentY, maxW)
+    currentY = currentY + 12dip
+    Sleep(0)
+    ' #endregion
     pnlHost.Height = Max(Height, currentY + PAGE_PAD)
     Return True
 End Sub
 
+
+''' Creates a small 'Animate' button beneath a stat component. Clicking it re-runs the
+' count-up (and radial-figure animation) on every item in that stats container.
+Private Sub AddAnimateButton(Label As String, StatComp As B4XDaisyStat, Y As Int, Width As Int) As Int
+    Dim btn As B4XDaisyButton
+    btn.Initialize(Me, "btnAnim")
+    btn.AddToParent(pnlHost, PAGE_PAD, Y, Width, 34dip)
+    btn.Text = Label
+    btn.Size = "sm"
+    btn.Variant = "primary"
+    btn.Tag = StatComp
+    Return Y + 34dip
+End Sub
 
 Private Sub AddSectionTitle(Text As String, Y As Int, Width As Int) As Int
     Dim title As B4XDaisyText
@@ -365,6 +475,24 @@ End Sub
 
 Private Sub component_Click(Tag As Object)
     'Log("Clicked: " & Tag)
+End Sub
+
+' Shared click handler for the animated count-up examples (EventName "anim").
+' Tapping an item re-runs its count-up from StartFrom to Value.
+Private Sub anim_Click(Tag As Object)
+    If Tag Is B4XDaisyStatItem Then
+        Dim r As B4XDaisyStatItem = Tag
+        r.StartAnimation
+    End If
+End Sub
+
+' Shared click handler for the 'Animate' buttons beneath each stat component.
+' The button's Tag is the B4XDaisyStat instance; re-run the animation on all its items.
+Private Sub btnAnim_Click(Tag As Object)
+    If Tag Is B4XDaisyStat Then
+        Dim s As B4XDaisyStat = Tag
+        s.StartAnimation
+    End If
 End Sub
 
 

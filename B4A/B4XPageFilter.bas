@@ -64,7 +64,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c1.Initialize(Me, "filter1")
     c1.AddToParent(pnlHost, PAGE_PAD, y, maxW, 40dip)
     c1.Options = "svelte:Svelte, vue:Vue, react:React"
-    c1.ResetText = "×"
+    c1.CloseType = "icon"
+    c1.CloseIcon = "close.svg"
     c1.ResetPosition = "left"
     c1.Rounded = "theme"
     c1.Variant = "success"
@@ -77,6 +78,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c2.Initialize(Me, "filter2")
     c2.AddToParent(pnlHost, PAGE_PAD, y, maxW, 40dip)
     c2.Options = "sveltekit:Sveltekit, nuxt:Nuxt, nextjs:Next.js"
+    c2.CloseType = "text"
     c2.ResetText = "All"
     c2.ResetPosition = "left"
     c2.Rounded = "rounded-full" ' chip-like shape
@@ -91,7 +93,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c3.Initialize(Me, "filter3")
     c3.AddToParent(pnlHost, PAGE_PAD, y, maxW, 40dip)
     c3.Options = "svelte:Svelte, vue:Vue, react:React"
-    c3.ResetText = "×"
+    c3.CloseType = "icon"
+    c3.CloseIcon = "close.svg"
     c3.ResetPosition = "right"
     c3.MultiSelect = True
     c3.Rounded = "rounded-md"
@@ -108,7 +111,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     fSizeMD.Options = "apple:Apple, banana:Banana, orange:Orange"
     fSizeMD.Size = "md"
     fSizeMD.Variant = "primary"
-    fSizeMD.ResetText = "×"
+    fSizeMD.CloseType = "icon"
+    fSizeMD.CloseIcon = "close.svg"
     y = y + fSizeMD.GetComputedHeight + 10dip
 
     Dim fSizeLG As B4XDaisyFilter
@@ -117,7 +121,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     fSizeLG.Options = "apple:Apple, banana:Banana, orange:Orange"
     fSizeLG.Size = "lg"
     fSizeLG.Variant = "secondary"
-    fSizeLG.ResetText = "×"
+    fSizeLG.CloseType = "icon"
+    fSizeLG.CloseIcon = "close.svg"
     y = y + fSizeLG.GetComputedHeight + 20dip
     ' #endregion
 
@@ -168,16 +173,16 @@ End Sub
 Private Sub filter1_Changed(Keys As List)
     #If B4A
     If Keys.Size > 0 Then
-        ToastMessageShow("Filter 1 Active Option: " & Keys.Get(0), False)
+        B4XPages.MainPage.ShowToast("Filter 1 Active Option: " & Keys.Get(0), False)
     Else
-        ToastMessageShow("Filter 1 Reset / No Active Option", False)
+        B4XPages.MainPage.ShowToast("Filter 1 Reset / No Active Option", False)
     End If
     #End If
 End Sub
 
 Private Sub filter1_ResetClick
     #If B4A
-    ToastMessageShow("Filter 1 Reset", False)
+    B4XPages.MainPage.ShowToast("Filter 1 Reset", False)
     #End If
 End Sub
 
@@ -185,29 +190,29 @@ End Sub
 Private Sub filter2_Changed(Keys As List)
     #If B4A
     If Keys.Size > 0 Then
-        ToastMessageShow("Filter 2 Active Option: " & Keys.Get(0), False)
+        B4XPages.MainPage.ShowToast("Filter 2 Active Option: " & Keys.Get(0), False)
     Else
-        ToastMessageShow("Filter 2 Reset / No Active Option", False)
+        B4XPages.MainPage.ShowToast("Filter 2 Reset / No Active Option", False)
     End If
     #End If
 End Sub
 
 Private Sub filter2_ResetClick
     #If B4A
-    ToastMessageShow("Filter 2 Reset", False)
+    B4XPages.MainPage.ShowToast("Filter 2 Reset", False)
     #End If
 End Sub
 
 ' Event handlers for Example 3
 Private Sub filter3_ItemChanged(Id As String, Text As String, Checked As Boolean)
     #If B4A
-    ToastMessageShow("Filter 3 Checkbox " & Id & " state changed: " & Checked, False)
+    B4XPages.MainPage.ShowToast("Filter 3 Checkbox " & Id & " state changed: " & Checked, False)
     #End If
 End Sub
 
 Private Sub filter3_ResetClick
     #If B4A
-    ToastMessageShow("Filter 3 Reset", False)
+    B4XPages.MainPage.ShowToast("Filter 3 Reset", False)
     #End If
 End Sub
 
@@ -215,32 +220,32 @@ End Sub
 Private Sub fSizeMD_Changed(Keys As List)
     #If B4A
     If Keys.Size > 0 Then
-        ToastMessageShow("Filter MD Active: " & Keys.Get(0), False)
+        B4XPages.MainPage.ShowToast("Filter MD Active: " & Keys.Get(0), False)
     Else
-        ToastMessageShow("Filter MD Reset", False)
+        B4XPages.MainPage.ShowToast("Filter MD Reset", False)
     End If
     #End If
 End Sub
 
 Private Sub fSizeMD_ResetClick
     #If B4A
-    ToastMessageShow("Filter MD Reset", False)
+    B4XPages.MainPage.ShowToast("Filter MD Reset", False)
     #End If
 End Sub
 
 Private Sub fSizeLG_Changed(Keys As List)
     #If B4A
     If Keys.Size > 0 Then
-        ToastMessageShow("Filter LG Active: " & Keys.Get(0), False)
+        B4XPages.MainPage.ShowToast("Filter LG Active: " & Keys.Get(0), False)
     Else
-        ToastMessageShow("Filter LG Reset", False)
+        B4XPages.MainPage.ShowToast("Filter LG Reset", False)
     End If
     #End If
 End Sub
 
 Private Sub fSizeLG_ResetClick
     #If B4A
-    ToastMessageShow("Filter LG Reset", False)
+    B4XPages.MainPage.ShowToast("Filter LG Reset", False)
     #End If
 End Sub
 
@@ -314,16 +319,16 @@ End Sub
 Private Sub HandleVariantChanged(VariantName As String, Keys As List)
     #If B4A
     If Keys.Size > 0 Then
-        ToastMessageShow("Filter " & VariantName & " Active: " & Keys.Get(0), False)
+        B4XPages.MainPage.ShowToast("Filter " & VariantName & " Active: " & Keys.Get(0), False)
     Else
-        ToastMessageShow("Filter " & VariantName & " Reset", False)
+        B4XPages.MainPage.ShowToast("Filter " & VariantName & " Reset", False)
     End If
     #End If
 End Sub
 
 Private Sub HandleVariantReset(VariantName As String)
     #If B4A
-    ToastMessageShow("Filter " & VariantName & " Reset", False)
+    B4XPages.MainPage.ShowToast("Filter " & VariantName & " Reset", False)
     #End If
 End Sub
 #End Region

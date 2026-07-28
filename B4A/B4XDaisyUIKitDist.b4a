@@ -1,192 +1,197 @@
-﻿Build1=default,com.sithaso.daisyuikit
-File1=file-lines-solid.svg
-File2=filter.webp
-File3=fingerprint-solid.svg
-File4=folder-solid.svg
-File5=gear.svg
-File6=heart.svg
-File7=heart-solid.svg
-File8=hero.webp
-File9=house-solid.svg
-File10=hover-3d.webp
-File11=image-solid.svg
-File12=inbox.svg
-File13=indicator.webp
-File14=input.webp
-File15=janis-kloter-GipF6xThS6g-unsplash.jpg
-File16=kbd.webp
-File17=key-solid.svg
-File18=label.webp
-File19=link.webp
-File20=link-solid.svg
-File21=list.webp
-File22=loading.webp
-File23=location-dot-solid-full.svg
-File24=login-amazon.svg
-File25=login-apple.svg
-File26=login-email.svg
-File27=login-facebook.svg
-File28=login-github.svg
-File29=login-google.svg
-File30=login-kakao.svg
-File31=login-line.svg
-File32=login-linkedin.svg
-File33=login-metamask.svg
-File34=login-microsoft.svg
-File35=login-slack.svg
-File36=login-vk.svg
-File37=login-wechat.svg
-File38=login-x.svg
-File39=magnifying-glass-solid.svg
-File40=accordion.webp
-File41=mashymain.jpg
-File42=mask.webp
-File43=mask1.webp
-File44=menu.svg
-File45=menu.webp
-File46=mockup-window.webp
-File47=modal.webp
-File48=music-solid.svg
-File49=navbar.webp
-File50=nightmoon.svg
+﻿Build1=Default,com.sithaso.daisyuikit
+File1=6.jpg
+File2=file.svg
+File3=file-input.webp
+File4=file-lines-solid.svg
+File5=filter.webp
+File6=fingerprint-solid.svg
+File7=folder-solid.svg
+File8=gear.svg
+File9=heart.svg
+File10=heart-solid.svg
+File11=hero.webp
+File12=house-solid.svg
+File13=hover-3d.webp
+File14=image-solid.svg
+File15=inbox.svg
+File16=indicator.webp
+File17=input.webp
+File18=janis-kloter-GipF6xThS6g-unsplash.jpg
+File19=kbd.webp
+File20=key-solid.svg
+File21=label.webp
+File22=link.webp
+File23=link-solid.svg
+File24=list.webp
+File25=loading.webp
+File26=location-dot-solid-full.svg
+File27=login-amazon.svg
+File28=login-apple.svg
+File29=login-email.svg
+File30=login-facebook.svg
+File31=login-github.svg
+File32=login-google.svg
+File33=login-kakao.svg
+File34=login-line.svg
+File35=login-linkedin.svg
+File36=login-metamask.svg
+File37=login-microsoft.svg
+File38=login-slack.svg
+File39=login-vk.svg
+File40=login-wechat.svg
+File41=accordion.webp
+File42=login-x.svg
+File43=magnifying-glass-solid.svg
+File44=mashymain.jpg
+File45=mask.webp
+File46=mask1.webp
+File47=menu.svg
+File48=menu.webp
+File49=microphone-solid.svg
+File50=mockup-window.webp
 File51=alert.webp
-File52=pagination.webp
-File53=pencil-solid.svg
-File54=phone-solid.svg
-File55=photo-1414694762283-acccc27bca85.webp
-File56=photo-1494232410401-ad00d5433cfa.webp
-File57=photo-1494253109108-2e30c049369b.webp
-File58=photo-1507358522600-9f71e620c44e.webp
-File59=photo-1550258987-190a2d41a8ba.webp
-File60=photo-1559181567-c3190ca9959b.webp
-File61=photo-1559703248-dcaaec9fab78.webp
+File52=modal.webp
+File53=music-solid.svg
+File54=navbar.webp
+File55=nightmoon.svg
+File56=pagination.webp
+File57=palette-solid-full.svg
+File58=pencil-solid.svg
+File59=phone-solid.svg
+File60=photo-1414694762283-acccc27bca85.webp
+File61=photo-1494232410401-ad00d5433cfa.webp
 File62=angles-left-solid.svg
-File63=photo-1560717789-0ac7c58ac90a.webp
-File64=photo-1560717789-0ac7c58ac90a-blur.webp
-File65=photo-1565098772267-60af42b81ef2.webp
-File66=photo-1572635148818-ef6fd45eb394.webp
-File67=photo-1601004890684-d8cbf643f5f2.webp
-File68=photo-1606107557195-0e29a4b5b4aa.webp
-File69=photo-1609621838510-5ad474b7d25d.webp
-File70=photo-1625726411847-8cbb60cc71e6.webp
-File71=photo-1635805737707-575885ab0820.webp
-File72=photo-1665553365602-b2fb8e5d1707.webp
+File63=photo-1494253109108-2e30c049369b.webp
+File64=photo-1507358522600-9f71e620c44e.webp
+File65=photo-1550258987-190a2d41a8ba.webp
+File66=photo-1559181567-c3190ca9959b.webp
+File67=photo-1559703248-dcaaec9fab78.webp
+File68=photo-1560717789-0ac7c58ac90a.webp
+File69=photo-1560717789-0ac7c58ac90a-blur.webp
+File70=photo-1565098772267-60af42b81ef2.webp
+File71=photo-1572635148818-ef6fd45eb394.webp
+File72=photo-1601004890684-d8cbf643f5f2.webp
 File73=angles-right-solid.svg
-File74=play-solid.svg
-File75=plus-solid.svg
-File76=progress.webp
-File77=radial-progress.webp
-File78=radio.webp
-File79=range.webp
-File80=rating.webp
-File81=save.svg
-File82=search-solid.svg
-File83=select.webp
+File74=photo-1606107557195-0e29a4b5b4aa.webp
+File75=photo-1609621838510-5ad474b7d25d.webp
+File76=photo-1625726411847-8cbb60cc71e6.webp
+File77=photo-1635805737707-575885ab0820.webp
+File78=photo-1665553365602-b2fb8e5d1707.webp
+File79=play-solid.svg
+File80=plus-solid.svg
+File81=progress.webp
+File82=radial-progress.webp
+File83=radio.webp
 File84=arrow-down-solid.svg
-File85=skeleton.webp
-File86=square-check-regular.svg
-File87=stack.webp
-File88=stat.webp
-File89=stat_bolt.svg
-File90=status.webp
-File91=steps.webp
-File92=swap.webp
-File93=tab.webp
-File94=table-cells-solid.svg
+File85=range.webp
+File86=rating.webp
+File87=save.svg
+File88=search-solid.svg
+File89=select.webp
+File90=skeleton.webp
+File91=square-check-regular.svg
+File92=stack.webp
+File93=stat.webp
+File94=stat_bolt.svg
 File95=arrow-right-solid.svg
-File96=textarea.webp
-File97=text-rotate.webp
-File98=timeline.webp
-File99=toggle.webp
-File100=tooltip.webp
-File101=triangle-exclamation-solid.svg
-File102=upload-solid.svg
-File103=user-lock-solid.svg
-File104=user-solid.svg
-File105=video-solid.svg
+File96=status.webp
+File97=steps.webp
+File98=swap.webp
+File99=tab.webp
+File100=table-cells-solid.svg
+File101=textarea.webp
+File102=text-rotate.webp
+File103=timeline.webp
+File104=toggle.webp
+File105=tooltip.webp
 File106=arrow-up-solid.svg
-File107=volume-high-solid.svg
-File108=volume-xmark-solid.svg
-File109=wonderperson@192.webp
-File110=xmark-solid.svg
-File111=avatar.webp
-File112=badge.webp
-File113=bars-solid.svg
-File114=batperson@192.webp
-File115=bell-solid.svg
-File116=book-open-solid.svg
-File117=breadcrumb-document.svg
-File118=breadcrumb-folder.svg
-File119=breadcrumbs.webp
-File120=button.webp
-File121=calendar-solid.svg
-File122=camera-solid.svg
-File123=canvasspinner.jpeg
-File124=card.webp
-File125=card-1.webp
-File126=card-2.webp
-File127=card-3.webp
-File128=carousel.webp
-File129=chat.webp
-File130=check.svg
-File131=checkbox.webp
-File132=check-solid.svg
-File133=chevron-down-solid.svg
-File134=chevron-left-solid.svg
-File135=chevron-right-solid.svg
-File136=circle-info-solid.svg
-File137=circle-question-regular.svg
-File138=circle-xmark-solid.svg
-File139=close.svg
-File140=collapse.webp
-File141=colorwheel.png
-File142=copy-solid.svg
-File143=countdown.webp
-File144=creditcard.webp
-File145=daysun.svg
-File146=diff.webp
-File147=divider.webp
-File148=dock.webp
-File149=dock-home.svg
-File150=dock-inbox.svg
-File151=dock-settings.svg
-File152=dropdown.webp
-File153=ellipsis-solid.svg
-File154=envelope-regular.svg
-File155=envelope-solid.svg
-File156=eye-slash-solid.svg
-File157=eye-solid.svg
-File158=fab.webp
-File159=face_1.jpg
-File160=face_13.jpg
-File161=face_2.jpg
-File162=face_3.jpg
-File163=face_8.jpg
-File164=face_anna.jpg
-File165=face_marcus.jpg
-File166=face_profile11.jpg
-File167=face_profile13.jpeg
-File168=face11.jpg
-File169=face12.jpg
-File170=face14.jpg
-File171=face16.jpg
-File172=face17.jpg
-File173=face18.jpg
-File174=face19.jpg
-File175=face21.jpg
-File176=face22.jpg
-File177=face24.jpg
-File178=face27.jpg
-File179=face4.jpg
-File180=face5.jpg
-File181=face6.jpg
-File182=face7.jpg
-File183=face9.jpg
-File184=face-smile-regular.svg
-File185=face-smile-solid.svg
-File186=fieldset.webp
-File187=file.svg
-File188=file-input.webp
+File107=triangle-exclamation-solid.svg
+File108=upload-solid.svg
+File109=user-lock-solid.svg
+File110=user-solid.svg
+File111=video-solid.svg
+File112=volume-high-solid.svg
+File113=volume-high-solid-full.svg
+File114=volume-low-solid-full.svg
+File115=volume-xmark-solid.svg
+File116=avatar.webp
+File117=wonderperson@192.webp
+File118=xmark-solid.svg
+File119=badge.webp
+File120=bars-solid.svg
+File121=batperson@192.webp
+File122=bell-solid.svg
+File123=book-open-solid.svg
+File124=breadcrumb-document.svg
+File125=breadcrumb-folder.svg
+File126=breadcrumbs.webp
+File127=button.webp
+File128=calendar-solid.svg
+File129=camera-solid.svg
+File130=canvasspinner.jpeg
+File131=card.webp
+File132=card-1.webp
+File133=card-2.webp
+File134=card-3.webp
+File135=carousel.webp
+File136=Casino_Hand.ttf
+File137=chat.webp
+File138=check.svg
+File139=checkbox.webp
+File140=check-solid.svg
+File141=chevron-down-solid.svg
+File142=chevron-left-solid.svg
+File143=chevron-right-solid.svg
+File144=circle-info-solid.svg
+File145=circle-question-regular.svg
+File146=circle-xmark-solid.svg
+File147=close.svg
+File148=collapse.webp
+File149=colorwheel.png
+File150=copy-solid.svg
+File151=countdown.webp
+File152=creditcard.webp
+File153=daysun.svg
+File154=diff.webp
+File155=divider.webp
+File156=dock.webp
+File157=dock-home.svg
+File158=dock-inbox.svg
+File159=dock-settings.svg
+File160=dropdown.webp
+File161=ellipsis-solid.svg
+File162=envelope-regular.svg
+File163=envelope-solid.svg
+File164=eye-slash-solid.svg
+File165=eye-solid.svg
+File166=fab.webp
+File167=face_1.jpg
+File168=face_13.jpg
+File169=face_2.jpg
+File170=face_3.jpg
+File171=face_8.jpg
+File172=face_anna.jpg
+File173=face_marcus.jpg
+File174=face_profile11.jpg
+File175=face_profile13.jpeg
+File176=face11.jpg
+File177=face12.jpg
+File178=face14.jpg
+File179=face16.jpg
+File180=face17.jpg
+File181=face18.jpg
+File182=face19.jpg
+File183=face21.jpg
+File184=face22.jpg
+File185=face24.jpg
+File186=face4.jpg
+File187=face5.jpg
+File188=face6.jpg
+File189=face7.jpg
+File190=face9.jpg
+File191=face-smile-regular.svg
+File192=face-smile-solid.svg
+File193=fieldset.webp
 FileGroup1=Default Group
 FileGroup10=Default Group
 FileGroup100=Default Group
@@ -305,7 +310,15 @@ FileGroup201=Default Group
 FileGroup202=Default Group
 FileGroup203=Default Group
 FileGroup204=Default Group
+FileGroup205=Default Group
+FileGroup206=Default Group
+FileGroup207=Default Group
+FileGroup208=Default Group
+FileGroup209=Default Group
 FileGroup21=Default Group
+FileGroup210=Default Group
+FileGroup211=Default Group
+FileGroup212=Default Group
 FileGroup22=Default Group
 FileGroup23=Default Group
 FileGroup24=Default Group
@@ -393,115 +406,125 @@ FileGroup98=Default Group
 FileGroup99=Default Group
 Group=Default Group
 Library1=ac_leafletview
-Library2=b4xpages
-Library3=bitmapcreator
-Library4=bitmapcreatoreffectsext
-Library5=contentresolver
-Library6=core
-Library7=fileprovider
-Library8=fusedlocationprovider
-Library9=geocoder
-Library10=gps
-Library11=ime
-Library12=javaobject
-Library13=json
-Library14=reflection
-Library15=runtimepermissions
-Library16=sql
-Library17=stringutils
-Library18=xcustomlistview
-Library19=xui
-Library20=b4xdaisyuikit
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="35"/>~\n~<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~'CreateResourceFromFile(Macro, Core.NetworkClearText) ' Comment this if using https protocol~\n~SetActivityAttribute(Main, android:windowSoftInputMode, adjustResize|stateHidden)~\n~'SetActivityAttribute(Main, android:theme, "@style/MyAppTheme")~\n~'CreateResource(values, theme.xml,~\n~'<resources>~\n~'    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">~\n~'        <item name="colorPrimary">#213e45</item>~\n~'        <item name="colorPrimaryDark">#213e45</item>~\n~'        <item name="colorAccent">#a4c13c</item>~\n~'         <item name="android:windowBackground">@color/window</item>~\n~'    </style>~\n~'</resources>~\n~')~\n~'CreateResource(values, colors.xml,~\n~'<resources>~\n~'    <color name="window">#FF213E45</color>~\n~'</resources>~\n~')~\n~AddPermission(android.permission.RECORD_AUDIO)~\n~AddManifestText(<uses-permission~\n~    android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~    android:maxSdkVersion="19" />~\n~)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~AddPermission(android.permission.ACCESS_FINE_LOCATION)~\n~AddPermission(android.permission.ACCESS_COARSE_LOCATION)~\n~AddApplicationText(<meta-data~\n~    android:name="com.google.android.gms.version"~\n~    android:value="@integer/google_play_services_version" />)
-NumberOfFiles=188
-Module1=B4XPageCanvasSpinner
-Module2=B4XPageCard
-Module3=B4XPageCarousel
-Module4=B4XPageChat
-Module5=B4XPageCheckbox
-Module6=B4XPageCheckboxGroup
-Module7=B4XPageCollapse
-Module8=B4XPageColorWheel
-Module9=B4XPageCountdown
-Module10=B4XPageDashboard
-Module11=B4XPageDiff
-Module12=B4XPageDivider
-Module13=B4XPageDock
-Module14=B4XPageDropdown
-Module15=B4XPageFab
-Module16=B4XPageFabBasic
-Module17=B4XPageFabFlower
-Module18=B4XPageFabNavbar
-Module19=B4XPageFieldset
-Module20=B4XPageFileInput
-Module21=B4XPageFilter
-Module22=B4XPageHero
-Module23=B4XPageHover3d
-Module24=B4XPageIconButton
-Module25=B4XPageIndicator
-Module26=B4XPageInput
-Module27=B4XPageKbd
-Module28=B4XPageLink
-Module29=B4XPageList
-Module30=B4XPageList1K
-Module31=B4XPageLoading
-Module32=B4XPageMask
-Module33=B4XPageMenu
-Module34=B4XPageMenuRuntime
-Module35=B4XPageMenuRuntime2
-Module36=B4XPageModal
-Module37=B4XPageNavbar
-Module38=B4XPageNavScrollDock
-Module39=B4XPageOTP
-Module40=B4XPageOverlay
-Module41=B4XPagePagination
-Module42=B4XPagePicker
-Module43=B4XPageProgress
-Module44=B4XPageRadialProgress
-Module45=B4XPageRadio
-Module46=B4XPageRadioGroup
-Module47=B4XPageRange
-Module48=B4XPageRating
-Module49=B4XPageScrollDemo
-Module50=B4XPageSegment
-Module51=B4XPageSelect
-Module52=B4XPageSheetModal
-Module53=B4XPageSignaturePad
-Module54=B4XPageSkeleton
-Module55=B4XPageStack
-Module56=B4XPageStat
-Module57=B4XPageStatus
-Module58=B4XPageSteps
-Module59=B4XPageSvgIcon
-Module60=B4XPageSwap
-Module61=B4XPageSweetAlert
-Module62=B4XPageTab
-Module63=B4XPageText
-Module64=B4XPageTextarea
-Module65=B4XPageTextRotate
-Module66=B4XPageTimeline
-Module67=B4XPageToast
-Module68=B4XPageToggle
-Module69=B4XPageToggleGroup
-Module70=B4XPageTooltip
-Module71=B4XPageWindow
-Module72=B4XMainPage
-Module73=B4XPageAccordion
-Module74=B4XPageActionSheet
-Module75=B4XPageAlert
-Module76=B4XPageAvatar
-Module77=B4XPageBadge
-Module78=B4XPageBreadcrumbs
-Module79=B4XPageButton
-NumberOfLibraries=20
-NumberOfModules=79
+Library2=audio
+Library3=b4xpages
+Library4=bitmapcreator
+Library5=bitmapcreatoreffectsext
+Library6=contentresolver
+Library7=core
+Library8=fileprovider
+Library9=fusedlocationprovider
+Library10=geocoder
+Library11=gps
+Library12=ime
+Library13=javaobject
+Library14=json
+Library15=mediachooser
+Library16=reflection
+Library17=runtimepermissions
+Library18=sql
+Library19=stringutils
+Library20=xcustomlistview
+Library21=xui
+Library22=b4xdaisyuikit
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="35"/>~\n~<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:debuggable, "true")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~'CreateResourceFromFile(Macro, Core.NetworkClearText) ' Comment this if using https protocol~\n~SetActivityAttribute(Main, android:windowSoftInputMode, adjustResize|stateHidden)~\n~'SetActivityAttribute(Main, android:theme, "@style/MyAppTheme")~\n~'CreateResource(values, theme.xml,~\n~'<resources>~\n~'    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">~\n~'        <item name="colorPrimary">#213e45</item>~\n~'        <item name="colorPrimaryDark">#213e45</item>~\n~'        <item name="colorAccent">#a4c13c</item>~\n~'         <item name="android:windowBackground">@color/window</item>~\n~'    </style>~\n~'</resources>~\n~')~\n~'CreateResource(values, colors.xml,~\n~'<resources>~\n~'    <color name="window">#FF213E45</color>~\n~'</resources>~\n~')~\n~~\n~'End of default text.~\n~AddApplicationText(~\n~  <provider~\n~  android:name="androidx.core.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetServiceAttribute(KeepRunningService, android:foregroundServiceType, shortService)~\n~~\n~AddPermission(android.permission.RECORD_AUDIO)~\n~AddPermission(android.permission.FOREGROUND_SERVICE_MICROPHONE)~\n~AddManifestText(<uses-permission~\n~    android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~    android:maxSdkVersion="19" />~\n~)~\n~CreateResource(values, gms.xml, <resources><integer name="google_play_services_version">12451000</integer></resources>)~\n~AddPermission(android.permission.ACCESS_FINE_LOCATION)~\n~AddPermission(android.permission.ACCESS_COARSE_LOCATION)~\n~AddApplicationText(<meta-data~\n~    android:name="com.google.android.gms.version"~\n~    android:value="@integer/google_play_services_version" />)~\n~
+NumberOfFiles=193
+Module1=B4XPageAvatar
+Module2=B4XPageBadge
+Module3=B4XPageBoomMenu
+Module4=B4XPageBreadcrumbs
+Module5=B4XPageButton
+Module6=B4XPageCanvasSpinner
+Module7=B4XPageCard
+Module8=B4XPageCarousel
+Module9=B4XPageChat
+Module10=B4XPageCheckbox
+Module11=B4XPageCheckboxGroup
+Module12=B4XPageCollapse
+Module13=B4XPageColorWheel
+Module14=B4XPageCountdown
+Module15=B4XPageDashboard
+Module16=B4XPageDiff
+Module17=B4XPageDivider
+Module18=B4XPageDock
+Module19=B4XPageDropdown
+Module20=B4XPageEnjoyHint
+Module21=B4XPageFab
+Module22=B4XPageFabBasic
+Module23=B4XPageFabFlower
+Module24=B4XPageFabNavbar
+Module25=B4XPageFieldset
+Module26=B4XPageFileInput
+Module27=B4XPageFilter
+Module28=B4XPageFocus
+Module29=B4XPageHero
+Module30=B4XPageHover3d
+Module31=B4XPageIconButton
+Module32=B4XPageIndicator
+Module33=B4XPageInfoCard
+Module34=B4XPageInput
+Module35=B4XPageKbd
+Module36=B4XPageLink
+Module37=B4XPageList
+Module38=B4XPageList1K
+Module39=B4XPageLoading
+Module40=B4XPageMask
+Module41=B4XPageMediaPicker
+Module42=B4XPageMenu
+Module43=B4XPageMenuRuntime
+Module44=B4XPageMenuRuntime2
+Module45=B4XPageModal
+Module46=B4XPageNavbar
+Module47=B4XPageNavScrollDock
+Module48=B4XPageOTP
+Module49=B4XPageOverlay
+Module50=B4XPagePagination
+Module51=B4XPagePicker
+Module52=B4XPageProgress
+Module53=B4XPageRadialProgress
+Module54=B4XPageRadio
+Module55=B4XPageRadioGroup
+Module56=B4XPageRange
+Module57=B4XPageRating
+Module58=B4XPageScrollDemo
+Module59=B4XPageSegment
+Module60=B4XPageSelect
+Module61=B4XPageSheetModal
+Module62=B4XPageSignaturePad
+Module63=B4XPageSkeleton
+Module64=B4XPageStack
+Module65=B4XPageStat
+Module66=B4XPageStatus
+Module67=B4XPageSteps
+Module68=B4XPageSvgIcon
+Module69=B4XPageSwap
+Module70=B4XPageSweetAlert
+Module71=B4XPageTab
+Module72=B4XPageText
+Module73=B4XPageTextarea
+Module74=B4XPageTextRotate
+Module75=B4XPageTimeline
+Module76=B4XPageToast
+Module77=B4XPageToggle
+Module78=B4XPageToggleGroup
+Module79=B4XPageTooltip
+Module80=B4XPageWindow
+Module81=BoomPathManager
+Module82=ButtonPlaceManager
+Module83=PiecePlaceManager
+Module84=B4XMainPage
+Module85=B4XPageAccordion
+Module86=B4XPageActionSheet
+Module87=B4XPageAlert
+NumberOfLibraries=22
+NumberOfModules=87
 LibraryFile=C:\b4a\libraries\B4XDaisyUIKit.b4xlib
 Version=13.5
 @EndOfDesignText@
 #Region  Project Attributes
 	#ApplicationLabel: B4XDaisy UIKit
-	#VersionCode: 70
-	#VersionName: 0.70
+	#VersionCode: 80
+	#VersionName: 0.80
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: True
@@ -511,20 +534,21 @@ Version=13.5
 #Region  Activity Attributes 
 	#FullScreen: True
 	#IncludeTitle: False
-	#DebuggerForceStandardAssets: true
+	#DebuggerForceStandardAssets: true	
+	#BridgeLogger: True
 #End Region
-
-#BridgeLogger: True
 
 #Macro: After Save, Sync Layouts, ide://run?File=%ADDITIONAL%\JsonLayouts.jar&Args=%PROJECT%&Args=%PROJECT_NAME%
 #Macro: Title, JsonLayouts folder, ide://run?File=%WINDIR%\explorer.exe&Args=%PROJECT%\JsonLayouts
 #Macro: Title, Code bundle, ide://run?File=%ADDITIONAL%\CodeBundle.jar&Args=%PROJECT_NAME%
-#Macro: Title, Version, ide://run?file=%ADDITIONAL%\manifest-writer.jar&Args=%PROJECT%\..\release&Args=%PROJECT%\..\release&Args=Version&Args=add.1
 'Ctrl + click to build b4xlib: ide://run?file=%JAVABIN%\jar.exe&WorkingDirectory=%PROJECT%\..&Args=-cMf&Args=%PROJECT_NAME%.b4xlib&&Args=..&Args=*.bas&Args=manifest.txt
+#Macro: Title, PowerShell, ide://run?File=%WINDIR%\System32\cmd.exe&args=/c&args=start&args=""&args=powershell.exe&args=-WorkingDirectory&args=%PROJECT%
+#Macro: Title, Claude, ide://run?File=%COMSPEC%&args=/c&args=start&args=claude://
+#Macro: Title, Export B4XPages, ide://run?File=%B4X%\Zipper.jar&Args=%PROJECT_NAME%.zip
 
-#AdditionalJar: yoga-3.2.1-release.aar
-#AdditionalJar: soloader-0.10.5.aar
-#AdditionalJar: nativeloader-0.10.5.jar
+'#AdditionalJar: yoga-3.2.1-release.aar
+'#AdditionalJar: soloader-0.10.5.aar
+'#AdditionalJar: nativeloader-0.10.5.jar
 'getting gps location
 #AdditionalJar: com.android.support:support-v4
 #AdditionalJar: com.google.android.gms:play-services-location
@@ -557,6 +581,41 @@ Public Sub ShowResolutionDialog (SettingsStatus As LocationSettingsStatus) As Re
 	Return LocationSettingsUpdated
 End Sub
 
+#Region Pin to Home Screen
+' Returns True only on the very first launch (persisted flag in DirInternal).
+Private Sub FirstRunPinNeeded As Boolean
+	#If B4A
+	Dim flagFile As String = "daisy_pin_asked.dat"
+	If File.Exists(File.DirInternal, flagFile) Then Return False
+	Try
+		File.WriteString(File.DirInternal, flagFile, "1")
+	Catch
+		Log("PinToHome flag write failed: " & LastException)
+	End Try
+	Return True
+	#Else
+		Return False
+	#End If
+End Sub
+
+' Asks the default launcher to pin a B4XDaisy UIKit shortcut on the home screen.
+' Shows the system Add automatically? dialog (a single tap by the user). No-op below API 26.
+Private Sub TryPinToHomeScreen
+	'The actual work is done in inline Java (_pinToHome) to avoid JavaObject
+	'constructor/method type-matching issues (Context / CharSequence params).
+	#If B4A
+	Try
+		Dim jo As JavaObject
+		jo.InitializeStatic("com.sithaso.daisyuikit.main")
+		jo.RunMethod("_pinToHome", Null)
+	Catch
+		Log("TryPinToHomeScreen failed: " & LastException)
+	End Try
+	#End If
+End Sub
+
+#End Region
+
 'Template version: B4A-1.01
 #Region Delegates
 
@@ -571,6 +630,13 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 End Sub
 
 Sub Activity_Resume
+	' One-time prompt: ask the launcher to pin the app icon to the home screen.
+	' Uses ShortcutManager.requestPinShortcut (Android 8+). Skipped on older devices.
+	Try
+		If FirstRunPinNeeded Then TryPinToHomeScreen
+	Catch
+		Log("PinToHome: " & LastException)
+	End Try
 	B4XPages.Delegate.Activity_Resume
 End Sub
 
@@ -594,3 +660,30 @@ End Sub
 '#End If
 #End Region
 
+#If Java
+public static void _pinToHome() {
+	try {
+		android.app.Activity act = mostCurrent;
+		if (act == null) return;
+		if (android.os.Build.VERSION.SDK_INT < 26) return;
+		android.content.Context ctx = act;
+		android.content.pm.ShortcutManager sm =
+			(android.content.pm.ShortcutManager) ctx.getSystemService(android.content.Context.SHORTCUT_SERVICE);
+		if (sm == null) return;
+		if (!sm.isRequestPinShortcutSupported()) return;
+		String pkg = ctx.getPackageName();
+		int iconResId = ctx.getResources().getIdentifier("icon", "drawable", pkg);
+		android.content.pm.ShortcutInfo.Builder b = new android.content.pm.ShortcutInfo.Builder(ctx, "daisy_main");
+		b.setShortLabel("Daisy UIKit");
+		b.setLongLabel("B4XDaisy UIKit");
+		if (iconResId != 0) b.setIcon(android.graphics.drawable.Icon.createWithResource(ctx, iconResId));
+		android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_MAIN);
+		intent.addCategory(android.content.Intent.CATEGORY_LAUNCHER);
+		intent.setClassName(pkg, pkg + ".main");
+		b.setIntent(intent);
+		sm.requestPinShortcut(b.build(), null);
+	} catch (Throwable t) {
+		android.util.Log.w("B4A", "PinToHome failed", t);
+	}
+}
+#End If

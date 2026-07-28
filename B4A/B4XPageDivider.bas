@@ -259,7 +259,7 @@ Private Sub divider_Click(Tag As Object)
 	#If B4A
 	Dim s As String = Tag
 	If s.Length = 0 Then s = "divider"
-	ToastMessageShow("Clicked: " & s, False)
+	B4XPages.MainPage.ShowToast("Clicked: " & s, False)
 	#End If
 End Sub
 

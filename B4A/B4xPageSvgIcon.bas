@@ -187,9 +187,9 @@ Private Sub RenderIndicatorCard(MaxW As Int, StartY As Int) As Int
 	ind.AddToParent(card, iconLeft, iconTop, iconSize, iconSize)
 	Dim indTarget As B4XView = iconComp.GetContentView
 	If indTarget.IsInitialized Then
-		ind.AttachToTarget(indTarget)
+		ind.AttachTo(indTarget)
 	Else
-		ind.AttachToTarget(iconView)
+		ind.AttachTo(iconView)
 	End If
 
 	y = y + cardH + 14dip
@@ -235,9 +235,9 @@ Private Sub RenderCounterCard(MaxW As Int, StartY As Int) As Int
 	countInd.AddToParent(card, iconLeft, iconTop, iconSize, iconSize)
 	Dim countTarget As B4XView = iconComp.GetContentView
 	If countTarget.IsInitialized Then
-		countInd.AttachToTarget(countTarget)
+		countInd.AttachTo(countTarget)
 	Else
-		countInd.AttachToTarget(iconView)
+		countInd.AttachTo(iconView)
 	End If
 
 	y = y + cardH + 14dip
@@ -270,7 +270,7 @@ End Sub
 
 Private Sub indicator_Click(Tag As Object)
 	#If B4A
-	ToastMessageShow("Indicator click: " & Tag, False)
+	B4XPages.MainPage.ShowToast("Indicator click: " & Tag, False)
 	#End If
 End Sub
 

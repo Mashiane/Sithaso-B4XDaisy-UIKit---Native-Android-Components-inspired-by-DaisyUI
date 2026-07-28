@@ -183,7 +183,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	' #endregion
 
 	' #region Example 7: with AllowClear (rating-hidden)
-	''' Rating with AllowClear enabled — tapping the same value resets to 0 (rating-hidden parity).
+	''' Rating with AllowClear enabled ? tapping the same value resets to 0 (rating-hidden parity).
 	y = AddSectionTitle("With AllowClear (rating-hidden)", y, maxW)
 	Dim c7 As B4XDaisyRating
 	c7.Initialize(Me, "rating7")
@@ -313,6 +313,80 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	y = y + 42dip
 	' #endregion
 
+	' #region Example 12: Label Above
+	''' Caption rendered above the rating (LabelAbove + LabelVisible).
+	y = AddSectionTitle("Label Above", y, maxW)
+	Dim c12 As B4XDaisyRating
+	c12.Initialize(Me, "rating12")
+	c12.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	c12.Size = "md"
+	c12.LabelAbove = "Rate your experience"
+	c12.LabelVisible = True
+	c12.Value = 3
+	c12.IconStyle = "star-2"
+	c12.Tag = "rating-label-above"
+	y = y + c12.GetComputedHeight + 12dip
+	' #endregion
+
+	' #region Example 13: Hint Text
+	''' Helper text rendered below the rating.
+	y = AddSectionTitle("Hint Text", y, maxW)
+	Dim c13 As B4XDaisyRating
+	c13.Initialize(Me, "rating13")
+	c13.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	c13.Size = "md"
+	c13.LabelAbove = "Service quality"
+	c13.LabelVisible = True
+	c13.HintText = "Tap a star to rate the service quality."
+	c13.Value = 4
+	c13.IconStyle = "star-2"
+	c13.Tag = "rating-hint"
+	y = y + c13.GetComputedHeight + 12dip
+	' #endregion
+
+	' #region Example 14: Required (red star)
+	''' Required flag renders a red asterisk on the label.
+	y = AddSectionTitle("Required (red star)", y, maxW)
+	Dim c14 As B4XDaisyRating
+	c14.Initialize(Me, "rating14")
+	c14.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	c14.Size = "md"
+	c14.LabelAbove = "Overall satisfaction"
+	c14.LabelVisible = True
+	c14.Required = True
+	c14.MaxValue = 5
+	c14.Value = 3
+	c14.HintText = "A rating greater than 0 is required."
+	c14.IconStyle = "star-2"
+	c14.Tag = "rating-required"
+	y = y + c14.GetComputedHeight + 12dip
+	' #endregion
+
+	' #region Example 15: Validation For A Rating
+	''' Required rating starting at 0 (invalid). Tap Validate to check;
+	''' the error text renders below in red. Tapping a star clears the transient error.
+	y = AddSectionTitle("Validation For A Rating", y, maxW)
+	Dim c15 As B4XDaisyRating
+	c15.Initialize(Me, "rating15")
+	c15.AddToParent(pnlHost, PAGE_PAD, y, maxW, 24dip)
+	c15.Size = "md"
+	c15.LabelAbove = "Product rating"
+	c15.LabelVisible = True
+	c15.Required = True
+	c15.MaxValue = 5
+	c15.Value = 0
+	c15.HintText = "Select a rating greater than 0, then tap Validate."
+	c15.IconStyle = "star-2"
+	c15.Tag = "rating-valid"
+	y = y + c15.GetComputedHeight + 8dip
+
+	Dim btnValidateRating As B4XDaisyButton
+	btnValidateRating.Initialize(Me, "btnValidateRating")
+	btnValidateRating.AddToParent(pnlHost, PAGE_PAD, y, maxW, 40dip)
+	btnValidateRating.Text = "Validate Rating"
+	btnValidateRating.Tag = c15
+	y = y + 48dip
+	' #endregion
 	pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
@@ -347,89 +421,103 @@ End Sub
 ''' </summary>
 Private Sub rating1_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Rating: " & Value, False)
+	B4XPages.MainPage.ShowToast("Rating: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating2_Changed(Value As Float)
-	' Read-only — no interaction expected
+	' Read-only ? no interaction expected
 End Sub
 
 Private Sub rating3_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Star-2 Orange: " & Value, False)
+	B4XPages.MainPage.ShowToast("Star-2 Orange: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating4_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Heart Multi: " & Value, False)
+	B4XPages.MainPage.ShowToast("Heart Multi: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating5_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Star-2 Green: " & Value, False)
+	B4XPages.MainPage.ShowToast("Star-2 Green: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating6a_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Size XS: " & Value, False)
+	B4XPages.MainPage.ShowToast("Size XS: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating6b_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Size SM: " & Value, False)
+	B4XPages.MainPage.ShowToast("Size SM: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating6c_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Size MD: " & Value, False)
+	B4XPages.MainPage.ShowToast("Size MD: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating6d_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Size LG: " & Value, False)
+	B4XPages.MainPage.ShowToast("Size LG: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating6e_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Size XL: " & Value, False)
+	B4XPages.MainPage.ShowToast("Size XL: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating7_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("AllowClear: " & Value, False)
+	B4XPages.MainPage.ShowToast("AllowClear: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating8_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Half: " & Value, False)
+	B4XPages.MainPage.ShowToast("Half: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating9_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Interactive: " & Value, False)
+	B4XPages.MainPage.ShowToast("Interactive: " & Value, False)
 	#End If
 End Sub
 
 Private Sub rating10_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Squircle: " & Value, False)
+	B4XPages.MainPage.ShowToast("Squircle: " & Value, False)
 	#End If
 End Sub
 
 Private Sub ratingVariant_Changed(Value As Float)
 	#If B4A
-	ToastMessageShow("Variant Rating: " & Value, False)
+	B4XPages.MainPage.ShowToast("Variant Rating: " & Value, False)
 	#End If
+End Sub
+
+Private Sub btnValidateRating_Click (Tag As Object)
+	If Tag Is B4XDaisyRating Then
+		Dim r As B4XDaisyRating = Tag
+		Dim ok As Boolean = r.Validate
+		If ok Then
+			B4XPages.MainPage.ShowToastSuccess("Valid: rating is greater than 0.", False)
+		Else
+			Dim msg As String = r.ErrorText
+			If msg.Length = 0 Then msg = "This field is required."
+			B4XPages.MainPage.ShowToastError("Invalid: " & msg, False)
+		End If
+	End If
 End Sub
 #End Region

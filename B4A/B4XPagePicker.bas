@@ -14,8 +14,6 @@ Sub Class_Globals
 	' Layout
 	Private pageScroll As B4XDaisyPageScroll
 	Private pnlHost As B4XView
-	Private toast As B4XDaisyToast
-
 	' Pickers
 	Private pickerBasic As B4XDaisyPicker
 	Private pickerSlots As B4XDaisyPicker
@@ -66,11 +64,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	pageScroll.AddToParent(Root, 0, 0, Root.Width, Root.Height)
 	pnlHost = pageScroll.Panel
 
-	' Setup Toast
-	toast.Initialize(Me, "toast")
-	toast.CreateView
-	toast.SetRoot(Root)
-	toast.SetPosition("end", "bottom")
+	' Toast migrated to B4XMainPage central methods
     
 	' Setup Modal Container as a dedicated full-screen overlay panel on Root.
 	' IMPORTANT: do NOT pass Root as the modal base - setVisible(False) would hide
@@ -504,7 +498,7 @@ End Sub
 ' Action button inside the modal footer (Confirm)
 Private Sub modal_confirm_Click(Tag As Object)
 	Dim selectedVal As Object = pickerInModal.GetColumnValue("ingredients")
-	toast.SuccessWithDuration("Confirmed: " & selectedVal, 3000)
+	B4XPages.MainPage.ShowToastSuccess("Confirmed: " & selectedVal, True)
 	modalContainer.Close
 End Sub
 
@@ -535,51 +529,51 @@ Private Sub btnDateCancel_Click(Tag As Object)
 End Sub
 
 ' Listeners for inline state changes 
-Private Sub pickerBasic_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Basic Picker Selected: " & Value, 2000)
+Private Sub pickerBasic_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Basic Picker Selected: " & Value, False)
 End Sub
 
-Private Sub pickerSlots_ColumnChanged(ColumnName As String, Value As Object)
+Private Sub pickerSlots_Changed(ColumnName As String, Value As Object)
 End Sub
 
-Private Sub pickerThemed_ColumnChanged(ColumnName As String, Value As Object)
+Private Sub pickerThemed_Changed(ColumnName As String, Value As Object)
 End Sub
 
-Private Sub pickerDate_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Date: " & pickerDate.GetValue, 2000)
+Private Sub pickerDate_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Date: " & pickerDate.GetValue, False)
 End Sub
 
-Private Sub pickerTime_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Time: " & pickerTime.GetValue, 2000)
+Private Sub pickerTime_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Time: " & pickerTime.GetValue, False)
 End Sub
 
-Private Sub pickerDateTime_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Date-Time: " & pickerDateTime.GetValue, 2000)
+Private Sub pickerDateTime_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Date-Time: " & pickerDateTime.GetValue, False)
 End Sub
 
-Private Sub pickerMulti_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Selection: " & pickerMulti.GetValue, 2000)
+Private Sub pickerMulti_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Selection: " & pickerMulti.GetValue, False)
 End Sub
 
-Private Sub pickerHighlight_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Day: " & Value, 2000)
+Private Sub pickerHighlight_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Day: " & Value, False)
 End Sub
 
-Private Sub pickerTime12_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Time: " & pickerTime12.GetValue, 2000)
+Private Sub pickerTime12_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Time: " & pickerTime12.GetValue, False)
 End Sub
 
-Private Sub pickerRounded_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Shape: " & Value, 2000)
+Private Sub pickerRounded_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Shape: " & Value, False)
 End Sub
 
-Private Sub pickerDisplay_ColumnChanged(ColumnName As String, Value As Object)
+Private Sub pickerDisplay_Changed(ColumnName As String, Value As Object)
 	' GetValue uses InputFormat -> "2026-07-05", while the wheels show "July" / "5".
-	toast.SuccessWithDuration("Returned: " & pickerDisplay.GetValue, 2000)
+	B4XPages.MainPage.ShowToastSuccess("Returned: " & pickerDisplay.GetValue, False)
 End Sub
 
-Private Sub pickerShadow_ColumnChanged(ColumnName As String, Value As Object)
-	toast.SuccessWithDuration("Level: " & Value, 2000)
+Private Sub pickerShadow_Changed(ColumnName As String, Value As Object)
+	B4XPages.MainPage.ShowToastSuccess("Level: " & Value, False)
 End Sub
 
 ' Builds a random "<color>-<size>" string from the picker's own option values, then
@@ -593,18 +587,18 @@ Private Sub btnSetRandom_Click(Tag As Object)
 	vals.Add(colorList.Get(Rnd(0, colorList.Size)))
 	vals.Add(sizeList.Get(Rnd(0, sizeList.Size)))
 	pickerSetGet.SetValueList(vals)
-	toast.SuccessWithDuration("Set: " & JoinList(vals, "-"), 2000)
+	B4XPages.MainPage.ShowToastSuccess("Set: " & JoinList(vals, "-"), False)
 End Sub
 
 ' Reads the current selection back as a List (GetValueList) and shows it.
 Private Sub btnGetValue_Click(Tag As Object)
 	Dim vals As List = pickerSetGet.GetValueList
-	toast.SuccessWithDuration("Get: " & JoinList(vals, "-"), 2000)
+	B4XPages.MainPage.ShowToastSuccess("Get: " & JoinList(vals, "-"), False)
 End Sub
 
 ' Programmatic SetValueList fires ColumnChanged per column; log only so the Set/Get
 ' buttons own the user-facing toasts.
-Private Sub pickerSetGet_ColumnChanged(ColumnName As String, Value As Object)
+Private Sub pickerSetGet_Changed(ColumnName As String, Value As Object)
 End Sub
 
 ' Joins a List of values into a single string using Delimiter (for toast display).
@@ -623,6 +617,6 @@ Private Sub btnDisableCat_Click(Tag As Object)
 	catDisabled = Not(catDisabled)
 	pickerBasic.SetOptionDisabled("pets", "cat", catDisabled)
 	btnDisableCat.Text = IIf(catDisabled, "Enable 'Cat' option", "Disable 'Cat' option")
-	toast.SuccessWithDuration(IIf(catDisabled, "'Cat' disabled", "'Cat' enabled"), 1500)
+	B4XPages.MainPage.ShowToastSuccess(IIf(catDisabled, "'Cat' disabled", "'Cat' enabled"), False)
 End Sub
 #End Region
