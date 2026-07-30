@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -169,10 +169,12 @@ Private Sub btnCamera_Click(Tag As Object)
 				Dim bmp As B4XBitmap = LoadBitmapSample(Result.MediaDir, Result.MediaFile, 1920, 1920)
 				imgPreview.setBitmap(bmp)
 			End If
+			B4XPages.MainPage.ShowToastSuccess("Photo captured successfully!", False)
+		Else
+			B4XPages.MainPage.ShowToastError("Photo capture cancelled or failed", False)
 		End If
-		B4XPages.MainPage.ShowToastSuccess("Photo captured successfully!", False)
 	Else
-		B4XPages.MainPage.ShowToastError("Camera action cancelled", False)
+		B4XPages.MainPage.ShowToastError("Camera permission denied", False)
 	End If
 End Sub
 
@@ -182,22 +184,18 @@ Private Sub btnVideo_Click(Tag As Object)
 	Wait For B4XPage_PermissionResult (Permission As String, Done As Boolean)
 	If Done Then
 		Wait For (chooser.CaptureVideo) Complete (Result As MediaChooserResult)
-		Log(Result.MediaDir)
-		Log(Result.MediaFile)
-		Log(Result.Success)
+		If Result.Success Then
+			lblMediaInfo.Text = "🎥 Video Recorded:" & CRLF & _
+				"Dir: " & Result.MediaDir & CRLF & _
+				"File: " & Result.MediaFile & CRLF & _
+				"Type: " & Result.Mime
+			B4XPages.MainPage.ShowToastSuccess("Video recorded!", False)
+		Else
+			B4XPages.MainPage.ShowToastError("Video recording cancelled or failed", False)
+		End If
 	Else
-		Log("Camera permission was denied by user.")
+		B4XPages.MainPage.ShowToastError("Camera permission denied", False)
 	End If
-	
-'	If Result <> Null And Result.Success Then
-'		lblMediaInfo.Text = "🎥 Video Recorded:" & CRLF & _
-'			"Dir: " & Result.MediaDir & CRLF & _
-'			"File: " & Result.MediaFile & CRLF & _
-'			"Type: " & Result.Mime
-'		B4XPages.MainPage.ShowToastSuccess("Video recorded!", False)
-'	Else
-'		B4XPages.MainPage.ShowToastError("Video recording cancelled", False)
-'	End If
 End Sub
 
 Private Sub btnAudio_Click(Tag As Object)
