@@ -120,7 +120,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeSm.CurrentIndex = 2
     sizeSm.Clear
     sizeSm.AddItem("size-sm-home", "Home", "breadcrumb-folder.svg", True)
-    sizeSm.AddItem("size-sm-library", "Library", "", True)
+    sizeSm.AddItem("size-sm-library", "Library", "breadcrumb-library.svg", True)
     sizeSm.AddItem("size-sm-current", "Typography", "breadcrumb-document.svg", False)
     sizeSm.SetLayoutAnimated(0, sizeSm.Left, sizeSm.Top, sizeSm.Width, sizeSm.GetComputedHeight)
     currentY = currentY + sizeSm.GetComputedHeight + 12dip
@@ -133,7 +133,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeBase.CurrentIndex = 2
     sizeBase.Clear
     sizeBase.AddItem("size-base-home", "Home", "breadcrumb-folder.svg", True)
-    sizeBase.AddItem("size-base-library", "Library", "", True)
+    sizeBase.AddItem("size-base-library", "Library", "breadcrumb-library.svg", True)
     sizeBase.AddItem("size-base-current", "Typography", "breadcrumb-document.svg", False)
     sizeBase.SetLayoutAnimated(0, sizeBase.Left, sizeBase.Top, sizeBase.Width, sizeBase.GetComputedHeight)
     currentY = currentY + sizeBase.GetComputedHeight + 12dip
@@ -146,7 +146,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeLg.CurrentIndex = 2
     sizeLg.Clear
     sizeLg.AddItem("size-lg-home", "Home", "breadcrumb-folder.svg", True)
-    sizeLg.AddItem("size-lg-library", "Library", "", True)
+    sizeLg.AddItem("size-lg-library", "Library", "breadcrumb-library.svg", True)
     sizeLg.AddItem("size-lg-current", "Typography", "breadcrumb-document.svg", False)
     sizeLg.SetLayoutAnimated(0, sizeLg.Left, sizeLg.Top, sizeLg.Width, sizeLg.GetComputedHeight)
     currentY = currentY + sizeLg.GetComputedHeight + 12dip
@@ -159,7 +159,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sizeXl.CurrentIndex = 2
     sizeXl.Clear
     sizeXl.AddItem("size-xl-home", "Home", "breadcrumb-folder.svg", True)
-    sizeXl.AddItem("size-xl-library", "Library", "", True)
+    sizeXl.AddItem("size-xl-library", "Library", "breadcrumb-library.svg", True)
     sizeXl.AddItem("size-xl-current", "Typography", "breadcrumb-document.svg", False)
     sizeXl.SetLayoutAnimated(0, sizeXl.Left, sizeXl.Top, sizeXl.Width, sizeXl.GetComputedHeight)
     currentY = currentY + sizeXl.GetComputedHeight + PAGE_PAD

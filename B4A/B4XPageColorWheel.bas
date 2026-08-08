@@ -129,8 +129,8 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	inpColor.Initialize(Me, "inpColor")
 	inpColor.InputType = "color"
 	inpColor.LabelAbove = "Color"
-	inpColor.Text = "#ef4444"
-	inpColor.setAppendColor(xui.Color_RGB(239, 68, 68))
+	' Default color is black until the user picks a color via the sheet.
+	inpColor.Text = "#000000"
 	inpColor.AddToParent(pnlHost, padding, y, maxW, 56dip)
     
 	y = y + 70dip + gap

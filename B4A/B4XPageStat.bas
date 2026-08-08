@@ -300,12 +300,8 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     item5_1.Value = "89400"
     item5_1.Prefix = "$"
     item5_1.Animated = True
-    Dim btn1 As B4XDaisyButton
-    btn1.Initialize(Me, "component")
-    btn1.Text = "Add funds"
-    btn1.Variant = "success"
-    btn1.Size = "xs"
-    item5_1.AddAction(btn1)
+    item5_1.AddActionButton("Add funds", "success", "stat_addfunds")
+    item5_1.AddActionButton("History", "ghost", "stat_history")
     stats5.AddItem(item5_1)
     
     stats5.Refresh
@@ -400,6 +396,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     currentY = AddSectionTitle("9. Animated count-up", currentY, maxW)
     Dim stats8 As B4XDaisyStat
     stats8.Initialize(Me, "")
+    stats8.Width = ""
     stats8.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
 
     Dim item8_1 As B4XDaisyStatItem
@@ -429,7 +426,6 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     stats8.AddItem(item8_2)
 
     stats8.Refresh
-    If stats8.ContentWidth > 0 Then stats8.SetLayoutAnimated(0, PAGE_PAD, currentY, stats8.ContentWidth, stats8.ContentHeight)
 
     currentY = currentY + stats8.ContentHeight + 6dip
     currentY = AddAnimateButton("Animate", stats8, currentY, maxW)
@@ -475,6 +471,15 @@ End Sub
 
 Private Sub component_Click(Tag As Object)
     'Log("Clicked: " & Tag)
+End Sub
+
+' Action-button handlers for Example 5 (AddActionButton helper routes here by EventName).
+Private Sub stat_addfunds_Click(Tag As Object)
+    B4XPages.MainPage.ShowToastSuccess("Add funds tapped", False)
+End Sub
+
+Private Sub stat_history_Click(Tag As Object)
+    B4XPages.MainPage.ShowToastSuccess("History tapped", False)
 End Sub
 
 ' Shared click handler for the animated count-up examples (EventName "anim").

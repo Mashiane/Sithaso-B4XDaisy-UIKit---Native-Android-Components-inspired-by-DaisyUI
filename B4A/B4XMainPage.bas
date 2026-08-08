@@ -75,13 +75,14 @@ Sub Class_Globals
 	Public ListPage As B4XPageList
 	Public List1KPage As B4XPageList1K
 	Public CanvasSpinner As B4XPageCanvasSpinner
+	Public AuraPage As B4XPageAura
+	Public EasingPage As B4XPageEasing
 	Public TextRotatePage As B4XPageTextRotate
 	Public TimelinePage As B4XPageTimeline
 	Public Hover3dPage As B4XPageHover3d
 	Private AppLoader As B4XDaisyCanvasSpinner
 	Public SweetAlert As B4XDaisySweetAlert
 	Public FabPage As B4XPageFab
-	Public FabBasicPage As B4XPageFabBasic
 	Public FabNavbarPage As B4XPageFabNavbar
 	Public FabFlowerPage As B4XPageFabFlower
 	Public BoomMenuPage As B4XPageBoomMenu
@@ -114,11 +115,16 @@ Sub Class_Globals
 	Public FileInputPage As B4XPageFileInput
 	Public MediaPickerPage As B4XPageMediaPicker
 	Public SweetAlertPage As B4XPageSweetAlert
+	Public SweetAlertInputsPage As B4XPageSweetAlertInputs
 	Public FilterPage As B4XPageFilter
 	Public PageScrollDemo As B4XPageScrollDemo
 	Public NavScrollDockPage As B4XPageNavScrollDock
 	Public EnjoyHintPage As B4XPageEnjoyHint
+	Public ShineButtonPage As B4XPageShineButton
+	Public TagSpherePage As B4XPageTagSphere
+	Public PDFViewPage As B4XPagePDFView
 	Private ActiveAlert As B4XDaisyAlert
+	Private FabBasicPage As B4XPageFabBasic
 End Sub
 
 Public Sub Initialize
@@ -144,7 +150,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	'load the other pages
 	Wait For (ShowSplashScreen) Complete (Unused As Boolean)
 
-	'Show avatarui as the app start page.
+	'Show pdfview as the app start page.
 	ShowPageWithLoader("dashboard")
 	'just check if animations are enabled
 	Dim bHasAnimation As Boolean = B4XDaisyVariants.AreSystemAnimationsEnabled
@@ -251,10 +257,13 @@ Sub ShowSplashScreen As ResumableSub
 	WindowPage.Initialize
 	FieldSetPage.Initialize
 	CanvasSpinner.Initialize
+	AuraPage.Initialize
+	EasingPage.Initialize
 	TextRotatePage.Initialize
 	TimelinePage.Initialize
 	Hover3dPage.Initialize
 	SweetAlertPage.Initialize
+	SweetAlertInputsPage.Initialize
 	PageScrollDemo.Initialize
 	'KM01SignInPage.Initialize
 	'KM01TypeOfUserPage.Initialize
@@ -268,6 +277,9 @@ Sub ShowSplashScreen As ResumableSub
 	'KM01OnboardingPage.Initialize
 	NavScrollDockPage.Initialize
 	EnjoyHintPage.Initialize
+	ShineButtonPage.Initialize
+	TagSpherePage.Initialize
+	PDFViewPage.Initialize
 	'KM01LeafletMapPage.Initialize
 	'KM01PhysicalAddressesPage.Initialize
 
@@ -346,11 +358,15 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("accordion", AccordionPage)
 	B4XPages.AddPage("countdown", CountdownPage)
 	B4XPages.AddPage("cspinner", CanvasSpinner)
+	B4XPages.AddPage("aura", AuraPage)
+	B4XPages.AddPage("easing", EasingPage)
 	B4XPages.AddPage("textrotate", TextRotatePage)
 	B4XPages.AddPage("timeline", TimelinePage)
 	B4XPages.AddPage("hover3d", Hover3dPage)
 	B4XPages.AddPage("iconbutton", IconButtonPage)
 	B4XPages.AddPage("sweetalert", SweetAlertPage)
+	B4XPages.AddPage("sweetalertinputs", SweetAlertInputsPage)
+	B4XPages.AddPage("pdfview", PDFViewPage)
 	B4XPages.AddPage("pagescrolldemo", PageScrollDemo)
 	'B4XPages.AddPage("KM01SignIn", KM01SignInPage)
 	'B4XPages.AddPage("KM01TypeOfUser", KM01TypeOfUserPage)
@@ -365,6 +381,8 @@ Sub ShowSplashScreen As ResumableSub
 	'B4XPages.AddPage("KM01PhysicalAddresses", KM01PhysicalAddressesPage)
 	B4XPages.AddPage("navscrolldock", NavScrollDockPage)
 	B4XPages.AddPage("enjoyhint", EnjoyHintPage)
+	B4XPages.AddPage("shinebutton", ShineButtonPage)
+	B4XPages.AddPage("tagsphere", TagSpherePage)
 	Return True
 End Sub
 

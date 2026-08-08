@@ -62,7 +62,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     hoverImage.Initialize(Me, "hoverImage")
     hoverImage.AddToParent(pnlHost, PAGE_PAD, y, heroW, 214dip)
     hoverImage.setWidth("w-full")
-    hoverImage.setHeight("h-[250px]")
+    hoverImage.setHeight("h-auto")
     hoverImage.Rounded = "rounded-2xl"
     hoverImage.Padding = "p-[15px]"
     hoverImage.setContentType("image")
@@ -95,6 +95,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     Dim cardHost As B4XView = hoverCard.ContentPanel
     Dim contentW As Int = Max(1dip, cardHost.Width)
+    Log("[HOVER3DDBG] demo cardHost.Width=" & cardHost.Width & " contentW=" & contentW)
     cardHost.Color = xui.Color_Transparent
 
     Dim glowA As B4XView = xui.CreatePanel("")
@@ -138,7 +139,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     xlblHolderCaption.Text = "CARD HOLDER"
     xlblHolderCaption.TextSize = 11
     xlblHolderCaption.TextColor = xui.Color_ARGB(52, 255, 255, 255)
-    cardHost.AddView(xlblHolderCaption, 0, 148dip, 110dip, 18dip)
+    cardHost.AddView(xlblHolderCaption, 0, 134dip, 110dip, 18dip)
 
     Dim lblHolder As Label
     lblHolder.Initialize("")
@@ -146,7 +147,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     xlblHolder.Text = "VICTOR VON D."
     xlblHolder.TextSize = 13
     xlblHolder.TextColor = xui.Color_White
-    cardHost.AddView(xlblHolder, 0, 168dip, 150dip, 22dip)
+    cardHost.AddView(xlblHolder, 0, 154dip, 150dip, 22dip)
 
     Dim lblExpiresCaption As Label
     lblExpiresCaption.Initialize("")
@@ -154,7 +155,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     xlblExpiresCaption.Text = "EXPIRES"
     xlblExpiresCaption.TextSize = 11
     xlblExpiresCaption.TextColor = xui.Color_ARGB(52, 255, 255, 255)
-    cardHost.AddView(xlblExpiresCaption, contentW - 94dip, 148dip, 80dip, 18dip)
+    cardHost.AddView(xlblExpiresCaption, contentW - 94dip, 134dip, 80dip, 18dip)
 
     Dim lblExpires As Label
     lblExpires.Initialize("")
@@ -162,7 +163,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     xlblExpires.Text = "29/08"
     xlblExpires.TextSize = 13
     xlblExpires.TextColor = xui.Color_White
-    cardHost.AddView(xlblExpires, contentW - 94dip, 168dip, 80dip, 22dip)
+    cardHost.AddView(xlblExpires, contentW - 94dip, 154dip, 80dip, 22dip)
     hoverCard.Refresh
     y = y + hoverCard.GetComputedHeight + 26dip
 
@@ -180,10 +181,14 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     If galleryRowFits Then
         galleryLeft = PAGE_PAD + Max(0, (maxW - ((galleryW * 3) + (galleryGap * 2))) / 2)
-        y = AddGalleryItem(galleryLeft, y, galleryW, galleryH, "card-1.webp", "galleryOne")
-        y = AddGalleryItem(galleryLeft + galleryW + galleryGap, y - galleryH, galleryW, galleryH, "card-2.webp", "galleryTwo")
-        y = AddGalleryItem(galleryLeft + ((galleryW + galleryGap) * 2), y - galleryH, galleryW, galleryH, "card-3.webp", "galleryThree")
-        y = y + 22dip
+        'Place the three cards on the same row, then advance y by the measured item height.
+        'h-auto makes each surface match the image aspect, so GetComputedHeight is the real card height.
+        Dim rowTop As Int = y
+        y = AddGalleryItem(galleryLeft, rowTop, galleryW, galleryH, "card-1.webp", "galleryOne")
+        Dim rowH As Int = y - rowTop - 16dip
+        AddGalleryItem(galleryLeft + galleryW + galleryGap, rowTop, galleryW, galleryH, "card-2.webp", "galleryTwo")
+        AddGalleryItem(galleryLeft + ((galleryW + galleryGap) * 2), rowTop, galleryW, galleryH, "card-3.webp", "galleryThree")
+        y = rowTop + rowH + 22dip
     Else
         y = AddGalleryItem(PAGE_PAD, y, maxW, 180dip, "card-1.webp", "galleryOne")
         y = AddGalleryItem(PAGE_PAD, y, maxW, 180dip, "card-2.webp", "galleryTwo")
@@ -230,7 +235,7 @@ Private Sub AddGalleryItem(Left As Int, Top As Int, Width As Int, Height As Int,
     hoverItem.Rounded = "rounded-2xl"
     hoverItem.Padding = "p-[15px]"
     hoverItem.setWidth("w-full")
-    hoverItem.setHeight("h-[400px]")
+    hoverItem.setHeight("h-auto")
     hoverItem.setContentType("image")
     hoverItem.setImage(AssetName)
     hoverItem.Refresh
