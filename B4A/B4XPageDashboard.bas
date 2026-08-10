@@ -48,7 +48,7 @@ Private Sub PopulateDashboard
 	Dashboard.AddItem("breadcrumbs", "Bread Crumbs", "breadcrumbs.webp")
 	Dashboard.AddItem("button", "Button", "button.webp")
 	Dashboard.AddItem("cspinner", "Canvas Spinner", "canvasspinner.jpeg")
-	Dashboard.AddItem("aura", "Aura", "card.webp")
+	Dashboard.AddItem("aura", "Aura", "aura.webp")
 	Dashboard.AddItem("card", "Card", "card.webp")
 	Dashboard.AddItem("carousel", "Carousel", "carousel.webp")
 	Dashboard.AddItem("chat", "Chat", "chat.webp")

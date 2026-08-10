@@ -1,6 +1,6 @@
 ﻿# Changelog - v0.90
 
-Generated on: 2026-08-09
+Generated on: 2026-08-10
 
 Compare: v0.85 -> v0.90
 
@@ -11,7 +11,7 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 ## Summary
 
 - New components: 3
-- Modified components: 12
+- Modified components: 21
 - Removed components: 0
 
 ## New Files
@@ -25,10 +25,19 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 - B4XDaisyAnimation.bas
 - B4XDaisyAvatar.bas
 - B4XDaisyCard.bas
+- B4XDaisyCarousel.bas
 - B4XDaisyCheckbox.bas
+- B4XDaisyColorWheel.bas
+- B4XDaisyDashboard.bas
+- B4XDaisyDiff.bas
+- B4XDaisyEnjoyHint.bas
 - B4XDaisyHover3d.bas
+- B4XDaisyInfoCard.bas
 - B4XDaisyInput.bas
 - B4XDaisyLoading.bas
+- B4XDaisyRange.bas
+- B4XDaisySheetModal.bas
+- B4XDaisySignaturePad.bas
 - B4XDaisyStatItem.bas
 - B4XDaisySvgIcon.bas
 - B4XDaisySweetAlert.bas
