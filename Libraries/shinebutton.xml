@@ -394,6 +394,22 @@
             <comment></comment>
             <returntype>anywheresoftware.b4a.BA</returntype>
         </field>
+        <property>
+            <name>ShapeBitmap</name>
+            <parameter>
+                <name>bitmap</name>
+                <type>android.graphics.Bitmap</type>
+            </parameter>
+            <comment>Sets custom Bitmap (e.g. rendered from SVG)</comment>
+        </property>
+        <property>
+            <name>ShapeDrawable</name>
+            <parameter>
+                <name>drawable</name>
+                <type>android.graphics.drawable.Drawable</type>
+            </parameter>
+            <comment>Sets custom Drawable</comment>
+        </property>
     </class>
     <version>1.0</version>
     <author>Github: Chad Song, Wrapped by: Johan Schoeman</author>

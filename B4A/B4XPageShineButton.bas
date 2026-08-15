@@ -1,307 +1,392 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
-Version=13.5
+Version=13.4
 @EndOfDesignText@
+
 #IgnoreWarnings:12,9
 
-#Region Variables
 Sub Class_Globals
-	Private Root As B4XView
-	Private xui As XUI
+	Private Root As B4XView 'ignore
+	Private xui As XUI 'ignore
 	Private pageScroll As B4XDaisyPageScroll
 	Private pnlHost As B4XView
 
-	Private sb1 As ShineButton
-	Private sb2 As ShineButton
-	Private sb3 As ShineButton
-	Private sb4 As ShineButton
-	Private mbHeartChecked As Boolean = False
-	Private mbRendered As Boolean = False
+	' DaisyUI ShineButtons for Size Showcase (xs, sm, md, lg, xl)
+	Private dsbXs As B4XDaisyShineButton
+	Private dsbSm As B4XDaisyShineButton
+	Private dsbMd As B4XDaisyShineButton
+	Private dsbLg As B4XDaisyShineButton
+	Private dsbXl As B4XDaisyShineButton
 
+	' Standard Shapes
+	Private dsbHeart As B4XDaisyShineButton
+	Private dsbLike As B4XDaisyShineButton
+	Private dsbSmile As B4XDaisyShineButton
+	Private dsbStar As B4XDaisyShineButton
+	Private dsbSvgCustom As B4XDaisyShineButton
+
+	' Buttons
 	Private btnToggleHeart As B4XDaisyButton
-	Private btnAnimHeart As B4XDaisyButton
+	Private btnTriggerBurst As B4XDaisyButton
 
-	Private lblStatus As Label
-	Private pnlEvents As B4XView
-End Sub
-#End Region
-
-#Region Initialization
-Public Sub Initialize As Object
-	Return Me
+	' Event log view
+	Private txtLog As B4XDaisyText
+	Private eventLogs As List
 End Sub
 
-Private Sub B4XPage_Created(Root1 As B4XView)
+Public Sub Initialize
+	eventLogs.Initialize
+End Sub
+
+Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
-	Root.Color = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(245, 247, 250))
+	Root.Color = xui.Color_RGB(248, 250, 252)
 
 	pageScroll.Initialize(Me, "pageScroll")
 	pageScroll.AddToParent(Root, 0, 0, Root.Width, Root.Height)
 	pnlHost = pageScroll.Panel
 
-	RenderExamples(Root.Width, Root.Height)
-End Sub
-#End Region
-
-#Region Rendering
-Private Sub RenderExamples(Width As Int, Height As Int)
-	If pnlHost.IsInitialized = False Then Return
-	If Width <= 0 Then Width = Root.Width
-	If Height <= 0 Then Height = Root.Height
-	If Width <= 0 Then Return
-
-	pnlHost.RemoveAllViews
-
-	Dim maxW As Int = pageScroll.UsableWidth
-	If maxW <= 0 Then maxW = Width - 24dip
-	Dim padding As Int = pageScroll.PagePadding
-	If padding <= 0 Then padding = 12dip
-	Dim gap As Int = pageScroll.YGap
-	If gap <= 0 Then gap = 12dip
-	Dim y As Int = padding
-
-	' -------------------------------------------------------------
-	' 1. Heart Shine Button
-	' -------------------------------------------------------------
-	y = pageScroll.AddSectionTitle("1. Heart Shine Button (Flashing & Random Colors)", y, False)
-
-	Dim pnlCard1 As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
-	sb1.Initialize("sb1")
-	pnlCard1.AddView(sb1, 20dip, 20dip, 60dip, 60dip)
-	sb1.ShapeResource = "heart"
-	sb1.BtnColor = xui.Color_Gray
-	sb1.BtnFillColor = xui.Color_Red
-	sb1.AllowRandomColor = True
-	sb1.EnableFlashing = True
-	sb1.BigShineColor = xui.Color_Yellow
-	sb1.ClickAnimDuration = 200
-	sb1.AnimDuration = 1000
-	sb1.ShineTurnAngle = 180
-	sb1.SmallShineColor = xui.Color_Green
-
-	Dim lblDesc1 As Label
-	lblDesc1.Initialize("")
-	lblDesc1.Text = "Heart shape with flashing animations, yellow big shine, green small shine, and random color bursts."
-	lblDesc1.TextColor = xui.Color_RGB(71, 85, 105)
-	lblDesc1.TextSize = 13
-	pnlCard1.AddView(lblDesc1, 90dip, 16dip, Max(100dip, pnlCard1.Width - 106dip), 68dip)
-
-	y = y + 100dip + gap
-
-	' -------------------------------------------------------------
-	' 2. Like (Thumbs Up) Shine Button
-	' -------------------------------------------------------------
-	y = pageScroll.AddSectionTitle("2. Like (Thumbs Up) Shine Button", y, False)
-
-	Dim pnlCard2 As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
-	sb2.Initialize("sb2")
-	pnlCard2.AddView(sb2, 20dip, 20dip, 60dip, 60dip)
-	sb2.ShapeResource = "like"
-	sb2.BtnColor = xui.Color_Gray
-	sb2.BtnFillColor = xui.Color_Blue
-	sb2.AllowRandomColor = True
-	sb2.EnableFlashing = True
-	sb2.BigShineColor = xui.Color_Green
-	sb2.ClickAnimDuration = 200
-	sb2.AnimDuration = 1000
-	sb2.ShineTurnAngle = 180
-	sb2.SmallShineColor = xui.Color_Yellow
-
-	Dim lblDesc2 As Label
-	lblDesc2.Initialize("")
-	lblDesc2.Text = "Thumbs up shape with blue fill color, green big shine, and yellow small shine."
-	lblDesc2.TextColor = xui.Color_RGB(71, 85, 105)
-	lblDesc2.TextSize = 13
-	pnlCard2.AddView(lblDesc2, 90dip, 16dip, Max(100dip, pnlCard2.Width - 106dip), 68dip)
-
-	y = y + 100dip + gap
-
-	' -------------------------------------------------------------
-	' 3. Smile Shine Button
-	' -------------------------------------------------------------
-	y = pageScroll.AddSectionTitle("3. Smile Shine Button", y, False)
-
-	Dim pnlCard3 As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
-	sb3.Initialize("sb3")
-	pnlCard3.AddView(sb3, 20dip, 20dip, 60dip, 60dip)
-	sb3.ShapeResource = "smile"
-	sb3.BtnColor = xui.Color_Gray
-	sb3.BtnFillColor = xui.Color_Yellow
-	sb3.AllowRandomColor = True
-	sb3.EnableFlashing = True
-	sb3.BigShineColor = xui.Color_Red
-	sb3.ClickAnimDuration = 200
-	sb3.AnimDuration = 1000
-	sb3.ShineTurnAngle = 180
-	sb3.SmallShineColor = xui.Color_Green
-
-	Dim lblDesc3 As Label
-	lblDesc3.Initialize("")
-	lblDesc3.Text = "Smile shape with yellow fill color, red big shine, and green small shine."
-	lblDesc3.TextColor = xui.Color_RGB(71, 85, 105)
-	lblDesc3.TextSize = 13
-	pnlCard3.AddView(lblDesc3, 90dip, 16dip, Max(100dip, pnlCard3.Width - 106dip), 68dip)
-
-	y = y + 100dip + gap
-
-	' -------------------------------------------------------------
-	' 4. Star Shine Button
-	' -------------------------------------------------------------
-	y = pageScroll.AddSectionTitle("4. Star Shine Button", y, False)
-
-	Dim pnlCard4 As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
-	sb4.Initialize("sb4")
-	pnlCard4.AddView(sb4, 20dip, 20dip, 60dip, 60dip)
-	sb4.ShapeResource = "star"
-	sb4.BtnColor = xui.Color_Gray
-	sb4.BtnFillColor = xui.Color_Green
-	sb4.AllowRandomColor = True
-	sb4.EnableFlashing = True
-	sb4.BigShineColor = xui.Color_Magenta
-	sb4.ClickAnimDuration = 200
-	sb4.AnimDuration = 1000
-	sb4.ShineTurnAngle = 180
-	sb4.SmallShineColor = xui.Color_Red
-
-	Dim lblDesc4 As Label
-	lblDesc4.Initialize("")
-	lblDesc4.Text = "Star shape with green fill color, magenta big shine, and red small shine."
-	lblDesc4.TextColor = xui.Color_RGB(71, 85, 105)
-	lblDesc4.TextSize = 13
-	pnlCard4.AddView(lblDesc4, 90dip, 16dip, Max(100dip, pnlCard4.Width - 106dip), 68dip)
-
-	y = y + 100dip + gap
-
-	' -------------------------------------------------------------
-	' 5. Programmatic API Control
-	' -------------------------------------------------------------
-	y = pageScroll.AddSectionTitle("5. Programmatic API Control", y, False)
-
-	btnToggleHeart.Initialize(Me, "btnToggleHeart")
-	btnToggleHeart.AddToParent(pnlHost, padding, y, 140dip, 40dip)
-	btnToggleHeart.Text = "Toggle Heart"
-	btnToggleHeart.Variant = "primary"
-
-	btnAnimHeart.Initialize(Me, "btnAnimHeart")
-	btnAnimHeart.AddToParent(pnlHost, padding + 150dip, y, 140dip, 40dip)
-	btnAnimHeart.Text = "Trigger Shine"
-	btnAnimHeart.Variant = "accent"
-
-	y = y + 50dip + gap
-
-	' -------------------------------------------------------------
-	' 6. Event Log Panel
-	' -------------------------------------------------------------
-	y = pageScroll.AddSectionTitle("6. Event Log", y, False)
-
-	pnlEvents = xui.CreatePanel("")
-	pnlEvents.SetColorAndBorder(xui.Color_RGB(30, 41, 59), 1dip, xui.Color_RGB(51, 65, 85), 16dip)
-	pnlHost.AddView(pnlEvents, padding, y, maxW, 160dip)
-
-	Dim lblEventsTitle As Label
-	lblEventsTitle.Initialize("")
-	lblEventsTitle.Text = "Recent Interaction Events"
-	lblEventsTitle.TextColor = xui.Color_RGB(148, 163, 184)
-	lblEventsTitle.TextSize = 14
-	lblEventsTitle.Typeface = Typeface.DEFAULT_BOLD
-	pnlEvents.AddView(lblEventsTitle, 16dip, 12dip, pnlEvents.Width - 32dip, 20dip)
-
-	lblStatus.Initialize("")
-	lblStatus.Text = "Tap any shine button above to trigger events..."
-	lblStatus.TextColor = xui.Color_RGB(226, 232, 240)
-	lblStatus.TextSize = 12
-	pnlEvents.AddView(lblStatus, 16dip, 38dip, pnlEvents.Width - 32dip, pnlEvents.Height - 50dip)
-
-	y = y + 160dip + gap
-
-	pageScroll.AutoFit
-	mbRendered = True
-End Sub
-
-Private Sub CreateCardPanel(Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
-	Dim p As B4XView = xui.CreatePanel("")
-	p.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 16dip)
-	pnlHost.AddView(p, Left, Top, Width, Height)
-	Return p
-End Sub
-#End Region
-
-#Region Base Events
-Private Sub B4XPage_Resize(Width As Int, Height As Int)
-	If Width <= 0 Or Height <= 0 Then Return
-	If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
-	If mbRendered = False Then RenderExamples(Width, Height)
+	BuildForm
 End Sub
 
 Private Sub B4XPage_Appear
 	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
-	If mbRendered = False Then RenderExamples(Root.Width, Root.Height)
-End Sub
-#End Region
-
-#Region Component Events
-Private Sub sb1_check_changed (check As Boolean)
-	mbHeartChecked = check
-	Log("Button sb1 status = " & check)
-	LogEvent("sb1 (Heart) check_changed = " & check)
 End Sub
 
-Private Sub sb1_button_clicked
-	Log("sb1 clicked")
-	LogEvent("sb1 (Heart) button_clicked")
+Private Sub B4XPage_Resize (Width As Int, Height As Int)
+	If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
 End Sub
 
-Private Sub sb2_check_changed (check As Boolean)
-	Log("Button sb2 status = " & check)
-	LogEvent("sb2 (Like) check_changed = " & check)
+Private Sub BuildForm
+	Dim maxW As Int = pageScroll.UsableWidth
+	Dim padding As Int = pageScroll.PagePadding
+	Dim y As Int = pageScroll.PagePadding
+	Dim gap As Int = pageScroll.YGap
+
+	' =============================================================
+	' 1. Size Scale Showcase (xs, sm, md, lg, xl)
+	' =============================================================
+	y = pageScroll.AddSectionTitle("1. Size Scale Showcase (xs, sm, md, lg, xl)", y, False)
+
+	Dim pnlSizes As B4XView = CreateCardPanel(padding, y, maxW, 220dip)
+
+	' --- Row 1: xs, sm, md, lg ---
+	' xs: 28dip
+	dsbXs.Initialize(Me, "dsbXs")
+	dsbXs.AddToParent(pnlSizes, 16dip, 26dip, 28dip, 28dip)
+	dsbXs.Shape = "heart"
+	dsbXs.Size = "xs"
+	dsbXs.Variant = "error"
+	dsbXs.AllowRandomColor = True
+	dsbXs.ApplyAllProperties
+
+	Dim lblXs As Label = CreateMiniLabel("XS (28dip)")
+	pnlSizes.AddView(lblXs, 8dip, 60dip, 44dip, 20dip)
+
+	' sm: 36dip
+	dsbSm.Initialize(Me, "dsbSm")
+	dsbSm.AddToParent(pnlSizes, 76dip, 20dip, 36dip, 36dip)
+	dsbSm.Shape = "like"
+	dsbSm.Size = "sm"
+	dsbSm.Variant = "primary"
+	dsbSm.AllowRandomColor = True
+	dsbSm.ApplyAllProperties
+
+	Dim lblSm As Label = CreateMiniLabel("SM (36dip)")
+	pnlSizes.AddView(lblSm, 68dip, 60dip, 52dip, 20dip)
+
+	' md: 48dip (Default)
+	dsbMd.Initialize(Me, "dsbMd")
+	dsbMd.AddToParent(pnlSizes, 144dip, 12dip, 48dip, 48dip)
+	dsbMd.Shape = "smile"
+	dsbMd.Size = "md"
+	dsbMd.Variant = "warning"
+	dsbMd.AllowRandomColor = True
+	dsbMd.ApplyAllProperties
+
+	Dim lblMd As Label = CreateMiniLabel("MD (48dip)")
+	pnlSizes.AddView(lblMd, 138dip, 64dip, 60dip, 20dip)
+
+	' lg: 64dip
+	dsbLg.Initialize(Me, "dsbLg")
+	dsbLg.AddToParent(pnlSizes, 224dip, 4dip, 64dip, 64dip)
+	dsbLg.Shape = "star"
+	dsbLg.Size = "lg"
+	dsbLg.Variant = "success"
+	dsbLg.AllowRandomColor = True
+	dsbLg.ApplyAllProperties
+
+	Dim lblLg As Label = CreateMiniLabel("LG (64dip)")
+	pnlSizes.AddView(lblLg, 224dip, 72dip, 64dip, 20dip)
+
+	' --- Row 2: xl (80dip) ---
+	dsbXl.Initialize(Me, "dsbXl")
+	dsbXl.AddToParent(pnlSizes, 16dip, 105dip, 80dip, 80dip)
+	dsbXl.Size = "xl"
+	dsbXl.SetSvgAsset("palette-solid-full.svg")
+	dsbXl.Variant = "secondary"
+	dsbXl.AllowRandomColor = True
+	dsbXl.ApplyAllProperties
+
+	Dim lblXl As Label = CreateMiniLabel("XL (80dip)")
+	pnlSizes.AddView(lblXl, 16dip, 190dip, 80dip, 20dip)
+
+	Dim lblXlDesc As Label = CreateCardDesc("Extra large 80dip shine button with custom SVG icon ('palette-solid-full.svg') and purple starburst animation.")
+	pnlSizes.AddView(lblXlDesc, 110dip, 115dip, Max(100dip, pnlSizes.Width - 126dip), 68dip)
+
+	y = y + 220dip + gap
+
+	' =============================================================
+	' 2. Heart Shine Button (Error / Red Burst)
+	' =============================================================
+	y = pageScroll.AddSectionTitle("2. Heart Shine Button (Flashing & Rainbow)", y, False)
+
+	Dim pnlHeart As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
+	dsbHeart.Initialize(Me, "dsbHeart")
+	dsbHeart.AddToParent(pnlHeart, 20dip, 20dip, 60dip, 60dip)
+	dsbHeart.Shape = "heart"
+	dsbHeart.Variant = "error"
+	dsbHeart.AllowRandomColor = True
+	dsbHeart.EnableFlashing = True
+	dsbHeart.BigShineColor = xui.Color_RGB(251, 191, 36)
+	dsbHeart.SmallShineColor = xui.Color_RGB(34, 197, 94)
+	dsbHeart.ApplyAllProperties
+
+	Dim lblDesc1 As Label = CreateCardDesc("Heart shape from File.DirAssets with flashing animations, yellow big shine, green small shine, and rainbow bursts.")
+	pnlHeart.AddView(lblDesc1, 90dip, 16dip, Max(100dip, pnlHeart.Width - 106dip), 68dip)
+
+	y = y + 100dip + gap
+
+	' =============================================================
+	' 3. Like (Thumbs Up) Shine Button (Primary / Blue)
+	' =============================================================
+	y = pageScroll.AddSectionTitle("3. Like (Thumbs Up) Shine Button", y, False)
+
+	Dim pnlLike As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
+	dsbLike.Initialize(Me, "dsbLike")
+	dsbLike.AddToParent(pnlLike, 20dip, 20dip, 60dip, 60dip)
+	dsbLike.Shape = "like"
+	dsbLike.Variant = "primary"
+	dsbLike.AllowRandomColor = True
+	dsbLike.BigShineColor = xui.Color_RGB(34, 197, 94)
+	dsbLike.SmallShineColor = xui.Color_RGB(234, 179, 8)
+	dsbLike.ApplyAllProperties
+
+	Dim lblDesc2 As Label = CreateCardDesc("Thumbs up shape from File.DirAssets with blue fill color, green big shine, and yellow small shine.")
+	pnlLike.AddView(lblDesc2, 90dip, 16dip, Max(100dip, pnlLike.Width - 106dip), 68dip)
+
+	y = y + 100dip + gap
+
+	' =============================================================
+	' 4. Smile Shine Button (Warning / Yellow)
+	' =============================================================
+	y = pageScroll.AddSectionTitle("4. Smile Shine Button", y, False)
+
+	Dim pnlSmile As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
+	dsbSmile.Initialize(Me, "dsbSmile")
+	dsbSmile.AddToParent(pnlSmile, 20dip, 20dip, 60dip, 60dip)
+	dsbSmile.Shape = "smile"
+	dsbSmile.Variant = "warning"
+	dsbSmile.AllowRandomColor = True
+	dsbSmile.BigShineColor = xui.Color_RGB(239, 68, 68)
+	dsbSmile.SmallShineColor = xui.Color_RGB(34, 197, 94)
+	dsbSmile.ApplyAllProperties
+
+	Dim lblDesc3 As Label = CreateCardDesc("Smile shape from File.DirAssets with yellow fill color, red big shine, and green small shine.")
+	pnlSmile.AddView(lblDesc3, 90dip, 16dip, Max(100dip, pnlSmile.Width - 106dip), 68dip)
+
+	y = y + 100dip + gap
+
+	' =============================================================
+	' 5. Star Shine Button (Success / Green)
+	' =============================================================
+	y = pageScroll.AddSectionTitle("5. Star Shine Button", y, False)
+
+	Dim pnlStar As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
+	dsbStar.Initialize(Me, "dsbStar")
+	dsbStar.AddToParent(pnlStar, 20dip, 20dip, 60dip, 60dip)
+	dsbStar.Shape = "star"
+	dsbStar.Variant = "success"
+	dsbStar.AllowRandomColor = True
+	dsbStar.EnableFlashing = True
+	dsbStar.BigShineColor = xui.Color_RGB(236, 72, 153)
+	dsbStar.SmallShineColor = xui.Color_RGB(239, 68, 68)
+	dsbStar.ApplyAllProperties
+
+	Dim lblDesc4 As Label = CreateCardDesc("Star shape from File.DirAssets with green fill color, magenta big shine, and red small shine.")
+	pnlStar.AddView(lblDesc4, 90dip, 16dip, Max(100dip, pnlStar.Width - 106dip), 68dip)
+
+	y = y + 100dip + gap
+
+	' =============================================================
+	' 6. Custom SVG Icon (Loaded via File.DirAssets)
+	' =============================================================
+	y = pageScroll.AddSectionTitle("6. Custom SVG Icon (File.DirAssets)", y, False)
+
+	Dim pnlSvg As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
+	dsbSvgCustom.Initialize(Me, "dsbSvgCustom")
+	dsbSvgCustom.AddToParent(pnlSvg, 20dip, 20dip, 60dip, 60dip)
+	dsbSvgCustom.SetSvgAsset("palette-solid-full.svg")
+	dsbSvgCustom.Variant = "secondary"
+	dsbSvgCustom.AllowRandomColor = True
+	dsbSvgCustom.EnableFlashing = True
+	dsbSvgCustom.BigShineColor = xui.Color_RGB(236, 72, 153)
+	dsbSvgCustom.SmallShineColor = xui.Color_RGB(59, 130, 246)
+	dsbSvgCustom.ApplyAllProperties
+
+	Dim lblDesc5 As Label = CreateCardDesc("Custom SVG dynamically rendered from File.DirAssets ('palette-solid-full.svg') with purple fill and multi-particle bursts.")
+	pnlSvg.AddView(lblDesc5, 90dip, 16dip, Max(100dip, pnlSvg.Width - 106dip), 68dip)
+
+	y = y + 100dip + gap
+
+	' =============================================================
+	' 7. Programmatic API Control
+	' =============================================================
+	y = pageScroll.AddSectionTitle("7. Programmatic API Control", y, False)
+
+	Dim btnW As Int = (maxW - 12dip) / 2
+
+	btnToggleHeart.Initialize(Me, "btnToggleHeart")
+	btnToggleHeart.Text = "Toggle Heart"
+	btnToggleHeart.Variant = "secondary"
+	btnToggleHeart.Style = "solid"
+	btnToggleHeart.AddToParent(pnlHost, padding, y, btnW, 44dip)
+
+	btnTriggerBurst.Initialize(Me, "btnTriggerBurst")
+	btnTriggerBurst.Text = "Trigger Shine"
+	btnTriggerBurst.Variant = "primary"
+	btnTriggerBurst.Style = "solid"
+	btnTriggerBurst.AddToParent(pnlHost, padding + btnW + 12dip, y, btnW, 44dip)
+
+	y = y + 44dip + gap
+
+	' =============================================================
+	' 8. Event Log
+	' =============================================================
+	y = pageScroll.AddSectionTitle("8. Event Log", y, False)
+
+	Dim pnlLog As B4XView = CreateCardPanel(padding, y, maxW, 160dip)
+	pnlLog.Color = xui.Color_RGB(30, 41, 59)
+
+	Dim lblLogHeader As Label
+	lblLogHeader.Initialize("")
+	lblLogHeader.Text = "Recent Interaction Events"
+	lblLogHeader.TextColor = xui.Color_RGB(148, 163, 184)
+	lblLogHeader.TextSize = 13
+	pnlLog.AddView(lblLogHeader, 12dip, 8dip, maxW - 24dip, 20dip)
+
+	txtLog.Initialize(Me, "txtLog")
+	txtLog.Text = "Tap any shine button to test interactions..."
+	txtLog.TextColor = xui.Color_White
+	txtLog.TextSize = 11
+	txtLog.AddToParent(pnlLog, 12dip, 30dip, maxW - 24dip, 120dip)
+
+	y = y + 160dip + 32dip
+
+	pageScroll.AutoFit
 End Sub
 
-Private Sub sb2_button_clicked
-	Log("sb2 clicked")
-	LogEvent("sb2 (Like) button_clicked")
+Private Sub CreateCardPanel(Left As Int, Top As Int, Width As Int, Height As Int) As B4XView
+	Dim p As Panel
+	p.Initialize("")
+	Dim b As B4XView = p
+	b.Color = xui.Color_White
+	b.SetLayoutAnimated(0, Left, Top, Width, Height)
+	b.SetColorAndBorder(xui.Color_White, 1dip, xui.Color_RGB(226, 232, 240), 16dip)
+	pnlHost.AddView(b, Left, Top, Width, Height)
+	Return b
 End Sub
 
-Private Sub sb3_check_changed (check As Boolean)
-	Log("Button sb3 status = " & check)
-	LogEvent("sb3 (Smile) check_changed = " & check)
+Private Sub CreateCardDesc(Text As String) As Label
+	Dim lbl As Label
+	lbl.Initialize("")
+	lbl.Text = Text
+	lbl.TextColor = xui.Color_RGB(71, 85, 105)
+	lbl.TextSize = 13
+	Return lbl
 End Sub
 
-Private Sub sb3_button_clicked
-	Log("sb3 clicked")
-	LogEvent("sb3 (Smile) button_clicked")
-End Sub
-
-Private Sub sb4_check_changed (check As Boolean)
-	Log("Button sb4 status = " & check)
-	LogEvent("sb4 (Star) check_changed = " & check)
-End Sub
-
-Private Sub sb4_button_clicked
-	Log("sb4 clicked")
-	LogEvent("sb4 (Star) button_clicked")
+Private Sub CreateMiniLabel(Text As String) As Label
+	Dim lbl As Label
+	lbl.Initialize("")
+	lbl.Text = Text
+	lbl.TextColor = xui.Color_RGB(100, 116, 139)
+	lbl.TextSize = 9
+	lbl.Gravity = Bit.Or(Gravity.CENTER_HORIZONTAL, Gravity.TOP)
+	Return lbl
 End Sub
 
 Private Sub btnToggleHeart_Click(Tag As Object)
-	If sb1.IsInitialized Then
-		mbHeartChecked = Not(mbHeartChecked)
-		sb1.Checked = mbHeartChecked
-		B4XPages.MainPage.ShowToastSuccess("Heart checked: " & mbHeartChecked, False)
-	End If
+	dsbHeart.Checked = Not(dsbHeart.Checked)
+	LogEvent("Programmatic toggle: Heart.Checked = " & dsbHeart.Checked)
 End Sub
 
-Private Sub btnAnimHeart_Click(Tag As Object)
-	If sb1.IsInitialized Then
-		sb1.showAnim
-		B4XPages.MainPage.ShowToastSuccess("Triggered Heart shine animation", False)
-	End If
+Private Sub btnTriggerBurst_Click(Tag As Object)
+	dsbHeart.TriggerShine
+	dsbSvgCustom.TriggerShine
+	LogEvent("Programmatic burst: Heart & SVG shine triggered")
+End Sub
+
+' Event Callbacks
+
+Private Sub dsbXs_CheckChanged (Checked As Boolean)
+	LogEvent("dsbXs (XS Heart) CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbSm_CheckChanged (Checked As Boolean)
+	LogEvent("dsbSm (SM Like) CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbMd_CheckChanged (Checked As Boolean)
+	LogEvent("dsbMd (MD Smile) CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbLg_CheckChanged (Checked As Boolean)
+	LogEvent("dsbLg (LG Star) CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbXl_CheckChanged (Checked As Boolean)
+	LogEvent("dsbXl (XL SVG) CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbHeart_CheckChanged (Checked As Boolean)
+	LogEvent("dsbHeart CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbLike_CheckChanged (Checked As Boolean)
+	LogEvent("dsbLike CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbSmile_CheckChanged (Checked As Boolean)
+	LogEvent("dsbSmile CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbStar_CheckChanged (Checked As Boolean)
+	LogEvent("dsbStar CheckChanged = " & Checked)
+End Sub
+
+Private Sub dsbSvgCustom_CheckChanged (Checked As Boolean)
+	LogEvent("dsbSvgCustom (SVG Palette) CheckChanged = " & Checked)
 End Sub
 
 Private Sub LogEvent(Msg As String)
-	If lblStatus.IsInitialized Then
-		Dim timestamp As String = DateTime.Time(DateTime.Now)
-		lblStatus.Text = "[" & timestamp & "] " & Msg & CRLF & lblStatus.Text
+	Dim timestamp As String = DateTime.Time(DateTime.Now)
+	Dim line As String = "[" & timestamp & "] " & Msg
+	eventLogs.InsertAt(0, line)
+	If eventLogs.Size > 12 Then
+		eventLogs.RemoveAt(eventLogs.Size - 1)
+	End If
+
+	Dim sb As StringBuilder
+	sb.Initialize
+	For Each item As String In eventLogs
+		If sb.Length > 0 Then sb.Append(CRLF)
+		sb.Append(item)
+	Next
+
+	If txtLog.IsInitialized Then
+		txtLog.Text = sb.ToString
 	End If
 End Sub
-#End Region
