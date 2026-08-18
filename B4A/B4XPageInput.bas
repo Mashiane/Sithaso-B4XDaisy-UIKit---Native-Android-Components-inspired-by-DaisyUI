@@ -67,9 +67,9 @@ Version=13.4
 
         Dim maxW As Int = Max(220dip, Root.Width - (PAGE_PAD * 2))
 
-        '============================================================
+        '-
         'Example 1: Text input (base)
-        '============================================================
+        '-
         AddSectionTitle("Text input")
         Dim c1 As B4XDaisyInput
         c1.Initialize(Me, "inp")
@@ -79,9 +79,9 @@ Version=13.4
         c1.Tag = "base-text"
         Samples.Add(c1)
 
-        '============================================================
+        '-
         'Example 2: Text input with icons
-        '============================================================
+        '-
         AddSectionTitle("Input with icons")
 
         Dim c2a As B4XDaisyInput
@@ -112,9 +112,9 @@ Version=13.4
         c2c.Tag = "input-path-icon"
         Samples.Add(c2c)
 
-        '============================================================
+        '-
         'Example 3: Ghost style
-        '============================================================
+        '-
         AddSectionTitle("Ghost style")
         Dim c3 As B4XDaisyInput
         c3.Initialize(Me, "inp")
@@ -125,9 +125,9 @@ Version=13.4
         c3.Tag = "input-ghost"
         Samples.Add(c3)
 
-        '============================================================
+        '-
         'Example 4: Input colors
-        '============================================================
+        '-
         AddSectionTitle("Input colors")
         Dim colorList As List
         colorList.Initialize
@@ -144,9 +144,9 @@ Version=13.4
             Samples.Add(cc)
         Next
 
-        '============================================================
+        '-
         'Example 5: Sizes
-        '============================================================
+        '-
         AddSectionTitle("Sizes")
         Dim sizeVals As List = Array As String("md", "lg", "xl")
         Dim sizeLabels As List = Array As String("Medium", "Large", "Xlarge")
@@ -165,9 +165,9 @@ Version=13.4
             Samples.Add(cs)
         Next
 
-        '============================================================
+        '-
         'Example 6: Disabled
-        '============================================================
+        '-
         AddSectionTitle("Disabled")
         Dim c6 As B4XDaisyInput
         c6.Initialize(Me, "inp")
@@ -178,9 +178,9 @@ Version=13.4
         c6.Tag = "input-disabled"
         Samples.Add(c6)
 
-        '============================================================
+        '-
         'Example 7: Inline labels (left / right)
-        '============================================================
+        '-
         AddSectionTitle("Inline labels (left / right)")
         Dim c8a As B4XDaisyInput
         c8a.Initialize(Me, "inp")
@@ -200,9 +200,9 @@ Version=13.4
         c8b.Tag = "input-label-right"
         Samples.Add(c8b)
 
-        '============================================================
+        '-
         'Example 8: Floating label (Label + FloatingLabel=True)
-        '============================================================
+        '-
         AddSectionTitle("Floating label")
         Dim c8 As B4XDaisyInput
         c8.Initialize(Me, "inp")
@@ -213,9 +213,9 @@ Version=13.4
         c8.Tag = "input-floating-label"
         Samples.Add(c8)
 
-        '============================================================
+        '-
         'Example 10: Username input with icon and label above
-        '============================================================
+        '-
         AddSectionTitle("Username input with icon")
         Dim c10 As B4XDaisyInput
         c10.Initialize(Me, "inp")
@@ -227,9 +227,9 @@ Version=13.4
         c10.Tag = "input-username"
         Samples.Add(c10)
 
-        '============================================================
+        '-
         'Example 11: Email input with icon and label above
-        '============================================================
+        '-
         AddSectionTitle("Email input with icon")
         Dim c11 As B4XDaisyInput
         c11.Initialize(Me, "inp")
@@ -242,9 +242,9 @@ Version=13.4
         c11.Tag = "input-email"
         Samples.Add(c11)
 
-        '============================================================
+        '-
         'Example 12: Password input with icon and label above
-        '============================================================
+        '-
         AddSectionTitle("Password input with icon")
         Dim c13 As B4XDaisyInput
         c13.Initialize(Me, "inp")
@@ -258,9 +258,9 @@ Version=13.4
         c13.Tag = "input-password"
         Samples.Add(c13)
 
-        '============================================================
+        '-
         'Example 14: Number input with label above
-        '============================================================
+        '-
         AddSectionTitle("Number input")
         Dim c14 As B4XDaisyInput
         c14.Initialize(Me, "inp")
@@ -272,9 +272,9 @@ Version=13.4
         c14.Tag = "input-number"
         Samples.Add(c14)
 
-        '============================================================
+        '-
         'Example 15: Phone input with icon and label above
-        '============================================================
+        '-
         AddSectionTitle("Phone input with icon")
         Dim c15 As B4XDaisyInput
         c15.Initialize(Me, "inp")
@@ -287,9 +287,9 @@ Version=13.4
         c15.Tag = "input-phone"
         Samples.Add(c15)
 
-        '============================================================
+        '-
         'Example 15 (Part 2): Clickable icons
-        '============================================================
+        '-
         AddSectionTitle("Clickable icons")
 
         Dim c16a As B4XDaisyInput
@@ -348,9 +348,9 @@ Version=13.4
         c16e.Tag = "input-both-icons-clickable"
         Samples.Add(c16e)
 
-        '============================================================
+        '-
         'Example 17: URL input with icon and label above
-        '============================================================
+        '-
         AddSectionTitle("URL input with icon")
         Dim c17 As B4XDaisyInput
         c17.Initialize(Me, "inp")
@@ -363,9 +363,9 @@ Version=13.4
         c17.Tag = "input-url"
         Samples.Add(c17)
 
-        '============================================================
+        '-
         'Example 18: Multiline input
-        '============================================================
+        '-
         AddSectionTitle("Multiline input")
         Dim c18 As B4XDaisyInput
         c18.Initialize(Me, "inpMulti")
@@ -377,9 +377,9 @@ Version=13.4
         c18.Tag = "input-multiline"
         Samples.Add(c18)
 
-        '============================================================
+        '-
         'Example 19: Search input (InputType = search)
-        '============================================================
+        '-
         AddSectionTitle("Search input")
         Dim c19 As B4XDaisyInput
         c19.Initialize(Me, "inpSearch")
@@ -391,9 +391,9 @@ Version=13.4
         c19.Tag = "input-search"
         Samples.Add(c19)
 
-        '============================================================
+        '-
         'Example 20: Required field (red star)
-        '============================================================
+        '-
         AddSectionTitle("Required field")
         Dim c20a As B4XDaisyInput
         c20a.Initialize(Me, "inp")
@@ -450,7 +450,7 @@ Version=13.4
                 Dim inp As B4XDaisyInput = item
                 inp.Base_Resize(maxW, 0)
                 Dim actualH As Int = inp.GetActualHeight
-                inp.getView.SetLayoutAnimated(0, PAGE_PAD, y, maxW, actualH)
+                inp.View.SetLayoutAnimated(0, PAGE_PAD, y, maxW, actualH)
                 y = y + actualH + ROW_GAP
             End If
         Next

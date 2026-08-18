@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -273,7 +273,7 @@ Private Sub EmojiList(Count As Int) As List
 		"🤭", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄", "😯", "😦", _
 		"😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😵", "🤐", "🥴", _
 		"🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠", "😈", "👿", _
-		"👹", "👺", "🤡", "💩", "👻", "💀", "☠️", "👽", "👾", "🤖"))
+		"👹", "👺", "🤡", "💩", "👻", "💀", "☠", "👽", "👾", "🤖"))
 	Dim out As List
 	out.Initialize
 	For i = 0 To Count - 1

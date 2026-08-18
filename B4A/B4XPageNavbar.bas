@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -140,14 +140,14 @@ Private Sub AddTitle(Text As String)
 	currentY = currentY + lbl.GetComputedHeight + 10dip
 End Sub
 
-' =======================================================
+' -
 ' AddNavbarTitleOnly
 ' Demonstrates a basic Navbar with a title only.
 ' Also shows a fixed FAB (bottom-end) on Root ? the simplest
 ' way to pair a FAB with a Navbar page. The FAB uses fixed
 ' placement so it always sits at the screen corner, independent
 ' of the ScrollView content position.
-' =======================================================
+' -
 Private Sub AddNavbarTitleOnly
 	Dim nb As B4XDaisyNavbar
 	nb.Initialize(Me, "nb1")
@@ -247,7 +247,7 @@ Private Sub AddNavbarComplex
 	ind.Variant = "success"
 	ind.HorizontalPlacement = "start"
 	ind.VerticalPlacement = "top"
-	ind.AttachTo(av.getView)
+	ind.AttachTo(av.View)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -279,7 +279,7 @@ Private Sub AddNavbarInteractive
 	bellIndicator.setRounded("rounded-full")
 	bellIndicator.Variant = "primary"
 	bellIndicator.HorizontalPlacement = "start"
-	bellIndicator.AttachTo(bell.getView)
+	bellIndicator.AttachTo(bell.View)
 	
 	currentY = currentY + 64dip + gap
 End Sub
@@ -421,9 +421,9 @@ Private Sub AddNavbarShadow(ShadowLevel As String)
 	currentY = currentY + 64dip + gap
 End Sub
 
-' =============================================
+' -
 ' Navbar with Text Buttons demos
-' =============================================
+' -
 
 ' Demo: ghost start button + primary solid end button.
 ' Demonstrates AddButtonToStart (ghost) and AddButtonToEnd (primary).
@@ -571,9 +571,9 @@ Private Sub nb_back_text_Back (Tag As Object)
 End Sub
 
 
-' =======================================================
+' -
 ' Slot Clear Demo 1: Clear Start Slot
-' =======================================================
+' -
 ' Builds a navbar with 3 items in the start slot
 ' (hamburger button, a bars SVG icon, a ghost text button).
 ' An external "Clear Start" button removes all of them, then
@@ -629,9 +629,9 @@ Private Sub nbcs_Closed
 	B4XPages.MainPage.ShowToast("Hamburger closed", False)
 End Sub
 
-' =======================================================
+' -
 ' Slot Clear Demo 2: Clear Center Slot
-' =======================================================
+' -
 ' Builds a navbar with 2 items in the center slot
 ' (title label + a search SVG icon).
 ' An external "Clear Center" button removes both, then
@@ -679,9 +679,9 @@ Private Sub nbcc_search_Click (Tag As Object)
 	B4XPages.MainPage.ShowToast("Center search button tapped", False)
 End Sub
 
-' =======================================================
+' -
 ' Slot Clear Demo 3: Clear End Slot
-' =======================================================
+' -
 ' Builds a navbar with 2 items in the end slot
 ' (a bell SVG icon + a "Login" solid button).
 ' An external "Clear End" button removes both, then

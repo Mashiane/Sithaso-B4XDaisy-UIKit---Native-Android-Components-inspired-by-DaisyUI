@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -42,9 +42,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim y As Int = PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 1: H1 to H6 Heading Hierarchy (ion-text style)
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Heading Hierarchy (H1 - H6)", y, maxW)
     
     ' H1
@@ -101,9 +101,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     h6.FontBold = True
     y = y + h6.GetComputedHeight + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 2: Semantic Color Variants (DaisyUI Style)
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Semantic Color Variants", y, maxW)
     
     Dim variants() As String = Array As String("neutral", "primary", "secondary", "accent", "info", "success", "warning", "error")
@@ -119,9 +119,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Next
     y = y + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 3: Font Styles & Decorations
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Font Styles & Decorations", y, maxW)
 
     ' Bold
@@ -171,9 +171,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     st5.TextSize = "text-sm"
     y = y + st5.GetComputedHeight + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 4: Case Transformations (New Features)
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Casing Transformations", y, maxW)
 
     ' Upper Case
@@ -203,9 +203,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c3.TextSize = "text-sm"
     y = y + c3.GetComputedHeight + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 5: Letter Spacing / Kerning (New Feature)
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Letter Spacing (Kerning)", y, maxW)
 
     ' Wide spacing
@@ -228,9 +228,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ls2.FontBold = True
     y = y + ls2.GetComputedHeight + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 6: Text Shadows & Glows (New Feature)
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Text Shadows & Glow Effects", y, maxW)
 
     ' Standard drop shadow
@@ -260,9 +260,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     sh2.ShadowColor = xui.Color_RGB(255, 20, 147)
     y = y + sh2.GetComputedHeight + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 7: Text Alignments
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Text Alignments", y, maxW)
 
     ' Left aligned (Default)
@@ -292,9 +292,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     al3.TextSize = "text-sm"
     y = y + al3.GetComputedHeight + PAGE_PAD
 
-    ' ========================================================
+    ' -
     ' Section 8: Multiline Paragraph Flow
-    ' ========================================================
+    ' -
     y = AddSectionTitle("Multiline Paragraph Auto-Sizing", y, maxW)
 
     Dim p1 As B4XDaisyText

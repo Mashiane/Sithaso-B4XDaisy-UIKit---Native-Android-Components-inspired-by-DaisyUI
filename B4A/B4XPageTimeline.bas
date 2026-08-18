@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -49,7 +49,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim y As Int = PAGE_PAD
 
-    ' ====== 1. Default Timeline (Vertical) ======
+    ' - 1. Default Timeline (Vertical) -
     y = AddSectionTitle("1. Default Timeline", y, maxW)
     Dim tl1 As B4XDaisyTimeline
     tl1.Initialize(Me, "tl")
@@ -64,7 +64,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tl1.SetItemDone("tl1_5", False)  
     y = y + 320dip
 
-    ' ====== 2. Timeline with icons ======
+    ' - 2. Timeline with icons -
     y = AddSectionTitle("2. Timeline with icons", y, maxW)
     Dim tl2 As B4XDaisyTimeline
     tl2.Initialize(Me, "tl")
@@ -77,7 +77,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tl2.AddItemBox("tl2_5", "2015", "Apple Watch", False, True)
     y = y + 320dip
 
-    ' ====== 3. Timeline with different sides ======
+    ' - 3. Timeline with different sides -
     y = AddSectionTitle("3. Timeline with different sides", y, maxW)
     Dim tl3 As B4XDaisyTimeline
     tl3.Initialize(Me, "tl")
@@ -90,7 +90,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tl3.AddItemBox("tl3_5", "Apple Watch", "", False, False)
     y = y + 320dip
 
-    ' ====== 4. Timeline with different sides / colorful (Multi-line test) ======
+    ' - 4. Timeline with different sides / colorful (Multi-line test) -
     y = AddSectionTitle("4. Colorful & Multi-line", y, maxW)
     Dim tl4 As B4XDaisyTimeline
     tl4.Initialize(Me, "tl")
@@ -109,7 +109,7 @@ tl4.SetItemVariant("tl4_4", "info")
 tl4.SetItemVariant("tl4_5", "warning")
     y = y + 470dip
 
-    ' ====== 5. Timeline horizontal with dashed border ======
+    ' - 5. Timeline horizontal with dashed border -
     y = AddSectionTitle("5. Horizontal with dashed border & boxes", y, maxW)
     Dim tl5 As B4XDaisyTimeline
     tl5.Initialize(Me, "tl")
@@ -125,7 +125,7 @@ For i = 1 To 5
     tl5.SetItemDashedBorder("tl5_" & i, True)
 Next
     y = y + 320dip  ' extra spacing before next section
-    ' ====== 6. Timeline horizontal with different sides ======
+    ' - 6. Timeline horizontal with different sides -
     y = AddSectionTitle("6. Timeline horizontal with different sides", y, maxW)
     Dim tl6 As B4XDaisyTimeline
     tl6.Initialize(Me, "tl")
@@ -138,7 +138,7 @@ Next
     tl6.AddItemBox("tl6_5", "Apple Watch", "", False, False)
     y = y + 220dip
 
-    ' ====== 7. Compact left-aligned (no start text, boxes fill width) ======
+    ' - 7. Compact left-aligned (no start text, boxes fill width) -
     y = AddSectionTitle("7. Compact Left-Aligned (no start text)", y, maxW)
     Dim tl7 As B4XDaisyTimeline
     tl7.Initialize(Me, "tl")

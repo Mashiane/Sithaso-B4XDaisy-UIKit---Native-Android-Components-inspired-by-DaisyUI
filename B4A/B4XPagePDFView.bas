@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -44,8 +44,8 @@ End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	If Root.IsInitialized = False Then Return
-	If Navbar.mBase.IsInitialized Then
-		Navbar.mBase.SetLayoutAnimated(0, 0, 0, Width, NAVBAR_HEIGHT)
+	If Navbar.View.IsInitialized Then
+		Navbar.View.SetLayoutAnimated(0, 0, 0, Width, NAVBAR_HEIGHT)
 		Navbar.Base_Resize(Width, NAVBAR_HEIGHT)
 	End If
 
@@ -53,8 +53,8 @@ Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	Dim pdfW As Int = Max(10dip, Width - (PAGE_PAD * 2))
 	Dim pdfH As Int = Max(10dip, Height - pdfTop - PAGE_PAD)
 
-	If pdfViewer.mBase.IsInitialized Then
-		pdfViewer.mBase.SetLayoutAnimated(0, PAGE_PAD, pdfTop, pdfW, pdfH)
+	If pdfViewer.View.IsInitialized Then
+		pdfViewer.View.SetLayoutAnimated(0, PAGE_PAD, pdfTop, pdfW, pdfH)
 		pdfViewer.Base_Resize(pdfW, pdfH)
 	End If
 End Sub

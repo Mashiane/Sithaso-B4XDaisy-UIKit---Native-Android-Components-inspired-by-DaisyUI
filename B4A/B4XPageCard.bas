@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -313,7 +313,7 @@ Private Sub SetBodyTextColor(Card As B4XDaisyCard, ColorValue As Int)
 			If v Is Label Then v.TextColor = ColorValue
 		Catch
 			Log("B4XPageCard.SetBodyTextColor: " & LastException.Message)
-			' Not a Label — skip
+			' Not a Label - skip
 		End Try
 	Next
 End Sub

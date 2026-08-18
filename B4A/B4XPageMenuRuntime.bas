@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -25,6 +25,8 @@ Sub Class_Globals
     Private mIconOn As Boolean = False
     Private mBadgeCount As Int = 0
     Private mBadgeColorIndex As Int = 0
+    Private mBadgeSizeIndex As Int = 0
+    Private mBadgeStyleIndex As Int = 0
     Private mSubmenuOpen As Boolean = False
     Private mSubmenuIndex As Int = 8
 End Sub
@@ -52,7 +54,7 @@ Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
-' ============================================================
+' -
 Private Sub BuildPage(Width As Int, Height As Int)
     If pnlHost.IsInitialized = False Then Return
     pnlHost.RemoveAllViews
@@ -92,7 +94,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     pnlHost.AddView(mStatusLbl, PAGE_PAD, y, maxW, 22dip)
     y = y + 28dip
 
-    ' ======================== Button groups ========================
+    ' - Button groups -
 
     ' --- Active State ---
     y = AddGroupLabel("Active State", y, maxW)
@@ -114,6 +116,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     y = AddGroupLabel("Badge", y, maxW)
     y = AddButtonRow("Inc badge count", "badge-inc", "Clear badge", "badge-clear", "accent", "ghost", y, maxW)
     y = AddButtonRow("Cycle bg color", "badge-color", "Cycle text color", "badge-text-color", "accent", "accent", y, maxW)
+    y = AddButtonRow("Cycle badge size", "badge-size", "Cycle badge style", "badge-style", "accent", "accent", y, maxW)
 
     ' --- Item Visibility ---
     y = AddGroupLabel("Item Visibility", y, maxW)
@@ -130,7 +133,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
-' ============================================================
+' -
 Private Sub ResetState
     mTextVersion = 0
     mIconOn = False
@@ -164,7 +167,7 @@ Private Sub RebuildMenuItems
     mSubmenuIndex = 8
 End Sub
 
-' ============================================================
+' -
 Private Sub btn_Click(Tag As Object)
     Dim action As String = Tag
 
@@ -248,6 +251,20 @@ Private Sub btn_Click(Tag As Object)
             mMenu.SetItemBadgeTextColor("item-badge", tcColor)
             ShowStatus("SetItemBadgeTextColor -> " & tcName)
 
+        Case "badge-size"
+            mBadgeSizeIndex = (mBadgeSizeIndex + 1) Mod 5
+            Dim sizes(5) As String
+            sizes(0) = "xs" : sizes(1) = "sm" : sizes(2) = "md" : sizes(3) = "lg" : sizes(4) = "xl"
+            mMenu.SetItemBadgeSize("item-badge", sizes(mBadgeSizeIndex))
+            ShowStatus("SetItemBadgeSize(""item-badge"", """ & sizes(mBadgeSizeIndex) & """)")
+
+        Case "badge-style"
+            mBadgeStyleIndex = (mBadgeStyleIndex + 1) Mod 4
+            Dim styles(4) As String
+            styles(0) = "solid" : styles(1) = "outline" : styles(2) = "soft" : styles(3) = "dash"
+            mMenu.SetItemBadgeStyle("item-badge", styles(mBadgeStyleIndex))
+            ShowStatus("SetItemBadgeStyle(""item-badge"", """ & styles(mBadgeStyleIndex) & """)")
+
         ' ---- Item Visibility ----
         Case "hide-3"
             mMenu.SetItemVisible("item-3", False)
@@ -298,9 +315,9 @@ Private Sub menu_ItemClick(Tag As Object, Text As String)
     #End If
 End Sub
 
-' ============================================================
+' -
 ' Layout helpers
-' ============================================================
+' -
 
 Private Sub AddButtonRow(LabelL As String, TagL As String, LabelR As String, TagR As String, _
         VariantL As String, VariantR As String, Y As Int, MaxW As Int) As Int

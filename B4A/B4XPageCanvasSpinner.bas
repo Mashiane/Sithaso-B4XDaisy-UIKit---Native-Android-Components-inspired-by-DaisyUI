@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -65,7 +65,7 @@ End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
     If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
-    If overlaySpinner.IsInitialized And overlaySpinner.mBase.IsInitialized Then
+    If overlaySpinner.IsInitialized And overlaySpinner.View.IsInitialized Then
         overlaySpinner.Resize(Width, Height)
     End If
     RenderExamples(Width, Height)
@@ -101,9 +101,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim gap As Int = pageScroll.YGap
     Dim y As Int = padding
 
-    ' ==========================================
+    ' -
     ' Section 1: Sizes & Colors Gallery
-    ' ==========================================
+    ' -
     y = pageScroll.AddSectionTitle("1. Spinner Sizes & Themes", y, False)
 
     Dim rowH As Int = 100dip
@@ -150,9 +150,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     y = y + rowH + gap
 
-    ' ==========================================
+    ' -
     ' Section 2: Live Property Customizer
-    ' ==========================================
+    ' -
     y = pageScroll.AddSectionTitle("2. Live Customizer", y, False)
 
     Dim previewSize As Int = 80dip
@@ -251,9 +251,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     y = y + 44dip + gap
 
-    ' ==========================================
+    ' -
     ' Section 3: Full-Screen Loading Overlay
-    ' ==========================================
+    ' -
     y = pageScroll.AddSectionTitle("3. Full-Screen Loading Overlay", y, False)
 
     Dim descOverlay As B4XDaisyText
@@ -272,9 +272,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     y = y + 48dip + gap
 
-    ' ==========================================
+    ' -
     ' Section 4: Local Container Card Loading
-    ' ==========================================
+    ' -
     y = pageScroll.AddSectionTitle("4. Local Container Card Loading", y, False)
 
     ' Create a container card panel
@@ -329,9 +329,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     pageScroll.AutoFit
 End Sub
 
-' ==========================================
+' -
 ' Event Handlers
-' ==========================================
+' -
 
 ' Customizer Size Slider changed
 Private Sub sliderSize_Changed(Value As Int)

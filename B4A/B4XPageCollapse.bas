@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -94,7 +94,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c4.Icon = "arrow"
     c4.TitleText = "I am always open!"
     AddBodyLabel(c4, "Hello! I am the collapse body.", maxW)
-    c4.Open = True
+    c4.Opened = True
     y = y + titleH + 60dip + gap
     ' #endregion
 
@@ -134,7 +134,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     y = y + titleH + gap
     ' #endregion
 
-    ' #region Example 8: Custom colors � no border, colored title text
+    ' #region Example 8: Custom colors - no border, colored title text
     y = AddSectionTitle("Custom Colors (No Border)", y, maxW)
     Dim c8 As B4XDaisyCollapse
     c8.Initialize(Me, "collapse8")
@@ -142,7 +142,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     c8.Icon = "arrow"
     c8.TitleText = "Custom colors"
     c8.TitleTextColor = xui.Color_RGB(99, 102, 241)
-    AddBodyLabel(c8, "Content with custom text color � RGB(71,85,105).", maxW)
+    AddBodyLabel(c8, "Content with custom text color - RGB(71,85,105).", maxW)
     y = y + titleH + gap
     ' #endregion
 

@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group
 ModulesStructureVersion=1
 Type=Class
@@ -104,6 +104,7 @@ Sub Class_Globals
 	Public RadioPage As B4XPageRadio
 	Public TogglePage As B4XPageToggle
 	Public RangePage As B4XPageRange
+	Public DualRangePage As B4XPageDualRange
 	Public RatingPage As B4XPageRating
 	Public TextareaPage As B4XPageTextarea
 	Public SelectPage As B4XPageSelect
@@ -125,10 +126,14 @@ Sub Class_Globals
 	Public PDFViewPage As B4XPagePDFView
 	Private ActiveAlert As B4XDaisyAlert
 	Private FabBasicPage As B4XPageFabBasic
+	Public DrawerPage As B4XPageDrawer
+	Public DrawerTreePage As B4XPageDrawerTree
+	Public DrawerRailPage As B4XPageDrawerRail
+	Public NativeDialogsPage As B4XPageNativeDialogs
 End Sub
 
 Public Sub Initialize
-	B4XPages.GetManager.LogEvents = True
+	B4XPages.GetManager.LogEvents = False
 	B4XPages.GetManager.TransitionAnimationDuration = 0
 End Sub
 
@@ -245,6 +250,11 @@ Sub ShowSplashScreen As ResumableSub
 	FileInputPage.Initialize
 	MediaPickerPage.Initialize
 	FilterPage.Initialize
+	DrawerPage.Initialize
+	DrawerTreePage.Initialize
+	DrawerRailPage.Initialize
+
+	NativeDialogsPage.Initialize
 	DashboardPage.Initialize
 	ActionSheetPage.Initialize
 	ToastPage.Initialize
@@ -280,6 +290,7 @@ Sub ShowSplashScreen As ResumableSub
 	ShineButtonPage.Initialize
 	TagSpherePage.Initialize
 	PDFViewPage.Initialize
+	DualRangePage.Initialize
 	'KM01LeafletMapPage.Initialize
 	'KM01PhysicalAddressesPage.Initialize
 
@@ -291,6 +302,11 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("avatar", AvatarPage)
 	B4XPages.AddPage("badge", BadgePage)
 	B4XPages.AddPage("card", CardPage)
+	B4XPages.AddPage("Drawer", DrawerPage)
+	B4XPages.AddPage("drawertree", DrawerTreePage)
+	B4XPages.AddPage("DrawerTree", DrawerTreePage)
+	B4XPages.AddPage("drawerrail", DrawerRailPage)
+	B4XPages.AddPage("DrawerRail", DrawerRailPage)
 	B4XPages.AddPage("filter", FilterPage)
 	B4XPages.AddPage("file-input", FileInputPage)
 	B4XPages.AddPage("media-picker", MediaPickerPage)
@@ -302,6 +318,8 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("rating", RatingPage)
 	B4XPages.AddPage("textarea", TextareaPage)
 	B4XPages.AddPage("range", RangePage)
+	B4XPages.AddPage("dualrange", DualRangePage)
+	B4XPages.AddPage("DualRange", DualRangePage)
 	B4XPages.AddPage("toggle", TogglePage)
 	B4XPages.AddPage("radio", RadioPage)
 	B4XPages.AddPage("checkbox", CheckboxPage)
@@ -383,6 +401,8 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("enjoyhint", EnjoyHintPage)
 	B4XPages.AddPage("shinebutton", ShineButtonPage)
 	B4XPages.AddPage("tagsphere", TagSpherePage)
+
+	B4XPages.AddPage("nativedialogs", NativeDialogsPage)
 	Return True
 End Sub
 

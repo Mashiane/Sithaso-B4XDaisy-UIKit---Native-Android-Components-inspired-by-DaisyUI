@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -387,7 +387,7 @@ Private Sub btnToggleGroup_Click(Tag As Object)
 End Sub
 
 ' Single-select checkbox group: Multiple=False (default) makes a checkbox
-' group behave like a radio — only one item checked at a time. Result.Value
+' group behave like a radio - only one item checked at a time. Result.Value
 ' is the selected option key (String), not a List.
 Private Sub btnCheckSingle_Click(Tag As Object)
 	swalCheckSingle.Initialize(Me, Root, "swalCheckSingle")

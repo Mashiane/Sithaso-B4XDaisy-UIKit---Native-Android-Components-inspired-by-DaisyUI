@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -53,7 +53,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim contentLeft As Int = PAGE_PAD
     Dim y As Int = PAGE_PAD
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 1: Basic horizontal steps (step-primary for completed steps) with ConnectOnClick.
     ''' Mirrors the first DaisyUI docs example. ConnectOnClick=True lets a tap fill the
@@ -74,7 +74,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex1.AddToParent(pnlHost, contentLeft, y, maxW, ex1H)
     y = y + ex1H + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 2: Vertical steps.
     ''' Mirrors the steps-vertical DaisyUI docs example.
@@ -93,7 +93,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex2.AddToParent(pnlHost, contentLeft, y, maxW, ex2H)
     y = y + ex2H + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 3: Responsive steps (lg:steps-horizontal).
     ''' Mirrors the lg:steps-horizontal DaisyUI docs example.
@@ -114,7 +114,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex3.AddToParent(pnlHost, contentLeft, y, maxW, ex3H)
     y = y + ex3H + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 4: Active step highlighting using ActiveColor and ActiveStep.
     ''' Demonstrates the B4X-specific active step feature.
@@ -134,7 +134,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex4.AddToParent(pnlHost, contentLeft, y, maxW, ex4H)
     y = y + ex4H + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 5: Custom icons using step-icon (SVG icon in the step circle).
     ''' Mirrors the step-icon DaisyUI docs example.
@@ -151,7 +151,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex5icons.AddToParent(pnlHost, contentLeft, y, maxW, ex5iconsH)
     y = y + ex5iconsH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 6: Custom data-content markers.
     ''' Mirrors the data-content DaisyUI docs example (?, !, checkmark, cross, star, bullet).
@@ -180,7 +180,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex6markers.AddToParent(pnlHost, contentLeft, y, maxW, ex6markersH)
     y = y + ex6markersH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 7: Mixed variants - info + error step with custom content.
     ''' Mirrors the mixed-variant DaisyUI docs example (moon mission).
@@ -198,7 +198,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex7mixed.AddToParent(pnlHost, contentLeft, y, maxW, ex7mixedH)
     y = y + ex7mixedH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 8: All color variants showcase.
     ''' Demonstrates every supported variant color on individual single-step rows.
@@ -228,7 +228,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Next
     y = y + 12dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 9: Many steps scrollable (overflow-x-auto equivalent).
     ''' Mirrors the wide scrollable steps DaisyUI docs example.
@@ -267,7 +267,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex9scroll.AddToParent(pnlHost, contentLeft, y, maxW, ex9scrollH)
     y = y + ex9scrollH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 10: SVG icons in step circles.
     ''' Demonstrates the AddStepWithSvgIcon API using 5 SVG files from the Files folder.
@@ -286,7 +286,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex10svg.AddToParent(pnlHost, contentLeft, y, maxW, ex10svgH)
     y = y + ex10svgH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 11: SVG icons vertical steps with ActiveStep.
     ''' Shows SVG icons in a vertical layout with active step highlighting.
@@ -307,7 +307,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex11svgVert.AddToParent(pnlHost, contentLeft, y, maxW, ex11svgVertH)
     y = y + ex11svgVertH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 12: Horizontal scrollable steps ? many steps in a fixed-width container.
     ''' Demonstrates the internal HorizontalScrollView when Scrollable=True (default).
@@ -335,7 +335,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex12hscroll.AddToParent(pnlHost, contentLeft, y, maxW, 68dip)
     y = y + 68dip + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 13: Vertical scrollable steps ? many steps in a fixed-height container.
     ''' Demonstrates the internal ScrollView when Scrollable=True with vertical orientation.
@@ -366,7 +366,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex13vscroll.AddToParent(pnlHost, contentLeft, y, maxW, vscrollH)
     y = y + vscrollH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 14: Custom step gap (StepGap property).
     ''' Demonstrates widening the space between steps. The default gap is 0,
@@ -391,7 +391,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ex14gap.AddToParent(pnlHost, contentLeft, y, maxW, ex14gapH)
     y = y + ex14gapH + 20dip
 
-    ' =========================================================
+    ' -
     ''' <summary>
     ''' Example 15: Custom step gap (vertical orientation).
     ''' Same StepGap value applied to a vertical steps list to show the gap

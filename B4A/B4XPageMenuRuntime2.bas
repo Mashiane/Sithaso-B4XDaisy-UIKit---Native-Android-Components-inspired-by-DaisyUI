@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -52,7 +52,7 @@ Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
-' ============================================================
+' -
 Private Sub BuildPage(Width As Int, Height As Int)
     If pnlHost.IsInitialized = False Then Return
     pnlHost.RemoveAllViews
@@ -92,7 +92,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     pnlHost.AddView(mStatusLbl, PAGE_PAD, y, maxW, 22dip)
     y = y + 28dip
 
-    ' ======================== Button groups ========================
+    ' - Button groups -
 
     ' --- Menu Size ---
     y = AddGroupLabel("Menu Size", y, maxW)
@@ -111,8 +111,10 @@ Private Sub BuildPage(Width As Int, Height As Int)
     y = AddButtonRow("Toggle Visible", "toggle-visible", "", "", "warning", "", y, maxW)
 
     ' --- Dynamic Content ---
-    y = AddGroupLabel("Dynamic Content", y, maxW)
-    y = AddButtonRow("Add item", "add-item", "Rebuild menu", "rebuild", "success", "secondary", y, maxW)
+    y = AddGroupLabel("Dynamic Content & Helpers", y, maxW)
+    y = AddButtonRow("Add Avatar Item", "add-avatar", "Add ID Parent/Child", "add-id-tree", "primary", "secondary", y, maxW)
+    y = AddButtonRow("Load Map List", "load-list", "Close Submenus", "close-submenus", "accent", "neutral", y, maxW)
+    y = AddButtonRow("Add Normal Item", "add-item", "Rebuild menu", "rebuild", "success", "neutral", y, maxW)
     y = AddButtonRow("Measure preferred size", "measure", "", "", "info", "", y, maxW)
 
     ' --- Reset ---
@@ -122,7 +124,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
-' ============================================================
+' -
 Private Sub ResetState
     mSizeIndex = 2
     mDynamicCount = 0
@@ -134,27 +136,28 @@ End Sub
 
 Private Sub RebuildMenuItems
     mMenu.Clear
+    mMenu.AddAvatarBadgeItem("user-mashy", "Anele Mbanga", "mashymain.jpg", "circle", "Admin", "primary")
+    mMenu.AddAvatarItem("user-anna", "Anna Smith", "face_anna.jpg", "squircle")
+    mMenu.AddDivider
     mMenu.AddIconItem("item-1", "Overview", "house-solid.svg")
     mMenu.AddItem("item-2", "Reports")
     mMenu.AddItem("item-3", "Settings")
     mMenu.AddDivider
-    mMenu.AddItem("item-badge", "Notifications")
-    mMenu.SetItemBadgeText("item-badge", "3")
-    mMenu.AddItem("item-4", "Locked")
-    mMenu.AddTitle("More")
-    mMenu.AddItem("item-5", "Profile")
-    Dim sub1 As B4XDaisyMenu = mMenu.AddSubmenu("item-sub", "Team", False)
-    sub1.AddItem("item-sub-1", "Engineering")
-    sub1.AddItem("item-sub-2", "Design")
-    sub1.AddItem("item-sub-3", "Marketing")
-    mMenu.AddItem("item-7", "Billing")
-    mMenu.AddItem("item-8", "Security")
-    mMenu.AddItem("item-9", "API Keys")
-    mMenu.AddItem("item-10", "Sign Out")
+    mMenu.AddBadgeItem("item-badge", "Notifications", "3", "secondary")
+    mMenu.AddTitle("Management")
+    
+    ' Using Flat ID-based Tree Addition
+    mMenu.AddItemParent("", "tree-team", "Organization", "user-group-solid.svg")
+    mMenu.AddItemChild("tree-team", "team-eng", "Engineering", "code-solid.svg")
+    mMenu.AddAvatarChildItem("tree-team", "team-lead", "Team Lead (Marcus)", "face_marcus.jpg", "circle")
+    mMenu.AddBadgeChildItem("tree-team", "team-qa", "QA Testing", "New", "accent")
+    
+    mMenu.AddItem("item-billing", "Billing")
+    mMenu.AddItem("item-signout", "Sign Out")
     mSubmenuIndex = 8
 End Sub
 
-' ============================================================
+' -
 Private Sub btn_Click(Tag As Object)
     Dim action As String = Tag
 
@@ -194,15 +197,47 @@ Private Sub btn_Click(Tag As Object)
             ShowStatus("Visible = " & visStr)
 
         ' ---- Dynamic Content ----
+        Case "add-avatar"
+            mDynamicCount = mDynamicCount + 1
+            mMenu.AddAvatarBadgeItem("dyn-av-" & mDynamicCount, "User " & mDynamicCount, "face" & ((mDynamicCount Mod 7) + 4) & ".jpg", "circle", "Active", "success")
+            ShowStatus("AddAvatarBadgeItem: User " & mDynamicCount)
+
+        Case "add-id-tree"
+            mDynamicCount = mDynamicCount + 1
+            Dim parentKey As String = "dyn-parent-" & mDynamicCount
+            mMenu.AddItemParent("", parentKey, "Folder " & mDynamicCount, "folder-solid.svg")
+            mMenu.AddItemChild(parentKey, parentKey & "-sub1", "Document A", "file-lines-solid.svg")
+            mMenu.AddAvatarChildItem(parentKey, parentKey & "-sub2", "Assigned: Marcus", "face_marcus.jpg", "rounded-md")
+            mMenu.SetItemOpen(parentKey, True)
+            ShowStatus("AddItemParent & AddItemChild with auto-expand")
+
+        Case "load-list"
+            Dim itemsList As List
+            itemsList.Initialize
+            itemsList.Add(CreateMap("kind": "title", "text": "DATA DRIVEN MENU"))
+            itemsList.Add(CreateMap("tag": "dash", "text": "Dashboard", "icon": "chart-pie-solid.svg"))
+            itemsList.Add(CreateMap("tag": "usr", "text": "Current User", "avatar": "mashymain.jpg", "avatar_shape": "circle", "badge": "VIP", "badge_variant": "warning"))
+            itemsList.Add(CreateMap("tag": "sub-proj", "text": "Projects", "is_parent": True, "icon": "folder-solid.svg", "open": True))
+            itemsList.Add(CreateMap("tag": "proj-1", "parent": "sub-proj", "text": "B4XDaisyUIKit", "badge": "v0.91", "badge_variant": "primary"))
+            itemsList.Add(CreateMap("tag": "proj-2", "parent": "sub-proj", "text": "Client App", "icon": "mobile-screen-solid.svg"))
+            itemsList.Add(CreateMap("kind": "divider"))
+            itemsList.Add(CreateMap("tag": "logout", "text": "Log Out", "icon": "arrow-right-from-bracket-solid.svg"))
+            mMenu.LoadFromList(itemsList)
+            ShowStatus("LoadFromList: Loaded 8 items via Map descriptors")
+
+        Case "close-submenus"
+            mMenu.CloseParents
+            ShowStatus("CloseParents: collapsed all open submenus")
+
         Case "add-item"
             mDynamicCount = mDynamicCount + 1
             mMenu.AddItem("dyn-" & mDynamicCount, "Dynamic item " & mDynamicCount)
-            ShowStatus("AddItem(""dyn-" & mDynamicCount & """)  ? item added at end")
+            ShowStatus("AddItem(""dyn-" & mDynamicCount & """)  - item added at end")
 
         Case "rebuild"
             RebuildMenuItems
             ResetState
-            ShowStatus("Clear() + rebuild ? all items restored, state reset")
+            ShowStatus("Clear() + rebuild - all items restored, state reset")
 
         Case "measure"
             ShowStatus("GetPreferredWidth=" & mMenu.GetPreferredWidth & "  GetPreferredHeight=" & mMenu.GetPreferredHeight)
@@ -215,7 +250,7 @@ Private Sub btn_Click(Tag As Object)
             mMenu.Dividers = True
             mMenu.Enabled = True
             mMenu.Visible = True
-            ShowStatus("Reset ? menu restored to defaults")
+            ShowStatus("Reset - menu restored to defaults")
 
     End Select
 End Sub
@@ -238,9 +273,9 @@ Private Sub menu_ItemClick(Tag As Object, Text As String)
     #End If
 End Sub
 
-' ============================================================
+' -
 ' Layout helpers
-' ============================================================
+' -
 
 Private Sub AddButtonRow(LabelL As String, TagL As String, LabelR As String, TagR As String, _
         VariantL As String, VariantR As String, Y As Int, MaxW As Int) As Int

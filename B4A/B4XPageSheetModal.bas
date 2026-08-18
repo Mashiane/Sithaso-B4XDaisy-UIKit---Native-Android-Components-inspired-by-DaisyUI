@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -152,7 +152,7 @@ Private Sub BuildSheetModals
 	nb.AddTitleToCenter("Welcome")
 	Dim btnConfirm As B4XDaisyButton = nb.AddButtonToEnd("smOnlineConfirm", "Confirm", "primary", 80dip, 32dip, True)
 
-	smOnline.AddBoxView(nb.getView, 0, 0, Root.Width, 44dip)
+	smOnline.AddBoxView(nb.View, 0, 0, Root.Width, 44dip)
 
 	Dim inp As B4XDaisyInput
 	inp.Initialize(Me, "smOnlineInput")
@@ -299,7 +299,7 @@ Private Sub BuildSheetModals
 	smCard.Animated = True
 	smCard.AnimationTime = 500
 	smCard.ScaleBackground = True
-	smCard.PresentingView = pageScroll.mBase
+	smCard.PresentingView = pageScroll.View
 	smCard.BackgroundScale = 0.94
 	smCard.BackgroundCornerRadius = smCard.CornerRadius
 	smCard.BackgroundTranslateY = 14dip

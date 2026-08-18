@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -97,11 +97,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim currentY As Int = PAGE_PAD
 
-    ' =========================================================================
+    ' -
     ' Example 1: Basic dark overlay
     ' Demonstrates the default use-case: a semi-transparent black veil over a
     ' colourful background panel, 40% opacity.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Dark overlay (40%)", currentY, maxW)
     Dim pnl1 As Panel
     pnl1.Initialize("")
@@ -109,7 +109,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     base1.Color = xui.Color_RGB(59, 130, 246)      ' blue background
     pnlHost.AddView(base1, PAGE_PAD, currentY, maxW, 120dip)
 
-    ' Background label � sits beneath the overlay (top of the panel)
+    ' Background label - sits beneath the overlay (top of the panel)
     Dim lbl1bg As B4XDaisyText
     lbl1bg.Initialize(Me, "")
     lbl1bg.AddToParent(base1, 0, 0, maxW, 56dip)
@@ -126,7 +126,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     ov1.AttachTo(base1)
     ov1.Visible = True
 
-    ' Foreground label � added after AttachTo so it renders above the overlay
+    ' Foreground label - added after AttachTo so it renders above the overlay
     Dim lbl1fg As B4XDaisyText
     lbl1fg.Initialize(Me, "")
     lbl1fg.AddToParent(base1, 0, 64dip, maxW, 56dip)
@@ -138,10 +138,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     currentY = currentY + 120dip + 20dip
 
-    ' =========================================================================
+    ' -
     ' Example 2: Colored overlay (error/red tint, 50%)
     ' Demonstrates using a custom overlay colour to create a danger-state tint.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Coloured overlay (error 50%)", currentY, maxW)
     Dim pnl2 As Panel
     pnl2.Initialize("")
@@ -167,11 +167,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     currentY = currentY + 100dip + 20dip
 
-    ' =========================================================================
+    ' -
     ' Example 3: Rounded overlay matching a rounded card
     ' Demonstrates the Rounded property so the overlay clips to the same
     ' corner radius as its host container (rounded-xl = 12dip).
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Rounded overlay (rounded-xl)", currentY, maxW)
     Dim pnl3 As Panel
     pnl3.Initialize("")
@@ -208,11 +208,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     currentY = currentY + 120dip + 20dip
 
-    ' =========================================================================
-    ' Example 4: PassThrough � overlay tint, touches reach content below
+    ' -
+    ' Example 4: PassThrough - overlay tint, touches reach content below
     ' With PassThrough = True the overlay panel's Enabled is False, so touch
     ' events are not consumed and widgets beneath remain fully interactive.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Pass-through touches", currentY, maxW)
     Dim pnl4 As Panel
     pnl4.Initialize("")
@@ -237,10 +237,10 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     currentY = currentY + 120dip + 20dip
 
-    ' =========================================================================
+    ' -
     ' Example 5: Low opacity white overlay ("frosted" appearance)
     ' A near-white overlay at 15% creates a subtle frosted-glass look.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Frosted overlay (white 15%)", currentY, maxW)
     Dim pnl5 As Panel
     pnl5.Initialize("")
@@ -275,11 +275,11 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     currentY = currentY + 100dip + 20dip
 
-    ' =========================================================================
-    ' Example 6: AddToParent � explicit placement, not full cover
+    ' -
+    ' Example 6: AddToParent - explicit placement, not full cover
     ' Demonstrates using AddToParent to place the overlay at a fixed sub-region
     ' of the container (bottom third of the panel), like a caption bar.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Caption bar via AddToParent", currentY, maxW)
     Dim pnl6 As Panel
     pnl6.Initialize("")
@@ -296,7 +296,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     lbl6bg.setVAlign("TOP")
     lbl6bg.setAutoResize(False)
 
-    ' Overlay covers only the bottom 44dip � caption bar
+    ' Overlay covers only the bottom 44dip - caption bar
     Dim ov6 As B4XDaisyOverlay
     ov6.Initialize(Me, "ov6")
     ov6.OverlayColor = xui.Color_Black
@@ -316,12 +316,12 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     currentY = currentY + 130dip + 20dip
 
-    ' =========================================================================
+    ' -
     ' Example 7: Full-screen overlay triggered by a button
     ' Tapping the button adds a full-size overlay on top of Root (the page).
     ' The overlay matches the carousel indicator strip color (black ~31%).
     ' Tap anywhere on the overlay to dismiss it.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("Full-screen overlay (tap button)", currentY, maxW)
     Dim btnShowOverlay As B4XDaisyButton
     btnShowOverlay.Initialize(Me, "btnShowOverlay")
@@ -330,12 +330,12 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     btnShowOverlay.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 44dip)
     currentY = currentY + 44dip + 20dip
 
-    ' =========================================================================
+    ' -
     ' Example 8: White full-screen overlay (80% opacity) via button
-    ' A bright white veil covers the whole page at 80% opacity � useful for
+    ' A bright white veil covers the whole page at 80% opacity - useful for
     ' light-theme loading states or confirmation overlays.
     ' Tap anywhere on the overlay to dismiss it.
-    ' =========================================================================
+    ' -
     currentY = AddSectionTitle("White overlay 80% (tap button)", currentY, maxW)
     Dim btnShowWhite As B4XDaisyButton
     btnShowWhite.Initialize(Me, "btnShowWhite")
@@ -373,7 +373,7 @@ End Sub
 '  * Fired by the overlay's Opened event.
 '  */
 Private Sub mFsOverlay_Opened(Tag As Object)
-    ' Overlay is now visible � no-op in demo, wired to show event fires correctly.
+    ' Overlay is now visible - no-op in demo, wired to show event fires correctly.
 End Sub
 
 ' /**
@@ -387,7 +387,7 @@ End Sub
 '  * Click event fires in addition to Close when CloseOnClick = True.
 '  */
 Private Sub mFsOverlay_Click(Tag As Object)
-    ' No extra action needed � Close is handled automatically by the component.
+    ' No extra action needed - Close is handled automatically by the component.
 End Sub
 
 Private Sub btnShowWhite_Click(Tag As Object)

@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -50,9 +50,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim y As Int = PAGE_PAD
 
-    ' ====================================================
+    ' -
     ' 1. BASE SECTION
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Base Toggle", y, maxW)
     
     ''' Example: Standard checked toggle
@@ -82,9 +82,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgBaseIndet.Tag = "base-indeterminate"
     y = y + 56dip
 
-    ' ====================================================
+    ' -
     ' 2. TEXTLESS (VISUAL ONLY) SECTION
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Textless (Visual-Only) Toggle", y, maxW)
 
     ''' Example: Checkbox-style toggle without text (Checked)
@@ -102,9 +102,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgTextlessUnchecked.Tag = "textless-unchecked"
     y = y + 40dip
 
-    ' ====================================================
+    ' -
     ' 3. VARIANTS SECTION
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Color Variants (Checked)", y, maxW)
 
     ''' Example: Primary variant
@@ -187,9 +187,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgVarError.Tag = "variant-error"
     y = y + 56dip
 
-    ' ====================================================
+    ' -
     ' 4. SIZES SECTION
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Sizes (Checked)", y, maxW)
 
     ''' Example: Extra Small Size
@@ -242,9 +242,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgSizeXL.Tag = "size-xl"
     y = y + 56dip
 
-    ' ====================================================
+    ' -
     ' 5. POSITIONS SECTION
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Positions (Label Alignment)", y, maxW)
 
     ''' Example: Position start (Toggle on left)
@@ -267,9 +267,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgPosEndH.Tag = "position-end-h"
     y = y + 56dip
 
-    ' ====================================================
+    ' -
     ' 6. DISABLED SECTION
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Disabled Toggles", y, maxW)
 
     ''' Example: Disabled unchecked toggle
@@ -292,9 +292,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgDisabledChecked.Tag = "disabled-checked"
     y = y + 56dip
 
-    ' ====================================================
+    ' -
     ' 7. WITH FIELDSET AND LABEL
-    ' ====================================================
+    ' -
     y = AddSectionTitle("With Fieldset and Label", y, maxW)
 
     ''' Fieldset container with legend "Login options" and a toggle inside a label row.
@@ -314,9 +314,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     fsLogin.Refresh
     y = y + fsLogin.GetComputedHeight + 20dip
 
-    ' ====================================================
+    ' -
     ' 8. CUSTOM COLORS
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Custom Colors", y, maxW)
 
     ''' Unchecked state: indigo background + indigo border
@@ -343,9 +343,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     tgCustomChecked.Tag = "Custom Checked"
     y = y + 60dip
 
-    ' ====================================================
+    ' -
     ' 9. CUSTOM CHECKED STYLING
-    ' ====================================================
+    ' -
     y = AddSectionTitle("Custom Checked Styling", y, maxW)
 
     Dim tgCustomStyle As B4XDaisyToggle

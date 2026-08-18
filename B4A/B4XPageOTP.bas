@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -6,11 +6,11 @@ Version=13.5
 @EndOfDesignText@
 #IgnoreWarnings:12,9
 
-'================================================================
+'-
 ' B4XPageOTP
 ' Demo page regenerating every Ionic v8 ion-input-otp example for
 ' the B4XDaisyOTP component (parity reference).
-'================================================================
+'-
 
 #Region Variables
     Sub Class_Globals

@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -228,7 +228,7 @@ End Sub
 ''' Positions the floating Top / Bottom buttons at the bottom-right of the screen.
 ''' </summary>
 Private Sub LayoutFloatButtons
-    If btnTop.mBase.IsInitialized = False Then Return
+    If btnTop.View.IsInitialized = False Then Return
     Dim btnW As Int = 112dip
     Dim btnH As Int = 40dip
     Dim margin As Int = 12dip

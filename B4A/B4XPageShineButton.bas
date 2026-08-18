@@ -65,9 +65,9 @@ Private Sub BuildForm
 	Dim y As Int = pageScroll.PagePadding
 	Dim gap As Int = pageScroll.YGap
 
-	' =============================================================
+	' -
 	' 1. Size Scale Showcase (xs, sm, md, lg, xl)
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("1. Size Scale Showcase (xs, sm, md, lg, xl)", y, False)
 
 	Dim pnlSizes As B4XView = CreateCardPanel(padding, y, maxW, 220dip)
@@ -138,9 +138,9 @@ Private Sub BuildForm
 
 	y = y + 220dip + gap
 
-	' =============================================================
+	' -
 	' 2. Heart Shine Button (Error / Red Burst)
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("2. Heart Shine Button (Flashing & Rainbow)", y, False)
 
 	Dim pnlHeart As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
@@ -159,9 +159,9 @@ Private Sub BuildForm
 
 	y = y + 100dip + gap
 
-	' =============================================================
+	' -
 	' 3. Like (Thumbs Up) Shine Button (Primary / Blue)
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("3. Like (Thumbs Up) Shine Button", y, False)
 
 	Dim pnlLike As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
@@ -179,9 +179,9 @@ Private Sub BuildForm
 
 	y = y + 100dip + gap
 
-	' =============================================================
+	' -
 	' 4. Smile Shine Button (Warning / Yellow)
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("4. Smile Shine Button", y, False)
 
 	Dim pnlSmile As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
@@ -199,9 +199,9 @@ Private Sub BuildForm
 
 	y = y + 100dip + gap
 
-	' =============================================================
+	' -
 	' 5. Star Shine Button (Success / Green)
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("5. Star Shine Button", y, False)
 
 	Dim pnlStar As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
@@ -220,9 +220,9 @@ Private Sub BuildForm
 
 	y = y + 100dip + gap
 
-	' =============================================================
+	' -
 	' 6. Custom SVG Icon (Loaded via File.DirAssets)
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("6. Custom SVG Icon (File.DirAssets)", y, False)
 
 	Dim pnlSvg As B4XView = CreateCardPanel(padding, y, maxW, 100dip)
@@ -241,9 +241,9 @@ Private Sub BuildForm
 
 	y = y + 100dip + gap
 
-	' =============================================================
+	' -
 	' 7. Programmatic API Control
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("7. Programmatic API Control", y, False)
 
 	Dim btnW As Int = (maxW - 12dip) / 2
@@ -262,9 +262,9 @@ Private Sub BuildForm
 
 	y = y + 44dip + gap
 
-	' =============================================================
+	' -
 	' 8. Event Log
-	' =============================================================
+	' -
 	y = pageScroll.AddSectionTitle("8. Event Log", y, False)
 
 	Dim pnlLog As B4XView = CreateCardPanel(padding, y, maxW, 160dip)

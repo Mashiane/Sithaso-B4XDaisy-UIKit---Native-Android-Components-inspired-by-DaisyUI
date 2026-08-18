@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -80,7 +80,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m3.Title = "Hello!"
     m3.ShowCloseButton = True
     m3.Visible = False
-    AddLabel(m3, "Tap ✕ in the top-right corner to close.")
+    AddLabel(m3, "Tap x in the top-right corner to close.")
     
     Dim btn3 As B4XDaisyButton
     btn3.Initialize(Me, "btn3")
@@ -154,42 +154,42 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m10.Title = "Glass XS"
     m10.GlassSize = "glass-xs"
     m10.Visible = False
-    AddLabel(m10, "glass-xs: opacity 8% — barely there shimmer")
+    AddLabel(m10, "glass-xs: opacity 8% - barely there shimmer")
 
     m11.Initialize(Me, "m11")
     m11.AddToParent(Root, 0, 0, Width, Height)
     m11.Title = "Glass SM"
     m11.GlassSize = "glass-sm"
     m11.Visible = False
-    AddLabel(m11, "glass-sm: opacity 15% — light frost")
+    AddLabel(m11, "glass-sm: opacity 15% - light frost")
 
     m12.Initialize(Me, "m12")
     m12.AddToParent(Root, 0, 0, Width, Height)
     m12.Title = "Glass MD"
     m12.GlassSize = "glass-md"
     m12.Visible = False
-    AddLabel(m12, "glass-md: opacity 30% — DaisyUI default")
+    AddLabel(m12, "glass-md: opacity 30% - DaisyUI default")
 
     m13.Initialize(Me, "m13")
     m13.AddToParent(Root, 0, 0, Width, Height)
     m13.Title = "Glass LG"
     m13.GlassSize = "glass-lg"
     m13.Visible = False
-    AddLabel(m13, "glass-lg: opacity 50% — heavy frost")
+    AddLabel(m13, "glass-lg: opacity 50% - heavy frost")
 
     m14.Initialize(Me, "m14")
     m14.AddToParent(Root, 0, 0, Width, Height)
     m14.Title = "Glass XL"
     m14.GlassSize = "glass-xl"
     m14.Visible = False
-    AddLabel(m14, "glass-xl: opacity 70% — near-opaque wash")
+    AddLabel(m14, "glass-xl: opacity 70% - near-opaque wash")
 
     m15.Initialize(Me, "m15")
     m15.AddToParent(Root, 0, 0, Width, Height)
     m15.Title = "Glass 2XL"
     m15.GlassSize = "glass-2xl"
     m15.Visible = False
-    AddLabel(m15, "glass-2xl: opacity 85% — near-solid")
+    AddLabel(m15, "glass-2xl: opacity 85% - near-solid")
 
     ' Two rows of 3 buttons, sm size
     Dim btnGW As Int = (maxW - 8dip) / 3
@@ -233,7 +233,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     m16.BackdropColor = "transparent"
     m16.BackdropOpacity = 0
     m16.Visible = False
-    AddLabel(m16, "The backdrop is invisible — only the dialog card appears.")
+    AddLabel(m16, "The backdrop is invisible - only the dialog card appears.")
     m16.AddActionButton("modalBtn", "Close", "primary")
     m16.Refresh
 
@@ -260,7 +260,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     btn17.Text = "Non-Dismissable Modal"
     y = y + 46dip
 
-    ' === Color & Border variants ===
+    ' - Color & Border variants -
     y = AddExample(y, "Color & Border Variants", "Variant backgrounds, borders and title colors")
 
     ' --- Modal with primary variant background ---
@@ -439,8 +439,8 @@ Private Sub AddLabel(m As B4XDaisyModal, Text As String)
     ' Measure the wrapped height for this content width and apply it explicitly
     ' so the modal's h-auto box sizes to fit the (possibly multi-line) label.
     Dim prefH As Int = Max(24dip, lbl.GetPreferredHeight(bodyW))
-    If lbl.mBase.Height <> prefH Then
-        lbl.mBase.SetLayoutAnimated(0, 0, 0, bodyW, prefH)
+    If lbl.View.Height <> prefH Then
+        lbl.View.SetLayoutAnimated(0, 0, 0, bodyW, prefH)
         lbl.RefreshText
     End If
     ' Re-calculate modal auto-height so the box fits the label.
@@ -463,8 +463,8 @@ Private Sub AddLabelThemed(m As B4XDaisyModal, Text As String, TextColorSpec As 
     End If
     lbl.AddToParent(body, 0, 0, bodyW, 24dip)
     Dim prefH As Int = Max(24dip, lbl.GetPreferredHeight(bodyW))
-    If lbl.mBase.Height <> prefH Then
-        lbl.mBase.SetLayoutAnimated(0, 0, 0, bodyW, prefH)
+    If lbl.View.Height <> prefH Then
+        lbl.View.SetLayoutAnimated(0, 0, 0, bodyW, prefH)
         lbl.RefreshText
     End If
     m.Refresh
@@ -617,28 +617,28 @@ End Sub
 
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
     If svHost.IsInitialized Then svHost.SetLayoutAnimated(0, 0, 0, Width, Height)
-    If m1.getView.IsInitialized Then m1.AddToParent(Root, 0, 0, Width, Height)
-    If m2.getView.IsInitialized Then m2.AddToParent(Root, 0, 0, Width, Height)
-    If m3.getView.IsInitialized Then m3.AddToParent(Root, 0, 0, Width, Height)
-    If m5.getView.IsInitialized Then m5.AddToParent(Root, 0, 0, Width, Height)
-    If m7.getView.IsInitialized Then m7.AddToParent(Root, 0, 0, Width, Height)
-    If m8.getView.IsInitialized Then m8.AddToParent(Root, 0, 0, Width, Height)
-    If m9.getView.IsInitialized Then m9.AddToParent(Root, 0, 0, Width, Height)
-    If m10.getView.IsInitialized Then m10.AddToParent(Root, 0, 0, Width, Height)
-    If m11.getView.IsInitialized Then m11.AddToParent(Root, 0, 0, Width, Height)
-    If m12.getView.IsInitialized Then m12.AddToParent(Root, 0, 0, Width, Height)
-    If m13.getView.IsInitialized Then m13.AddToParent(Root, 0, 0, Width, Height)
-    If m14.getView.IsInitialized Then m14.AddToParent(Root, 0, 0, Width, Height)
-    If m15.getView.IsInitialized Then m15.AddToParent(Root, 0, 0, Width, Height)
-    If m16.getView.IsInitialized Then m16.AddToParent(Root, 0, 0, Width, Height)
-    If m17.getView.IsInitialized Then m17.AddToParent(Root, 0, 0, Width, Height)
-    If m18.getView.IsInitialized Then m18.AddToParent(Root, 0, 0, Width, Height)
-    If m19.getView.IsInitialized Then m19.AddToParent(Root, 0, 0, Width, Height)
-    If m20.getView.IsInitialized Then m20.AddToParent(Root, 0, 0, Width, Height)
-    If m21.getView.IsInitialized Then m21.AddToParent(Root, 0, 0, Width, Height)
-    If m22.getView.IsInitialized Then m22.AddToParent(Root, 0, 0, Width, Height)
-    If mNoAnim.IsInitialized And mNoAnim.getView.IsInitialized Then mNoAnim.AddToParent(Root, 0, 0, Width, Height)
-    If mSlowAnim.IsInitialized And mSlowAnim.getView.IsInitialized Then mSlowAnim.AddToParent(Root, 0, 0, Width, Height)
-    If mPresetYesNo.IsInitialized And mPresetYesNo.getView.IsInitialized Then mPresetYesNo.AddToParent(Root, 0, 0, Width, Height)
-    If mPresetOkCancel.IsInitialized And mPresetOkCancel.getView.IsInitialized Then mPresetOkCancel.AddToParent(Root, 0, 0, Width, Height)
+    If m1.View.IsInitialized Then m1.AddToParent(Root, 0, 0, Width, Height)
+    If m2.View.IsInitialized Then m2.AddToParent(Root, 0, 0, Width, Height)
+    If m3.View.IsInitialized Then m3.AddToParent(Root, 0, 0, Width, Height)
+    If m5.View.IsInitialized Then m5.AddToParent(Root, 0, 0, Width, Height)
+    If m7.View.IsInitialized Then m7.AddToParent(Root, 0, 0, Width, Height)
+    If m8.View.IsInitialized Then m8.AddToParent(Root, 0, 0, Width, Height)
+    If m9.View.IsInitialized Then m9.AddToParent(Root, 0, 0, Width, Height)
+    If m10.View.IsInitialized Then m10.AddToParent(Root, 0, 0, Width, Height)
+    If m11.View.IsInitialized Then m11.AddToParent(Root, 0, 0, Width, Height)
+    If m12.View.IsInitialized Then m12.AddToParent(Root, 0, 0, Width, Height)
+    If m13.View.IsInitialized Then m13.AddToParent(Root, 0, 0, Width, Height)
+    If m14.View.IsInitialized Then m14.AddToParent(Root, 0, 0, Width, Height)
+    If m15.View.IsInitialized Then m15.AddToParent(Root, 0, 0, Width, Height)
+    If m16.View.IsInitialized Then m16.AddToParent(Root, 0, 0, Width, Height)
+    If m17.View.IsInitialized Then m17.AddToParent(Root, 0, 0, Width, Height)
+    If m18.View.IsInitialized Then m18.AddToParent(Root, 0, 0, Width, Height)
+    If m19.View.IsInitialized Then m19.AddToParent(Root, 0, 0, Width, Height)
+    If m20.View.IsInitialized Then m20.AddToParent(Root, 0, 0, Width, Height)
+    If m21.View.IsInitialized Then m21.AddToParent(Root, 0, 0, Width, Height)
+    If m22.View.IsInitialized Then m22.AddToParent(Root, 0, 0, Width, Height)
+    If mNoAnim.IsInitialized And mNoAnim.View.IsInitialized Then mNoAnim.AddToParent(Root, 0, 0, Width, Height)
+    If mSlowAnim.IsInitialized And mSlowAnim.View.IsInitialized Then mSlowAnim.AddToParent(Root, 0, 0, Width, Height)
+    If mPresetYesNo.IsInitialized And mPresetYesNo.View.IsInitialized Then mPresetYesNo.AddToParent(Root, 0, 0, Width, Height)
+    If mPresetOkCancel.IsInitialized And mPresetOkCancel.View.IsInitialized Then mPresetOkCancel.AddToParent(Root, 0, 0, Width, Height)
 End Sub

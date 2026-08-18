@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class
@@ -93,9 +93,9 @@ Private Sub B4XPage_Appear
 	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 
-' =================================================================
+' -
 ' SWEETALERT 2 DEMOS
-' =================================================================
+' -
 Private Sub DemoAction_Click(Tag As Object)
 	Dim action As String = Tag
 	Dim swal As B4XDaisySweetAlert

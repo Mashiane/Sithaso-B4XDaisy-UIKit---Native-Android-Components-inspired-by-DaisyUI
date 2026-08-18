@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -210,17 +210,17 @@ Private Sub StartTour
     enjoyHint.BtnPrevText = "Previous"
     enjoyHint.BtnFinishText = "Done"
     
-    enjoyHint.AddStep(refAvatar.mBase, "This is your profile picture. Tap to change it.", "circle", 8dip, 0, "center")
-    enjoyHint.AddStep(refNameInput.mBase, "Enter your full name here.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refEmailInput.mBase, "Provide a valid email address.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refCountrySelect.mBase, "Select your country from the dropdown.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refNotificationsToggle.mBase, "Toggle push notifications on or off.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refDarkModeToggle.mBase, "Switch between light and dark themes.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refTermsCheckbox.mBase, "Accept the terms to continue.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refRangeSlider.mBase, "Drag to adjust the volume level.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refRating.mBase, "Rate your experience with the stars.", "rect", 4dip, 0, "left")
-    enjoyHint.AddStep(refSaveBtn.mBase, "Save your changes here.", "rect", 4dip, 0, "right")
-    enjoyHint.AddStep(refDeleteBtn.mBase, "Danger zone � permanently delete your account.", "rect", 4dip, 0, "center")
+    enjoyHint.AddStep(refAvatar.View, "This is your profile picture. Tap to change it.", "circle", 8dip, 0, "center")
+    enjoyHint.AddStep(refNameInput.View, "Enter your full name here.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refEmailInput.View, "Provide a valid email address.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refCountrySelect.View, "Select your country from the dropdown.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refNotificationsToggle.View, "Toggle push notifications on or off.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refDarkModeToggle.View, "Switch between light and dark themes.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refTermsCheckbox.View, "Accept the terms to continue.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refRangeSlider.View, "Drag to adjust the volume level.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refRating.View, "Rate your experience with the stars.", "rect", 4dip, 0, "left")
+    enjoyHint.AddStep(refSaveBtn.View, "Save your changes here.", "rect", 4dip, 0, "right")
+    enjoyHint.AddStep(refDeleteBtn.View, "Danger zone - permanently delete your account.", "rect", 4dip, 0, "center")
     Try
         enjoyHint.RunWithResume
     Catch

@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -61,9 +61,9 @@ Version=13.4
 
         Dim maxW As Int = Max(220dip, Root.Width - (PAGE_PAD * 2))
 
-        '============================================================
+        '-
         'Example 1: Textarea (base example)
-        '============================================================
+        '-
         Dim sec1 As Map = BeginSection("Textarea")
         Dim c1 As B4XDaisyInput
         c1.Initialize(Me, "txt")
@@ -75,9 +75,9 @@ Version=13.4
         AddRow(sec1, c1, 0)
         EndSection(sec1)
 
-        '============================================================
+        '-
         'Example 2: Ghost style (no background)
-        '============================================================
+        '-
         Dim sec2 As Map = BeginSection("Ghost style")
         Dim c2 As B4XDaisyInput
         c2.Initialize(Me, "txt")
@@ -90,9 +90,9 @@ Version=13.4
         AddRow(sec2, c2, 0)
         EndSection(sec2)
 
-        '============================================================
+        '-
         'Example 3: With form control and labels (fieldset pattern)
-        '============================================================
+        '-
         Dim sec3 As Map = BeginSection("With form control and labels")
         Dim c3 As B4XDaisyInput
         c3.Initialize(Me, "txt")
@@ -106,9 +106,9 @@ Version=13.4
         AddRow(sec3, c3, 0)
         EndSection(sec3)
 
-        '============================================================
+        '-
         'Example 4: Textarea colors
-        '============================================================
+        '-
         Dim sec4 As Map = BeginSection("Textarea colors")
         Dim colorList As List
         colorList.Initialize
@@ -127,9 +127,9 @@ Version=13.4
         Next
         EndSection(sec4)
 
-        '============================================================
+        '-
         'Example 5: Sizes
-        '============================================================
+        '-
         Dim sec5 As Map = BeginSection("Sizes")
         Dim sizeVals As List
         sizeVals.Initialize
@@ -152,9 +152,9 @@ Version=13.4
         Next
         EndSection(sec5)
 
-        '============================================================
+        '-
         'Example 6: Disabled
-        '============================================================
+        '-
         Dim sec6 As Map = BeginSection("Disabled")
         Dim c6 As B4XDaisyInput
         c6.Initialize(Me, "txt")
@@ -167,9 +167,9 @@ Version=13.4
         AddRow(sec6, c6, 0)
         EndSection(sec6)
 
-        '============================================================
+        '-
         'Example 7: Auto-grow / Auto-height
-        '============================================================
+        '-
         Dim sec7 As Map = BeginSection("Auto-grow textarea")
         Dim c7 As B4XDaisyInput
         c7.Initialize(Me, "txtAuto")
@@ -182,9 +182,9 @@ Version=13.4
         AddRow(sec7, c7, 0)
         EndSection(sec7)
 
-        '============================================================
+        '-
         'Example 8: Required textarea (red star on label above)
-        '============================================================
+        '-
         Dim sec8 As Map = BeginSection("Required textarea")
         Dim c8 As B4XDaisyInput
         c8.Initialize(Me, "txt")
@@ -227,7 +227,7 @@ Version=13.4
         Dim rows As List = Sec.Get("rows")
         Dim rowMap As Map
         rowMap.Initialize
-        Dim v As B4XView = Comp.getView
+        Dim v As B4XView = Comp.View
         If RowH <= 0 Then RowH = Comp.GetComputedHeight
         rowMap.Put("view", v)
         rowMap.Put("comp", Comp)

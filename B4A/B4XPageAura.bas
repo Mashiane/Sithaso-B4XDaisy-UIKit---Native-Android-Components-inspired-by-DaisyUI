@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -163,8 +163,8 @@ Private Sub AddButtonAura(CenterX As Int, CenterY As Int, W As Int, H As Int, St
     btn.Text = Label
     btn.Variant = "primary"
     btn.Size = "md"
-    Dim bw As Int = btn.getView.Width
-    Dim bh As Int = btn.getView.Height
+    Dim bw As Int = btn.View.Width
+    Dim bh As Int = btn.View.Height
 
     Dim a As B4XDaisyAura
     a.Initialize(Me, "")
@@ -176,7 +176,7 @@ Private Sub AddButtonAura(CenterX As Int, CenterY As Int, W As Int, H As Int, St
     Dim wrapperW As Int = bw + 2 * thick
     Dim wrapperH As Int = bh + 2 * thick
     a.AddToParent(pnlHost, CenterX - wrapperW / 2, CenterY - wrapperH / 2, bw, bh)
-    a.Wrap(btn.getView)
+    a.Wrap(btn.View)
     a.StartRotation
     auras.Add(a)
 End Sub
@@ -226,7 +226,7 @@ Private Sub AddPricingCardAura(Left As Int, Top As Int, W As Int, H As Int)
             Dim lbl As Label
             lbl.Initialize("")
             Dim xb As B4XView = lbl
-            xb.Text = "[Most Popular]" & CRLF & "• High-resolution image generation" & CRLF & "• Customizable style templates" & CRLF & "• Batch processing capabilities"
+            xb.Text = "[Most Popular]" & CRLF & "- High-resolution image generation" & CRLF & "- Customizable style templates" & CRLF & "- Batch processing capabilities"
             xb.TextColor = xui.Color_RGB(30, 41, 59)
             xb.TextSize = 13
             body.AddView(xb, 0, 0, Max(1dip, body.Width), 80dip)

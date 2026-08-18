@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -45,7 +45,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     Dim maxW As Int = Max(220dip, Width - (PAGE_PAD * 2))
     Dim y As Int = PAGE_PAD
 
-    ' #region Example 1: link (base — cursor-pointer + underline)
+    ' #region Example 1: link (base - cursor-pointer + underline)
     y = AddSectionTitle("link", y, maxW)
     Dim c1 As B4XDaisyText
     c1.Initialize(Me, "lnk")

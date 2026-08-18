@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -65,7 +65,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttInfo.CreateView(100dip, 100dip)
 	ttInfo.Message = "Info: System details"
 	ttInfo.Variant = "info"
-	ttInfo.AttachTo(btnInfo.getView)
+	ttInfo.AttachTo(btnInfo.View)
 	currentY = currentY + 100dip ' Large gap for tooltip visibility
 	
 	Dim btnSuccess As B4XDaisyButton = CreateButton("Show Success Tooltip", "v_success")
@@ -74,7 +74,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttSuccess.CreateView(100dip, 100dip)
 	ttSuccess.Message = "Success: Task complete!"
 	ttSuccess.Variant = "success"
-	ttSuccess.AttachTo(btnSuccess.getView)
+	ttSuccess.AttachTo(btnSuccess.View)
 	currentY = currentY + 100dip
 	
 	Dim btnWarning As B4XDaisyButton = CreateButton("Show Warning Tooltip", "v_warning")
@@ -83,7 +83,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttWarning.CreateView(100dip, 100dip)
 	ttWarning.Message = "Warning: Check parameters"
 	ttWarning.Variant = "warning"
-	ttWarning.AttachTo(btnWarning.getView)
+	ttWarning.AttachTo(btnWarning.View)
 	currentY = currentY + 100dip
 	
 	Dim btnError As B4XDaisyButton = CreateButton("Show Error Tooltip", "v_error")
@@ -92,7 +92,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttError.CreateView(100dip, 100dip)
 	ttError.Message = "Error: Action failed!"
 	ttError.Variant = "error"
-	ttError.AttachTo(btnError.getView)
+	ttError.AttachTo(btnError.View)
 	currentY = currentY + 120dip
 
 	'--- Positions Section ---
@@ -104,7 +104,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttTop.Initialize(Me, "ttTop")
 	ttTop.CreateView(100dip, 100dip)
 	ttTop.Message = "I am on top"
-	ttTop.AttachTo(btnTop.getView)
+	ttTop.AttachTo(btnTop.View)
 	currentY = currentY + 100dip
 	
 	Dim btnBottom As B4XDaisyButton = CreateButton("Tooltip Bottom", "pos_bottom")
@@ -113,7 +113,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttBottom.CreateView(100dip, 100dip)
 	ttBottom.Message = "I am at the bottom"
 	ttBottom.Position = "bottom"
-	ttBottom.AttachTo(btnBottom.getView)
+	ttBottom.AttachTo(btnBottom.View)
 	currentY = currentY + 100dip
 	
 	' For Left tooltip: place button on the right side to give space to the left
@@ -123,7 +123,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttLeft.CreateView(100dip, 100dip)
 	ttLeft.Message = "Left side tooltip"
 	ttLeft.Position = "left"
-	ttLeft.AttachTo(btnLeft.getView)
+	ttLeft.AttachTo(btnLeft.View)
 	currentY = currentY + 100dip
 	
 	' For Right tooltip: place button on the left side to give space to the right
@@ -133,7 +133,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttRight.CreateView(100dip, 100dip)
 	ttRight.Message = "Right side tooltip"
 	ttRight.Position = "right"
-	ttRight.AttachTo(btnRight.getView)
+	ttRight.AttachTo(btnRight.View)
 	currentY = currentY + 120dip
 
 	'--- Alignment Section ---
@@ -149,7 +149,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttTopStart.Message = "start"
 	ttTopStart.Position = "top"
 	ttTopStart.Alignment = "start"
-	ttTopStart.AttachTo(btnTopStart.getView)
+	ttTopStart.AttachTo(btnTopStart.View)
 	currentY = currentY + 90dip
  
 	Dim btnTopCenter As B4XDaisyButton = CreateButton("Top center", "al_top_center")
@@ -159,7 +159,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttTopCenter.Message = "center"
 	ttTopCenter.Position = "top"
 	ttTopCenter.Alignment = "center"
-	ttTopCenter.AttachTo(btnTopCenter.getView)
+	ttTopCenter.AttachTo(btnTopCenter.View)
 	currentY = currentY + 90dip
  
 	Dim btnTopEnd As B4XDaisyButton = CreateButton("Top end", "al_top_end")
@@ -169,7 +169,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttTopEnd.Message = "end"
 	ttTopEnd.Position = "top"
 	ttTopEnd.Alignment = "end"
-	ttTopEnd.AttachTo(btnTopEnd.getView)
+	ttTopEnd.AttachTo(btnTopEnd.View)
 	currentY = currentY + 110dip
  
 	' Left alignment: tooltip to the left of the button, shifted to start / center / end (vertical).
@@ -180,7 +180,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttLeftStart.Message = "start"
 	ttLeftStart.Position = "left"
 	ttLeftStart.Alignment = "start"
-	ttLeftStart.AttachTo(btnLeftStart.getView)
+	ttLeftStart.AttachTo(btnLeftStart.View)
 	currentY = currentY + 80dip
  
 	Dim btnLeftCenter As B4XDaisyButton = CreateButton("Left center", "al_left_center")
@@ -190,7 +190,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttLeftCenter.Message = "center"
 	ttLeftCenter.Position = "left"
 	ttLeftCenter.Alignment = "center"
-	ttLeftCenter.AttachTo(btnLeftCenter.getView)
+	ttLeftCenter.AttachTo(btnLeftCenter.View)
 	currentY = currentY + 80dip
  
 	Dim btnLeftEnd As B4XDaisyButton = CreateButton("Left end", "al_left_end")
@@ -200,7 +200,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttLeftEnd.Message = "end"
 	ttLeftEnd.Position = "left"
 	ttLeftEnd.Alignment = "end"
-	ttLeftEnd.AttachTo(btnLeftEnd.getView)
+	ttLeftEnd.AttachTo(btnLeftEnd.View)
 	currentY = currentY + 120dip
  
 	'--- Rich Section ---
@@ -213,7 +213,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ttRich.CreateView(100dip, 100dip)
 	ttRich.Variant = "neutral"
 	ttRich.ShowArrow = True
-	ttRich.AttachTo(btnRich.getView)
+	ttRich.AttachTo(btnRich.View)
 	
 	' Create a rich panel
 	Dim p As Panel

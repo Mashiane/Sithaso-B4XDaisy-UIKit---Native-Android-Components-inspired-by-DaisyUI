@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -52,7 +52,7 @@ End Sub
 #Region Rendering
 ''' <summary>
 ''' Builds all stat demo examples. Each horizontal .stats component is hosted inside a
-''' HorizontalScrollView matching the CSS overflow-x-auto behaviour � the stat expands to
+''' HorizontalScrollView matching the CSS overflow-x-auto behaviour - the stat expands to
 ''' its natural fit-content width and scrolls if it exceeds the available page width.
 ''' </summary>
 Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
@@ -89,10 +89,10 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Sleep(0)
     ' #endregion
     
-    ' #region Example 2: Stat with icons or image � three items, each with a figure icon
+    ' #region Example 2: Stat with icons or image - three items, each with a figure icon
     ''' Demonstrates stat-figure slot with three horizontally laid-out items. The combined
     ''' content is typically wider than the screen, so the HorizontalScrollView allows
-    ''' the user to scroll right � matching the CSS overflow-x-auto on .stats.
+    ''' the user to scroll right - matching the CSS overflow-x-auto on .stats.
     currentY = AddSectionTitle("2. Stat with icons or image", currentY, maxW)
     Dim stats2 As B4XDaisyStat
     stats2.Initialize(Me, "")
@@ -149,7 +149,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Sleep(0)
     ' #endregion
     
-    ' #region Example 3: Centered items � two items with center-aligned content
+    ' #region Example 3: Centered items - two items with center-aligned content
     ''' Demonstrates CenterItems=True: title, value and description are all centred
     ''' inside each stat cell.
     currentY = AddSectionTitle("3. Centered items", currentY, maxW)
@@ -192,7 +192,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     currentY = currentY + 12dip
     ' #endregion
     
-    ' #region Example 4: Vertical � stats stacked top-to-bottom with bottom-edge separators
+    ' #region Example 4: Vertical - stats stacked top-to-bottom with bottom-edge separators
     ''' Demonstrates stats-vertical: items flow in a column. Each item (except the last)
     ''' shows a dashed bottom border (border-block-end) per CSS.
     currentY = AddSectionTitle("4. Vertical", currentY, maxW)
@@ -236,7 +236,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Sleep(0)
     ' #endregion
     
-    ' #region Example 4b: Colored variants � Variant sets bg + text, ValueColor overrides value text
+    ' #region Example 4b: Colored variants - Variant sets bg + text, ValueColor overrides value text
     ''' Demonstrates Variant property: background color + all text become the variant's
     ''' content color. ValueColor can still override just the value label independently.
     currentY = AddSectionTitle("5. Colored variants", currentY, maxW)
@@ -244,7 +244,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     stats4b.Initialize(Me, "")
     stats4b.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 1dip)
     
-    ''' Item 1: Primary variant � bg + all text colored.
+    ''' Item 1: Primary variant - bg + all text colored.
     Dim item4b_1 As B4XDaisyStatItem
     item4b_1.Initialize(Me, "component")
     item4b_1.Title = "Revenue"

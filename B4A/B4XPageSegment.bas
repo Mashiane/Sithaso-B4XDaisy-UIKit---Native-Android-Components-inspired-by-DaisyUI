@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -78,7 +78,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segBasic.AddButton("pin", "Pin", "location-dot-solid-full.svg")
 	segBasic.SetValue("call")
 	segBasic.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segBasic.mBase.Height + gap
+	y = y + segBasic.View.Height + gap
 
 	' 1b. Icon End
 	y = pageScroll.AddSectionTitle("  - Icon End", y, False)
@@ -91,7 +91,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segBasicEnd.AddButton("pin", "Pin", "location-dot-solid-full.svg")
 	segBasicEnd.SetValue("call")
 	segBasicEnd.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segBasicEnd.mBase.Height + gap
+	y = y + segBasicEnd.View.Height + gap
 
 	' 1c. Text Only
 	y = pageScroll.AddSectionTitle("  - Text Only (No Icons)", y, False)
@@ -103,7 +103,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segBasicText.AddLabel("pin", "Pin")
 	segBasicText.SetValue("call")
 	segBasicText.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segBasicText.mBase.Height + gap
+	y = y + segBasicText.View.Height + gap
 
 	' 1d. Icon Only
 	y = pageScroll.AddSectionTitle("  - Icon Only (No Text)", y, False)
@@ -116,7 +116,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segBasicIconOnly.AddIcon("pin", "location-dot-solid-full.svg")
 	segBasicIconOnly.SetValue("call")
 	segBasicIconOnly.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segBasicIconOnly.mBase.Height + gap
+	y = y + segBasicIconOnly.View.Height + gap
 
 	' --- 2. Scrollable Segments ---
 	y = pageScroll.AddSectionTitle("2. Scrollable Segments", y, False)
@@ -133,7 +133,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollable.SetValue("recent")
 	segScrollable.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollable.mBase.Height + gap
+	y = y + segScrollable.View.Height + gap
 
 	' 2b. Icon Start
 	y = pageScroll.AddSectionTitle("  - Icon Start", y, False)
@@ -148,7 +148,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconStart.SetValue("recent")
 	segScrollIconStart.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconStart.mBase.Height + gap
+	y = y + segScrollIconStart.View.Height + gap
 
 	' 2c. Icon End
 	y = pageScroll.AddSectionTitle("  - Icon End", y, False)
@@ -162,7 +162,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconEnd.SetValue("recent")
 	segScrollIconEnd.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconEnd.mBase.Height + gap
+	y = y + segScrollIconEnd.View.Height + gap
 
 	' --- 2d. Scrollable Icons (No Text) ---
 	y = pageScroll.AddSectionTitle("2d. Scrollable Icons (No Text)", y, False)
@@ -180,7 +180,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconsPri.SetValue("icon_0")
 	segScrollIconsPri.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconsPri.mBase.Height + gap
+	y = y + segScrollIconsPri.View.Height + gap
 
 	' 2b-2. Secondary Color
 	y = pageScroll.AddSectionTitle("  - Secondary Theme", y, False)
@@ -194,7 +194,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconsSec.SetValue("icon_0")
 	segScrollIconsSec.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconsSec.mBase.Height + gap
+	y = y + segScrollIconsSec.View.Height + gap
 
 	' 2b-3. Success Color
 	y = pageScroll.AddSectionTitle("  - Success Theme", y, False)
@@ -208,7 +208,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconsSuc.SetValue("icon_0")
 	segScrollIconsSuc.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconsSuc.mBase.Height + gap
+	y = y + segScrollIconsSuc.View.Height + gap
 
 	' 2b-4. Warning Color
 	y = pageScroll.AddSectionTitle("  - Warning Theme", y, False)
@@ -222,7 +222,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconsWar.SetValue("icon_0")
 	segScrollIconsWar.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconsWar.mBase.Height + gap
+	y = y + segScrollIconsWar.View.Height + gap
 
 	' 2b-5. Error Color
 	y = pageScroll.AddSectionTitle("  - Error Theme", y, False)
@@ -236,7 +236,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	Next
 	segScrollIconsErr.SetValue("icon_0")
 	segScrollIconsErr.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segScrollIconsErr.mBase.Height + gap
+	y = y + segScrollIconsErr.View.Height + gap
 
 	' --- 3. Theming (Colors) ---
 	y = pageScroll.AddSectionTitle("3. Theming (Success & Warning)", y, False)
@@ -247,7 +247,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segSuccess.AddLabel("no", "Decline")
 	segSuccess.SetValue("yes")
 	segSuccess.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segSuccess.mBase.Height + gap / 2
+	y = y + segSuccess.View.Height + gap / 2
 
 	Dim segWarning As B4XDaisySegment
 	segWarning.Initialize(Me, "segment")
@@ -257,7 +257,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segWarning.AddLabel("high", "High")
 	segWarning.SetValue("medium")
 	segWarning.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segWarning.mBase.Height + gap
+	y = y + segWarning.View.Height + gap
 
 	' --- 4. Content Panel Switcher ---
 	y = pageScroll.AddSectionTitle("4. Content Switcher (Page-controlled Panels)", y, False)
@@ -269,7 +269,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segSwipeable.AddLabel("c_third", "Third")
 	segSwipeable.SetValue("c_first")
 	segSwipeable.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segSwipeable.mBase.Height + gap
+	y = y + segSwipeable.View.Height + gap
     
 	' Create Content Panels stacked in the layout
 	pnlSwitch1 = CreateContentPanel("First Content Panel (Switch)", xui.Color_RGB(224, 242, 254), xui.Color_RGB(3, 105, 161))
@@ -294,7 +294,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segDisabled.AddLabel("opt2", "Option 2")
 	segDisabled.SetValue("opt1")
 	segDisabled.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segDisabled.mBase.Height + gap
+	y = y + segDisabled.View.Height + gap
 
 	' --- 6. Custom Button Layouts ---
 	y = pageScroll.AddSectionTitle("6. Custom Button Layouts (Icon Position)", y, False)
@@ -310,7 +310,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segIconTop.AddButton("b2", "Music", "music-solid.svg")
 	segIconTop.SetValue("b1")
 	segIconTop.AddToParent(pnlHost, padding, y, maxW, 48dip)
-	y = y + segIconTop.mBase.Height + gap
+	y = y + segIconTop.View.Height + gap
     
 	' 6b. Icon Top (md)
 	y = pageScroll.AddSectionTitle("  - Icon Top (md)", y, False)
@@ -323,7 +323,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segIconTopMd.AddButton("b2", "Music", "music-solid.svg")
 	segIconTopMd.SetValue("b1")
 	segIconTopMd.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segIconTopMd.mBase.Height + gap
+	y = y + segIconTopMd.View.Height + gap
     
 	' 6c. Icon Bottom (lg)
 	y = pageScroll.AddSectionTitle("  - Icon Bottom (lg)", y, False)
@@ -336,7 +336,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segIconBottom.AddButton("b2", "Music", "music-solid.svg")
 	segIconBottom.SetValue("b1")
 	segIconBottom.AddToParent(pnlHost, padding, y, maxW, 48dip)
-	y = y + segIconBottom.mBase.Height + gap
+	y = y + segIconBottom.View.Height + gap
     
 	' 6d. Icon Bottom (md)
 	y = pageScroll.AddSectionTitle("  - Icon Bottom (md)", y, False)
@@ -349,7 +349,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segIconBottomMd.AddButton("b2", "Music", "music-solid.svg")
 	segIconBottomMd.SetValue("b1")
 	segIconBottomMd.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segIconBottomMd.mBase.Height + gap
+	y = y + segIconBottomMd.View.Height + gap
 
 	' --- 7. Sizing Variants ---
 	y = pageScroll.AddSectionTitle("7. Sizing Variants (xs to xl)", y, False)
@@ -364,7 +364,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segSizeXS.AddLabel("xs2", "XS Two")
 	segSizeXS.SetValue("xs1")
 	segSizeXS.AddToParent(pnlHost, padding, y, maxW, 24dip)
-	y = y + segSizeXS.mBase.Height + gap
+	y = y + segSizeXS.View.Height + gap
     
 	' 7b. Medium (md)
 	y = pageScroll.AddSectionTitle("  - Medium (md)", y, False)
@@ -376,7 +376,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segSizeMD.AddLabel("md2", "MD Two")
 	segSizeMD.SetValue("md1")
 	segSizeMD.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segSizeMD.mBase.Height + gap
+	y = y + segSizeMD.View.Height + gap
     
 	' 7c. Large (lg)
 	y = pageScroll.AddSectionTitle("  - Large (lg)", y, False)
@@ -388,7 +388,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segSizeLG.AddLabel("lg2", "LG Two")
 	segSizeLG.SetValue("lg1")
 	segSizeLG.AddToParent(pnlHost, padding, y, maxW, 48dip)
-	y = y + segSizeLG.mBase.Height + gap
+	y = y + segSizeLG.View.Height + gap
     
 	' 7d. Extra Large (xl)
 	y = pageScroll.AddSectionTitle("  - Extra Large (xl)", y, False)
@@ -400,7 +400,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segSizeXL.AddLabel("xl2", "XL Two")
 	segSizeXL.SetValue("xl1")
 	segSizeXL.AddToParent(pnlHost, padding, y, maxW, 56dip)
-	y = y + segSizeXL.mBase.Height + gap
+	y = y + segSizeXL.View.Height + gap
 
 	' --- 8. Custom Background Color Panels ---
 	y = pageScroll.AddSectionTitle("8. Custom Background Panels", y, False)
@@ -411,7 +411,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segCustomBg.AddLabel("c2", "Panel")
 	segCustomBg.SetValue("c1")
 	segCustomBg.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segCustomBg.mBase.Height + gap
+	y = y + segCustomBg.View.Height + gap
 
 	' --- 9. Rounded Corner Variants ---
 	y = pageScroll.AddSectionTitle("9. Rounded Corner Variants", y, False)
@@ -425,7 +425,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segRoundNone.AddLabel("rn2", "Borders")
 	segRoundNone.SetValue("rn1")
 	segRoundNone.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segRoundNone.mBase.Height + gap
+	y = y + segRoundNone.View.Height + gap
     
 	' 9b. Rounded Medium (md)
 	y = pageScroll.AddSectionTitle("  - Rounded Medium (md)", y, False)
@@ -436,7 +436,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segRoundMd.AddLabel("rm2", "Corners")
 	segRoundMd.SetValue("rm1")
 	segRoundMd.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segRoundMd.mBase.Height + gap
+	y = y + segRoundMd.View.Height + gap
     
 	' 9c. Rounded Full (Pill Shape)
 	y = pageScroll.AddSectionTitle("  - Rounded Full (Pill Shape)", y, False)
@@ -447,7 +447,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segRoundFull.AddLabel("rf2", "Segment")
 	segRoundFull.SetValue("rf1")
 	segRoundFull.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segRoundFull.mBase.Height + gap
+	y = y + segRoundFull.View.Height + gap
 
 	' --- 10. Shadow Variations ---
 	y = pageScroll.AddSectionTitle("10. Shadow Variations", y, False)
@@ -461,7 +461,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segShadowSm.AddLabel("ss2", "Control")
 	segShadowSm.SetValue("ss1")
 	segShadowSm.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segShadowSm.mBase.Height + gap
+	y = y + segShadowSm.View.Height + gap
     
 	' 10b. Shadow Medium (md)
 	y = pageScroll.AddSectionTitle("  - Shadow Medium (md)", y, False)
@@ -472,7 +472,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segShadowMd.AddLabel("smd2", "Control")
 	segShadowMd.SetValue("smd1")
 	segShadowMd.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segShadowMd.mBase.Height + gap
+	y = y + segShadowMd.View.Height + gap
     
 	' 10c. Shadow Large (lg)
 	y = pageScroll.AddSectionTitle("  - Shadow Large (lg)", y, False)
@@ -483,7 +483,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segShadowLg.AddLabel("slg2", "Control")
 	segShadowLg.SetValue("slg1")
 	segShadowLg.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segShadowLg.mBase.Height + gap
+	y = y + segShadowLg.View.Height + gap
 
 	' --- 11. Variant Active Colors (No Background) ---
 	y = pageScroll.AddSectionTitle("11. Active Color Variants (No Container Backdrop)", y, False)
@@ -497,7 +497,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segActPri.AddLabel("ap2", "Option Two")
 	segActPri.SetValue("ap1")
 	segActPri.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segActPri.mBase.Height + gap
+	y = y + segActPri.View.Height + gap
     
 	' 11b. Active Secondary
 	y = pageScroll.AddSectionTitle("  - Active Secondary", y, False)
@@ -508,7 +508,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segActSec.AddLabel("as2", "Option Two")
 	segActSec.SetValue("as1")
 	segActSec.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segActSec.mBase.Height + gap
+	y = y + segActSec.View.Height + gap
 
 	' 11c. Active Success
 	y = pageScroll.AddSectionTitle("  - Active Success", y, False)
@@ -519,7 +519,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segActSuc.AddLabel("asuc2", "Option Two")
 	segActSuc.SetValue("asuc1")
 	segActSuc.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segActSuc.mBase.Height + gap
+	y = y + segActSuc.View.Height + gap
 
 	' 11d. Active Warning
 	y = pageScroll.AddSectionTitle("  - Active Warning", y, False)
@@ -530,7 +530,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segActWar.AddLabel("awar2", "Option Two")
 	segActWar.SetValue("awar1")
 	segActWar.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segActWar.mBase.Height + gap
+	y = y + segActWar.View.Height + gap
 
 	' 11e. Active Error
 	y = pageScroll.AddSectionTitle("  - Active Error", y, False)
@@ -541,7 +541,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	segActErr.AddLabel("aerr2", "Option Two")
 	segActErr.SetValue("aerr1")
 	segActErr.AddToParent(pnlHost, padding, y, maxW, 40dip)
-	y = y + segActErr.mBase.Height + gap
+	y = y + segActErr.View.Height + gap
 
 	pageScroll.AutoFit
 End Sub

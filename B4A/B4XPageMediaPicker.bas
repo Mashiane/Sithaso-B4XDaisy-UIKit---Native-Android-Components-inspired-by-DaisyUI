@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -207,7 +207,7 @@ Private Sub btnAudio_Click(Tag As Object)
 	
 '	
 '	If Result <> Null And Result.Success Then
-'		lblMediaInfo.Text = "🎙️ Voice Recorded:" & CRLF & _
+'		lblMediaInfo.Text = "🎙 Voice Recorded:" & CRLF & _
 '			"URI: " & Result.FileName & CRLF & _
 '			"Name: " & Result.RealName & CRLF & _
 '			"Size: " & Result.Size & " bytes"

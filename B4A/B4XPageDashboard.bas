@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -78,6 +78,7 @@ Private Sub PopulateDashboard
 	Dashboard.AddItem("iconbutton", "Icon Button", "heart-solid.svg")
 	Dashboard.AddItem("indicator", "Indicator", "indicator.webp")
 	Dashboard.AddItem("input", "Input", "input.webp")
+	Dashboard.AddItem("nativedialogs", "Native Dialogs", "calendar-days-regular-full.svg")
 	Dashboard.AddItem("otp", "Input OTP", "input.webp")
 	Dashboard.AddItem("kbd", "Kbd", "kbd.webp")
 	Dashboard.AddItem("link", "Link", "link.webp")
@@ -97,6 +98,7 @@ Private Sub PopulateDashboard
 	Dashboard.AddItem("radio", "Radio", "radio.webp")
 	Dashboard.AddItem("radio-group", "Radio Group", "radio.webp")
 	Dashboard.AddItem("range", "Range", "range.webp")
+	Dashboard.AddItem("dualrange", "Dual Range", "range.webp")
 	Dashboard.AddItem("rating", "Rating", "rating.webp")
 	Dashboard.AddItem("select", "Select", "select.webp")
 	Dashboard.AddItem("picker", "Picker", "select.webp")
@@ -126,6 +128,9 @@ Private Sub PopulateDashboard
 	Dashboard.AddItem("enjoyhint", "Enjoy Hint", "alert.webp")
 	Dashboard.AddItem("tagsphere", "Tag Sphere", "canvasspinner.jpeg")
 	Dashboard.AddItem("pdfview", "PDF Viewer", "file-input.webp")
+	Dashboard.AddItem("drawer", "Drawer", "drawer.webp")
+	Dashboard.AddItem("drawertree", "Drawer Tree", "drawer.webp")
+	Dashboard.AddItem("drawerrail", "Drawer Rail", "drawer.webp")
 	Dashboard.Refresh(True)
 End Sub
 

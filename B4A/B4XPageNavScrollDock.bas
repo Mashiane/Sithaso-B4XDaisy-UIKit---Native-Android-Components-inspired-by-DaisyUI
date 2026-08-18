@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -98,7 +98,7 @@ Private Sub BuildNavbar
 	' ELI15: BringToFront lifts this view above every other view in the same parent.
 	' Think of it like taking a piece of paper and placing it on top of the pile.
 	' This guarantees the navbar header is never covered by scrolling form content.
-	navbar.getView.BringToFront
+	navbar.View.BringToFront
 	navbar.Title = "Nav Scroll Dock"
 	navbar.Variant = "primary"
 	navbar.BackVisible = True

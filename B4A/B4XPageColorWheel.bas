@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -190,8 +190,8 @@ End Sub
 #Region Page Events
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
 	If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
-	If modalCW.IsInitialized And modalCW.getView.IsInitialized Then modalCW.AddToParent(Root, 0, 0, Width, Height)
-	If sheetCW.IsInitialized And sheetCW.getView.IsInitialized Then sheetCW.AddToParent(Root, 0, 0, Width, Height)
+	If modalCW.IsInitialized And modalCW.View.IsInitialized Then modalCW.AddToParent(Root, 0, 0, Width, Height)
+	If sheetCW.IsInitialized And sheetCW.View.IsInitialized Then sheetCW.AddToParent(Root, 0, 0, Width, Height)
 	RenderExamples(Width, Height)
 End Sub
 

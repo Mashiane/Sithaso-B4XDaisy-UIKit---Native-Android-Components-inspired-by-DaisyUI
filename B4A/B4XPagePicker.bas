@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -451,7 +451,7 @@ Private Sub BuildDatePickerSheet
 	nb.Shadow = "md"
 	Dim btnCancel As B4XDaisyButton = nb.AddButtonToStart("btnDateCancel", "Cancel", "none", 84dip, 32dip, True)
 	Dim btnApply As B4XDaisyButton = nb.AddButtonToEnd("btnDateApply", "Apply", "primary", 84dip, 32dip, False)
-	smDatePicker.AddBoxView(nb.getView, 0, 0, Root.Width, 44dip)
+	smDatePicker.AddBoxView(nb.View, 0, 0, Root.Width, 44dip)
 
 	' Date picker built with the picker's own date-column helpers (AddColumnDay/
 	' AddColumnMonth/AddColumnYear) so no option loops live outside the picker.
@@ -478,14 +478,14 @@ End Sub
 #Region Page Events
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
 	If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
-	If modalContainer.getView.IsInitialized Then modalContainer.AddToParent(Root, 0, 0, Width, Height)
+	If modalContainer.View.IsInitialized Then modalContainer.AddToParent(Root, 0, 0, Width, Height)
 	RenderExamples(Width, Height)
 End Sub
 
 Private Sub B4XPage_Appear
 	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 	' Ensure the modal is closed whenever the page appears
-	If modalContainer.getView.IsInitialized Then modalContainer.Close
+	If modalContainer.View.IsInitialized Then modalContainer.Close
 End Sub
 #End Region
 

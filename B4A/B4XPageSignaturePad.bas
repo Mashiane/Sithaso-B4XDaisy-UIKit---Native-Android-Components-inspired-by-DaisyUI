@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -262,7 +262,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	sigFieldsetRequired.setLegend("Authorized Signature")
 	sigFieldsetRequired.setLabelAbove(True)
 	sigFieldsetRequired.setRequired(True)
-	sigFieldsetRequired.setHintText("This field is required — please sign above")
+	sigFieldsetRequired.setHintText("This field is required - please sign above")
 	sigFieldsetRequired.setErrorText("You must provide a signature before continuing")
 	sigFieldsetRequired.setShadow("sm")
 	y = y + sigFieldsetRequired.getHeight + gap

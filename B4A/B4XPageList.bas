@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -46,7 +46,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     maxW = Max(240dip, maxW)
     maxW = Min(560dip, maxW)
 
-    ' === DaisyUI: List (2 columns, second column grows - default) ===
+    ' - DaisyUI: List (2 columns, second column grows - default) -
     currentY = AddSectionTitle("List (2nd column grows - default)", currentY, maxW)
     List1.Clear
     List1.Initialize(Me, "List1")
@@ -66,7 +66,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     List1.AddRowData(CreateMap("Tag": "row3", "_height": 72, "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "rowType": "song"))
     currentY = currentY + List1.getHeight + SECTION_GAP
 
-    ' === DaisyUI: List (3 columns, 3rd column grows) ===
+    ' - DaisyUI: List (3 columns, 3rd column grows) -
     currentY = AddSectionTitle("List (3rd column grows)", currentY, maxW)
     List2.Clear
     List2.Initialize(Me, "List2")
@@ -86,7 +86,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     List2.AddRowData(CreateMap("Tag": "rank3", "_height": 72, "number": "03", "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "rowType": "ranked_song"))
     currentY = currentY + List2.getHeight + SECTION_GAP
 
-    ' === DaisyUI: List (3 columns, 3rd column wraps to next row) ===
+    ' - DaisyUI: List (3 columns, 3rd column wraps to next row) -
     currentY = AddSectionTitle("List (3rd column wraps)", currentY, maxW)
     List3.Clear
     List3.Initialize(Me, "List3")
@@ -106,7 +106,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     List3.AddRowData(CreateMap("Tag": "wrap3", "_height": 100, "title": "Sabrino Gardener", "subtitle": "Cappuccino", "avatar": "face_profile13.jpeg", "wrapText": "Cappuccino quickly gained attention for its smooth melody and relatable themes.", "rowType": "wrapped_song"))
     currentY = currentY + List3.getHeight + SECTION_GAP
 
-    ' === DaisyUI: List (no header, clickable icon buttons) ===
+    ' - DaisyUI: List (no header, clickable icon buttons) -
     currentY = AddSectionTitle("Custom: List (no header, soft icon buttons)", currentY, maxW)
     List4.Clear
     List4.Initialize(Me, "List4")

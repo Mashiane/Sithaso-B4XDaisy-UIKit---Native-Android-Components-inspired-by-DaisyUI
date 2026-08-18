@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -61,7 +61,7 @@ End Sub
 ' both B4XPage_Created and B4XPage_Resize.
 Private Sub EnsureBoomAdded(Width As Int, Height As Int)
     If Width <= 0 Or Height <= 0 Then Return
-    ' Note: do NOT guard on boom.getIsInitialized here — that checks mBase, which is
+    ' Note: do NOT guard on boom.getIsInitialized here - that checks mBase, which is
     ' only created inside AddToParent. BuildBoomMenu (boom.Initialize) runs first, so
     ' the instance is valid; the Try/Catch covers any failure.
     Dim margin As Int = 24dip

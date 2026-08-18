@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -68,6 +68,9 @@ Private Sub BuildExamples(Width As Int, Height As Int)
     y = ExampleResponsiveCollapsible(y, maxW, Width)
     y = ExampleActiveBorder(y, maxW)
     y = ExampleScrollableFixedHeight(y, maxW)
+    y = ExampleAvatarMenu(y, maxW)
+    y = ExampleFlatIDTree(y, maxW)
+    y = ExampleDataDrivenMenu(y, maxW)
 
     pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
@@ -321,6 +324,48 @@ Private Sub ExampleScrollableFixedHeight(Y As Int, Width As Int) As Int
     menu.AddItem("scroll-fixed-8", "Item 8")
     menu.AddItem("scroll-fixed-9", "Item 9")
     menu.AddItem("scroll-fixed-10", "Item 10")
+    Return AddMenuBlock(menu, Y, Width)
+End Sub
+
+Private Sub ExampleAvatarMenu(Y As Int, Width As Int) As Int
+    Y = AddSectionTitle("Menu with Avatars and Status Badges", Y, Width)
+    Y = AddSectionNote("Menu items displaying native masked avatars with optional badges (AddAvatarItem, AddAvatarBadgeItem).", Y, Width)
+    Dim menu As B4XDaisyMenu = CreateMenu("menu-avatars", "vertical", "md")
+    menu.AddAvatarBadgeItem("av-1", "Anele Mbanga", "mashymain.jpg", "circle", "Founder", "primary")
+    menu.AddAvatarBadgeItem("av-2", "Anna Smith", "face_anna.jpg", "squircle", "Online", "success")
+    menu.AddAvatarItem("av-3", "Marcus Vance", "face_marcus.jpg", "rounded-md")
+    Return AddMenuBlock(menu, Y, Width)
+End Sub
+
+Private Sub ExampleFlatIDTree(Y As Int, Width As Int) As Int
+    Y = AddSectionTitle("Hierarchical Menu via Flat ID Helpers", Y, Width)
+    Y = AddSectionNote("Constructing nested menus by parent ID string references (AddItemParent, AddItemChild, AddAvatarChildItem).", Y, Width)
+    Dim menu As B4XDaisyMenu = CreateMenu("menu-flat-tree", "vertical", "md")
+    menu.AddItemParent("", "tree-org", "Organization", "user-group-solid.svg")
+    menu.AddItemChild("tree-org", "team-dev", "Engineering Team", "code-solid.svg")
+    menu.AddAvatarChildItem("tree-org", "team-lead", "Team Lead (Marcus)", "face_marcus.jpg", "circle")
+    menu.AddBadgeChildItem("tree-org", "team-qa", "QA Testing", "New", "accent")
+    menu.AddItemParent("", "tree-settings", "System Settings", "gear-solid.svg")
+    menu.AddItemChild("tree-settings", "set-general", "General Preferences", "sliders-solid.svg")
+    menu.AddItemChild("tree-settings", "set-security", "Security & Keys", "lock-solid.svg")
+    Return AddMenuBlock(menu, Y, Width)
+End Sub
+
+Private Sub ExampleDataDrivenMenu(Y As Int, Width As Int) As Int
+    Y = AddSectionTitle("Data-Driven Menu (LoadFromList)", Y, Width)
+    Y = AddSectionNote("Populating complete menu hierarchy dynamically from a List of Map descriptors.", Y, Width)
+    Dim menu As B4XDaisyMenu = CreateMenu("menu-data-driven", "vertical", "md")
+    Dim itemsList As List
+    itemsList.Initialize
+    itemsList.Add(CreateMap("kind": "title", "text": "WORKSPACE"))
+    itemsList.Add(CreateMap("tag": "data-dash", "text": "Dashboard", "icon": "chart-pie-solid.svg"))
+    itemsList.Add(CreateMap("tag": "data-usr", "text": "Account Profile", "avatar": "mashymain.jpg", "avatar_shape": "circle", "badge": "PRO", "badge_variant": "warning"))
+    itemsList.Add(CreateMap("tag": "data-proj", "text": "Active Projects", "is_parent": True, "icon": "folder-solid.svg", "open": True))
+    itemsList.Add(CreateMap("tag": "data-proj-1", "parent": "data-proj", "text": "DaisyUI Native Kit", "badge": "v0.91", "badge_variant": "primary"))
+    itemsList.Add(CreateMap("tag": "data-proj-2", "parent": "data-proj", "text": "Android Mobile App", "icon": "mobile-screen-solid.svg"))
+    itemsList.Add(CreateMap("kind": "divider"))
+    itemsList.Add(CreateMap("tag": "data-logout", "text": "Sign Out", "icon": "arrow-right-from-bracket-solid.svg"))
+    menu.LoadFromList(itemsList)
     Return AddMenuBlock(menu, Y, Width)
 End Sub
 
