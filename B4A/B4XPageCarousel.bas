@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -73,7 +73,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     currentY = AddSectionTitle("Snap to start (default)", currentY, maxW)
     Dim carousel1 As B4XDaisyCarousel
     carousel1.Initialize(Me, "carousel1")
-    carousel1.RoundedBox = True
+    carousel1.Rounded = "rounded-box"
     carousel1.Width = "w-full"
     carousel1.Height = "h-[300px]"
     carousel1.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 300dip)
@@ -109,7 +109,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim carousel2 As B4XDaisyCarousel
     carousel2.Initialize(Me, "carousel2")
     carousel2.Snap = "center"
-    carousel2.RoundedBox = True
+    carousel2.Rounded = "rounded-box"
     carousel2.Width = "w-full"
     carousel2.Height = "h-[300px]"
     carousel2.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 300dip)
@@ -137,7 +137,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim carousel3 As B4XDaisyCarousel
     carousel3.Initialize(Me, "carousel3")
     carousel3.Snap = "end"
-    carousel3.RoundedBox = True
+    carousel3.Rounded = "rounded-box"
     carousel3.Width = "w-full"
     carousel3.Height = "h-[300px]"
     carousel3.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 300dip)
@@ -166,7 +166,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     currentY = AddSectionTitle("Carousel with full width items", currentY, maxW)
     Dim carousel4 As B4XDaisyCarousel
     carousel4.Initialize(Me, "carousel4")
-    carousel4.RoundedBox = True
+    carousel4.Rounded = "rounded-box"
     carousel4.Width = "w-64"
     carousel4.Height = "h-[341px]"
     carousel4.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 0)
@@ -195,7 +195,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim carousel5 As B4XDaisyCarousel
     carousel5.Initialize(Me, "carousel5")
     carousel5.Orientation = "vertical"
-    carousel5.RoundedBox = True
+    carousel5.Rounded = "rounded-box"
     carousel5.Height = "h-96"
     carousel5.Width = "w-64"
     carousel5.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 200dip)
@@ -223,7 +223,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     currentY = AddSectionTitle("Carousel with half width items", currentY, maxW)
     Dim carousel6 As B4XDaisyCarousel
     carousel6.Initialize(Me, "carousel6")
-    carousel6.RoundedBox = True
+    carousel6.Rounded = "rounded-box"
     carousel6.Width = "w-full"
     carousel6.Height = "h-96"
     carousel6.AddToParent(pnlHost, PAGE_PAD, currentY, maxW, 200dip)
@@ -255,7 +255,7 @@ Private Sub RenderExamples(Width As Int, Height As Int) As ResumableSub
     Dim carousel7 As B4XDaisyCarousel
     carousel7.Initialize(Me, "carousel7")
     carousel7.Snap = "center"
-    carousel7.RoundedBox = True
+    carousel7.Rounded = "rounded-box"
     carousel7.Gap = "space-x-4"
     carousel7.Padding = "p-4"
     carousel7.Height = "h-64"

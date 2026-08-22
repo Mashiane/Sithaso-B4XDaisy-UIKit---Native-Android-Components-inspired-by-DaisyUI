@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -163,7 +163,7 @@ Private Sub ExampleNoPaddingRadius(Y As Int, Width As Int) As Int
     Dim menu As B4XDaisyMenu = CreateMenu("menu-no-padding-radius", "vertical", "md")
     menu.Padding = "p-0"
     menu.Rounded = "rounded-none"
-    menu.RoundedBox = False
+    menu.Rounded = "rounded-none"
     menu.AddItem("no-pad-1", "Item 1")
     menu.AddItem("no-pad-2", "Item 2")
     menu.AddItem("no-pad-3", "Item 3")
@@ -375,7 +375,7 @@ Private Sub CreateMenu(TagValue As String, Orientation As String, SizeToken As S
     menu.Tag = TagValue
     menu.Orientation = Orientation
     menu.Size = SizeToken
-    menu.RoundedBox = True
+    menu.Rounded = "rounded-box"
     menu.Shadow = "none"
     menu.BackgroundColor = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(248, 247, 251))
     menu.Dividers = True

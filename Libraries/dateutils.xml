@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <doclet-version-NOT-library-version>1.00</doclet-version-NOT-library-version>
+  <class b4a_type="StaticCode">
+    <name>b4a.example.dateutils</name>
+    <shortname>DateUtils</shortname>
+    <owner>activity</owner>
+    <objectwrapper>java.lang.Class</objectwrapper>
+    <method>
+      <name DesignerName="AddPeriod">_addperiod</name>
+      <comment>Adds a Period to the given date instance. Do not forget to assign the result.</comment>
+      <returntype>long</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Ticks</name>
+        <type>long</type>
+      </parameter>
+      <parameter>
+        <name>Per</name>
+        <type>b4a.example.dateutils._period</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="GetDayOfWeekName">_getdayofweekname</name>
+      <comment>Returns the day of week name.
+Similar to DateTime.GetDayOfWeek which returns the day of week as an integer.</comment>
+      <returntype>String</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Ticks</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="GetDaysNames">_getdaysnames</name>
+      <comment>Returns a list with the week days names, using the device set locale.</comment>
+      <returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="GetMonthName">_getmonthname</name>
+      <comment>Returns the month name of the given date.
+Similar To DateTime.GetMonth which returns the month as an integer.</comment>
+      <returntype>String</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Ticks</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="GetMonthsNames">_getmonthsnames</name>
+      <comment>Returns a list with the months names, using the device set locale.</comment>
+      <returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="IsSameDay">_issameday</name>
+      <comment>Tests whether the two ticks values represent the same day.</comment>
+      <returntype>boolean</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Ticks1</name>
+        <type>long</type>
+      </parameter>
+      <parameter>
+        <name>Ticks2</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="NumberOfDaysInMonth">_numberofdaysinmonth</name>
+      <comment>Returns the number of days in the given month</comment>
+      <returntype>int</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Month</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Year</name>
+        <type>int</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="PeriodBetween">_periodbetween</name>
+      <comment>Calculates the period between two date instances. 
+This method returns a Period type with years, months, days, hours, minutes, seconds.</comment>
+      <returntype>b4a.example.dateutils._period</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Start</name>
+        <type>long</type>
+      </parameter>
+      <parameter>
+        <name>EndTime</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="PeriodBetweenInDays">_periodbetweenindays</name>
+      <comment>Calculates the period between two date instances.
+This method returns a Period type with days, hours, minutes, seconds</comment>
+      <returntype>b4a.example.dateutils._period</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Start</name>
+        <type>long</type>
+      </parameter>
+      <parameter>
+        <name>EndTime</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="Process_Globals">_process_globals</name>
+      <returntype>String</returntype>
+    </method>
+    <method>
+      <name DesignerName="SetDate">_setdate</name>
+      <comment>Returns the ticks value of the given date (the time will be 00:00:00).</comment>
+      <returntype>long</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Years</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Months</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Days</name>
+        <type>int</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="SetDateAndTime">_setdateandtime</name>
+      <comment>Returns the ticks value of the given date and time</comment>
+      <returntype>long</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Years</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Months</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Days</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Hours</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Minutes</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Seconds</name>
+        <type>int</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="SetDateAndTime2">_setdateandtime2</name>
+      <comment>Returns the ticks value of the given date and time with the specified time zone offset.
+The last parameter is the time zone offset measured in hours.</comment>
+      <returntype>long</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Years</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Months</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Days</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Hours</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Minutes</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>Seconds</name>
+        <type>int</type>
+      </parameter>
+      <parameter>
+        <name>TimeZone</name>
+        <type>double</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="TicksToString">_tickstostring</name>
+      <returntype>String</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Ticks</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="TicksToUnixTime">_tickstounixtime</name>
+      <comment>Converts ticks value to unix time.</comment>
+      <returntype>long</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>Ticks</name>
+        <type>long</type>
+      </parameter>
+    </method>
+    <method>
+      <name DesignerName="UnixTimeToTicks">_unixtimetoticks</name>
+      <comment>Converts unix time to ticks value.</comment>
+      <returntype>long</returntype>
+      <parameter>
+        <name>ba</name>
+        <type>anywheresoftware.b4a.BA</type>
+      </parameter>
+      <parameter>
+        <name>UnixTime</name>
+        <type>long</type>
+      </parameter>
+    </method>
+  </class>
+  <class>
+    <name>b4a.example.dateutils._period</name>
+    <shortname>Period</shortname>
+    <owner>process</owner>
+    <method>
+      <name>Initialize</name>
+      <comment>Initializes the fields to their default value.</comment>
+      <returntype>void</returntype>
+    </method>
+    <field>
+      <name>IsInitialized</name>
+      <comment>Tests whether the object has been initialized.</comment>
+      <returntype>boolean</returntype>
+    </field>
+    <field>
+      <name>Years</name>
+      <returntype>int</returntype>
+    </field>
+    <field>
+      <name>Months</name>
+      <returntype>int</returntype>
+    </field>
+    <field>
+      <name>Days</name>
+      <returntype>int</returntype>
+    </field>
+    <field>
+      <name>Hours</name>
+      <returntype>int</returntype>
+    </field>
+    <field>
+      <name>Minutes</name>
+      <returntype>int</returntype>
+    </field>
+    <field>
+      <name>Seconds</name>
+      <returntype>int</returntype>
+    </field>
+  </class>
+  <version>1.05</version>
+</root>

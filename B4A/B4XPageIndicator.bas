@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -77,7 +77,7 @@ Private Sub RenderSidesSection(MaxW As Int, StartY As Int) As Int
 	baseDiv.setWidth("32")
 	baseDiv.setHeight("32")
 	baseDiv.setPlaceContentCenter(True)
-	baseDiv.setRoundedBox(True)
+	baseDiv.setRounded("rounded-box")
 	baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
 	baseDiv.setBackgroundColorVariant("bg-neutral")
@@ -139,7 +139,7 @@ Private Sub RenderNoTextSidesSection(MaxW As Int, StartY As Int) As Int
 	baseDiv.setWidth("32")
 	baseDiv.setHeight("32")
 	baseDiv.setPlaceContentCenter(True)
-	baseDiv.setRoundedBox(True)
+	baseDiv.setRounded("rounded-box")
 	baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
 	baseDiv.setBackgroundColorVariant("bg-neutral")
@@ -220,7 +220,7 @@ Private Sub RenderVariantSection(MaxW As Int, StartY As Int) As Int
 		baseDiv.setWidth("32")
 		baseDiv.setHeight("32")
 		baseDiv.setPlaceContentCenter(True)
-		baseDiv.setRoundedBox(True)
+		baseDiv.setRounded("rounded-box")
 		baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
 		baseDiv.setBackgroundColorVariant("bg-neutral")
@@ -306,7 +306,7 @@ Private Sub RenderCountIndicatorSection(MaxW As Int, StartY As Int) As Int
 	baseDiv.setWidth("32")
 	baseDiv.setHeight("32")
 	baseDiv.setPlaceContentCenter(True)
-	baseDiv.setRoundedBox(True)
+	baseDiv.setRounded("rounded-box")
 	baseDiv.setText("content")
 	baseDiv.setTextSize("text-sm")
 	baseDiv.setBackgroundColorVariant("bg-neutral")
@@ -420,7 +420,7 @@ Private Sub RenderCapExamplesSection(MaxW As Int, StartY As Int) As Int
 		baseDiv.setWidth("32")
 		baseDiv.setHeight("32")
 		baseDiv.setPlaceContentCenter(True)
-		baseDiv.setRoundedBox(True)
+		baseDiv.setRounded("rounded-box")
 		baseDiv.setText(ex.GetDefault("label", ""))
 		baseDiv.setTextSize("text-xs")
 		baseDiv.setBackgroundColorVariant("bg-neutral")

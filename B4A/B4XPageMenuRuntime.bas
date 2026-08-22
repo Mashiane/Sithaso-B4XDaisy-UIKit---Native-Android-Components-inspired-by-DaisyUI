@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -70,7 +70,7 @@ Private Sub BuildPage(Width As Int, Height As Int)
     mMenu.Initialize(Me, "menu")
     mMenu.Orientation = "vertical"
     mMenu.Size = "md"
-    mMenu.RoundedBox = True
+    mMenu.Rounded = "rounded-box"
     mMenu.Shadow = "sm"
     mMenu.BackgroundColor = B4XDaisyVariants.GetTokenColor("--color-base-200", xui.Color_RGB(248, 247, 251))
     mMenu.Dividers = True

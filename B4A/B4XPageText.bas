@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -306,7 +306,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     p1.Padding = 8dip
     p1.BorderWidth = 1dip
     p1.BorderColor = xui.Color_RGB(226, 232, 240)
-    p1.RoundedBox = True
+    p1.Rounded = "rounded-box"
     y = y + p1.GetComputedHeight + PAGE_PAD
 
     pnlHost.Height = Max(Height, y + PAGE_PAD)

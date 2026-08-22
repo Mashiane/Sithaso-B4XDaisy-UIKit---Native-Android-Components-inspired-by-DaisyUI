@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -282,7 +282,7 @@ Private Sub ApplyDemoFieldsetStyle(fs As B4XDaisyFieldset)
     If fs.IsInitialized = False Then Return
     fs.setBackgroundColor("bg-base-200")
     fs.setBorderColor("border-base-300")
-    fs.setRoundedBox(True)
+    fs.setRounded("rounded-box")
     fs.setBorderStyle("outlined")
     fs.setBorderSize(1)
     fs.setPadding(16) ' p-4
@@ -292,7 +292,7 @@ End Sub
 Private Sub ApplyShadowOnlyFieldsetStyle(fs As B4XDaisyFieldset, ShadowLevel As String)
     If fs.IsInitialized = False Then Return
     fs.setBackgroundColor("bg-base-200")
-    fs.setRoundedBox(True)
+    fs.setRounded("rounded-box")
     fs.setBorderStyle("ghost")
     fs.setBorderSize(0)
     fs.setBorderColor("")
@@ -304,7 +304,7 @@ End Sub
 Private Sub ApplyVariantBorderFieldsetStyle(fs As B4XDaisyFieldset, VariantName As String)
     If fs.IsInitialized = False Then Return
     fs.setBackgroundColor("bg-base-200")
-    fs.setRoundedBox(True)
+    fs.setRounded("rounded-box")
     fs.setBorderStyle("outlined")
     fs.setInputBorder(True)
     fs.setVariant(VariantName)
@@ -317,7 +317,7 @@ Private Sub ApplyVariantBackgroundFieldsetStyle(fs As B4XDaisyFieldset, VariantN
     If fs.IsInitialized = False Then Return
     fs.setVariant(VariantName)
     fs.setBackgroundColor(VariantName)
-    fs.setRoundedBox(True)
+    fs.setRounded("rounded-box")
     fs.setBorderStyle("ghost")
     fs.setBorderSize(0)
     fs.setBorderColor("")

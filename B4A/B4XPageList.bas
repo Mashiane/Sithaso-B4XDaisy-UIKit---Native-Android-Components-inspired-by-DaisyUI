@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -201,7 +201,7 @@ Private Sub CreateSongRow(Panel As B4XView, Data As Map, ShowHeart As Boolean)
     Dim av As B4XDaisyAvatar
     av.Initialize(Me, "")
     av.AddToParent(Panel, 8dip, (h - 48dip) / 2, 48dip, 48dip)
-    av.RoundedBox = True
+    av.Rounded = "rounded-box"
     av.AvatarSize = "size-10"
     av.Image = Data.GetDefault("avatar", "face_3.jpg")
     Dim btnSize As Int = 40dip
@@ -288,7 +288,7 @@ Private Sub CreateRankedSongRow(Panel As B4XView, Data As Map)
     Dim av As B4XDaisyAvatar
     av.Initialize(Me, "")
     av.AddToParent(Panel, 52dip, (h - 48dip) / 2, 48dip, 48dip)
-    av.RoundedBox = True
+    av.Rounded = "rounded-box"
     av.AvatarSize = "size-10"
     av.Image = Data.GetDefault("avatar", "face_3.jpg")
     Dim btnSize As Int = 40dip
@@ -333,7 +333,7 @@ Private Sub CreateWrappedSongRow(Panel As B4XView, Data As Map)
     Dim av As B4XDaisyAvatar
     av.Initialize(Me, "")
     av.AddToParent(Panel, 8dip, 8dip, 48dip, 48dip)
-    av.RoundedBox = True
+    av.Rounded = "rounded-box"
     av.AvatarSize = "size-10"
     av.Image = Data.GetDefault("avatar", "face_3.jpg")
     Dim btnSize As Int = 40dip
@@ -397,7 +397,7 @@ Private Sub CreateNoHeaderSongRow(Panel As B4XView, Data As Map)
     Dim av As B4XDaisyAvatar
     av.Initialize(Me, "")
     av.AddToParent(Panel, 8dip, (h - 48dip) / 2, 48dip, 48dip)
-    av.RoundedBox = True
+    av.Rounded = "rounded-box"
     av.AvatarSize = "size-10"
     av.Image = Data.GetDefault("avatar", "face_3.jpg")
     Dim btnSize As Int = 40dip

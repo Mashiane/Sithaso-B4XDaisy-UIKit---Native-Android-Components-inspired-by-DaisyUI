@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -69,7 +69,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	div1.Text = "1"
 	div1.setWidth("100%")
 	div1.setHeight("100%")
-	div1.RoundedBox = True
+	div1.Rounded = "rounded-box"
 	div1.PlaceContentCenter = True
 	div1.Shadow = "none"
 '	Dim divView1 As B4XView = div1.AddToParent(pStack, 0, 0, 10dip, 10dip)
@@ -83,7 +83,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	div2.Text = "2"
 	div2.setWidth("100%")
 	div2.setHeight("100%")
-	div2.RoundedBox = True
+	div2.Rounded = "rounded-box"
 	div2.PlaceContentCenter = True
 	div2.Shadow = "none"
 '	Dim divView2 As B4XView = div2.AddToParent(pStack, 0, 0, 10dip, 10dip)
@@ -97,7 +97,7 @@ Private Sub CreateStackDemo(TargetSV As ScrollView, TopOffset As Int, Direction 
 	div3.Text = "3"
 	div3.setWidth("100%")
 	div3.setHeight("100%")
-	div3.RoundedBox = True
+	div3.Rounded = "rounded-box"
 	div3.PlaceContentCenter = True
 	div3.Shadow = "none"
 '	Dim divView3 As B4XView = div3.AddToParent(pStack, 0, 0, 10dip, 10dip)
@@ -182,7 +182,7 @@ Private Sub AddPhotoLayer(TargetSVPanel As B4XView, PStack As B4XDaisyStack, Sta
 	avatar.Initialize(Me, "")
 	Dim avatarView As B4XView = avatar.AddToParent(StackView, 0, 0, StackWidth, StackHeight)
 	avatar.SetImage(ResolvePhotoAsset(BaseName))
-	avatar.SetRoundedBox(True)
+	avatar.setRounded("rounded-box")
 	avatar.SetShowOnline(False)
 	avatar.SetShadow("none")
 	avatar.SetRingWidth(0)

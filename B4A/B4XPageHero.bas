@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -56,7 +56,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
     h1.ContentAlignment = "center"
     h1.Gap = "4"
     h1.BackgroundColorVariant = "bg-neutral"
-    h1.RoundedBox = True
+    h1.Rounded = "rounded-box"
     AddHeroContent(h1, useW, H_HEIGHT, "Hello there", "Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi.", "Get Started", xui.Color_White)
     y = y + H_HEIGHT + SECTION_GAP
 

@@ -1,0 +1,1674 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<root>
+    <doclet-version-NOT-library-version>1.07</doclet-version-NOT-library-version>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XViewWrapper</name>
+        <shortname>B4XView</shortname>
+        <objectwrapper>java.lang.Object</objectwrapper>
+        <owner>activity</owner>
+        <method>
+            <name>GetView</name>
+            <comment>Returns the view at the given index.
+Supported types
+B4A - Activity, Panel
+B4i - Panel
+B4J - Pane</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper</returntype>
+            <parameter>
+                <name>Index</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>AddView</name>
+            <comment>Adds a view.
+Supported types
+B4A - Activity, Panel
+B4i - Panel
+B4J - Pane</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>View</name>
+                <type>android.view.View</type>
+            </parameter>
+            <parameter>
+                <name>Left</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>Top</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>Width</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>Height</name>
+                <type Pixel="true">int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>GetBitmap</name>
+            <comment>Gets the view's bitmap.
+ Supported types:
+ B4A - All views when the background drawable is a BitmapDrawable.
+ B4i and B4J - ImageView</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+        </method>
+        <method>
+            <name>IsInitialized</name>
+            <comment> </comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>SelectAll</name>
+            <comment>Selects all text.
+Supported types:
+B4A - EditText
+B4i - TextField and TextView
+B4J - TextField and TextArea</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>GetAllViewsRecursive</name>
+            <comment>Returns an iterator that iterates over all the child views including views that were added to other child views.
+Make sure to check the view type as it might return subviews as well.
+Example:&lt;code&gt;
+For Each v As B4XView In Panel1.GetAllViewsRecursive
+	...
+Next&lt;/code&gt;
+Supported types
+B4A - Activity, Panel
+B4i - Panel
+B4J - Pane</comment>
+            <returntype>anywheresoftware.b4a.BA.IterableList</returntype>
+        </method>
+        <method>
+            <name>SetTextSizeAnimated</name>
+            <comment>Sets the text size.
+Supported types:
+B4A - EditText, Label, Button, CheckBox, RadioButton, ToggleButton
+B4i - TextField, TextView, Button, Label. &lt;b&gt;Only labels are animated.&lt;/b&gt;
+B4J - Sets the TextSize property if available and the CSS attribute for other types.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Duration</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>TextSize</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>BringToFront</name>
+            <comment>Changes the Z order of this view and brings it to the front.</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>SendToBack</name>
+            <comment>Changes the Z order of this view and sends it to the back.</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>SetColorAndBorder</name>
+            <comment>Sets the background color and border.
+ B4A - The view's drawable will be set to ColorDrawable.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>BackgroundColor</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>BorderWidth</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>BorderColor</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>BorderCornerRadius</name>
+                <type Pixel="true">int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetVisibleAnimated</name>
+            <comment>Fades in or fades out the view.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Duration</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Visible</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetRotationAnimated</name>
+            <comment>Rotates the view with animation.
+Duration - Animation duration in milliseconds.
+Degree - Rotation degree.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Duration</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Degree</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetBitmap</name>
+            <comment>Sets the view's bitmap.
+ Supported types:
+ B4A - All views. The view's Drawable will be set to a BitmapDrawable with Gravity set to CENTER.
+ B4i - ImageView. ContentMode set to Fit.
+ B4J - ImageView. PreserveRatio is set to True.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Bitmap</name>
+                <type>android.graphics.Bitmap</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetAlphaAnimated</name>
+            <comment>Animates the view's alpha level.
+Duration - Animation duration in milliseconds.
+Alpha - Value between 0 to 1 (transparent to opaque).</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Duration</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Alpha</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetTextAlignment</name>
+            <comment>Sets the text alignment.
+Vertical - TOP, CENTER or BOTTOM.
+Horizontal - LEFT, CENTER or RIGHT.
+
+In B4i the vertical alignment has no effect.
+ Supported types:
+ B4A - EditText, Label, Button, CheckBox, RadioButton, ToggleButton
+ B4J - Label, Button, Checkbox, RadioButton, ToggleButton, TextField</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Vertical</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Horizontal</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name RaisesSynchronousEvents="true">LoadLayout</name>
+            <comment>Loads the layout file.
+Supported types
+B4A - Panel
+B4i - Panel
+B4J - Pane</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>LayoutFile</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetColorAnimated</name>
+            <comment>Changes the background color with a transition animation between the FromColor and the ToColor colors.
+Duration - Animation duration measured in milliseconds.
+
+Note that the animation does not work with labels in B4i. It will change immediately.
+You can put a transparent label inside a panel and animate the panel color instead.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Duration</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>FromColor</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>ToColor</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetSelection</name>
+            <comment>Sets the selection.
+Supported types:
+B4A - EditText
+B4i - TextField and TextView
+B4J - TextField and TextArea</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Start</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Length</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>RemoveViewFromParent</name>
+            <comment>Removes the view from its parent.</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>Snapshot</name>
+            <comment>Captures the views appearance.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+        </method>
+        <method>
+            <name>RemoveAllViews</name>
+            <comment>Removes all views.
+Supported types
+B4A - Activity, Panel
+B4i - Panel
+B4J - Pane</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>SetLayoutAnimated</name>
+            <comment>Sets the view size and position.
+Duration - Animation duration in milliseconds. Pass 0 to make the change immediately.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Duration</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Left</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>Top</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>Width</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <parameter>
+                <name>Height</name>
+                <type Pixel="true">int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>RequestFocus</name>
+            <comment>Requests focus to be set to this view. Returns True if the focus has shifted.
+Always returns True in B4J.</comment>
+            <returntype>boolean</returntype>
+        </method>
+        <property>
+            <name>Left</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <comment>Gets or sets the left position.</comment>
+        </property>
+        <property>
+            <name>Parent</name>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper</returntype>
+            <comment>Returns the parent. The object returned will be uninitialized if there is no parent.</comment>
+        </property>
+        <property>
+            <name>EditTextHint</name>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>s</name>
+                <type>java.lang.CharSequence</type>
+            </parameter>
+            <comment>Gets or sets the hint or prompt text. Supported types:
+B4A - EditText
+B4i - TextField
+B4J - TextArea, TextField</comment>
+        </property>
+        <property>
+            <name>NumberOfViews</name>
+            <returntype>int</returntype>
+            <comment>Returns the number of direct child views.
+Supported types
+B4A - Activity, Panel
+B4i - Panel
+B4J - Pane</comment>
+        </property>
+        <property>
+            <name>SelectionStart</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>s</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or sets the selection start index.
+See also: B4XView.SetSelection.
+Supported types:
+B4A - EditText
+B4i - TextField and TextView
+B4J - TextField and TextArea</comment>
+        </property>
+        <property>
+            <name>Font</name>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>f</name>
+                <type>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</type>
+            </parameter>
+            <comment>Gets or sets the font (typeface and text size).
+Supported types:
+B4A - EditText, Label, Button, CheckBox, RadioButton, ToggleButton
+B4i - TextField, TextView, Button, Label
+B4J - Sets the Font property if available. Otherwise sets the CSS attribute.</comment>
+        </property>
+        <property>
+            <name>Visible</name>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>b</name>
+                <type>boolean</type>
+            </parameter>
+            <comment>Gets or sets whether the view is visible.</comment>
+        </property>
+        <property>
+            <name>Height</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <comment>Gets or sets the view's height.</comment>
+        </property>
+        <property>
+            <name>TextColor</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>c</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or sets the text colors. Supported types:
+ B4A - EditText, Label, Button, CheckBox, RadioButton,  ToggleButton
+ B4i - TextField, TextView, Label
+ B4J - All types. Based on the native TextColor property if available or -fx-text-fill CSS attribute.</comment>
+        </property>
+        <property>
+            <name>Width</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <comment>Gets or sets the view's width.</comment>
+        </property>
+        <property>
+            <name>Progress</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>i</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or sets the progress value. The progress value is scaled between 0 to 100 (this is different than the native views range in B4J and B4i). 
+ Supported types:
+ B4A - ProgressBar
+ B4J - ProgressBar, ProgressIndicator
+ B4i - ProgressView
+&lt;b&gt;Value should be between 0 to 100.&lt;/b&gt;</comment>
+        </property>
+        <property>
+            <name>ScrollViewContentWidth</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or set the scroll view inner panel width.
+Supported types:
+B4A - HorizontalScrollView, ScrollView
+B4i - ScrollView
+B4J - ScrollPane</comment>
+        </property>
+        <property>
+            <name>ScrollViewInnerPanel</name>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper</returntype>
+            <comment>Gets the scroll view inner panel.
+Supported types:
+B4A - HorizontalScrollView, ScrollView
+B4i - ScrollView
+B4J - ScrollPane</comment>
+        </property>
+        <property>
+            <name>Color</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or sets the background color. Returns 0 if the color is not available.</comment>
+        </property>
+        <property>
+            <name>Enabled</name>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>b</name>
+                <type>boolean</type>
+            </parameter>
+            <comment>Gets or sets whether the view is enabled. Does nothing if the view does not support this property.</comment>
+        </property>
+        <property>
+            <name>TextSize</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>d</name>
+                <type>float</type>
+            </parameter>
+            <comment>Gets or sets the text size.
+Supported types:
+B4A - EditText, Label, Button, CheckBox, RadioButton, ToggleButton
+B4i - TextField, TextView, Button, Label
+B4J - Returns the TextSize property if available and the CSS attribute for other types. Returns 0 if attribute not available.</comment>
+        </property>
+        <property>
+            <name>Text</name>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>s</name>
+                <type>java.lang.CharSequence</type>
+            </parameter>
+            <comment>Gets or sets the text. Supported types: 
+B4A - EditText, Label, Button, CheckBox, RadioButton, ToggleButton
+B4i - TextField, TextView, Button, Label
+B4J - TextField, TextArea, Label, Button, CheckBox, RadioButton, ToggleButton</comment>
+        </property>
+        <property>
+            <name>Rotation</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>f</name>
+                <type>float</type>
+            </parameter>
+            <comment>Gets or sets the view's rotation transformation (in degrees).</comment>
+        </property>
+        <property>
+            <name>Checked</name>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>b</name>
+                <type>boolean</type>
+            </parameter>
+            <comment>Gets or sets the checked state (also named selected or value). 
+Supported types:
+B4A - CheckBox, RadioButton, ToggleButton, Switch
+B4i - Switch
+B4J: CheckBox, RadioButton, ToggleButton.</comment>
+        </property>
+        <property>
+            <name>ScrollViewContentHeight</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or set the scroll view inner panel height.
+Supported types:
+B4A - HorizontalScrollView, ScrollView
+B4i - ScrollView
+B4J - ScrollPane</comment>
+        </property>
+        <property>
+            <name>ScrollViewOffsetX</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or sets the horizontal scroll position.
+Supported types:
+B4A - HorizontalScrollView (returns 0 for ScrollView).
+B4i - ScrollView
+B4J - ScrollPane</comment>
+        </property>
+        <property>
+            <name>Top</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type Pixel="true">int</type>
+            </parameter>
+            <comment>Gets or sets the top position.</comment>
+        </property>
+        <property>
+            <name>ScrollViewOffsetY</name>
+            <returntype>int</returntype>
+            <parameter>
+                <name>d</name>
+                <type>int</type>
+            </parameter>
+            <comment>Gets or sets the vertical scroll position.
+Supported types:
+B4A - ScrollView (returns 0 for HorizontalScrollView).
+B4i - ScrollView
+B4J - ScrollPane</comment>
+        </property>
+        <property>
+            <name>Alpha</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>alpha</name>
+                <type>float</type>
+            </parameter>
+            <comment>Gets or sets the view's alpha level: 0 - transparent, 1 (default) fully opaque.</comment>
+        </property>
+        <property>
+            <name>Tag</name>
+            <returntype>java.lang.Object</returntype>
+            <parameter>
+                <name>o</name>
+                <type>java.lang.Object</type>
+            </parameter>
+            <comment>Gets or sets the view's tag object.</comment>
+        </property>
+        <property>
+            <name>SelectionLength</name>
+            <returntype>int</returntype>
+            <comment>Gets the selection length.
+See also: B4XView.SetSelection.
+Supported types:
+B4A - EditText
+B4i - TextField and TextView
+B4J - TextField and TextArea</comment>
+        </property>
+        <field>
+            <name>TOUCH_ACTION_UP</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>TOUCH_ACTION_DOWN</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>TOUCH_ACTION_MOVE_NOTOUCH</name>
+            <comment>Equivalent to MouseMoved in B4J (will never be raised in B4A or B4i).</comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>TOUCH_ACTION_MOVE</name>
+            <comment>Equivalent to MouseDragged in B4J.</comment>
+            <returntype>int</returntype>
+        </field>
+    </class>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</name>
+        <shortname>B4XBitmap</shortname>
+        <objectwrapper>android.graphics.Bitmap</objectwrapper>
+        <owner>process</owner>
+        <method>
+            <name>Crop</name>
+            <comment>Returns a &lt;b&gt;new&lt;/b&gt; cropped bitmap.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+            <parameter>
+                <name>Left</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Top</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Width</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Height</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Rotate</name>
+            <comment>Returns a &lt;b&gt;new&lt;/b&gt; rotated bitmap. The bitmap will be rotated clockwise.
+The following values are supported on all three platforms: 0, 90, 180, 270.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+            <parameter>
+                <name>Degrees</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Resize</name>
+            <comment>Returns a &lt;b&gt;new&lt;/b&gt; bitmap with the given width and height.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+            <parameter>
+                <name>Width</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Height</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>KeepAspectRatio</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>IsInitialized</name>
+            <comment> </comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>WriteToStream</name>
+            <comment>Writes the bitmap to the output stream.
+Quality - Value between 0 (smaller size, lower quality) to 100 (larger size, higher quality), 
+which is a hint for the compressor for the required quality.
+Format - JPEG or PNG.
+ 
+Example:&lt;code&gt;
+Dim Out As OutputStream
+Out = File.OpenOutput(XUI.DefaultFolder, "Test.png", False)
+Bitmap1.WriteToStream(out, 100, "PNG")
+Out.Close&lt;/code&gt;</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Out</name>
+                <type>java.io.OutputStream</type>
+            </parameter>
+            <parameter>
+                <name>Quality</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Format</name>
+                <type EnumType="true">android.graphics.Bitmap.CompressFormat</type>
+            </parameter>
+        </method>
+        <property>
+            <name>Height</name>
+            <returntype>double</returntype>
+            <comment>Returns the bitmap's height.</comment>
+        </property>
+        <property>
+            <name>Scale</name>
+            <returntype>float</returntype>
+            <comment>Returns the bitmap scale. It will always be 1 in B4J and B4i.</comment>
+        </property>
+        <property>
+            <name>Width</name>
+            <returntype>double</returntype>
+            <comment>Returns the bitmap's width.</comment>
+        </property>
+        <comment>Represents a loaded image. Similar to B4A Bitmap, B4i Bitmap and B4J Image.</comment>
+    </class>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</name>
+        <shortname>B4XFont</shortname>
+        <owner>process</owner>
+        <method>
+            <name>ToNativeFont</name>
+            <comment>Returns a native font object representing the same font.</comment>
+            <returntype>anywheresoftware.b4a.keywords.constants.TypefaceWrapper</returntype>
+        </method>
+        <property>
+            <name>Size</name>
+            <returntype>float</returntype>
+            <comment> </comment>
+        </property>
+        <property>
+            <name>IsInitialized</name>
+            <returntype>boolean</returntype>
+            <comment> </comment>
+        </property>
+        <comment>An object that holds a typeface and size.</comment>
+    </class>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XViewWrapper.XUI</name>
+        <shortname>XUI</shortname>
+        <owner>process</owner>
+        <method>
+            <name>Msgbox2Async</name>
+            <comment>Shows a non-modal Msgbox.
+Returns an object that can be used as the sender filter parameter for the Msgbox_Result event.
+Message - Dialog message.
+Title - Dialog title.
+Positive - Positive button text. Pass an empty string to remove button.
+Cancel - Cancel button text. Pass an empty string to remove button.
+Negative - Negative button text. Pass an empty string to remove button.
+Icon - Dialog icon. Pass Null to remove. Does nothing in B4i.
+ Example:&lt;code&gt;
+Dim sf As Object = xui.Msgbox2Async("Delete file?", "Title", "Yes", "Cancel", "No", Null)
+Wait For (sf) Msgbox_Result (Result As Int)
+If Result = xui.DialogResponse_Positive Then
+	Log("Deleted!!!")
+End If&lt;/code&gt;</comment>
+            <returntype>java.lang.Object</returntype>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>Message</name>
+                <type>java.lang.CharSequence</type>
+            </parameter>
+            <parameter>
+                <name>Title</name>
+                <type>java.lang.CharSequence</type>
+            </parameter>
+            <parameter>
+                <name>Positive</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Cancel</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Negative</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Icon</name>
+                <type>anywheresoftware.b4a.objects.drawable.CanvasWrapper.BitmapWrapper</type>
+            </parameter>
+        </method>
+        <method>
+            <name>LoadBitmapResize</name>
+            <comment>Loads and resizes a bitmap.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+            <parameter>
+                <name>Dir</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>FileName</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Width</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Height</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>KeepAspectRatio</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>PaintOrColorToColor</name>
+            <comment>B4A, B4i - Does nothing.
+ B4J - Converts a Paint object to an Int color. Does not do anything if the color is already an Int color.</comment>
+            <returntype>int</returntype>
+            <parameter>
+                <name>Color</name>
+                <type>java.lang.Object</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreateFont</name>
+            <comment>Creates a new B4XFont from the given font and size. 
+Do NOT use DIP units with font sizes.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>Typeface</name>
+                <type>android.graphics.Typeface</type>
+            </parameter>
+            <parameter>
+                <name>Size</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>GetRegisteredDesignerClass</name>
+            <comment>Gets the registered designer class instance. Returns Null if does not exist.</comment>
+            <returntype>java.lang.Object</returntype>
+            <parameter>
+                <name>Module</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreateDefaultFont</name>
+            <comment>Create a new B4XFont with the default typeface.
+Do NOT use DIP units with font sizes.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>Size</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreateDefaultBoldFont</name>
+            <comment>Create a new B4XFont with the default bold typeface.
+Do NOT use DIP units with font sizes.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>Size</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreatePanel</name>
+            <comment>Creates a Panel (or Pane in B4J).
+Note that the panel created will clip its child views. 
+In B4A, this method can only be called from an Activity context.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper</returntype>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>EventName</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>RegisterDesignerClass</name>
+            <comment>Registers a designer script class.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>ClassInstance</name>
+                <type>java.lang.Object</type>
+            </parameter>
+        </method>
+        <method>
+            <name>LoadBitmap</name>
+            <comment>Loads a bitmap. In most cases you should use LoadBitmapResize instead.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+            <parameter>
+                <name>Dir</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>FileName</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreateFontAwesome</name>
+            <comment>Creates a new B4XFont based on FontAwesome font.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>Size</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreateMaterialIcons</name>
+            <comment>Creates a new B4XFont based on Material Icons font.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>Size</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Color_ARGB</name>
+            <comment>Returns the color value from the components. Values should be between 0 to 255.</comment>
+            <returntype>int</returntype>
+            <parameter>
+                <name>Alpha</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>R</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>G</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>B</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>FileUri</name>
+            <comment>Returns a file uri. This can be used with WebView to access local resources.
+The FileName parameter will be url encoded.
+Example: &lt;code&gt;
+WebView1.LoadHtml($"&lt;img src="${xui.FileUri(File.DirAssets, "smiley.png")}" /&gt;"$)
+'or:
+WebView1.LoadUrl($"${xui.FileUri(File.DirAssets, "smiley.png")}"$)
+&lt;/code&gt;</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>Dir</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>FileName</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SetDataFolder</name>
+            <comment>B4A, B4i - Does nothing.
+ B4J - Sets the subfolder name on Windows and Mac. The actual path will be similar to: C:\Users\[user name]\AppData\Roaming\[AppName].</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>AppName</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>MsgboxAsync</name>
+            <comment>Shows a non-modal Msgbox.
+Returns an object that can be used as the sender filter parameter for the optional Msgbox_Result event.
+Example:&lt;code&gt;xui.MsgboxAsync("Hello", "World")&lt;/code&gt;</comment>
+            <returntype>java.lang.Object</returntype>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>Message</name>
+                <type>java.lang.CharSequence</type>
+            </parameter>
+            <parameter>
+                <name>Title</name>
+                <type>java.lang.CharSequence</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Color_RGB</name>
+            <comment>Returns the color value from the components. Values should be between 0 to 255.</comment>
+            <returntype>int</returntype>
+            <parameter>
+                <name>R</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>G</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>B</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>SubExists</name>
+            <comment>Same as SubExists keyword. Adds an additional parameter that is required in B4i (number of parameters).</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>Component</name>
+                <type>java.lang.Object</type>
+            </parameter>
+            <parameter>
+                <name>Sub</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>NotUsed</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>CreateFont2</name>
+            <comment>Creates a new B4XFont from the given B4XFont and size.
+Do NOT use DIP units with font sizes.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</returntype>
+            <parameter>
+                <name>B4XFont</name>
+                <type>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</type>
+            </parameter>
+            <parameter>
+                <name>Size</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <property>
+            <name>IsB4i</name>
+            <returntype>boolean</returntype>
+            <comment>Returns True in B4i.</comment>
+        </property>
+        <property>
+            <name>IsB4J</name>
+            <returntype>boolean</returntype>
+            <comment>Returns True in B4J.</comment>
+        </property>
+        <property>
+            <name>Scale</name>
+            <returntype>float</returntype>
+            <comment>Returns the screen normalized scale.
+Always returns 1 in B4J and B4i.
+Returns the same value as 100dip / 100 in B4A.</comment>
+        </property>
+        <property>
+            <name>IsB4A</name>
+            <returntype>boolean</returntype>
+            <comment>Returns True in B4A.</comment>
+        </property>
+        <property>
+            <name>DefaultFolder</name>
+            <returntype>java.lang.String</returntype>
+            <comment>B4A - Same as File.DirInternal.
+B4i - Same as File.DirDocuments.
+B4J - Same as File.DirData. You must first call SetDataFolder once before you can use this folder.</comment>
+        </property>
+        <field>
+            <name>DialogResponse_Positive</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Gray</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Magenta</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Cyan</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Black</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Blue</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Transparent</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>DialogResponse_Negative</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Green</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_LightGray</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Yellow</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_White</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_Red</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>DialogResponse_Cancel</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <field>
+            <name>Color_DarkGray</name>
+            <comment> </comment>
+            <returntype>int</returntype>
+        </field>
+        <comment>The XUI object includes various methods and utilities.</comment>
+    </class>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XCanvas</name>
+        <shortname>B4XCanvas</shortname>
+        <comment>A cross platform canvas.</comment>
+        <owner>process</owner>
+        <method>
+            <name>DrawText</name>
+            <comment>Draws the text.
+Text - The text that will be drawn.
+x - The origin X coordinate.
+y - The origin Y coordinate.
+Font - The text font.
+Color - Drawing color.
+Alignment - Sets the alignment relative to the origin. One of the following values: LEFT, CENTER, RIGHT.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>Text</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>x</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>y</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Font</name>
+                <type>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Alignment</name>
+                <type EnumType="true">android.graphics.Paint.Align</type>
+            </parameter>
+        </method>
+        <method>
+            <name>ClearRect</name>
+            <comment>Clears the given rectangle. Does not work in B4J with clipped paths.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Rect</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawBitmap</name>
+            <comment>Draws a bitmap in the given destination. Use B4XBitmap.Crop to draw part of a bitmap.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Bitmap</name>
+                <type>android.graphics.Bitmap</type>
+            </parameter>
+            <parameter>
+                <name>Destination</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Resize</name>
+            <comment>Resizes the canvas.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Width</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Height</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawPath</name>
+            <comment>Draws the given path.
+Path - Path shape.
+Color - Drawing color.
+Filled - Whether to fill the shape or not.
+StrokeWidth - Stroke width. Only relevant when Filled is False.
+
+Note that there is a subtle difference in the way the stroke width affects the drawing between B4J and the other platforms.
+In B4J the path defines the stroke edge. In B4A and B4i it defines the stroke center.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Path</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Filled</name>
+                <type>boolean</type>
+            </parameter>
+            <parameter>
+                <name>StrokeWidth</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawPathRotated</name>
+            <comment>Similar to DrawPath. Rotates the path based on the degrees and center parameters.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Path</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Filled</name>
+                <type>boolean</type>
+            </parameter>
+            <parameter>
+                <name>StrokeWidth</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Degrees</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>CenterX</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>CenterY</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawTextRotated</name>
+            <comment>Similar to DrawText. Rotates the text before it is drawn.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>ba</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>Text</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>x</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>y</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Font</name>
+                <type>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Alignment</name>
+                <type EnumType="true">android.graphics.Paint.Align</type>
+            </parameter>
+            <parameter>
+                <name>Degree</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Initialize</name>
+            <comment>Initializes the canvas.
+In B4A and B4i the canvas will draw on the passed view.
+In B4J the canvas which is a view by itself is added to the passed pane as the first element.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>View</name>
+                <type>anywheresoftware.b4a.objects.B4XViewWrapper</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawCircle</name>
+            <comment>Draws a circle.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>x</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>y</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Radius</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Filled</name>
+                <type>boolean</type>
+            </parameter>
+            <parameter>
+                <name>StrokeWidth</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>RemoveClip</name>
+            <comment>Removes a previously set clip region.</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>CreateBitmap</name>
+            <comment>Returns a copy of the canvas bitmap. In B4A it returns the canvas bitmap itself (not a copy).</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper.B4XBitmapWrapper</returntype>
+        </method>
+        <method>
+            <name>DrawBitmapRotated</name>
+            <comment>Similar to DrawBitmap. Draws a rotated bitmap.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Bitmap</name>
+                <type>android.graphics.Bitmap</type>
+            </parameter>
+            <parameter>
+                <name>Destination</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</type>
+            </parameter>
+            <parameter>
+                <name>Degrees</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawLine</name>
+            <comment>Draws a line between x1,y1 to x2,y2.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>x1</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>y1</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>x2</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>y2</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>StrokeWidth</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>DrawRect</name>
+            <comment>Draws a rectangle.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Rect</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</type>
+            </parameter>
+            <parameter>
+                <name>Color</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Filled</name>
+                <type>boolean</type>
+            </parameter>
+            <parameter>
+                <name>StrokeWidth</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Invalidate</name>
+            <comment>Commits the drawings. Must be called for the drawings to be updated.</comment>
+            <returntype>void</returntype>
+        </method>
+        <method>
+            <name>ClipPath</name>
+            <comment>Clips the drawings to a closed path.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Path</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</type>
+            </parameter>
+        </method>
+        <method>
+            <name>MeasureText</name>
+            <comment>Measures single line texts and returns their width, height and the height above the baseline.
+-Rect.Top returns the height above the baseline.
+Code to draw center aligned text:&lt;code&gt;
+Dim r As B4XRect = cvs1.MeasureText(Text, Fnt)
+Dim BaseLine As Int = CenterY - r.Height / 2 - r.Top
+cvs1.DrawText(Text, CenterX, BaseLine, Fnt, Clr, "CENTER")&lt;/code&gt;</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</returntype>
+            <parameter>
+                <name>Text</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Font</name>
+                <type>anywheresoftware.b4a.objects.B4XViewWrapper.B4XFont</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Release</name>
+            <comment>Releases native resources related to the canvas. Does nothing in B4A and B4J.</comment>
+            <returntype>void</returntype>
+        </method>
+        <property>
+            <name>TargetRect</name>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</returntype>
+            <comment>Returns a B4XRect with the same dimensions as the target view.</comment>
+        </property>
+        <property>
+            <name>TargetView</name>
+            <returntype>anywheresoftware.b4a.objects.B4XViewWrapper</returntype>
+            <comment>Returns the target view.</comment>
+        </property>
+    </class>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</name>
+        <shortname>B4XRect</shortname>
+        <owner>process</owner>
+        <method>
+            <name>Initialize</name>
+            <comment> </comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>Left</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>Top</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>Right</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>Bottom</name>
+                <type Pixel="true">float</type>
+            </parameter>
+        </method>
+        <property>
+            <name>Left</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>Left</name>
+                <type>float</type>
+            </parameter>
+            <comment> </comment>
+        </property>
+        <property>
+            <name>Top</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>Top</name>
+                <type>float</type>
+            </parameter>
+            <comment> </comment>
+        </property>
+        <property>
+            <name>Right</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>Right</name>
+                <type>float</type>
+            </parameter>
+            <comment> </comment>
+        </property>
+        <property>
+            <name>Bottom</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>Bottom</name>
+                <type>float</type>
+            </parameter>
+            <comment> </comment>
+        </property>
+        <property>
+            <name>Height</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>h</name>
+                <type>float</type>
+            </parameter>
+            <comment>Gets or sets the rectangle height.</comment>
+        </property>
+        <property>
+            <name>CenterY</name>
+            <returntype>float</returntype>
+            <comment>Returns the vertical center.</comment>
+        </property>
+        <property>
+            <name>CenterX</name>
+            <returntype>float</returntype>
+            <comment>Returns the horizontal center.</comment>
+        </property>
+        <property>
+            <name>Width</name>
+            <returntype>float</returntype>
+            <parameter>
+                <name>w</name>
+                <type>float</type>
+            </parameter>
+            <comment>Gets or sets the rectangle width.</comment>
+        </property>
+    </class>
+    <class>
+        <name>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</name>
+        <shortname>B4XPath</shortname>
+        <objectwrapper>android.graphics.Path</objectwrapper>
+        <owner>process</owner>
+        <method>
+            <name>LineTo</name>
+            <comment>Adds a line from the last point to the specified point.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</returntype>
+            <parameter>
+                <name>x</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>y</name>
+                <type Pixel="true">float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>InitializeRoundedRect</name>
+            <comment>Initializes the path and sets the current path shape to a rectangle with rounded corners.
+Rect - Rectangle.
+CornersRadius - Corners radius.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</returntype>
+            <parameter>
+                <name>Rect</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</type>
+            </parameter>
+            <parameter>
+                <name>CornersRadius</name>
+                <type>float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>InitializeOval</name>
+            <comment>Initializes the path and sets the current path shape to an oval.
+Rect - The oval framing rectangle.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</returntype>
+            <parameter>
+                <name>Rect</name>
+                <type>anywheresoftware.b4a.objects.B4XCanvas.B4XRect</type>
+            </parameter>
+        </method>
+        <method>
+            <name>IsInitialized</name>
+            <comment> </comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>Initialize</name>
+            <comment>Initializes the path and sets the value of the first point.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</returntype>
+            <parameter>
+                <name>x</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>y</name>
+                <type Pixel="true">float</type>
+            </parameter>
+        </method>
+        <method>
+            <name>InitializeArc</name>
+            <comment>Initializes the path and sets the current path shape to an arc. 
+ x / y - Arc center.
+ Radius - Arc radius.
+ StartingAngle - The starting angle. 0 equals to hour 3.
+ SweepAngle - Sweep angle. Positive = clockwise.</comment>
+            <returntype>anywheresoftware.b4a.objects.B4XCanvas.B4XPath</returntype>
+            <parameter>
+                <name>x</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>y</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>Radius</name>
+                <type Pixel="true">float</type>
+            </parameter>
+            <parameter>
+                <name>StartingAngle</name>
+                <type>float</type>
+            </parameter>
+            <parameter>
+                <name>SweepAngle</name>
+                <type>float</type>
+            </parameter>
+        </method>
+    </class>
+    <version>2.32</version>
+    <customClass>filenamewithoutextension:customview, name:Custom View (XUI)</customClass>
+</root>

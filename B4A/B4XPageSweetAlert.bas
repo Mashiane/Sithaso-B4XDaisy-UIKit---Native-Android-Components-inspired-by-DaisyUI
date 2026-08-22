@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class

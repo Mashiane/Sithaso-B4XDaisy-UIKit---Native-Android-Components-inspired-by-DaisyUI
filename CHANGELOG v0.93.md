@@ -1,8 +1,8 @@
-﻿# Changelog - v0.92
+﻿# Changelog - v0.93
 
-Generated on: 2026-08-18
+Generated on: 2026-08-22
 
-Compare: v0.91 -> v0.92
+Compare: v0.92 -> v0.93
 
 Repository: https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI
 
@@ -10,14 +10,13 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Summary
 
-- New components: 2
-- Modified components: 102
+- New components: 0
+- Modified components: 104
 - Removed components: 0
 
 ## New Files
 
-- B4XDaisyDrawer.bas
-- B4XDaisyDualRange.bas
+- (none)
 
 ## Modified Files
 
@@ -59,7 +58,9 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 - B4XDaisyDivider.bas
 - B4XDaisyDivision.bas
 - B4XDaisyDock.bas
+- B4XDaisyDrawer.bas
 - B4XDaisyDropdown.bas
+- B4XDaisyDualRange.bas
 - B4XDaisyEnjoyHint.bas
 - B4XDaisyFab.bas
 - B4XDaisyFieldset.bas
@@ -130,7 +131,40 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Resources used in B4XLib
 
-- (none)
+- angles-left-solid.svg
+- angles-right-solid.svg
+- bars-solid.svg
+- calendar-days-regular-full.svg
+- Casino_Hand.ttf
+- check-solid.svg
+- chevron-left-solid.svg
+- chevron-right-solid.svg
+- circle-info-solid.svg
+- circle-question-regular.svg
+- circle-xmark-solid.svg
+- clock-regular-full.svg
+- close.svg
+- daisylogo.png
+- eye-slash-solid.svg
+- eye-solid.svg
+- face-smile-solid.svg
+- heart.png
+- heart-solid.svg
+- like.png
+- magnifying-glass-solid.svg
+- mashymain.jpg
+- minus-solid.svg
+- palette-solid-full.svg
+- pdfium license.txt
+- photo-1560717789-0ac7c58ac90a.webp
+- photo-1560717789-0ac7c58ac90a-blur.webp
+- plus-solid.svg
+- smile.png
+- star.png
+- triangle-exclamation-solid.svg
+- user-solid.svg
+- xmark-solid.svg
+- x-solid-full.svg
 
 ## Libraries used - Thank you so much to creators of these libraries
 

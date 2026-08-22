@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group
 ModulesStructureVersion=1
 Type=Class
@@ -563,7 +563,7 @@ Public Sub ShowToastAlert(Title As String, Text As String, AlertVariant As Strin
 	alert.SetIconVisible(True)
 	alert.SetIconSize("6")
 	alert.SetShadow("md")
-	alert.SetRoundedBox(True)
+	alert.setRounded("rounded-box")
 	alert.Tag = alert
 	
 	Dim alertWidth As Int

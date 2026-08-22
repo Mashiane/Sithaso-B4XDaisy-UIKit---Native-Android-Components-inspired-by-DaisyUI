@@ -1,4 +1,4 @@
-B4A=true
+﻿B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -176,7 +176,7 @@ Private Sub AddDemoCard(Parent As B4XView, Left As Int, Top As Int, Width As Int
 	baseDiv.Initialize(Me, "")
 	baseDiv.AddToParent(Parent, Left, Top, Width, Height)
 	baseDiv.PlaceContentCenter = True
-	baseDiv.RoundedBox = True
+	baseDiv.Rounded = "rounded-box"
 	baseDiv.Text = Text
 	baseDiv.setTextSize(DIVIDER_TEXT_SIZE)
 	baseDiv.BackgroundColorVariant = "bg-neutral"
