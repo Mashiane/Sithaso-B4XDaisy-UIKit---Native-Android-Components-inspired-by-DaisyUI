@@ -588,8 +588,8 @@ Version=13.7
 @EndOfDesignText@
 #Region  Project Attributes
 	#ApplicationLabel: B4XDaisy UIKit
-	#VersionCode: 93
-	#VersionName: 0.93
+	#VersionCode: 94
+	#VersionName: 0.94
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: True
