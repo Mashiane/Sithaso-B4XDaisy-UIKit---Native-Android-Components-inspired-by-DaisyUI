@@ -3,7 +3,7 @@
 > **Native Android UI components for B4A (Basic4Android) â€” inspired by DaisyUI & Tailwind CSS semantics. 104 native classes, zero WebView, pure B4A.**
 
 [![B4A](https://img.shields.io/badge/B4A-13.70%2B-blue.svg)](https://www.b4x.com/b4a.html)
-[![Library](https://img.shields.io/badge/Library-v0.93-brightgreen.svg)](https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI/releases)
+[![Library](https://img.shields.io/badge/Library-v0.94-brightgreen.svg)](https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI/releases)
 [![Components](https://img.shields.io/badge/Components-104_Classes-success.svg)](#-component-catalog)
 [![Skills](https://img.shields.io/badge/Skills-v1.2.3-purple.svg)](https://github.com/Mashiane/B4XDaisyUIKit-Skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
