@@ -1,24 +1,22 @@
 ﻿# Changelog - v0.93
 
-Generated on: 2026-08-22
+Generated on: 2026-08-29
 
-Compare: v0.92 -> v0.93
+Compare: v0.94 -> v0.93
 
 Repository: https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI
 
 Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGewMW-xZj?usp=sharing
 
+Skills: https://github.com/Mashiane/B4XDaisyUIKit-Skills
+
 ## Summary
 
-- New components: 0
-- Modified components: 104
+- New components: 104
+- Modified components: 0
 - Removed components: 0
 
 ## New Files
-
-- (none)
-
-## Modified Files
 
 - B4XDaisyAccordion.bas
 - B4XDaisyActionSheet.bas
@@ -124,6 +122,10 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 - B4XDaisyTooltip.bas
 - B4XDaisyVariants.bas
 - B4XDaisyWindow.bas
+
+## Modified Files
+
+- (none)
 
 ## Removed Files
 
