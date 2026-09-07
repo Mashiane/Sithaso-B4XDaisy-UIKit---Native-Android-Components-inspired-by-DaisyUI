@@ -539,7 +539,7 @@ End Sub
 ' Position supports: "top-right", "top-left", "top-center", "bottom-left", "bottom-right", "middle-center" (default "top-right").
 ' The alert automatically dismisses after DurationMs. If DurationMs is 0, it stays until tapped.
 Public Sub ShowToastAlert(Title As String, Text As String, AlertVariant As String, DurationMs As Int, Position As String) As B4XDaisyAlert
-	If ActiveAlert <> Null Then
+	If ActiveAlert.IsInitialized Then
 		Try
 			ActiveAlert.RemoveViewFromParent
 		Catch
@@ -591,13 +591,13 @@ Public Sub ShowToastAlert(Title As String, Text As String, AlertVariant As Strin
 	Select Case pos
 		Case "bottom-right", "bottom-left", "bottom-center"
 			alertTop = TopPage.Root.Height - alertHeight - 16dip
-			alert.View.Top = alertTop
+			alert.mBase.Top = alertTop
 		Case "middle-center"
 			alertTop = (TopPage.Root.Height - alertHeight) / 2
-			alert.View.Top = alertTop
+			alert.mBase.Top = alertTop
 	End Select
 	
-	alert.View.BringToFront
+	alert.mBase.BringToFront
 	
 	ActiveAlert = alert
 	

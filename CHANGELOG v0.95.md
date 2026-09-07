@@ -1,8 +1,8 @@
-﻿# Changelog - v0.94
+﻿# Changelog - v0.95
 
-Generated on: 2026-08-29
+Generated on: 2026-09-07
 
-Compare: v0.93 -> v0.94
+Compare: v0.94 -> v0.95
 
 Repository: https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI
 
@@ -11,7 +11,7 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 ## Summary
 
 - New components: 0
-- Modified components: 1
+- Modified components: 4
 - Removed components: 0
 
 ## New Files
@@ -20,7 +20,10 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Modified Files
 
-- B4XDaisyVariants.bas
+- B4XDaisyAlert.bas
+- B4XDaisyAvatar.bas
+- B4XDaisySweetAlert.bas
+- B4XDaisyToast.bas
 
 ## Removed Files
 
@@ -67,9 +70,9 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 - ac_leafletview
 - ac_nativedialogs
+- b4xbitmapeffects
 - b4xpages
 - bitmapcreator
-- bitmapcreatoreffectsext
 - contentresolver
 - core
 - dateutils

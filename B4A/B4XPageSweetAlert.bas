@@ -59,6 +59,9 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 	y = AddSectionTitle("8. Warning message", y, maxW)
 	y = AddExampleButton("Warning Alert", "btnWarning", y, maxW)
 
+	y = AddSectionTitle("9. Custom button colors", y, maxW)
+	y = AddExampleButton("Colored Buttons", "btnColored", y, maxW)
+
 	pnlHost.Height = Max(Height, y + PAGE_PAD)
 End Sub
 
@@ -209,6 +212,30 @@ Private Sub DemoAction_Click(Tag As Object)
 				B4XPages.MainPage.ShowToast("File deleted", False)
 			Else
 				B4XPages.MainPage.ShowToast("Cancelled", False)
+			End If
+
+		Case "btnColored"
+			swal.Icon = "question"
+			swal.Title = "Publish this batch?"
+			swal.Text = "Confirm, deny or cancel using custom button colors."
+			swal.ShowDenyButton = True
+			swal.ShowCancelButton = True
+			swal.setConfirmButtonText("Publish")
+			swal.setConfirmButtonColor(0xFF15803D)
+			swal.setConfirmButtonTextColor(0xFFFFFFFF)
+			swal.setDenyButtonText("Save draft")
+			swal.setDenyButtonColor(0xFFB45309)
+			swal.setDenyButtonTextColor(0xFFFFFFFF)
+			swal.setCancelButtonText("Discard")
+			swal.setCancelButtonColor(0xFFB91C1C)
+			swal.setCancelButtonTextColor(0xFFFFFFFF)
+			Wait For (swal.ShowAsync) Complete (Result As B4XDaisySweetAlertResult)
+			If Result.IsConfirmed Then
+				B4XPages.MainPage.ShowToast("Batch published", False)
+			Else If Result.IsDenied Then
+				B4XPages.MainPage.ShowToast("Draft saved", False)
+			Else
+				B4XPages.MainPage.ShowToast("Batch discarded", False)
 			End If
 	End Select
 End Sub

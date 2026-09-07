@@ -457,33 +457,33 @@ FileGroup98=Default Group
 FileGroup99=Default Group
 Group=Default Group
 Library1=ac_leafletview
-Library2=b4xpages
-Library3=bitmapcreator
-Library4=bitmapcreatoreffectsext
+Library2=ac_nativedialogs
+Library3=b4xpages
+Library4=bitmapcreator
 Library5=contentresolver
 Library6=core
-Library7=fileprovider
-Library8=fusedlocationprovider
-Library9=geocoder
-Library10=gps
-Library11=ime
-Library12=javaobject
-Library13=json
-Library14=mediachooser
-Library15=okhttp
-Library16=okhttputils2
-Library17=reflection
-Library18=runtimepermissions
-Library19=simplemediamanager
-Library20=sql
-Library21=stringutils
-Library22=xcustomlistview
-Library23=xui
-Library24=xui views
-Library25=shinebutton
-Library26=pdfium
-Library27=ac_nativedialogs
-Library28=dateutils
+Library7=dateutils
+Library8=fileprovider
+Library9=fusedlocationprovider
+Library10=geocoder
+Library11=gps
+Library12=ime
+Library13=javaobject
+Library14=json
+Library15=mediachooser
+Library16=okhttp
+Library17=okhttputils2
+Library18=pdfium
+Library19=reflection
+Library20=runtimepermissions
+Library21=shinebutton
+Library22=simplemediamanager
+Library23=sql
+Library24=stringutils
+Library25=xcustomlistview
+Library26=xui
+Library27=xui views
+Library28=b4xbitmapeffects
 Library29=b4xdaisyuikit
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="35"/>~\n~<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:debuggable, "true")~\n~SetApplicationAttribute(android:theme, "@style/LightTheme")~\n~CreateResource(values, theme.xml,~\n~<resources>~\n~    <style~\n~        name="LightTheme" parent="@android:style/Theme.Material.Light">~\n~       <item name="android:actionMenuTextAppearance">@style/LowerCaseMenu</item>~\n~       <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>~\n~    </style>~\n~     <style name="LowerCaseMenu" parent="android:TextAppearance.Material.Widget.ActionBar.Menu">~\n~        <item name="android:textAllCaps">false</item>~\n~    </style>~\n~</resources>~\n~)~\n~'End of default text.~\n~SetActivityAttribute(Main, android:windowSoftInputMode, adjustResize|stateHidden)~\n~AddPermission(android.permission.CAMERA)~\n~AddApplicationText(~\n~  <provider~\n~  android:name="android.support.v4.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~AddPermission(android.permission.RECORD_AUDIO)~\n~AddManifestText(<uses-permission~\n~    android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~    android:maxSdkVersion="19" />~\n~)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~AddPermission(android.permission.FOREGROUND_SERVICE)~\n~SetServiceAttribute(KeepRunningService, android:foregroundServiceType, shortService)~\n~AddPermission(android.permission.ACCESS_FINE_LOCATION)~\n~AddPermission(android.permission.ACCESS_COARSE_LOCATION)~\n~AddApplicationText(<meta-data~\n~    android:name="com.google.android.gms.version"~\n~    android:value="@integer/google_play_services_version" />)
 NumberOfFiles=213
@@ -584,12 +584,12 @@ Module94=B4XPageTooltip
 Module95=B4XPageWindow
 NumberOfLibraries=29
 NumberOfModules=95
-Version=13.7
+Version=14
 @EndOfDesignText@
 #Region  Project Attributes
 	#ApplicationLabel: B4XDaisy UIKit
-	#VersionCode: 94
-	#VersionName: 0.94
+	#VersionCode: 95
+	#VersionName: 0.95
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: True
