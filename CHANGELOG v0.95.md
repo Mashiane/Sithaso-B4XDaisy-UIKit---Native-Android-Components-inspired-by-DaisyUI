@@ -1,6 +1,6 @@
 ﻿# Changelog - v0.95
 
-Generated on: 2026-09-07
+Generated on: 2026-09-09
 
 Compare: v0.94 -> v0.95
 
