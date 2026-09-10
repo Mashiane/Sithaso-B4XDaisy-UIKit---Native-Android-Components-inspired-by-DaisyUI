@@ -189,7 +189,7 @@ Private Sub StartTour
             enjoyHint.EndTour
         End If
     Catch
-        Log("B4XPageEnjoyHint.StartTour: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageEnjoyHint.StartTour: " & LastException.Message)
     End Try
     tourRunning = False
     
@@ -201,7 +201,7 @@ Private Sub StartTour
     Try
         enjoyHint.Initialize(Me, "enjoyHint", Root)
     Catch
-        Log("B4XPageEnjoyHint.StartTour: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageEnjoyHint.StartTour: " & LastException.Message)
         Return
     End Try
     tourRunning = True
@@ -224,7 +224,7 @@ Private Sub StartTour
     Try
         enjoyHint.RunWithResume
     Catch
-        Log("B4XPageEnjoyHint.StartTour: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageEnjoyHint.StartTour: " & LastException.Message)
     End Try
 End Sub
 #End Region
@@ -257,25 +257,25 @@ Private Sub helpBtn_Click(Tag As Object)
 End Sub
 
 Private Sub enjoyHint_OnNextClick
-    Log("Tour: next")
+    If B4XDaisyApp.DebugLogs Then Log("Tour: next")
 End Sub
 
 Private Sub enjoyHint_OnPrevClick
-    Log("Tour: previous")
+    If B4XDaisyApp.DebugLogs Then Log("Tour: previous")
 End Sub
 
 Private Sub enjoyHint_OnSkipClick
-    Log("Tour: skipped")
+    If B4XDaisyApp.DebugLogs Then Log("Tour: skipped")
     tourRunning = False
 End Sub
 
 Private Sub enjoyHint_OnCloseClick
-    Log("Tour: closed")
+    If B4XDaisyApp.DebugLogs Then Log("Tour: closed")
     tourRunning = False
 End Sub
 
 Private Sub enjoyHint_OnOverlayClick
-    Log("Tour: overlay tapped")
+    If B4XDaisyApp.DebugLogs Then Log("Tour: overlay tapped")
 End Sub
 #End Region
 

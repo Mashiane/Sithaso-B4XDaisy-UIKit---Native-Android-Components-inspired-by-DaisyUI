@@ -41,7 +41,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
         pnlHost.Color = xui.Color_Transparent
         B4XDaisyVariants.DisableClippingRecursive(pnlHost)
     Catch
-        Log("B4XPageSelect.B4XPage_Created: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageSelect.B4XPage_Created: " & LastException.Message)
         B4XPages.MainPage.ShowToast("Select page error: " & LastException.Message, True)
     End Try
 End Sub

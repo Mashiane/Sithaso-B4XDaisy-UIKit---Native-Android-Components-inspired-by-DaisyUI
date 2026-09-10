@@ -608,7 +608,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
             xivGlassBtn.SetBitmap(bmpGlassBtn.Resize(maxW, 140dip, False))
         End If
     Catch
-        Log("B4XPageButton.RenderExamples: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageButton.RenderExamples: " & LastException.Message)
     End Try
     xCardGlassBtn.SetColorAndBorder(xui.Color_Transparent, 0, 0, B4XDaisyVariants.GetRadiusBoxDip(16dip))
 

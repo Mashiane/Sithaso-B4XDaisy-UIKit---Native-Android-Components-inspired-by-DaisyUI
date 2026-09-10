@@ -95,7 +95,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
     Dim cardHost As B4XView = hoverCard.ContentPanel
     Dim contentW As Int = Max(1dip, cardHost.Width)
-    Log("[HOVER3DDBG] demo cardHost.Width=" & cardHost.Width & " contentW=" & contentW)
+    If B4XDaisyApp.DebugLogs Then Log("[HOVER3DDBG] demo cardHost.Width=" & cardHost.Width & " contentW=" & contentW)
     cardHost.Color = xui.Color_Transparent
 
     Dim glowA As B4XView = xui.CreatePanel("")

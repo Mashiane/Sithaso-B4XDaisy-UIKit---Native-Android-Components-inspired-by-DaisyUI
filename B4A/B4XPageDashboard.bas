@@ -144,7 +144,7 @@ Private Sub NavigateFromMainPage(PageId As String)
 	Try
 		B4XPages.MainPage.ShowPageWithLoader(target)
 	Catch
-		Log("B4XPageDashboard.NavigateFromMainPage: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XPageDashboard.NavigateFromMainPage: " & LastException.Message)
 		B4XPages.MainPage.ShowToast("Navigation error: " & LastException.Message, True)
 	End Try
 End Sub

@@ -312,7 +312,7 @@ Private Sub SetBodyTextColor(Card As B4XDaisyCard, ColorValue As Int)
 		Try
 			If v Is Label Then v.TextColor = ColorValue
 		Catch
-			Log("B4XPageCard.SetBodyTextColor: " & LastException.Message)
+			If B4XDaisyApp.DebugLogs Then Log("B4XPageCard.SetBodyTextColor: " & LastException.Message)
 			' Not a Label - skip
 		End Try
 	Next

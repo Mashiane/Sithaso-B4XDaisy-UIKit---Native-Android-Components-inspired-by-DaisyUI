@@ -39,7 +39,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	Try
 		FileHandler.Initialize
 	Catch
-		Log("B4XPageMediaPicker FileHandler.Initialize Error: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XPageMediaPicker FileHandler.Initialize Error: " & LastException.Message)
 	End Try
 	RenderExamples(Root.Width, Root.Height)
 End Sub
@@ -49,7 +49,7 @@ Private Sub B4XPage_Appear
 End Sub
 
 Private Sub B4XPage_Disappear
-	Log("B4XPageMediaPicker: Page paused / backgrounded.")
+	If B4XDaisyApp.DebugLogs Then Log("B4XPageMediaPicker: Page paused / backgrounded.")
 End Sub
 
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
@@ -142,7 +142,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
 	pageScroll.AutoFit
 	Catch
-		Log("B4XPageMediaPicker RenderExamples error: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XPageMediaPicker RenderExamples error: " & LastException.Message)
 	End Try
 End Sub
 
@@ -200,9 +200,9 @@ End Sub
 
 Private Sub btnAudio_Click(Tag As Object)
 	Wait For (FileHandler.RecordAudio) Complete (Result As LoadResult)
-	Log(Result.Dir)
-	Log(Result.FileName)
-	Log(Result.Success)
+	If B4XDaisyApp.DebugLogs Then Log(Result.Dir)
+	If B4XDaisyApp.DebugLogs Then Log(Result.FileName)
+	If B4XDaisyApp.DebugLogs Then Log(Result.Success)
 
 	
 '	
@@ -219,9 +219,9 @@ End Sub
 
 Private Sub btnBrowse_Click(Tag As Object)
 	Wait For (FileHandler.LoadWithFilter("*/*", "Choose File")) Complete (Result As LoadResult)
-	Log(Result.Dir)
-	Log(Result.FileName)
-	Log(Result.Success)
+	If B4XDaisyApp.DebugLogs Then Log(Result.Dir)
+	If B4XDaisyApp.DebugLogs Then Log(Result.FileName)
+	If B4XDaisyApp.DebugLogs Then Log(Result.Success)
 
 '	If Result <> Null And Result.Success Then
 '		If Result.Image <> Null And Result.Image.IsInitialized Then

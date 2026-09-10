@@ -26,7 +26,7 @@ Public Sub Initialize As Object
 End Sub
 
 Private Sub B4XPage_Created(Root1 As B4XView)
-    Log("BoomPage: B4XPage_Created start, Root=" & Root1.Width & "x" & Root1.Height)
+    If B4XDaisyApp.DebugLogs Then Log("BoomPage: B4XPage_Created start, Root=" & Root1.Width & "x" & Root1.Height)
     Root = Root1
     Root.Color = xui.Color_RGB(246, 248, 251)
 
@@ -34,16 +34,16 @@ Private Sub B4XPage_Created(Root1 As B4XView)
         pageScroll.Initialize(Me, "pageScroll")
         pageScroll.AddToParent(Root, 0, 0, Root.Width, Root.Height)
         pnlHost = pageScroll.Panel
-        Log("BoomPage: pageScroll added, pnlHost valid=" & pnlHost.IsInitialized)
+        If B4XDaisyApp.DebugLogs Then Log("BoomPage: pageScroll added, pnlHost valid=" & pnlHost.IsInitialized)
     Catch
-        Log("B4XPageBoomMenu.B4XPage_Created: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageBoomMenu.B4XPage_Created: " & LastException.Message)
     End Try
 
     Try
         BuildBoomMenu
-        Log("BoomPage: BuildBoomMenu done, buttonCount=" & boom.GetButtonCount)
+        If B4XDaisyApp.DebugLogs Then Log("BoomPage: BuildBoomMenu done, buttonCount=" & boom.GetButtonCount)
     Catch
-        Log("B4XPageBoomMenu.B4XPage_Created: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageBoomMenu.B4XPage_Created: " & LastException.Message)
     End Try
 
     RenderExamples(Root.Width, Root.Height)
@@ -54,7 +54,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
     ' B4XPage_Created (BuildPage).
     EnsureBoomAdded(Root.Width, Root.Height)
 
-    Log("BoomPage: B4XPage_Created done")
+    If B4XDaisyApp.DebugLogs Then Log("BoomPage: B4XPage_Created done")
 End Sub
 
 ' Add the boom trigger on first call, reposition on later calls. Safe to call from
@@ -70,15 +70,15 @@ Private Sub EnsureBoomAdded(Width As Int, Height As Int)
     Dim bTop As Int = Height - sz - margin
     Try
         If mbBoomAdded = False Then
-            Log("BoomPage: Adding boom to Root at " & bLeft & "," & bTop & " " & sz & "x" & sz)
+            If B4XDaisyApp.DebugLogs Then Log("BoomPage: Adding boom to Root at " & bLeft & "," & bTop & " " & sz & "x" & sz)
             boom.AddToParent(Root, bLeft, bTop, sz, sz)
             mbBoomAdded = True
-            Log("BoomPage: boom added, isInit=" & boom.getIsInitialized)
+            If B4XDaisyApp.DebugLogs Then Log("BoomPage: boom added, isInit=" & boom.getIsInitialized)
         Else
             boom.Reposition(bLeft, bTop, sz, sz)
         End If
     Catch
-        Log("B4XPageBoomMenu.EnsureBoomAdded: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageBoomMenu.EnsureBoomAdded: " & LastException.Message)
     End Try
 End Sub
 #End Region
@@ -194,7 +194,7 @@ Private Sub RenderExamples(Width As Int, Height As Int)
 
         pageScroll.AutoFit
     Catch
-        Log("B4XPageBoomMenu.RenderExamples: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageBoomMenu.RenderExamples: " & LastException.Message)
     End Try
 End Sub
 
@@ -238,20 +238,20 @@ End Sub
 
 #Region Base Events
 Private Sub B4XPage_Resize(Width As Int, Height As Int)
-    Log("BoomPage: B4XPage_Resize " & Width & "x" & Height & " boomAdded=" & mbBoomAdded)
+    If B4XDaisyApp.DebugLogs Then Log("BoomPage: B4XPage_Resize " & Width & "x" & Height & " boomAdded=" & mbBoomAdded)
     If Width <= 0 Or Height <= 0 Then Return
     Try
         If pageScroll.IsInitialized Then pageScroll.Base_Resize(Width, Height)
         RenderExamples(Width, Height)
     Catch
-        Log("B4XPageBoomMenu.B4XPage_Resize: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageBoomMenu.B4XPage_Resize: " & LastException.Message)
     End Try
 
     EnsureBoomAdded(Width, Height)
 End Sub
 
 Private Sub B4XPage_Appear
-    Log("BoomPage: B4XPage_Appear")
+    If B4XDaisyApp.DebugLogs Then Log("BoomPage: B4XPage_Appear")
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
 End Sub
 #End Region
@@ -327,7 +327,7 @@ End Sub
 #End Region
 
 Private Sub LogEvent(Message As String)
-    Log("BoomPage event: " & Message)
+    If B4XDaisyApp.DebugLogs Then Log("BoomPage event: " & Message)
     Try
         For Each v As B4XView In pnlHost.GetAllViewsRecursive
             ' Null-safe tag compare: GetAllViewsRecursive returns views with Null/Map/Object
@@ -342,7 +342,7 @@ Private Sub LogEvent(Message As String)
             End If
         Next
     Catch
-        Log("B4XPageBoomMenu.LogEvent: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageBoomMenu.LogEvent: " & LastException.Message)
     End Try
 End Sub
 #End Region

@@ -495,7 +495,7 @@ Private Sub AddPreviewCardWithImage(Left As Int, Y As Int, Width As Int, Height 
             xiv.SetBitmap(bmp.Resize(Width, Height, False))
         End If
     Catch
-        Log("B4XPageDock.AddPreviewCardWithImage: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("B4XPageDock.AddPreviewCardWithImage: " & LastException.Message)
     End Try
     
     card.SetColorAndBorder(xui.Color_Transparent, 0, 0, B4XDaisyVariants.GetRadiusBoxDip(16dip))

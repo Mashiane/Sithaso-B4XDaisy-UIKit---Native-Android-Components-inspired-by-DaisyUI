@@ -282,6 +282,6 @@ Private Sub tAnim_Tick
             cvsGraph.Invalidate
         End If
     Catch
-        Log("tAnim_Tick error: " & LastException.Message)
+        If B4XDaisyApp.DebugLogs Then Log("tAnim_Tick error: " & LastException.Message)
     End Try
 End Sub

@@ -245,7 +245,7 @@ Private Sub MeasureTextWidthDip(Text As String, FontSize As Float) As Int
 	Try
 		Return B4XDaisyVariants.MeasureTextWidthSafe(t, FontSize, Null, extraPad)
 	Catch
-		Log("B4XPageDivider.MeasureTextWidthDip: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XPageDivider.MeasureTextWidthDip: " & LastException.Message)
 	End Try
 	Return Max(1dip, Ceil(t.Length * FontSize * 0.7) + extraPad)
 End Sub

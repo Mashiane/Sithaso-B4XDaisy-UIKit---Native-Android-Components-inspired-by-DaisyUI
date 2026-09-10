@@ -588,8 +588,8 @@ Version=14
 @EndOfDesignText@
 #Region  Project Attributes
 	#ApplicationLabel: B4XDaisy UIKit
-	#VersionCode: 95
-	#VersionName: 0.95
+	#VersionCode: 96
+	#VersionName: 0.96
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: True
@@ -664,7 +664,7 @@ Private Sub FirstRunPinNeeded As Boolean
 	Try
 		File.WriteString(File.DirInternal, flagFile, "1")
 	Catch
-		Log("PinToHome flag write failed: " & LastException)
+		If B4XDaisyApp.DebugLogs Then Log("PinToHome flag write failed: " & LastException)
 	End Try
 	Return True
 	#Else
@@ -683,7 +683,7 @@ Private Sub TryPinToHomeScreen
 		jo.InitializeStatic("com.sithaso.daisyuikit.main")
 		jo.RunMethod("_pinToHome", Null)
 	Catch
-		Log("TryPinToHomeScreen failed: " & LastException)
+		If B4XDaisyApp.DebugLogs Then Log("TryPinToHomeScreen failed: " & LastException)
 	End Try
 	#End If
 End Sub
@@ -709,7 +709,7 @@ Sub Activity_Resume
 	Try
 		If FirstRunPinNeeded Then TryPinToHomeScreen
 	Catch
-		Log("PinToHome: " & LastException)
+		If B4XDaisyApp.DebugLogs Then Log("PinToHome: " & LastException)
 	End Try
 	B4XPages.Delegate.Activity_Resume
 End Sub

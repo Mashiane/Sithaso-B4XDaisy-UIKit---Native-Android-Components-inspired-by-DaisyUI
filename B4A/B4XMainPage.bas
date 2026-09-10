@@ -145,6 +145,8 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	'Initialize global loader unconditionally to prevent NullPointerExceptions
 	AppLoader.Initialize(Me, "AppLoader")
 	SweetAlert.Initialize(Me, Root, "SweetAlert")
+	'dont log trace logs
+	B4XDaisyApp.DebugLogs = False
 
 	Sleep(0)
 	'Attach and show global loader during ShowSplashScreen initialization
@@ -159,7 +161,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	ShowPageWithLoader("dashboard")
 	'just check if animations are enabled
 	Dim bHasAnimation As Boolean = B4XDaisyVariants.AreSystemAnimationsEnabled
-	Log($"Animation Enabled: ${bHasAnimation}"$)
+	If B4XDaisyApp.DebugLogs Then Log($"Animation Enabled: ${bHasAnimation}"$)
 	If bHasAnimation = False Then
 		'ensure animation is turned on
 		B4XDaisyVariants.ForceAnimatorDurationScale(1)
@@ -433,21 +435,21 @@ Public Sub ShowPageWithLoader(PageId As String)
 	Try
 		Dim pInStack As Boolean = PageInStack(PageId)
 		If pInStack Then
-			Log($"Page Already In Stack: ${PageId}"$)
+			If B4XDaisyApp.DebugLogs Then Log($"Page Already In Stack: ${PageId}"$)
 		End If
 		AppLoader.Show(Root.Parent)
 		Sleep(150)
 		B4XPages.ShowPage(PageId)
 		'how many stacked pages are there
 		Dim iStacked As Int = CountStackedPages
-		Log($"Stacked Pages Count: ${iStacked}"$)
+		If B4XDaisyApp.DebugLogs Then Log($"Stacked Pages Count: ${iStacked}"$)
 	Catch
-		Log("B4XMainPage.ShowPageWithLoader: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.ShowPageWithLoader: " & LastException.Message)
 		#If B4A
 		Dim jo As JavaObject = LastException
 		jo.RunMethod("printStackTrace", Null)
 		#End If
-		Log("B4XMainPage.ShowPageWithLoader: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.ShowPageWithLoader: " & LastException.Message)
 		If AppLoader.IsInitialized Then AppLoader.Hide
 	End Try
 End Sub
@@ -465,12 +467,12 @@ Public Sub ClosePageWithLoader(Page As Object)
 		Sleep(150)
 		B4XPages.ClosePage(Page)
 	Catch
-		Log("B4XMainPage.ClosePageWithLoader: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.ClosePageWithLoader: " & LastException.Message)
 		#If B4A
 		Dim jo As JavaObject = LastException
 		jo.RunMethod("printStackTrace", Null)
 		#End If
-		Log("B4XMainPage.ClosePageWithLoader: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.ClosePageWithLoader: " & LastException.Message)
 		If AppLoader.IsInitialized Then AppLoader.Hide
 	End Try
 End Sub
@@ -539,11 +541,11 @@ End Sub
 ' Position supports: "top-right", "top-left", "top-center", "bottom-left", "bottom-right", "middle-center" (default "top-right").
 ' The alert automatically dismisses after DurationMs. If DurationMs is 0, it stays until tapped.
 Public Sub ShowToastAlert(Title As String, Text As String, AlertVariant As String, DurationMs As Int, Position As String) As B4XDaisyAlert
-	If ActiveAlert.IsInitialized Then
+	If ActiveAlert <> Null And ActiveAlert.IsInitialized Then
 		Try
 			ActiveAlert.RemoveViewFromParent
 		Catch
-			Log("B4XMainPage.ShowToastAlert: " & LastException.Message)
+			If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.ShowToastAlert: " & LastException.Message)
 		End Try
 		ActiveAlert = Null
 	End If
@@ -640,7 +642,7 @@ Private Sub DismissAlertAfterDelay(Alert1 As B4XDaisyAlert, DelayMs As Int)
 			ActiveAlert = Null
 		End If
 	Catch
-		Log("B4XMainPage.DismissAlertAfterDelay: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.DismissAlertAfterDelay: " & LastException.Message)
 	End Try
 End Sub
 
@@ -650,7 +652,7 @@ Private Sub GlobalAlert_Click(Tag As Object)
 		alert.RemoveViewFromParent
 		If ActiveAlert = alert Then ActiveAlert = Null
 	Catch
-		Log("B4XMainPage.GlobalAlert_Click: " & LastException.Message)
+		If B4XDaisyApp.DebugLogs Then Log("B4XMainPage.GlobalAlert_Click: " & LastException.Message)
 	End Try
 End Sub
 

@@ -504,14 +504,14 @@ Private Sub btnValidateRange_Click (Tag As Object)
 End Sub
 
 Private Sub rangeIconVol_Changed(Value As Int)
-	Log("rangeIconVol Changed: " & Value)
+	If B4XDaisyApp.DebugLogs Then Log("rangeIconVol Changed: " & Value)
 End Sub
 
 Private Sub rangePermTip_Changed(Value As Int)
-	Log("rangePermTip Changed: " & Value)
+	If B4XDaisyApp.DebugLogs Then Log("rangePermTip Changed: " & Value)
 End Sub
 
 Private Sub rangeBright_Changed(Value As Int)
-	Log("rangeBright Changed: " & Value)
+	If B4XDaisyApp.DebugLogs Then Log("rangeBright Changed: " & Value)
 End Sub
 #End Region

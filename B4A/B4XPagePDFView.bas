@@ -77,14 +77,14 @@ Private Sub Navbar_BackClick (Tag As Object)
 End Sub
 
 Private Sub pdfViewer_LoadComplete(Pages As Int)
-	Log($"PDF Loaded successfully. Total pages: ${Pages}"$)
+	If B4XDaisyApp.DebugLogs Then Log($"PDF Loaded successfully. Total pages: ${Pages}"$)
 End Sub
 
 Private Sub pdfViewer_PageChanged(Page As Int, TotalPages As Int)
-	Log($"PDF Page Changed: ${Page + 1} / ${TotalPages}"$)
+	If B4XDaisyApp.DebugLogs Then Log($"PDF Page Changed: ${Page + 1} / ${TotalPages}"$)
 End Sub
 
 Private Sub pdfViewer_OnTap(Target As Object)
-	Log("PDF Tapped")
+	If B4XDaisyApp.DebugLogs Then Log("PDF Tapped")
 End Sub
 #End Region

@@ -294,11 +294,11 @@ Private Sub B4XPage_Disappear
 End Sub
 
 Private Sub pVolume_Changed (Value As Float)
-	Log("pVolume Changed: " & Value)
+	If B4XDaisyApp.DebugLogs Then Log("pVolume Changed: " & Value)
 End Sub
 
 Private Sub pVolumeInline_Changed (Value As Float)
-	Log("pVolumeInline Changed: " & Value)
+	If B4XDaisyApp.DebugLogs Then Log("pVolumeInline Changed: " & Value)
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)

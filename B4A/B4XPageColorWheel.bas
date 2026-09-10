@@ -261,7 +261,7 @@ Private Sub OpenColorPickerSheet
 			Try
 				cwInSheet.setHex(currentHex)
 			Catch
-				Log("B4XPageColorWheel.OpenColorPickerSheet: " & LastException.Message)
+				If B4XDaisyApp.DebugLogs Then Log("B4XPageColorWheel.OpenColorPickerSheet: " & LastException.Message)
 			End Try
 		End If
 		sheetCW.Present
