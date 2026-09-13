@@ -54,6 +54,7 @@ Sub Class_Globals
     Private btnTop As B4XDaisyButton
     Private btnBottom As B4XDaisyButton
     Private btnLock As B4XDaisyButton
+    Private focusedInput As B4XDaisyInput
 End Sub
 
 ''' <summary>
@@ -258,3 +259,48 @@ Private Sub btnLock_Click (Tag As Object)
         B4XPages.MainPage.ShowToast("Scroll " & IIf(pageScroll.ScrollEnabled, "enabled", "locked"), False)
     #End If
 End Sub
+
+
+#If B4A
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+    If pageScroll.IsInitialized Then pageScroll.IME_HeightChanged(iNewHeight, iOldHeight, focusedInput)
+End Sub
+
+Public Sub ScrollFocusedInputIntoView
+    Try
+        If focusedInput.IsInitialized = False Or pageScroll.IsInitialized = False Then Return
+        pageScroll.ScrollToViewWithMargin(focusedInput.View, 28dip, True)
+    Catch
+        Log("B4XPageScrollDemo.ScrollFocusedInputIntoView: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub HandleInputFocus(bHasFocus As Boolean)
+    Try
+        If bHasFocus Then
+            If Sender Is B4XDaisyInput Then
+                focusedInput = Sender
+                If pageScroll.IsInitialized And pageScroll.mBase.Height < Root.Height Then
+                    Sleep(50)
+                    ScrollFocusedInputIntoView
+                End If
+            End If
+        Else
+            If Sender = focusedInput Then
+                Dim emptyInput As B4XDaisyInput
+                focusedInput = emptyInput
+            End If
+        End If
+    Catch
+        Log("B4XPageScrollDemo.HandleInputFocus: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub txtEmail_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(bHasFocus)
+End Sub
+
+Private Sub txtPassword_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(bHasFocus)
+End Sub
+#End If

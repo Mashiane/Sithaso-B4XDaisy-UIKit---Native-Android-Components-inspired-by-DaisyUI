@@ -16,6 +16,16 @@ Version=13.4
         Private ROW_GAP As Int = 10dip
         Private ITEM_HEIGHT As Int = 40dip
         Private Samples As List
+        Private focusedInput As B4XDaisyInput
+        #If B4A
+        Private ime As IME
+        #End If
+        Private inpImeNext1 As B4XDaisyInput
+        Private inpImeNext2 As B4XDaisyInput
+        Private inpImeSearch As B4XDaisyInput
+        Private inpImeSend As B4XDaisyInput
+        Private inpImeGo As B4XDaisyInput
+        Private inpImeDone As B4XDaisyInput
     End Sub
 #End Region
 
@@ -41,6 +51,9 @@ Version=13.4
         pnlContent = pageScroll.Panel
 
         Samples.Initialize
+        #If B4A
+        ime.Initialize("IME")
+        #End If
     End Sub
 
     Private Sub B4XPage_Appear
@@ -55,6 +68,35 @@ Version=13.4
         If pageScroll.IsInitialized Then pageScroll.SetLayoutAnimated(0, 0, 0, Width, Height)
         LayoutInputs(Width, Height)
     End Sub
+
+    #If B4A
+    Public Sub IME_HeightChanged(NewHeight As Int, OldHeight As Int)
+        Try
+            If pageScroll.IsInitialized = False Then Return
+            If NewHeight < OldHeight Then
+                ' Keyboard opened: shrink page container to available viewport height
+                pageScroll.SetLayoutAnimated(0, 0, 0, Root.Width, NewHeight)
+                Sleep(50)
+                ScrollFocusedInputIntoView
+            Else
+                ' Keyboard closed: restore page container to full screen height
+                pageScroll.SetLayoutAnimated(0, 0, 0, Root.Width, Root.Height)
+            End If
+        Catch
+            Log("B4XPageInput.IME_HeightChanged: " & LastException.Message)
+        End Try
+    End Sub
+
+    Public Sub ScrollFocusedInputIntoView
+        Try
+            If focusedInput.IsInitialized = False Then Return
+            If pageScroll.IsInitialized = False Then Return
+            pageScroll.ScrollToViewWithMargin(focusedInput.View, 28dip, True)
+        Catch
+            Log("B4XPageInput.ScrollFocusedInputIntoView: " & LastException.Message)
+        End Try
+    End Sub
+    #End If
 #End Region
 
 #Region Sample Creation
@@ -201,7 +243,8 @@ Version=13.4
         Samples.Add(c8b)
 
         '-
-        'Example 8: Floating label (Label + FloatingLabel=True)
+        'Example 8: Floating label (Label + FloatingLabel=True
+
         '-
         AddSectionTitle("Floating label")
         Dim c8 As B4XDaisyInput
@@ -378,7 +421,8 @@ Version=13.4
         Samples.Add(c18)
 
         '-
-        'Example 19: Search input (InputType = search)
+        'Example 19: Search input (InputType = search
+
         '-
         AddSectionTitle("Search input")
         Dim c19 As B4XDaisyInput
@@ -414,6 +458,87 @@ Version=13.4
         c20b.InputType = "email"
         c20b.Tag = "input-required-floating"
         Samples.Add(c20b)
+
+        '-
+        'Example 21: IME Actions & Soft Keyboard
+        '-
+        AddSectionTitle("IME Actions & Soft Keyboard")
+
+        inpImeNext1.Initialize(Me, "inpIme")
+        inpImeNext1.AddToParent(pnlContent, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        inpImeNext1.LabelAbove = "IME: Action Next (Field 1)"
+        inpImeNext1.Placeholder = "Tap Next on keyboard to advance"
+
+        inpImeNext1.ImeOptions = "actionNext"
+
+        inpImeNext1.Tag = "ime-next-1"
+
+        Samples.Add(inpImeNext1)
+
+        inpImeNext2.Initialize(Me, "inpIme")
+        inpImeNext2.AddToParent(pnlContent, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        inpImeNext2.LabelAbove = "IME: Action Next (Field 2)"
+        inpImeNext2.Placeholder = "Tap Next to advance to Search"
+
+        inpImeNext2.ImeOptions = "actionNext"
+
+        inpImeNext2.Tag = "ime-next-2"
+
+        Samples.Add(inpImeNext2)
+
+        inpImeSearch.Initialize(Me, "inpIme")
+        inpImeSearch.AddToParent(pnlContent, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        inpImeSearch.LabelAbove = "IME: Action Search"
+
+        inpImeSearch.Placeholder = "Tap Search button on keyboard"
+
+        inpImeSearch.ImeOptions = "actionSearch"
+
+        inpImeSearch.IconLeft = "magnifying-glass-solid.svg"
+
+        inpImeSearch.Tag = "ime-search"
+
+        Samples.Add(inpImeSearch)
+
+        inpImeSend.Initialize(Me, "inpIme")
+        inpImeSend.AddToParent(pnlContent, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        inpImeSend.LabelAbove = "IME: Action Send"
+
+        inpImeSend.Placeholder = "Tap Send button on keyboard"
+
+        inpImeSend.ImeOptions = "actionSend"
+
+        inpImeSend.IconLeft = "envelope-regular.svg"
+
+        inpImeSend.Tag = "ime-send"
+
+        Samples.Add(inpImeSend)
+
+        inpImeGo.Initialize(Me, "inpIme")
+        inpImeGo.AddToParent(pnlContent, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        inpImeGo.LabelAbove = "IME: Action Go"
+
+        inpImeGo.Placeholder = "Tap Go button on keyboard"
+
+        inpImeGo.ImeOptions = "actionGo"
+
+        inpImeGo.InputType = "url"
+
+        inpImeGo.Tag = "ime-go"
+
+        Samples.Add(inpImeGo)
+
+        inpImeDone.Initialize(Me, "inpIme")
+        inpImeDone.AddToParent(pnlContent, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
+        inpImeDone.LabelAbove = "IME: Action Done"
+
+        inpImeDone.Placeholder = "Tap Done checkmark on keyboard"
+
+        inpImeDone.ImeOptions = "actionDone"
+
+        inpImeDone.Tag = "ime-done"
+
+        Samples.Add(inpImeDone)
     End Sub
 
     Private Sub AddSectionTitle(Title As String)
@@ -455,7 +580,10 @@ Version=13.4
             End If
         Next
 
-        pnlContent.Height = Max(Height, y + PAGE_PAD)
+        pnlContent.Height = Max(Height, y + PAGE_PAD + 200dip)
+        #If B4A
+        pageScroll.ScrollView.Panel.Height = pnlContent.Height
+        #End If
     End Sub
 #End Region
 
@@ -465,11 +593,98 @@ Version=13.4
 
     Private Sub inp_EnterPressed(Text As String)
         #If B4A
-            B4XPages.MainPage.ShowToast("Enter pressed: " & Text, False)
+            Dim sTag As String = ""
+            If Sender Is B4XDaisyInput Then
+                Dim inp As B4XDaisyInput = Sender
+                sTag = inp.Tag
+            End If
+            B4XPages.MainPage.ShowToast("Enter: " & Text & IIf(sTag.Length > 0, " (" & sTag & ")", ""), False)
         #End If
     End Sub
 
     Private Sub inp_FocusChanged(HasFocus As Boolean)
+        Try
+            If HasFocus Then
+                If Sender Is B4XDaisyInput Then
+                    focusedInput = Sender
+                    #If B4A
+                    If pageScroll.IsInitialized And pageScroll.mBase.Height < Root.Height Then
+                        Sleep(50)
+                        ScrollFocusedInputIntoView
+                    End If
+                    #End If
+                End If
+            Else
+                If Sender = focusedInput Then
+                    Dim emptyInput As B4XDaisyInput
+                    focusedInput = emptyInput
+                End If
+            End If
+        Catch
+            Log("B4XPageInput.inp_FocusChanged: " & LastException.Message)
+        End Try
+    End Sub
+
+    Private Sub inpClick_FocusChanged(HasFocus As Boolean)
+        inp_FocusChanged(HasFocus)
+    End Sub
+
+    Private Sub inpMulti_FocusChanged(HasFocus As Boolean)
+        inp_FocusChanged(HasFocus)
+    End Sub
+
+    Private Sub inpSearch_FocusChanged(HasFocus As Boolean)
+        inp_FocusChanged(HasFocus)
+    End Sub
+
+    Private Sub inpIme_FocusChanged(HasFocus As Boolean)
+        inp_FocusChanged(HasFocus)
+    End Sub
+
+    Private Sub inpClick_EnterPressed(Text As String)
+        inp_EnterPressed(Text)
+    End Sub
+
+    Private Sub inpMulti_EnterPressed(Text As String)
+        inp_EnterPressed(Text)
+    End Sub
+
+    Private Sub inpSearch_EnterPressed(Text As String)
+        inp_EnterPressed(Text)
+    End Sub
+
+    Private Sub inpIme_EnterPressed(Text As String)
+        #If B4A
+            Try
+                If Sender Is B4XDaisyInput Then
+                    Dim inp As B4XDaisyInput = Sender
+                    Select inp.Tag
+                        Case "ime-next-1"
+                            B4XPages.MainPage.ShowToast("Next pressed -> focus Field 2", False)
+                            If inpImeNext2.IsInitialized Then inpImeNext2.RequestFocus
+                        Case "ime-next-2"
+                            B4XPages.MainPage.ShowToast("Next pressed -> focus Search", False)
+                            If inpImeSearch.IsInitialized Then inpImeSearch.RequestFocus
+                        Case "ime-search"
+                            B4XPages.MainPage.ShowToast("Search action triggered: " & Text, False)
+                            ime.HideKeyboard
+                        Case "ime-send"
+                            B4XPages.MainPage.ShowToast("Send action triggered: " & Text, False)
+                            ime.HideKeyboard
+                        Case "ime-go"
+                            B4XPages.MainPage.ShowToast("Go action triggered: " & Text, False)
+                            ime.HideKeyboard
+                        Case "ime-done"
+                            B4XPages.MainPage.ShowToast("Done action triggered: " & Text, False)
+                            ime.HideKeyboard
+                        Case Else
+                            inp_EnterPressed(Text)
+                    End Select
+                End If
+            Catch
+                Log("B4XPageInput.inpIme_EnterPressed: " & LastException.Message)
+            End Try
+        #End If
     End Sub
 
     Private Sub inp_Click(Tag As Object)

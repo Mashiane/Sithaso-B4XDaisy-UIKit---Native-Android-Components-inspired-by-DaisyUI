@@ -1,8 +1,8 @@
-﻿# Changelog - v0.96
+﻿# Changelog - v0.97
 
-Generated on: 2026-09-11
+Generated on: 2026-09-13
 
-Compare: v0.95 -> v0.96
+Compare: v0.96 -> v0.97
 
 Repository: https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI
 
@@ -11,7 +11,7 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 ## Summary
 
 - New components: 0
-- Modified components: 59
+- Modified components: 7
 - Removed components: 0
 
 ## New Files
@@ -20,65 +20,13 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Modified Files
 
-- B4XDaisyActionSheet.bas
-- B4XDaisyAlert.bas
-- B4XDaisyAnimation.bas
-- B4XDaisyApp.bas
-- B4XDaisyAura.bas
-- B4XDaisyBadge.bas
-- B4XDaisyBoomMenu.bas
-- B4XDaisyButton.bas
-- B4XDaisyCanvasSpinner.bas
-- B4XDaisyCard.bas
-- B4XDaisyCardTitle.bas
-- B4XDaisyCarousel.bas
-- B4XDaisyCarouselItem.bas
-- B4XDaisyCheckbox.bas
-- B4XDaisyCollapseContent.bas
-- B4XDaisyColorWheel.bas
-- B4XDaisyCountdown.bas
-- B4XDaisyCountdownItem.bas
 - B4XDaisyDashboard.bas
-- B4XDaisyDiff.bas
-- B4XDaisyDivider.bas
-- B4XDaisyDivision.bas
-- B4XDaisyDock.bas
-- B4XDaisyDropdown.bas
-- B4XDaisyEnjoyHint.bas
-- B4XDaisyFab.bas
-- B4XDaisyFieldset.bas
-- B4XDaisyFileHandler.bas
-- B4XDaisyFileInput.bas
-- B4XDaisyFlexPanel.bas
-- B4XDaisyGrid.bas
-- B4XDaisyHover3d.bas
-- B4XDaisyIconButton.bas
-- B4XDaisyImage.bas
-- B4XDaisyIndicator.bas
-- B4XDaisyInfoCard.bas
 - B4XDaisyInput.bas
-- B4XDaisyKbd.bas
-- B4XDaisyList.bas
-- B4XDaisyModal.bas
-- B4XDaisyNavbar.bas
-- B4XDaisyPDFView.bas
-- B4XDaisyPicker.bas
-- B4XDaisyPocketBase.bas
-- B4XDaisyRadialProgress.bas
-- B4XDaisyRadio.bas
+- B4XDaisyPageScroll.bas
 - B4XDaisySelect.bas
-- B4XDaisySheetModal.bas
-- B4XDaisySignaturePad.bas
-- B4XDaisyStack.bas
 - B4XDaisyStat.bas
-- B4XDaisyStatus.bas
-- B4XDaisySvgIcon.bas
-- B4XDaisySwap.bas
-- B4XDaisyText.bas
-- B4XDaisyToast.bas
-- B4XDaisyToggle.bas
-- B4XDaisyTooltip.bas
-- B4XDaisyVariants.bas
+- B4XDaisyStatItem.bas
+- B4XDaisySweetAlert.bas
 
 ## Removed Files
 

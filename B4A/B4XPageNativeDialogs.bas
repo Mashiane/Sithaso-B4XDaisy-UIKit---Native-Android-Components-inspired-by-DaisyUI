@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -130,5 +130,13 @@ Private Sub inpTime12_TimeSelected (Hour As Int, Minute As Int)
 	Dim h12 As Int = Hour Mod 12
 	If h12 = 0 Then h12 = 12
 	B4XPages.MainPage.ShowToast("12h Time: " & NumberFormat(h12, 2, 0) & ":" & NumberFormat(Minute, 2, 0) & " " & ampm, False)
+End Sub
+
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+	Try
+		If pageScroll.IsInitialized Then pageScroll.IME_HeightChanged(iNewHeight, iOldHeight, Null)
+	Catch
+		Log("B4XPageNativeDialogs.IME_HeightChanged: " & LastException.Message)
+	End Try
 End Sub
 #End Region

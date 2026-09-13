@@ -588,8 +588,8 @@ Version=14
 @EndOfDesignText@
 #Region  Project Attributes
 	#ApplicationLabel: B4XDaisy UIKit
-	#VersionCode: 96
-	#VersionName: 0.96
+	#VersionCode: 97
+	#VersionName: 0.97
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: True
@@ -618,7 +618,6 @@ Version=14
 #AdditionalJar: com.android.support:support-v4
 #AdditionalJar: com.google.android.gms:play-services-location
 #AdditionalJar: android-pdf-viewer.aar
-#AdditionalJar: com.android.support:support-v4
 #AdditionalJar: Pdfium.aar
 
 'Download URLs:
@@ -646,6 +645,13 @@ Sub Activity_Create (FirstTime As Boolean)
 End Sub
 
 Sub IME_HeightChanged (NewHeight As Int, OldHeight As Int)
+	Dim top As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If top <> Null And top.Root.IsInitialized Then
+		If top.Root.Height <> NewHeight Then
+			top.Root.SetLayoutAnimated(0, 0, 0, Activity.Width, NewHeight)
+			B4XPages.GetManager.RaiseEvent(top, "B4XPage_Resize", Array(Activity.Width, NewHeight))
+		End If
+	End If
 	B4XPages.GetManager.RaiseEvent(B4XPages.GetManager.GetTopPage, "IME_HeightChanged", Array(NewHeight, OldHeight))
 End Sub
 
@@ -656,38 +662,7 @@ Public Sub ShowResolutionDialog (SettingsStatus As LocationSettingsStatus) As Re
 End Sub
 
 #Region Pin to Home Screen
-' Returns True only on the very first launch (persisted flag in DirInternal).
-Private Sub FirstRunPinNeeded As Boolean
-	#If B4A
-	Dim flagFile As String = "daisy_pin_asked.dat"
-	If File.Exists(File.DirInternal, flagFile) Then Return False
-	Try
-		File.WriteString(File.DirInternal, flagFile, "1")
-	Catch
-		If B4XDaisyApp.DebugLogs Then Log("PinToHome flag write failed: " & LastException)
-	End Try
-	Return True
-	#Else
-		Return False
-	#End If
-End Sub
-
-' Asks the default launcher to pin a B4XDaisy UIKit shortcut on the home screen.
-' Shows the system Add automatically? dialog (a single tap by the user). No-op below API 26.
-Private Sub TryPinToHomeScreen
-	'The actual work is done in inline Java (_pinToHome) to avoid JavaObject
-	'constructor/method type-matching issues (Context / CharSequence params).
-	#If B4A
-	Try
-		Dim jo As JavaObject
-		jo.InitializeStatic("com.sithaso.daisyuikit.main")
-		jo.RunMethod("_pinToHome", Null)
-	Catch
-		If B4XDaisyApp.DebugLogs Then Log("TryPinToHomeScreen failed: " & LastException)
-	End Try
-	#End If
-End Sub
-
+' Pin to home screen disabled
 #End Region
 
 'Template version: B4A-1.01
@@ -704,14 +679,23 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 End Sub
 
 Sub Activity_Resume
-	' One-time prompt: ask the launcher to pin the app icon to the home screen.
+	' One-time prompt: ask the launcher to pin the app icon to the home screen (disabled).
 	' Uses ShortcutManager.requestPinShortcut (Android 8+). Skipped on older devices.
-	Try
-		If FirstRunPinNeeded Then TryPinToHomeScreen
-	Catch
-		If B4XDaisyApp.DebugLogs Then Log("PinToHome: " & LastException)
-	End Try
+	'Try
+	'	If FirstRunPinNeeded Then TryPinToHomeScreen
+	'Catch
+	'	If B4XDaisyApp.DebugLogs Then Log("PinToHome: " & LastException)
+	'End Try
 	B4XPages.Delegate.Activity_Resume
+
+	' Ensure top page root matches the actual stabilized activity dimensions
+	Dim top As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If top <> Null And top.Root.IsInitialized Then
+		If top.Root.Width <> Activity.Width Or top.Root.Height <> Activity.Height Then
+			top.Root.SetLayoutAnimated(0, 0, 0, Activity.Width, Activity.Height)
+			B4XPages.GetManager.RaiseEvent(top, "B4XPage_Resize", Array(Activity.Width, Activity.Height))
+		End If
+	End If
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
@@ -733,31 +717,3 @@ End Sub
 '}
 '#End If
 #End Region
-
-#If Java
-public static void _pinToHome() {
-	try {
-		android.app.Activity act = mostCurrent;
-		if (act == null) return;
-		if (android.os.Build.VERSION.SDK_INT < 26) return;
-		android.content.Context ctx = act;
-		android.content.pm.ShortcutManager sm =
-			(android.content.pm.ShortcutManager) ctx.getSystemService(android.content.Context.SHORTCUT_SERVICE);
-		if (sm == null) return;
-		if (!sm.isRequestPinShortcutSupported()) return;
-		String pkg = ctx.getPackageName();
-		int iconResId = ctx.getResources().getIdentifier("icon", "drawable", pkg);
-		android.content.pm.ShortcutInfo.Builder b = new android.content.pm.ShortcutInfo.Builder(ctx, "daisy_main");
-		b.setShortLabel("Daisy UIKit");
-		b.setLongLabel("B4XDaisy UIKit");
-		if (iconResId != 0) b.setIcon(android.graphics.drawable.Icon.createWithResource(ctx, iconResId));
-		android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_MAIN);
-		intent.addCategory(android.content.Intent.CATEGORY_LAUNCHER);
-		intent.setClassName(pkg, pkg + ".main");
-		b.setIntent(intent);
-		sm.requestPinShortcut(b.build(), null);
-	} catch (Throwable t) {
-		android.util.Log.w("B4A", "PinToHome failed", t);
-	}
-}
-#End If

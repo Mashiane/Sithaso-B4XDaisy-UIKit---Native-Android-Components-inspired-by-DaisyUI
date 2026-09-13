@@ -435,6 +435,32 @@ End Sub
 #End Region
 
 #Region Helpers
+' Main forwards IME_HeightChanged to the top page; relay it to any open
+' SweetAlert so the modal lifts above the keyboard instantly.
+' (Timer polling inside SweetAlert remains as fallback.)
+Public Sub IME_HeightChanged(NewHeight As Int, OldHeight As Int)
+	ForwardIME(swalText, NewHeight, OldHeight)
+	ForwardIME(swalPassword, NewHeight, OldHeight)
+	ForwardIME(swalTextarea, NewHeight, OldHeight)
+	ForwardIME(swalNumber, NewHeight, OldHeight)
+	ForwardIME(swalTel, NewHeight, OldHeight)
+	ForwardIME(swalRange, NewHeight, OldHeight)
+	ForwardIME(swalRating, NewHeight, OldHeight)
+	ForwardIME(swalSelect, NewHeight, OldHeight)
+	ForwardIME(swalRadioGroup, NewHeight, OldHeight)
+	ForwardIME(swalCheckGroup, NewHeight, OldHeight)
+	ForwardIME(swalToggleGroup, NewHeight, OldHeight)
+	ForwardIME(swalCheckSingle, NewHeight, OldHeight)
+	ForwardIME(swalToggleMulti, NewHeight, OldHeight)
+End Sub
+
+Private Sub ForwardIME(s As B4XDaisySweetAlert, NewHeight As Int, OldHeight As Int)
+	Try
+		s.IME_HeightChanged(NewHeight, OldHeight)
+	Catch
+	End Try
+End Sub
+
 Private Sub ShowToast(Msg As String)
 	B4XPages.MainPage.ShowToast(Msg, False)
 End Sub

@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group
 ModulesStructureVersion=1
 Type=Class
@@ -178,7 +178,7 @@ End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
 	If AppLoader.IsInitialized Then AppLoader.Resize(Width, Height)
-	If SweetAlert.IsInitialized And SweetAlert.Visible Then
+	If SweetAlert.View.IsInitialized And SweetAlert.View.Visible Then
 		SweetAlert.SetLayoutAnimated(0, 0, 0, Width, Height)
 		SweetAlert.Refresh
 	End If
@@ -486,6 +486,15 @@ Sub PageResume
 End Sub
 
 Public Sub Page_Ready
+	#If B4A
+	Dim top As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If top <> Null And top.Root.IsInitialized And Root.Parent.IsInitialized Then
+		If top.Root.Width <> Root.Parent.Width Or top.Root.Height <> Root.Parent.Height Then
+			top.Root.SetLayoutAnimated(0, 0, 0, Root.Parent.Width, Root.Parent.Height)
+			B4XPages.GetManager.RaiseEvent(top, "B4XPage_Resize", Array(Root.Parent.Width, Root.Parent.Height))
+		End If
+	End If
+	#End If
 	If AppLoader.IsInitialized Then AppLoader.Hide
 End Sub
 

@@ -16,6 +16,7 @@ Version=13.4
         Private PAGE_PAD As Int = 12dip
         Private SECTION_GAP As Int = 24dip
         Private ITEM_HEIGHT As Int = 80dip ' Standard height for textareas
+        Private focusedInput As B4XDaisyInput
     End Sub
 #End Region
 
@@ -116,7 +117,7 @@ Version=13.4
         For i = 0 To colorList.Size - 1
             Dim v As String = colorList.Get(i)
             Dim cc As B4XDaisyInput
-            cc.Initialize(Me, "cc" & i)
+            cc.Initialize(Me, "txt")
             cc.SingleLine = False
             cc.AddToParent(pnlHost, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
             cc.Variant = v
@@ -141,7 +142,7 @@ Version=13.4
             Dim sz As String = sizeVals.Get(i)
             Dim sl As String = sizeLabels.Get(i)
             Dim cs As B4XDaisyInput
-            cs.Initialize(Me, "cs" & i)
+            cs.Initialize(Me, "txt")
             cs.SingleLine = False
             cs.AddToParent(pnlHost, PAGE_PAD, 0, maxW, ITEM_HEIGHT)
             cs.Size = sz
@@ -289,7 +290,10 @@ Version=13.4
             Next
         Next
 
-        pnlHost.Height = Max(Height, y + PAGE_PAD)
+        pnlHost.Height = Max(Height, y + PAGE_PAD + 200dip)
+        #If B4A
+        svHost.Panel.Height = pnlHost.Height
+        #End If
     End Sub
 
     Private Sub B4XPage_Resize(Width As Int, Height As Int)
@@ -302,7 +306,79 @@ Version=13.4
     Private Sub txt_TextChanged(Old As String, New As String)
     End Sub
 
-    Private Sub txt_FocusChanged(HasFocus As Boolean)
+    #If B4A
+    Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+        Try
+            If svHost.IsInitialized = False Then Return
+            If iNewHeight < iOldHeight Then
+                ' Keyboard opened: shrink scroll container to available viewport height
+                svHost.SetLayoutAnimated(0, 0, 0, Root.Width, iNewHeight)
+                Sleep(50)
+                ScrollFocusedInputIntoView
+            Else
+                ' Keyboard closed: restore scroll container to full screen height
+                svHost.SetLayoutAnimated(0, 0, 0, Root.Width, Root.Height)
+            End If
+        Catch
+            Log("B4XPageTextarea.IME_HeightChanged: " & LastException.Message)
+        End Try
+    End Sub
+
+    Public Sub ScrollFocusedInputIntoView
+        Try
+            If focusedInput.IsInitialized = False Or svHost.IsInitialized = False Or pnlHost.IsInitialized = False Then Return
+            Dim iTargetY As Int = focusedInput.View.Top
+            Dim vParent As B4XView = focusedInput.View.Parent
+            Dim iGuard As Int = 0
+            Do While vParent.IsInitialized And vParent <> pnlHost And iGuard < 16
+                iTargetY = iTargetY + vParent.Top
+                vParent = vParent.Parent
+                iGuard = iGuard + 1
+            Loop
+            Dim iMaxScroll As Int = Max(0, pnlHost.Height - svHost.Height)
+            Dim iTargetScroll As Int = Max(0, Min(iTargetY - 28dip, iMaxScroll))
+            Try
+                Dim joHost As JavaObject = svHost
+                joHost.RunMethod("smoothScrollTo", Array As Object(0, iTargetScroll))
+            Catch
+                Log("B4XPageTextarea.ScrollFocusedInputIntoView: " & LastException.Message)
+                svHost.ScrollPosition = iTargetScroll
+            End Try
+        Catch
+            Log("B4XPageTextarea.ScrollFocusedInputIntoView: " & LastException.Message)
+        End Try
+    End Sub
+    #End If
+
+    Private Sub HandleInputFocus(bHasFocus As Boolean)
+        Try
+            If bHasFocus Then
+                If Sender Is B4XDaisyInput Then
+                    focusedInput = Sender
+                    #If B4A
+                    If svHost.IsInitialized And svHost.Height < Root.Height Then
+                        Sleep(50)
+                        ScrollFocusedInputIntoView
+                    End If
+                    #End If
+                End If
+            Else
+                If Sender = focusedInput Then
+                    Dim emptyInput As B4XDaisyInput
+                    focusedInput = emptyInput
+                End If
+            End If
+        Catch
+            Log("B4XPageTextarea.HandleInputFocus: " & LastException.Message)
+        End Try
+    End Sub
+
+    Private Sub txt_FocusChanged(bHasFocus As Boolean)
+        HandleInputFocus(bHasFocus)
+    End Sub
+
+    Private Sub txtAuto_FocusChanged(bHasFocus As Boolean)
+        HandleInputFocus(bHasFocus)
     End Sub
 
     Private Sub txt_Click(Tag As Object)

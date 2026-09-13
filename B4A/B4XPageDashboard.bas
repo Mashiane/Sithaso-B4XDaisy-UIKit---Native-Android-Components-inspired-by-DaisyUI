@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -16,24 +16,41 @@ Public Sub Initialize As Object
 	Return Me
 End Sub
 
-'no action bar
-Private Sub B4XPage_Appear
-	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
-End Sub
-
-Private Sub B4XPage_Created (Root1 As B4XView)
-	Root = Root1
+Private Sub B4XPage_Created (vRoot1 As B4XView)
+	Root = vRoot1
 	Root.Color = xui.Color_RGB(240, 244, 249)
 
 	Dashboard.Initialize(Me, "dash")
 	Dashboard.AddToParent(Root)
 	Dashboard.setBackgroundImage("janis-kloter-GipF6xThS6g-unsplash.jpg")
 	PopulateDashboard
-'	B4XPages.MainPage.SetStatusBarState(False)
+End Sub
+
+'no action bar
+Private Sub B4XPage_Appear
+	EnsureLayout
+	CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub
+
+Private Sub EnsureLayout
+	#If B4A
+	If Root.IsInitialized And Root.Parent.IsInitialized Then
+		If Root.Width <> Root.Parent.Width Or Root.Height <> Root.Parent.Height Then
+			Root.SetLayoutAnimated(0, 0, 0, Root.Parent.Width, Root.Parent.Height)
+		End If
+	End If
+	#End If
+	If Dashboard.IsReady Then
+		If Dashboard.mBase.Width <> Root.Width Or Dashboard.mBase.Height <> Root.Height Then
+			Dashboard.Resize(Root.Width, Root.Height)
+		End If
+	End If
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
-	Dashboard.Resize(Width, Height)
+	If Dashboard.IsReady Then
+		Dashboard.Resize(Width, Height)
+	End If
 End Sub
 
 Private Sub PopulateDashboard

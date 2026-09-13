@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -278,5 +278,13 @@ Private Sub btnApplySheet_Click(Tag As Object)
 	inpColor.setAppendColor(cwInSheet.getColor)
 	sheetCW.Dismiss(Null, "apply")
 	B4XPages.MainPage.ShowToastSuccess("Applied color: " & selectedHex, False)
+End Sub
+
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+	Try
+		If pageScroll.IsInitialized Then pageScroll.IME_HeightChanged(iNewHeight, iOldHeight, inpColor)
+	Catch
+		Log("B4XPageColorWheel.IME_HeightChanged: " & LastException.Message)
+	End Try
 End Sub
 #End Region

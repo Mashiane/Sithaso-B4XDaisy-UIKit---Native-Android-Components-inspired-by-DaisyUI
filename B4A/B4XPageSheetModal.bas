@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -406,5 +406,13 @@ Private Sub smOnline_DragMove(Data As Map)
 End Sub
 
 Private Sub smOnline_DragEnd(Data As Map)
+End Sub
+
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+	Try
+		' Sheet modals handle height dynamically
+	Catch
+		Log("B4XPageSheetModal.IME_HeightChanged: " & LastException.Message)
+	End Try
 End Sub
 #End Region

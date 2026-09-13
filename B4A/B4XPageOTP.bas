@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -32,6 +32,7 @@ Version=13.5
         Private otpCustom1, otpCustom2 As B4XDaisyOTP
         Private otpFocus1, otpFocus2, otpFocus3 As B4XDaisyOTP
         Private otpRounded1, otpRounded2, otpRounded3 As B4XDaisyOTP
+        Private focusedOtp As B4XDaisyOTP
     End Sub
 #End Region
 
@@ -476,9 +477,34 @@ Version=13.5
     End Sub
 
     Private Sub otp_Focus
+        Try
+            If Sender Is B4XDaisyOTP Then
+                focusedOtp = Sender
+                pageScroll.ScrollToViewWithMargin(focusedOtp.View, 28dip, True)
+            End If
+        Catch
+            Log("B4XPageOTP.otp_Focus: " & LastException.Message)
+        End Try
     End Sub
 
     Private Sub otp_Blur
+        Try
+            If Sender Is B4XDaisyOTP Then
+                If focusedOtp = Sender Then focusedOtp = Null
+            End If
+        Catch
+            Log("B4XPageOTP.otp_Blur: " & LastException.Message)
+        End Try
+    End Sub
+
+    Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+        Try
+            Dim targetView As Object = Null
+            If focusedOtp.IsInitialized Then targetView = focusedOtp.View
+            pageScroll.IME_HeightChanged(iNewHeight, iOldHeight, targetView)
+        Catch
+            Log("B4XPageOTP.IME_HeightChanged: " & LastException.Message)
+        End Try
     End Sub
 
     Private Sub otp_DescriptionClick

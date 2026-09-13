@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -13,6 +13,8 @@ Sub Class_Globals
     Private pnlContent As B4XView
     Private currentY As Int = 20dip
     Private gap As Int = 30dip
+    Private focusedView As B4XView
+    Private inpName As B4XDaisyInput
 End Sub
 
 Public Sub Initialize As Object
@@ -49,7 +51,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
     AddTitle("Fieldset variant backgrounds (borderless)")
     AddVariantBackgroundFieldsetCollection
 
-    pnlContent.Height = currentY + 36dip
+    pnlContent.Height = currentY + 36dip + 200dip
 End Sub
 
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
@@ -173,7 +175,6 @@ Private Sub AddRequiredFieldsetWithDaisyControls
     Dim contentW As Int = boxW - (fs.getPadding * 2dip)
     Dim y As Int = 0
 
-    Dim inpName As B4XDaisyInput
     inpName.Initialize(Me, "inpName")
     inpName.AddToParent(fs.GetContentPanel, 0, y, contentW, 40dip)
     inpName.setLabelAbove("Full Name")
@@ -375,4 +376,60 @@ End Sub
 
 Private Sub B4XPage_Appear
     CallSubDelayed(B4XPages.MainPage, "Page_Ready")
+End Sub
+
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+    Try
+        If scvContent.IsInitialized = False Then Return
+        scvContent.SetLayoutAnimated(0, 0, 0, Root.Width, iNewHeight)
+        If iNewHeight < Root.Height Then
+            Sleep(50)
+            ScrollToFocusedView
+        End If
+    Catch
+        Log("B4XPageFieldset.IME_HeightChanged: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub inpName_FocusChanged(bHasFocus As Boolean)
+    Try
+        If bHasFocus Then
+            focusedView = inpName.View
+            ScrollToFocusedView
+        Else
+            If focusedView = inpName.View Then focusedView = Null
+        End If
+    Catch
+        Log("B4XPageFieldset.inpName_FocusChanged: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub ScrollToFocusedView
+    Try
+        If focusedView.IsInitialized = False Or focusedView = Null Then Return
+        Dim iTop As Int = GetTopRelativeTo(focusedView, pnlContent)
+        Dim iTargetScroll As Int = Max(0, iTop - 20dip)
+        #If B4A
+        Dim jo As JavaObject = scvContent
+        jo.RunMethod("smoothScrollTo", Array(0, iTargetScroll))
+        #Else
+        scvContent.ScrollPosition = iTargetScroll
+        #End If
+    Catch
+        Log("B4XPageFieldset.ScrollToFocusedView: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub GetTopRelativeTo(vChild As B4XView, vAncestor As B4XView) As Int
+    Dim iTop As Int = 0
+    Dim vCurr As B4XView = vChild
+    Do While vCurr.IsInitialized And vCurr <> vAncestor
+        iTop = iTop + vCurr.Top
+        If vCurr.Parent.IsInitialized Then
+            vCurr = vCurr.Parent
+        Else
+            Exit
+        End If
+    Loop
+    Return iTop
 End Sub

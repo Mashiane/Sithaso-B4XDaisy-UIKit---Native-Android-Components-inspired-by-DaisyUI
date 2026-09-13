@@ -51,6 +51,7 @@ Sub Class_Globals
 	
 	' ELI15: Declared as global so we can request focus on it inside B4XPage_Appear (when the page slides into view).
 	Private inp2 As B4XDaisyInput
+	Private focusedInput As B4XDaisyInput
 End Sub
 #End Region
 
@@ -318,3 +319,52 @@ Private Sub btnDelete_Click(Tag As Object)
 	#End If
 End Sub
 #End Region
+
+
+#If B4A
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+    If pageScroll.IsInitialized Then pageScroll.IME_HeightChanged(iNewHeight, iOldHeight, focusedInput)
+End Sub
+
+Public Sub ScrollFocusedInputIntoView
+    Try
+        If focusedInput.IsInitialized = False Or pageScroll.IsInitialized = False Then Return
+        pageScroll.ScrollToViewWithMargin(focusedInput.View, 28dip, True)
+    Catch
+        Log("B4XPageNavScrollDock.ScrollFocusedInputIntoView: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub HandleInputFocus(bHasFocus As Boolean)
+    Try
+        If bHasFocus Then
+            If Sender Is B4XDaisyInput Then
+                focusedInput = Sender
+                If pageScroll.IsInitialized And pageScroll.mBase.Height < Root.Height Then
+                    Sleep(50)
+                    ScrollFocusedInputIntoView
+                End If
+            End If
+        Else
+            If Sender = focusedInput Then
+                Dim emptyInput As B4XDaisyInput
+                focusedInput = emptyInput
+            End If
+        End If
+    Catch
+        Log("B4XPageNavScrollDock.HandleInputFocus: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub inp1_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(bHasFocus)
+End Sub
+
+Private Sub inp2_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(bHasFocus)
+End Sub
+
+Private Sub inp3_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(bHasFocus)
+End Sub
+#End If

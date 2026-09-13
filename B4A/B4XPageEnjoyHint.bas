@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\Pages
 ModulesStructureVersion=1
 Type=Class
@@ -33,6 +33,7 @@ Sub Class_Globals
     Private refDeleteBtn As B4XDaisyButton
     Private refAvatar As B4XDaisyAvatar
     Private tourRunning As Boolean = False
+    Private focusedInput As B4XDaisyInput
 End Sub
 #End Region
 
@@ -276,6 +277,35 @@ End Sub
 
 Private Sub enjoyHint_OnOverlayClick
     If B4XDaisyApp.DebugLogs Then Log("Tour: overlay tapped")
+End Sub
+
+Public Sub IME_HeightChanged(iNewHeight As Int, iOldHeight As Int)
+    Try
+        pageScroll.IME_HeightChanged(iNewHeight, iOldHeight, focusedInput)
+    Catch
+        Log("B4XPageEnjoyHint.IME_HeightChanged: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub HandleInputFocus(oInput As B4XDaisyInput, bFocused As Boolean)
+    Try
+        If bFocused Then
+            focusedInput = oInput
+            pageScroll.ScrollToViewWithMargin(oInput.View, 28dip, True)
+        Else
+            If focusedInput = oInput Then focusedInput = Null
+        End If
+    Catch
+        Log("B4XPageEnjoyHint.HandleInputFocus: " & LastException.Message)
+    End Try
+End Sub
+
+Private Sub refNameInput_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(refNameInput, bHasFocus)
+End Sub
+
+Private Sub refEmailInput_FocusChanged(bHasFocus As Boolean)
+    HandleInputFocus(refEmailInput, bHasFocus)
 End Sub
 #End Region
 
