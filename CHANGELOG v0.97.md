@@ -1,6 +1,6 @@
 ﻿# Changelog - v0.97
 
-Generated on: 2026-09-13
+Generated on: 2026-09-15
 
 Compare: v0.96 -> v0.97
 

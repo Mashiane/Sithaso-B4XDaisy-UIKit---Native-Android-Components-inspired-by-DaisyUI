@@ -5,7 +5,7 @@
 [![B4A](https://img.shields.io/badge/B4A-13.70%2B-blue.svg)](https://www.b4x.com/b4a.html)
 [![Library](https://img.shields.io/badge/Library-v0.97-brightgreen.svg)](https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI/releases)
 [![Components](https://img.shields.io/badge/Components-104_Classes-success.svg)](#-component-catalog)
-[![Skills](https://img.shields.io/badge/Skills-v1.4.0-purple.svg)](https://github.com/Mashiane/B4XDaisyUIKit-Skills)
+[![Skills](https://img.shields.io/badge/Skills-v1.4.3-purple.svg)](https://github.com/Mashiane/B4XDaisyUIKit-Skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![B4X Forum](https://img.shields.io/badge/B4X_Forum-Thread_171762-007ACC.svg)](https://www.b4x.com/android/forum/threads/ai-skills-b4xdaisyuikit-skills-supercharge-claude-to-code-b4xdaisyuikit-instantly-beta.171762/)
 
@@ -22,7 +22,7 @@
 | **Components** | 104 native `B4XDaisy*` classes |
 | **Demos** | 89 live `B4XPage*.bas` reference pages (B4A) |
 | **Themes** | 30+ DaisyUI themes + light/dark at runtime |
-| **AI Skills** | [`B4XDaisyUIKit-Skills v1.4.0`](https://github.com/Mashiane/B4XDaisyUIKit-Skills) - Claude/Codex orchestration |
+| **AI Skills** | [`B4XDaisyUIKit-Skills v1.4.3`](https://github.com/Mashiane/B4XDaisyUIKit-Skills) - Claude/Codex orchestration |
 
 ---
 
