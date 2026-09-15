@@ -1,0 +1,718 @@
+﻿Build1=Default,com.sithaso.daisyuikit
+File1=6.jpg
+File2=face19.jpg
+File3=face21.jpg
+File4=face22.jpg
+File5=face24.jpg
+File6=face27.jpg
+File7=face4.jpg
+File8=face5.jpg
+File9=face6.jpg
+File10=face7.jpg
+File11=face9.jpg
+File12=face-smile-regular.svg
+File13=face-smile-solid.svg
+File14=fieldset.webp
+File15=file.svg
+File16=file-input.webp
+File17=file-lines-solid.svg
+File18=filter.webp
+File19=fingerprint-solid.svg
+File20=folder-solid.svg
+File21=footer.webp
+File22=gear.svg
+File23=heart.png
+File24=heart.svg
+File25=heart-solid.svg
+File26=hero.webp
+File27=house-solid.svg
+File28=hover-3d.webp
+File29=image-solid.svg
+File30=inbox.svg
+File31=indicator.webp
+File32=input.webp
+File33=janis-kloter-GipF6xThS6g-unsplash.jpg
+File34=join.webp
+File35=kbd.webp
+File36=key-solid.svg
+File37=label.webp
+File38=like.png
+File39=link.webp
+File40=accordion.webp
+File41=link-solid.svg
+File42=list.webp
+File43=loading.webp
+File44=location-dot-solid-full.svg
+File45=login-amazon.svg
+File46=login-apple.svg
+File47=login-email.svg
+File48=login-facebook.svg
+File49=login-github.svg
+File50=login-google.svg
+File51=alert.webp
+File52=login-kakao.svg
+File53=login-line.svg
+File54=login-linkedin.svg
+File55=login-metamask.svg
+File56=login-microsoft.svg
+File57=login-slack.svg
+File58=login-vk.svg
+File59=login-wechat.svg
+File60=login-x.svg
+File61=magnifying-glass-solid.svg
+File62=angles-left-solid.svg
+File63=mashymain.jpg
+File64=mask.webp
+File65=mask1.webp
+File66=menu.svg
+File67=menu.webp
+File68=microphone-solid.svg
+File69=minus-solid.svg
+File70=mockup-browser.webp
+File71=angles-right-solid.svg
+File72=mockup-code.webp
+File73=mockup-phone.webp
+File74=mockup-window.webp
+File75=modal.webp
+File76=music-solid.svg
+File77=navbar.webp
+File78=nightmoon.svg
+File79=pagination.webp
+File80=palette-solid-full.svg
+File81=arrow-down-solid.svg
+File82=pencil-solid.svg
+File83=phone-solid.svg
+File84=photo-1414694762283-acccc27bca85.webp
+File85=photo-1494232410401-ad00d5433cfa.webp
+File86=photo-1494253109108-2e30c049369b.webp
+File87=photo-1507358522600-9f71e620c44e.webp
+File88=photo-1550258987-190a2d41a8ba.webp
+File89=photo-1559181567-c3190ca9959b.webp
+File90=photo-1559703248-dcaaec9fab78.webp
+File91=arrow-right-solid.svg
+File92=photo-1560717789-0ac7c58ac90a.webp
+File93=photo-1560717789-0ac7c58ac90a-blur.webp
+File94=photo-1565098772267-60af42b81ef2.webp
+File95=photo-1572635148818-ef6fd45eb394.webp
+File96=photo-1601004890684-d8cbf643f5f2.webp
+File97=photo-1606107557195-0e29a4b5b4aa.webp
+File98=photo-1609621838510-5ad474b7d25d.webp
+File99=photo-1625726411847-8cbb60cc71e6.webp
+File100=photo-1635805737707-575885ab0820.webp
+File101=photo-1665553365602-b2fb8e5d1707.webp
+File102=arrow-up-solid.svg
+File103=play-solid.svg
+File104=plus-solid.svg
+File105=progress.webp
+File106=radial-progress.webp
+File107=radio.webp
+File108=range.webp
+File109=rating.webp
+File110=save.svg
+File111=search-solid.svg
+File112=select.webp
+File113=aura.webp
+File114=skeleton.webp
+File115=smile.png
+File116=square-check-regular.svg
+File117=stack.webp
+File118=star.png
+File119=stat.webp
+File120=stat_bolt.svg
+File121=status.webp
+File122=steps.webp
+File123=swap.webp
+File124=avatar.webp
+File125=tab.webp
+File126=table.webp
+File127=table-cells-solid.svg
+File128=textarea.webp
+File129=text-rotate.webp
+File130=theme-controller.webp
+File131=timeline.webp
+File132=toast.webp
+File133=toggle.webp
+File134=tooltip.webp
+File135=badge.webp
+File136=triangle-exclamation-solid.svg
+File137=upload-solid.svg
+File138=user-lock-solid.svg
+File139=user-solid.svg
+File140=video-solid.svg
+File141=volume-high-solid.svg
+File142=volume-high-solid-full.svg
+File143=volume-low-solid-full.svg
+File144=bars-solid.svg
+File145=volume-xmark-solid.svg
+File146=wonderperson@192.webp
+File147=xmark-solid.svg
+File148=batperson@192.webp
+File149=bell-solid.svg
+File150=book-open-solid.svg
+File151=breadcrumb-document.svg
+File152=breadcrumb-folder.svg
+File153=breadcrumb-library.svg
+File154=breadcrumbs.webp
+File155=button.webp
+File156=calendar-days-regular-full.svg
+File157=calendar-solid.svg
+File158=camera-solid.svg
+File159=canvasspinner.jpeg
+File160=card.webp
+File161=card-1.webp
+File162=card-2.webp
+File163=card-3.webp
+File164=carousel.webp
+File165=Casino_Hand.ttf
+File166=chapter_5.pdf
+File167=chat.webp
+File168=check.svg
+File169=checkbox.webp
+File170=check-solid.svg
+File171=chevron-down-solid.svg
+File172=chevron-left-solid.svg
+File173=chevron-right-solid.svg
+File174=circle-info-solid.svg
+File175=circle-question-regular.svg
+File176=circle-xmark-solid.svg
+File177=clock-regular-full.svg
+File178=close.svg
+File179=collapse.webp
+File180=colorwheel.png
+File181=copy-solid.svg
+File182=countdown.webp
+File183=creditcard.webp
+File184=daysun.svg
+File185=diff.webp
+File186=divider.webp
+File187=dock.webp
+File188=dock-home.svg
+File189=dock-inbox.svg
+File190=dock-settings.svg
+File191=drawer.webp
+File192=dropdown.webp
+File193=ellipsis-solid.svg
+File194=envelope-regular.svg
+File195=envelope-solid.svg
+File196=eye-slash-solid.svg
+File197=eye-solid.svg
+File198=fab.webp
+File199=face_1.jpg
+File200=face_13.jpg
+File201=face_2.jpg
+File202=face_3.jpg
+File203=face_8.jpg
+File204=face_anna.jpg
+File205=face_marcus.jpg
+File206=face_profile11.jpg
+File207=face_profile13.jpeg
+File208=face11.jpg
+File209=face12.jpg
+File210=face14.jpg
+File211=face16.jpg
+File212=face17.jpg
+File213=face18.jpg
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup100=Default Group
+FileGroup101=Default Group
+FileGroup102=Default Group
+FileGroup103=Default Group
+FileGroup104=Default Group
+FileGroup105=Default Group
+FileGroup106=Default Group
+FileGroup107=Default Group
+FileGroup108=Default Group
+FileGroup109=Default Group
+FileGroup11=Default Group
+FileGroup110=Default Group
+FileGroup111=Default Group
+FileGroup112=Default Group
+FileGroup113=Default Group
+FileGroup114=Default Group
+FileGroup115=Default Group
+FileGroup116=Default Group
+FileGroup117=Default Group
+FileGroup118=Default Group
+FileGroup119=Default Group
+FileGroup12=Default Group
+FileGroup120=Default Group
+FileGroup121=Default Group
+FileGroup122=Default Group
+FileGroup123=Default Group
+FileGroup124=Default Group
+FileGroup125=Default Group
+FileGroup126=Default Group
+FileGroup127=Default Group
+FileGroup128=Default Group
+FileGroup129=Default Group
+FileGroup13=Default Group
+FileGroup130=Default Group
+FileGroup131=Default Group
+FileGroup132=Default Group
+FileGroup133=Default Group
+FileGroup134=Default Group
+FileGroup135=Default Group
+FileGroup136=Default Group
+FileGroup137=Default Group
+FileGroup138=Default Group
+FileGroup139=Default Group
+FileGroup14=Default Group
+FileGroup140=Default Group
+FileGroup141=Default Group
+FileGroup142=Default Group
+FileGroup143=Default Group
+FileGroup144=Default Group
+FileGroup145=Default Group
+FileGroup146=Default Group
+FileGroup147=Default Group
+FileGroup148=Default Group
+FileGroup149=Default Group
+FileGroup15=Default Group
+FileGroup150=Default Group
+FileGroup151=Default Group
+FileGroup152=Default Group
+FileGroup153=Default Group
+FileGroup154=Default Group
+FileGroup155=Default Group
+FileGroup156=Default Group
+FileGroup157=Default Group
+FileGroup158=Default Group
+FileGroup159=Default Group
+FileGroup16=Default Group
+FileGroup160=Default Group
+FileGroup161=Default Group
+FileGroup162=Default Group
+FileGroup163=Default Group
+FileGroup164=Default Group
+FileGroup165=Default Group
+FileGroup166=Default Group
+FileGroup167=Default Group
+FileGroup168=Default Group
+FileGroup169=Default Group
+FileGroup17=Default Group
+FileGroup170=Default Group
+FileGroup171=Default Group
+FileGroup172=Default Group
+FileGroup173=Default Group
+FileGroup174=Default Group
+FileGroup175=Default Group
+FileGroup176=Default Group
+FileGroup177=Default Group
+FileGroup178=Default Group
+FileGroup179=Default Group
+FileGroup18=Default Group
+FileGroup180=Default Group
+FileGroup181=Default Group
+FileGroup182=Default Group
+FileGroup183=Default Group
+FileGroup184=Default Group
+FileGroup185=Default Group
+FileGroup186=Default Group
+FileGroup187=Default Group
+FileGroup188=Default Group
+FileGroup189=Default Group
+FileGroup19=Default Group
+FileGroup190=Default Group
+FileGroup191=Default Group
+FileGroup192=Default Group
+FileGroup193=Default Group
+FileGroup194=Default Group
+FileGroup195=Default Group
+FileGroup196=Default Group
+FileGroup197=Default Group
+FileGroup198=Default Group
+FileGroup199=Default Group
+FileGroup2=Default Group
+FileGroup20=Default Group
+FileGroup200=Default Group
+FileGroup201=Default Group
+FileGroup202=Default Group
+FileGroup203=Default Group
+FileGroup204=Default Group
+FileGroup205=Default Group
+FileGroup206=Default Group
+FileGroup207=Default Group
+FileGroup208=Default Group
+FileGroup209=Default Group
+FileGroup21=Default Group
+FileGroup210=Default Group
+FileGroup211=Default Group
+FileGroup212=Default Group
+FileGroup213=Default Group
+FileGroup214=Default Group
+FileGroup215=Default Group
+FileGroup216=Default Group
+FileGroup217=Default Group
+FileGroup218=Default Group
+FileGroup219=Default Group
+FileGroup22=Default Group
+FileGroup220=Default Group
+FileGroup221=Default Group
+FileGroup222=Default Group
+FileGroup223=Default Group
+FileGroup224=Default Group
+FileGroup225=Default Group
+FileGroup226=Default Group
+FileGroup227=Default Group
+FileGroup228=Default Group
+FileGroup229=Default Group
+FileGroup23=Default Group
+FileGroup230=Default Group
+FileGroup231=Default Group
+FileGroup232=Default Group
+FileGroup233=Default Group
+FileGroup234=Default Group
+FileGroup235=Default Group
+FileGroup236=Default Group
+FileGroup237=Default Group
+FileGroup238=Default Group
+FileGroup239=Default Group
+FileGroup24=Default Group
+FileGroup240=Default Group
+FileGroup241=Default Group
+FileGroup242=Default Group
+FileGroup243=Default Group
+FileGroup25=Default Group
+FileGroup26=Default Group
+FileGroup27=Default Group
+FileGroup28=Default Group
+FileGroup29=Default Group
+FileGroup3=Default Group
+FileGroup30=Default Group
+FileGroup31=Default Group
+FileGroup32=Default Group
+FileGroup33=Default Group
+FileGroup34=Default Group
+FileGroup35=Default Group
+FileGroup36=Default Group
+FileGroup37=Default Group
+FileGroup38=Default Group
+FileGroup39=Default Group
+FileGroup4=Default Group
+FileGroup40=Default Group
+FileGroup41=Default Group
+FileGroup42=Default Group
+FileGroup43=Default Group
+FileGroup44=Default Group
+FileGroup45=Default Group
+FileGroup46=Default Group
+FileGroup47=Default Group
+FileGroup48=Default Group
+FileGroup49=Default Group
+FileGroup5=Default Group
+FileGroup50=Default Group
+FileGroup51=Default Group
+FileGroup52=Default Group
+FileGroup53=Default Group
+FileGroup54=Default Group
+FileGroup55=Default Group
+FileGroup56=Default Group
+FileGroup57=Default Group
+FileGroup58=Default Group
+FileGroup59=Default Group
+FileGroup6=Default Group
+FileGroup60=Default Group
+FileGroup61=Default Group
+FileGroup62=Default Group
+FileGroup63=Default Group
+FileGroup64=Default Group
+FileGroup65=Default Group
+FileGroup66=Default Group
+FileGroup67=Default Group
+FileGroup68=Default Group
+FileGroup69=Default Group
+FileGroup7=Default Group
+FileGroup70=Default Group
+FileGroup71=Default Group
+FileGroup72=Default Group
+FileGroup73=Default Group
+FileGroup74=Default Group
+FileGroup75=Default Group
+FileGroup76=Default Group
+FileGroup77=Default Group
+FileGroup78=Default Group
+FileGroup79=Default Group
+FileGroup8=Default Group
+FileGroup80=Default Group
+FileGroup81=Default Group
+FileGroup82=Default Group
+FileGroup83=Default Group
+FileGroup84=Default Group
+FileGroup85=Default Group
+FileGroup86=Default Group
+FileGroup87=Default Group
+FileGroup88=Default Group
+FileGroup89=Default Group
+FileGroup9=Default Group
+FileGroup90=Default Group
+FileGroup91=Default Group
+FileGroup92=Default Group
+FileGroup93=Default Group
+FileGroup94=Default Group
+FileGroup95=Default Group
+FileGroup96=Default Group
+FileGroup97=Default Group
+FileGroup98=Default Group
+FileGroup99=Default Group
+Group=Default Group
+Library1=ac_leafletview
+Library2=ac_nativedialogs
+Library3=b4xpages
+Library4=bitmapcreator
+Library5=contentresolver
+Library6=core
+Library7=dateutils
+Library8=fileprovider
+Library9=fusedlocationprovider
+Library10=geocoder
+Library11=gps
+Library12=ime
+Library13=javaobject
+Library14=json
+Library15=mediachooser
+Library16=okhttp
+Library17=okhttputils2
+Library18=pdfium
+Library19=reflection
+Library20=runtimepermissions
+Library21=shinebutton
+Library22=simplemediamanager
+Library23=sql
+Library24=stringutils
+Library25=xcustomlistview
+Library26=xui
+Library27=xui views
+Library28=b4xbitmapeffects
+Library29=b4xdaisyuikit
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="35"/>~\n~<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:debuggable, "true")~\n~SetApplicationAttribute(android:theme, "@style/LightTheme")~\n~CreateResource(values, theme.xml,~\n~<resources>~\n~    <style~\n~        name="LightTheme" parent="@android:style/Theme.Material.Light">~\n~       <item name="android:actionMenuTextAppearance">@style/LowerCaseMenu</item>~\n~       <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>~\n~    </style>~\n~     <style name="LowerCaseMenu" parent="android:TextAppearance.Material.Widget.ActionBar.Menu">~\n~        <item name="android:textAllCaps">false</item>~\n~    </style>~\n~</resources>~\n~)~\n~'End of default text.~\n~SetActivityAttribute(Main, android:windowSoftInputMode, adjustResize|stateHidden)~\n~AddPermission(android.permission.CAMERA)~\n~AddApplicationText(~\n~  <provider~\n~  android:name="android.support.v4.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~AddPermission(android.permission.RECORD_AUDIO)~\n~AddManifestText(<uses-permission~\n~    android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~    android:maxSdkVersion="19" />~\n~)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~AddPermission(android.permission.FOREGROUND_SERVICE)~\n~SetServiceAttribute(KeepRunningService, android:foregroundServiceType, shortService)~\n~AddPermission(android.permission.ACCESS_FINE_LOCATION)~\n~AddPermission(android.permission.ACCESS_COARSE_LOCATION)~\n~AddApplicationText(<meta-data~\n~    android:name="com.google.android.gms.version"~\n~    android:value="@integer/google_play_services_version" />)
+NumberOfFiles=213
+Module1=B4XMainPage
+Module2=B4XPageAccordion
+Module3=B4XPageActionSheet
+Module4=B4XPageAlert
+Module5=B4XPageAura
+Module6=B4XPageAvatar
+Module7=B4XPageBadge
+Module8=B4XPageBoomMenu
+Module9=B4XPageBreadcrumbs
+Module10=B4XPageButton
+Module11=B4XPageCanvasSpinner
+Module12=B4XPageCard
+Module13=B4XPageCarousel
+Module14=B4XPageChat
+Module15=B4XPageCheckbox
+Module16=B4XPageCheckboxGroup
+Module17=B4XPageCollapse
+Module18=B4XPageColorWheel
+Module19=B4XPageCountdown
+Module20=B4XPageDashboard
+Module21=B4XPageDiff
+Module22=B4XPageDivider
+Module23=B4XPageDock
+Module24=B4XPageDrawer
+Module25=B4XPageDrawerRail
+Module26=B4XPageDrawerTree
+Module27=B4XPageDropdown
+Module28=B4XPageDualRange
+Module29=B4XPageEasing
+Module30=B4XPageEnjoyHint
+Module31=B4XPageFab
+Module32=B4XPageFabBasic
+Module33=B4XPageFabFlower
+Module34=B4XPageFabNavbar
+Module35=B4XPageFieldset
+Module36=B4XPageFileInput
+Module37=B4XPageFilter
+Module38=B4XPageFocus
+Module39=B4XPageHero
+Module40=B4XPageHover3d
+Module41=B4XPageIconButton
+Module42=B4XPageIndicator
+Module43=B4XPageInfoCard
+Module44=B4XPageInput
+Module45=B4XPageKbd
+Module46=B4XPageLink
+Module47=B4XPageList
+Module48=B4XPageList1K
+Module49=B4XPageLoading
+Module50=B4XPageMask
+Module51=B4XPageMediaPicker
+Module52=B4XPageMenu
+Module53=B4XPageMenuRuntime
+Module54=B4XPageMenuRuntime2
+Module55=B4XPageModal
+Module56=B4XPageNativeDialogs
+Module57=B4XPageNavbar
+Module58=B4XPageNavScrollDock
+Module59=B4XPageOTP
+Module60=B4XPageOverlay
+Module61=B4XPagePagination
+Module62=B4XPagePDFView
+Module63=B4XPagePicker
+Module64=B4XPageProgress
+Module65=B4XPageRadialProgress
+Module66=B4XPageRadio
+Module67=B4XPageRadioGroup
+Module68=B4XPageRange
+Module69=B4XPageRating
+Module70=B4XPageScrollDemo
+Module71=B4XPageSegment
+Module72=B4XPageSelect
+Module73=B4XPageSheetModal
+Module74=B4XPageShineButton
+Module75=B4XPageSignaturePad
+Module76=B4XPageSkeleton
+Module77=B4XPageStack
+Module78=B4XPageStat
+Module79=B4XPageStatus
+Module80=B4XPageSteps
+Module81=B4XPageSvgIcon
+Module82=B4XPageSwap
+Module83=B4XPageSweetAlert
+Module84=B4XPageSweetAlertInputs
+Module85=B4XPageTab
+Module86=B4XPageTagSphere
+Module87=B4XPageText
+Module88=B4XPageTextarea
+Module89=B4XPageTextRotate
+Module90=B4XPageTimeline
+Module91=B4XPageToast
+Module92=B4XPageToggle
+Module93=B4XPageToggleGroup
+Module94=B4XPageTooltip
+Module95=B4XPageWindow
+NumberOfLibraries=29
+NumberOfModules=95
+Version=14
+@EndOfDesignText@
+#Region  Project Attributes
+	#ApplicationLabel: B4XDaisy UIKit
+	#VersionCode: 97
+	#VersionName: 0.97
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: True
+	#LibraryAuthor: Anele Mbanga (Mashy)
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: False
+	#DebuggerForceStandardAssets: true	
+	#BridgeLogger: True
+	#EdgeToEdgeOldDevices: False
+#End Region
+
+#Macro: After Save, Sync Layouts, ide://run?File=%ADDITIONAL%\JsonLayouts.jar&Args=%PROJECT%&Args=%PROJECT_NAME%
+#Macro: Title, JsonLayouts folder, ide://run?File=%WINDIR%\explorer.exe&Args=%PROJECT%\JsonLayouts
+#Macro: Title, Code bundle, ide://run?File=%ADDITIONAL%\CodeBundle.jar&Args=%PROJECT_NAME%
+'Ctrl + click to build b4xlib: ide://run?file=%JAVABIN%\jar.exe&WorkingDirectory=%PROJECT%\..&Args=-cMf&Args=%PROJECT_NAME%.b4xlib&&Args=..&Args=*.bas&Args=manifest.txt
+#Macro: Title, PowerShell, ide://run?File=%WINDIR%\System32\cmd.exe&args=/c&args=start&args=""&args=powershell.exe&args=-WorkingDirectory&args=%PROJECT%
+#Macro: Title, Claude, ide://run?File=%COMSPEC%&args=/c&args=start&args=claude://
+
+'#AdditionalJar: yoga-3.2.1-release.aar
+'#AdditionalJar: soloader-0.10.5.aar
+'#AdditionalJar: nativeloader-0.10.5.jar
+'getting gps location
+#AdditionalJar: com.android.support:support-v4
+#AdditionalJar: com.google.android.gms:play-services-location
+#AdditionalJar: android-pdf-viewer.aar
+#AdditionalJar: Pdfium.androidx.aar
+
+'Download URLs:
+'Yoga AAR:
+'https://repo1.maven.org/maven2/com/facebook/yoga/yoga/3.2.1/yoga-3.2.1-release.aar
+'SoLoader AAR:
+'https://repo.maven.apache.org/maven2/com/facebook/soloader/soloader/0.10.5/soloader-0.10.5.aar
+'NativeLoader JAR:
+'https://repo.maven.apache.org/maven2/com/facebook/soloader/nativeloader/0.10.5/nativeloader-0.10.5.jar
+'NB: You might have to unzip and zip the soloader
+
+Sub Process_Globals
+	Public ActionBarHomeClicked As Boolean
+End Sub
+
+Sub Globals
+	Private ime As IME
+End Sub
+
+Sub Activity_Create (FirstTime As Boolean)
+	ime.Initialize("IME")
+	ime.AddHeightChangedEvent
+	Dim pm As B4XPagesManager
+	pm.Initialize(Activity)
+End Sub
+
+Sub IME_HeightChanged (NewHeight As Int, OldHeight As Int)
+	Dim top As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If top <> Null And top.Root.IsInitialized Then
+		If top.Root.Height <> NewHeight Then
+			top.Root.SetLayoutAnimated(0, 0, 0, Activity.Width, NewHeight)
+		End If
+	End If
+	B4XPages.GetManager.RaiseEvent(B4XPages.GetManager.GetTopPage, "IME_HeightChanged", Array(NewHeight, OldHeight))
+End Sub
+
+Public Sub ShowResolutionDialog (SettingsStatus As LocationSettingsStatus) As ResumableSub
+	SettingsStatus.StartResolutionDialog("srd")
+	Wait For srd_ResolutionDialogDismissed(LocationSettingsUpdated As Boolean)
+	Return LocationSettingsUpdated
+End Sub
+
+#Region Pin to Home Screen
+' Pin to home screen disabled
+#End Region
+
+'Template version: B4A-1.01
+#Region Delegates
+
+Sub Activity_ActionBarHomeClick
+	ActionBarHomeClicked = True
+	B4XPages.Delegate.Activity_ActionBarHomeClick
+	ActionBarHomeClicked = False
+End Sub
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	Return B4XPages.Delegate.Activity_KeyPress(KeyCode)
+End Sub
+
+Sub Activity_Resume
+	' One-time prompt: ask the launcher to pin the app icon to the home screen (disabled).
+	' Uses ShortcutManager.requestPinShortcut (Android 8+). Skipped on older devices.
+	'Try
+	'	If FirstRunPinNeeded Then TryPinToHomeScreen
+	'Catch
+	'	If B4XDaisyApp.DebugLogs Then Log("PinToHome: " & LastException)
+	'End Try
+	B4XPages.Delegate.Activity_Resume
+
+	' Ensure top page root matches the actual stabilized activity dimensions
+	Dim top As B4XPageInfo = B4XPages.GetManager.GetTopPage
+	If top <> Null And top.Root.IsInitialized Then
+		If top.Root.Width <> Activity.Width Or top.Root.Height <> Activity.Height Then
+			top.Root.SetLayoutAnimated(0, 0, 0, Activity.Width, Activity.Height)
+			B4XPages.GetManager.RaiseEvent(top, "B4XPage_Resize", Array(Activity.Width, Activity.Height))
+		End If
+	End If
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	B4XPages.Delegate.Activity_Pause
+End Sub
+
+Sub Activity_PermissionResult (Permission As String, Result As Boolean)
+	B4XPages.Delegate.Activity_PermissionResult(Permission, Result)
+End Sub
+
+Sub Create_Menu (Menu As Object)
+	'B4XPages.Delegate.Create_Menu(Menu)
+End Sub
+
+'#if Java
+'public boolean _onCreateOptionsMenu(android.view.Menu menu) {
+'	 processBA.raiseEvent(null, "create_menu", menu);
+'	 return true;
+'}
+'#End If
+#End Region

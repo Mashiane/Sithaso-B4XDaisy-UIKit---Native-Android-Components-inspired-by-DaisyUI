@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <doclet-version-NOT-library-version>1.04</doclet-version-NOT-library-version>
+    <class>
+        <name>uk.co.martinpearman.b4a.location.GeocoderWrapper</name>
+        <shortname>Geocoder</shortname>
+        <objectwrapper>android.location.Geocoder</objectwrapper>
+        <owner>process</owner>
+        <event>GeocodeDone(Addresses() As Address, Tag As Object)</event>
+        <method>
+            <name>GetFromLocationName</name>
+            <comment>Gets an Array of Address objects that describe the named location.
+ LocationName may be a place name such as "Dalvik, Iceland", an address such as "1600 Amphitheatre Parkway, Mountain View, CA", an airport code such as "SFO", etc...
+ The Array of Address objects is passed back to B4A in the GeocodeDone event along with the Tag Object.
+ Tag is not used by this method, it is simply a means by which you can associate an identifying Object with this task.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>pBA</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>LocationName</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>MaxResults</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Tag</name>
+                <type>java.lang.Object</type>
+            </parameter>
+        </method>
+        <method>
+            <name>IsInitialized</name>
+            <comment></comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>Initialize</name>
+            <comment>Initialize the Geocoder object with the device's system Locale.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>pBA</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>EventName</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>GetFromLocationName2</name>
+            <comment>Returns an array of Addresses that are known to describe the named location within the geographical bounds.
+ LocationName may be a place name such as "Dalvik, Iceland", an address such as "1600 Amphitheatre Parkway, Mountain View, CA", an airport code such as "SFO", etc..
+ The Array of Address objects is passed back to B4A in the GeocodeDone event along with the Tag Object.
+ Tag is not used by this method, it is simply a means by which you can associate an identifying Object with this task.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>pBA</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>LocationName</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>MaxResults</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>LowerLeftLatitude</name>
+                <type>double</type>
+            </parameter>
+            <parameter>
+                <name>LowerLeftLongitude</name>
+                <type>double</type>
+            </parameter>
+            <parameter>
+                <name>UpperRightLatitude</name>
+                <type>double</type>
+            </parameter>
+            <parameter>
+                <name>UpperRightLongitude</name>
+                <type>double</type>
+            </parameter>
+            <parameter>
+                <name>Tag</name>
+                <type>java.lang.Object</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Initialize3</name>
+            <comment>Initialize the Geocoder object with a Locale based on Language and Country.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>pBA</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>EventName</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Language</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Country</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>Initialize2</name>
+            <comment>Initialize the Geocoder object with a Locale based on Language.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>pBA</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>EventName</name>
+                <type>java.lang.String</type>
+            </parameter>
+            <parameter>
+                <name>Language</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>IsPresent</name>
+            <comment>Returns true if the Geocoder methods GetFromLocation and GetFromLocationName etc are implemented.
+ Lack of network connectivity may still cause these methods to return null or empty lists.</comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>GetFromLocation</name>
+            <comment>Gets an Array of Address objects that describe the area immediately surrounding the given Latitude and Longitude.
+ The Array of Address objects is passed back to B4A in the GeocodeDone event along with the Tag Object.
+ Tag is not used by this method, it is simply a means by which you can associate an identifying Object with this task.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>pBA</name>
+                <type>anywheresoftware.b4a.BA</type>
+            </parameter>
+            <parameter>
+                <name>Latitude</name>
+                <type>double</type>
+            </parameter>
+            <parameter>
+                <name>Longitude</name>
+                <type>double</type>
+            </parameter>
+            <parameter>
+                <name>MaxResults</name>
+                <type>int</type>
+            </parameter>
+            <parameter>
+                <name>Tag</name>
+                <type>java.lang.Object</type>
+            </parameter>
+        </method>
+    </class>
+    <class>
+        <name>uk.co.martinpearman.b4a.location.AddressWrapper</name>
+        <shortname>Address</shortname>
+        <objectwrapper>android.location.Address</objectwrapper>
+        <owner>process</owner>
+        <method>
+            <name>HasLongitude</name>
+            <comment>Returns True if a longitude has been assigned to this Address, False otherwise.</comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>IsInitialized</name>
+            <comment></comment>
+            <returntype>boolean</returntype>
+        </method>
+        <method>
+            <name>HasLatitude</name>
+            <comment>Returns True if a latitude has been assigned to this Address, False otherwise.</comment>
+            <returntype>boolean</returntype>
+        </method>
+        <property>
+            <name>Thoroughfare</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the thoroughfare name of the Address.
+ For example, "1600 Ampitheater Parkway", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>CountryName</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the localized country name of the Address.
+ For example "Iceland", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>Locality</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the locality of the Address.
+ For example "Mountain View", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>PostalCode</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the postal code of the Address.
+ For example "94110", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>Latitude</name>
+            <returntype>double</returntype>
+            <comment>Returns the latitude of the Address if known.</comment>
+        </property>
+        <property>
+            <name>AdminArea</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the administrative area name of the Address.
+ For example, "CA", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>SubLocality</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the sub-locality of the Address, or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>Longitude</name>
+            <returntype>double</returntype>
+            <comment>Returns the longitude of the Address if known.</comment>
+        </property>
+        <property>
+            <name>Premises</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the premises of the Address, or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>SubAdminArea</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the sub-administrative area name of the Address.
+ For example, "Santa Clara County", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>Url</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the public URL for the Address, or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>FeatureName</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the feature name of the Address.
+ For example, "Golden Gate Bridge", or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>AddressLines</name>
+            <returntype>anywheresoftware.b4a.objects.collections.List</returntype>
+            <comment>Returns a List of Strings which are the address lines of the Address.</comment>
+        </property>
+        <property>
+            <name>Phone</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the phone number of the Address if known, or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>SubThoroughfare</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the sub-thoroughfare name of the Address, or Null if it is unknown.</comment>
+        </property>
+        <property>
+            <name>CountryCode</name>
+            <returntype>java.lang.String</returntype>
+            <comment>Returns the country code of the Address.
+ For example "US", or Null if it is unknown.</comment>
+        </property>
+    </class>
+    <version>2.1</version>
+    <author>Martin Pearman</author>
+</root>
