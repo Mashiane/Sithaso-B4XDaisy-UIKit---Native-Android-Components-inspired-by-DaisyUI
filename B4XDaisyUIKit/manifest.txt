@@ -1,0 +1,6 @@
+﻿Author=Anele Mbanga (Mashy)
+Version=0.97
+Supported Platforms=B4A,B4J,B4i
+B4J.DependsOn=jXUI, jBitmapCreator, jRandomAccessFile
+B4A.DependsOn=XUI, BitmapCreator, RandomAccessFile
+B4i.DependsOn=iXUI, iBitmapCreator, iRandomAccessFile
