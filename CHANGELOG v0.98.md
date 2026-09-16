@@ -1,8 +1,8 @@
-﻿# Changelog - v0.97
+﻿# Changelog - v0.98
 
-Generated on: 2026-09-15
+Generated on: 2026-09-16
 
-Compare: v0.96 -> v0.97
+Compare: v0.97 -> v0.98
 
 Repository: https://github.com/Mashiane/Sithaso-B4XDaisy-UIKit---Native-Android-Components-inspired-by-DaisyUI
 
@@ -11,7 +11,7 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 ## Summary
 
 - New components: 0
-- Modified components: 7
+- Modified components: 21
 - Removed components: 0
 
 ## New Files
@@ -20,13 +20,27 @@ Google Drive: https://drive.google.com/drive/folders/1Ccr4SiPYugPCsN0juwwwqAZGew
 
 ## Modified Files
 
-- B4XDaisyDashboard.bas
-- B4XDaisyInput.bas
-- B4XDaisyPageScroll.bas
-- B4XDaisySelect.bas
-- B4XDaisyStat.bas
-- B4XDaisyStatItem.bas
+- B4XDaisyActionSheet.bas
+- B4XDaisyAlert.bas
+- B4XDaisyAura.bas
+- B4XDaisyBadge.bas
+- B4XDaisyBoomMenu.bas
+- B4XDaisyCardTitle.bas
+- B4XDaisyDropdown.bas
+- B4XDaisyDualRange.bas
+- B4XDaisyLoading.bas
+- B4XDaisyMenu.bas
+- B4XDaisyOTP.bas
+- B4XDaisyPDFView.bas
+- B4XDaisyPicker.bas
+- B4XDaisySegment.bas
+- B4XDaisySheetModal.bas
+- B4XDaisyShineButton.bas
+- B4XDaisySignaturePad.bas
+- B4XDaisyStatus.bas
+- B4XDaisySvgIcon.bas
 - B4XDaisySweetAlert.bas
+- B4XDaisyTagSphere.bas
 
 ## Removed Files
 

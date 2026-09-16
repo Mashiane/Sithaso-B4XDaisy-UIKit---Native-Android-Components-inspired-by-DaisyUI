@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class
@@ -692,3 +692,29 @@ End Sub
 Public Sub getTextColor As Int
     Return getColor
 End Sub
+
+#Region Base Properties
+Public Sub setWidth(iValue As Int)
+	If mBase.IsInitialized Then
+		mBase.Width = iValue
+		Base_Resize(mBase.Width, mBase.Height)
+	End If
+End Sub
+
+Public Sub getWidth As Int
+	If mBase.IsInitialized Then Return mBase.Width
+	Return 0
+End Sub
+
+Public Sub setHeight(iValue As Int)
+	If mBase.IsInitialized Then
+		mBase.Height = iValue
+		Base_Resize(mBase.Width, mBase.Height)
+	End If
+End Sub
+
+Public Sub getHeight As Int
+	If mBase.IsInitialized Then Return mBase.Height
+	Return 0
+End Sub
+#End Region

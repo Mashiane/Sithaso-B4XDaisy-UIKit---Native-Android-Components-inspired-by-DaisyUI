@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class
@@ -154,6 +154,7 @@ Sub Class_Globals
 	Private mFlingMs As Int = 300
 	Private miContentPadding As Int = 16dip
 	Private mMinSheetHeight As Int = 80dip
+	Private mHandleHeight As Int = 30dip
 
 	' Fixed (non-scrolling) box views added via AddBoxView.
 	' The scroll panel starts beneath the tallest of these so that
@@ -237,7 +238,7 @@ Private Sub DesignerCreateView(oBase As Object, lblLbl As Label, mProps As Map)
 	pDrag.Initialize("mDragBar")
 	mDragBar = pDrag
 	mDragBar.Color = xui.Color_Transparent
-	mContentBox.AddView(mDragBar, 0, 0, mContentBox.Width, 30dip)
+	mContentBox.AddView(mDragBar, 0, 0, mContentBox.Width, mHandleHeight)
 
 	' 5. Handle Pill
 	Dim pPill As Panel
@@ -515,13 +516,19 @@ End Sub
 ''' The scroll panel starts immediately beneath the tallest pinned header.
 ''' </summary>
 Private Sub ComputeFixedTopOffset As Int
-	If mBoxViews.IsInitialized = False Then Return 0
 	Dim h As Int = 0
-	For Each v As B4XView In mBoxViews
-		If v.IsInitialized And v.Visible Then
-			h = Max(h, v.Top + v.Height)
-		End If
-	Next
+	If mBoxViews.IsInitialized Then
+		For Each v As B4XView In mBoxViews
+			If v.IsInitialized And v.Visible Then
+				h = Max(h, v.Top + v.Height)
+			End If
+		Next
+	End If
+	' When the handle is visible, the drag bar occupies the top strip;
+	' scrollable content must start below it.
+	If mbHandle And mDragBar.IsInitialized Then
+		h = Max(h, mHandleHeight)
+	End If
 	Return h
 End Sub
 
@@ -547,7 +554,7 @@ Private Sub Layout
 	If mContentWrapper.Top > 0 Then mContentWrapper.Top = 0
 
 	If mDragBar.IsInitialized Then
-		mDragBar.SetLayoutAnimated(0, 0, 0, mBoxW, 30dip)
+		mDragBar.SetLayoutAnimated(0, 0, 0, mBoxW, mHandleHeight)
 		If mHandlePill.IsInitialized Then
 			mHandlePill.SetLayoutAnimated(0, (mBoxW - 36dip) / 2, 13dip, 36dip, 4dip)
 		End If
@@ -1513,7 +1520,7 @@ End Sub
 Public Sub setHandle(bValue As Boolean)
 	mbHandle = bValue
 	If mBase.IsInitialized Then
-		Refresh
+		Base_Resize(mBase.Width, mBase.Height)
 	End If
 End Sub
 
@@ -1669,6 +1676,10 @@ Public Sub setBorderColor(iValue As Int)
 	End If
 End Sub
 
+Sub Close
+	Dismiss(Null, "")
+End Sub
+
 Public Sub getBorderColor As Int
 	Return mcBorderColor
 End Sub
@@ -1776,5 +1787,46 @@ End Sub
 
 Public Sub getNestedScrollEnabled As Boolean
 	Return mbNestedScrollEnabled
+End Sub
+#End Region
+
+#Region Base Properties
+Public Sub SetLayoutAnimated(iDuration As Int, iLeft As Int, iTop As Int, iWidth As Int, iHeight As Int)
+	If mBase.IsInitialized Then mBase.SetLayoutAnimated(iDuration, iLeft, iTop, iWidth, iHeight)
+End Sub
+
+Public Sub setLeft(iValue As Int)
+	If mBase.IsInitialized Then mBase.Left = iValue
+End Sub
+
+Public Sub getLeft As Int
+	If mBase.IsInitialized Then Return mBase.Left
+	Return 0
+End Sub
+
+Public Sub setTop(iValue As Int)
+	If mBase.IsInitialized Then mBase.Top = iValue
+End Sub
+
+Public Sub getTop As Int
+	If mBase.IsInitialized Then Return mBase.Top
+	Return 0
+End Sub
+
+Public Sub BringToFront
+	If mBase.IsInitialized Then mBase.BringToFront
+End Sub
+
+Public Sub SendToBack
+	If mBase.IsInitialized Then mBase.SendToBack
+End Sub
+
+Public Sub setVisible(bValue As Boolean)
+	If mBase.IsInitialized Then mBase.Visible = bValue
+End Sub
+
+Public Sub getVisible As Boolean
+	If mBase.IsInitialized Then Return mBase.Visible
+	Return False
 End Sub
 #End Region

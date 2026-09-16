@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class
@@ -1643,5 +1643,14 @@ End Sub
 
 Public Sub SendToBack
 	If mBase.IsInitialized Then mBase.SendToBack
+End Sub
+
+Public Sub setVisible(bValue As Boolean)
+	If mBase.IsInitialized Then mBase.Visible = bValue
+End Sub
+
+Public Sub getVisible As Boolean
+	If mBase.IsInitialized Then Return mBase.Visible
+	Return False
 End Sub
 #End Region

@@ -1,4 +1,4 @@
-﻿B4A=true
+B4A=true
 Group=Default Group\DaisyUIKit
 ModulesStructureVersion=1
 Type=Class
@@ -417,3 +417,49 @@ Public Sub View As B4XView
 	If mBase.IsInitialized = False Then Return empty
 	Return mBase
 End Sub
+
+#Region Base Properties
+Public Sub setLeft(iValue As Int)
+	If mBase.IsInitialized Then mBase.Left = iValue
+End Sub
+
+Public Sub getLeft As Int
+	If mBase.IsInitialized Then Return mBase.Left
+	Return 0
+End Sub
+
+Public Sub setTop(iValue As Int)
+	If mBase.IsInitialized Then mBase.Top = iValue
+End Sub
+
+Public Sub getTop As Int
+	If mBase.IsInitialized Then Return mBase.Top
+	Return 0
+End Sub
+
+Public Sub setWidth(iValue As Int)
+	If mBase.IsInitialized Then mBase.Width = iValue
+End Sub
+
+Public Sub getWidth As Int
+	If mBase.IsInitialized Then Return mBase.Width
+	Return 0
+End Sub
+
+Public Sub setHeight(iValue As Int)
+	If mBase.IsInitialized Then mBase.Height = iValue
+End Sub
+
+Public Sub getHeight As Int
+	If mBase.IsInitialized Then Return mBase.Height
+	Return 0
+End Sub
+
+Public Sub BringToFront
+	If mBase.IsInitialized Then mBase.BringToFront
+End Sub
+
+Public Sub SendToBack
+	If mBase.IsInitialized Then mBase.SendToBack
+End Sub
+#End Region

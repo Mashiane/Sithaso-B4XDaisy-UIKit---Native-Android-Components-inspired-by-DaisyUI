@@ -21,18 +21,6 @@ Sub Class_Globals
 	Private Root As B4XView
 	Private xui As XUI
 	Private PendingDashboardOnReopen As Boolean
-	'Public KM01SignInPage As KM01SignIn
-	'Public KM01TypeOfUserPage As KM01TypeOfUser
-	'Public KM01ClientProfilePage As KM01ClientProfile
-	'Public KM01KYCPage As KM01KYC
-	'Public KM01NewProfilePage As KM01NewProfile
-	'Public KM01CompanyRepresentativePage As KM01CompanyRepresentative
-	'Public KM01LocationDetailsPage As KM01LocationDetails
-	'Public KM01IDDetailsPage As KM01IDDetails
-	'Public KM01CongratulationsPage As KM01Congratulations
-	'Public KM01OnboardingPage As KM01Onboarding
-	'Public KM01LeafletMapPage As KM01LeafletMap
-	'Public KM01PhysicalAddressesPage As KM01PhysicalAddresses
 	Public ChatPage As B4XPageChat
 	Public AlertPage As B4XPageAlert
 	Public AvatarPage As B4XPageAvatar
@@ -277,26 +265,15 @@ Sub ShowSplashScreen As ResumableSub
 	SweetAlertPage.Initialize
 	SweetAlertInputsPage.Initialize
 	PageScrollDemo.Initialize
-	'KM01SignInPage.Initialize
-	'KM01TypeOfUserPage.Initialize
-	'KM01ClientProfilePage.Initialize
-	'KM01KYCPage.Initialize
-	'KM01NewProfilePage.Initialize
-	'KM01CompanyRepresentativePage.Initialize
-	'KM01LocationDetailsPage.Initialize
-	'KM01IDDetailsPage.Initialize
-	'KM01CongratulationsPage.Initialize
-	'KM01OnboardingPage.Initialize
+	
 	NavScrollDockPage.Initialize
 	EnjoyHintPage.Initialize
 	ShineButtonPage.Initialize
 	TagSpherePage.Initialize
 	PDFViewPage.Initialize
 	DualRangePage.Initialize
-	'KM01LeafletMapPage.Initialize
-	'KM01PhysicalAddressesPage.Initialize
-
-	'B4XPages.AddPage("KM01LeafletMap", KM01LeafletMapPage)
+	
+	
 	B4XPages.AddPage("stat", StatPage)
 	B4XPages.AddPage("infocard", InfoCardPage)
 	B4XPages.AddPage("chat", ChatPage)
@@ -385,17 +362,7 @@ Sub ShowSplashScreen As ResumableSub
 	B4XPages.AddPage("sweetalertinputs", SweetAlertInputsPage)
 	B4XPages.AddPage("pdfview", PDFViewPage)
 	B4XPages.AddPage("pagescrolldemo", PageScrollDemo)
-	'B4XPages.AddPage("KM01SignIn", KM01SignInPage)
-	'B4XPages.AddPage("KM01TypeOfUser", KM01TypeOfUserPage)
-	'B4XPages.AddPage("KM01ClientProfile", KM01ClientProfilePage)
-	'B4XPages.AddPage("KM01KYC", KM01KYCPage)
-	'B4XPages.AddPage("KM01NewProfile", KM01NewProfilePage)
-	'B4XPages.AddPage("KM01CompanyRepresentative", KM01CompanyRepresentativePage)
-	'B4XPages.AddPage("KM01LocationDetails", KM01LocationDetailsPage)
-	'B4XPages.AddPage("KM01IDDetails", KM01IDDetailsPage)
-	'B4XPages.AddPage("KM01Congratulations", KM01CongratulationsPage)
-	'B4XPages.AddPage("KM01Onboarding", KM01OnboardingPage)
-	'B4XPages.AddPage("KM01PhysicalAddresses", KM01PhysicalAddressesPage)
+	
 	B4XPages.AddPage("navscrolldock", NavScrollDockPage)
 	B4XPages.AddPage("enjoyhint", EnjoyHintPage)
 	B4XPages.AddPage("shinebutton", ShineButtonPage)
